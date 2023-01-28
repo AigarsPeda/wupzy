@@ -15,12 +15,23 @@ const SignUp: NextPage = () => {
   const handleLogin = () => {
     const { lastName, firstName, email, password } = signUpForm;
 
+    console.log("createUser.isSuccess 1", createUser.isSuccess);
+
     createUser.mutate({
       email,
       password,
       lastName,
       firstName,
     });
+
+    console.log("createUser.data ------>", createUser.data); // created user
+
+    console.log("createUser.failureReason ------>", createUser.failureReason);
+
+    console.log("createUser.error ------>", createUser.error?.data);
+    console.log("createUser.error", createUser.error);
+    console.log("createUser.isError", createUser.isError);
+    console.log("createUser.isSuccess 2", createUser.isSuccess);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
