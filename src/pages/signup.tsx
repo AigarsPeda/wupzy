@@ -24,7 +24,7 @@ const SignUp: NextPage = () => {
       firstName,
     });
 
-    console.log("createUser.data ------>", createUser.data); // created user
+    console.log("createUser.data ------> ?", createUser.data); // created user
 
     console.log("createUser.failureReason ------>", createUser.failureReason);
 
