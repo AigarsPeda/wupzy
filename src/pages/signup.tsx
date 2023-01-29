@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import { useState } from "react";
+import SignUpForm from "../components/elements/SignUpForm/SignUpForm";
 import { api } from "../utils/api";
 
 const SignUp: NextPage = () => {
@@ -44,43 +45,16 @@ const SignUp: NextPage = () => {
 
   return (
     <div>
-      <h1 className="text-4xl">Sign Up</h1>
-      {console.log(signUpForm)}
-      <form>
-        <input
-          type="text"
-          name="firstName"
-          placeholder="First name"
-          onChange={handleInputChange}
+      <div>
+        <h1 className="text-4xl">Create new account</h1>
+        <SignUpForm
+          handleLogin={handleLogin}
+          handleInputChange={handleInputChange}
         />
-        <input
-          type="text"
-          name="lastName"
-          placeholder="Last name"
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          name="email"
-          placeholder="Email"
-          onChange={handleInputChange}
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleInputChange}
-        />
-        <input
-          type="password"
-          name="confirmPassword"
-          placeholder="Confirm password"
-          onChange={handleInputChange}
-        />
-        <button type="button" onClick={handleLogin}>
-          Sign Up
-        </button>
-      </form>
+        {createUser.isError && (
+          <p className="text-red-500">Something went wrong!</p>
+        )}
+      </div>
     </div>
   );
 };
