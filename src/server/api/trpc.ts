@@ -19,6 +19,9 @@
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 
 import { prisma } from "../db";
+import jwt from "jsonwebtoken";
+
+const jwtSecret = serverEnv.JWT_SECRET || "jwtSecret";
 
 type CreateContextOptions = Record<string, never>;
 
@@ -44,8 +47,29 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
  * @link https://trpc.io/docs/context
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const createTRPCContext = (_opts: CreateNextContextOptions) => {
-  return createInnerTRPCContext({});
+export const createTRPCContext = (opts: CreateNextContextOptions) => {
+  const { req } = opts;
+
+  // if (!req.cookies.token) {
+  //   throw new TRPCError({ code: "UNAUTHORIZED" });
+  // }
+
+  // const decoded = jwt.verify(req.cookies.token, jwtSecret);
+
+  // console.log("decoded ---->", decoded);
+
+  console.log("req.cookies.token ---->", req.cookies.token);
+
+  return createInnerTRPCContext({
+    // @ts-ignore
+    session: req.cookies.token,
+  });
+
+  // const session = await getServerAuthSession({ req, res });
+
+  // return createInnerTRPCContext({
+  //   session,
+  // });
 };
 
 /**
@@ -54,8 +78,9 @@ export const createTRPCContext = (_opts: CreateNextContextOptions) => {
  * This is where the trpc api is initialized, connecting the context and
  * transformer
  */
-import { initTRPC } from "@trpc/server";
+import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
+import { serverEnv } from "../../env/schema.mjs";
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
@@ -85,3 +110,49 @@ export const createTRPCRouter = t.router;
  * can still access user session data if they are logged in
  */
 export const publicProcedure = t.procedure;
+
+/**
+ * Reusable middleware that enforces users are logged in before running the
+ * procedure
+ */
+const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
+  // @ts-ignore
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  console.log("ctx?.session ---->", ctx?.session);
+
+  // // @ts-ignore
+  // if (!ctx.session) {
+  //   throw new TRPCError({ code: "UNAUTHORIZED" });
+  // }
+  // // @ts-ignore
+  // const decoded = jwt.verify(ctx.session, jwtSecret);
+
+  // console.log("decoded ---->", decoded);
+
+  // if (!ctx.session || !ctx.session.user) {
+  //   throw new TRPCError({ code: "UNAUTHORIZED" });
+  // }
+  // return next({
+  //   ctx: {
+  //     // infers the `session` as non-nullable
+  //     session: { ...ctx.session, user: ctx.session.user },
+  //   },
+  // });
+
+  return next({
+    ctx: {
+      ...ctx,
+    },
+  });
+});
+
+/**
+ * Protected (authed) procedure
+ *
+ * If you want a query or mutation to ONLY be accessible to logged in users, use
+ * this. It verifies the session is valid and guarantees ctx.session.user is not
+ * null
+ *
+ * @see https://trpc.io/docs/procedures
+ */
+export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);

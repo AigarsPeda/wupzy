@@ -1,7 +1,10 @@
 import { TRPCError } from "@trpc/server";
+import { serverEnv } from "env/schema.mjs";
+import jwt from "jsonwebtoken";
+import { createTRPCRouter, publicProcedure } from "server/api/trpc";
 import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure } from "../trpc";
+const jwtSecret = serverEnv.JWT_SECRET || "jwtSecret";
 
 export const usersRouter = createTRPCRouter({
   signUpUser: publicProcedure
@@ -23,7 +26,13 @@ export const usersRouter = createTRPCRouter({
         },
       });
 
-      return user;
+      const token = jwt.sign({ user }, jwtSecret, { algorithm: "HS256" });
+
+      console.log("token ---->", token);
+
+      return {
+        token,
+      };
     }),
 
   loginUser: publicProcedure
