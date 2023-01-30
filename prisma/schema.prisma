@@ -17,11 +17,21 @@ model Example {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
+  password   String
+  firstName  String
+  lastName   String
+  LoginToken LoginToken[]
+  email      String       @unique
+  updatedAt  DateTime     @updatedAt
+  createdAt  DateTime     @default(now())
+  id         String       @id @default(cuid())
+}
+
+model LoginToken {
+  userId    String
+  token     String   @unique()
   updatedAt DateTime @updatedAt
-  email     String   @unique
-  password  String
-  firstName String
-  lastName  String
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
 }

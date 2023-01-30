@@ -4,7 +4,7 @@ import SignUpForm from "../components/elements/SignUpForm/SignUpForm";
 import { api } from "../utils/api";
 
 const SignUp: NextPage = () => {
-  const createUser = api.users.createUser.useMutation();
+  const signUpUser = api.users.signUpUser.useMutation();
   const [signUpForm, setSignUpForm] = useState({
     email: "",
     password: "",
@@ -16,23 +16,21 @@ const SignUp: NextPage = () => {
   const handleLogin = () => {
     const { lastName, firstName, email, password } = signUpForm;
 
-    console.log("createUser.isSuccess 1", createUser.isSuccess);
-
-    createUser.mutate({
+    signUpUser.mutate({
       email,
       password,
       lastName,
       firstName,
     });
 
-    console.log("createUser.data ------> ?", createUser.data); // created user
+    console.log("createUser.data ------> ?", signUpUser.data); // created user
 
-    console.log("createUser.failureReason ------>", createUser.failureReason);
+    console.log("signUpUser.failureReason ------>", signUpUser.failureReason);
 
-    console.log("createUser.error ------>", createUser.error?.data);
-    console.log("createUser.error", createUser.error);
-    console.log("createUser.isError", createUser.isError);
-    console.log("createUser.isSuccess 2", createUser.isSuccess);
+    console.log("signUpUser.error ------>", signUpUser.error?.data);
+    console.log("signUpUser.error", signUpUser.error);
+    console.log("signUpUser.isError", signUpUser.isError);
+    console.log("signUpUser.isSuccess 2", signUpUser.isSuccess);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +49,7 @@ const SignUp: NextPage = () => {
           handleLogin={handleLogin}
           handleInputChange={handleInputChange}
         />
-        {createUser.isError && (
+        {signUpUser.isError && (
           <p className="text-red-500">Something went wrong!</p>
         )}
       </div>
