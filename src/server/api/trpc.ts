@@ -20,10 +20,13 @@ import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 
 import { prisma } from "../db";
 import jwt from "jsonwebtoken";
+import { validate as uuidValidate } from "uuid";
 
 const jwtSecret = serverEnv.JWT_SECRET || "jwtSecret";
 
-type CreateContextOptions = Record<string, never>;
+type CreateContextOptions = {
+  session: string | undefined;
+};
 
 /**
  * This helper generates the "internals" for a tRPC context. If you need to use
@@ -35,9 +38,10 @@ type CreateContextOptions = Record<string, never>;
  * @see https://create.t3.gg/en/usage/trpc#-servertrpccontextts
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const createInnerTRPCContext = (_opts: CreateContextOptions) => {
+const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     prisma,
+    session: opts.session,
   };
 };
 
@@ -50,26 +54,9 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
 export const createTRPCContext = (opts: CreateNextContextOptions) => {
   const { req } = opts;
 
-  // if (!req.cookies.token) {
-  //   throw new TRPCError({ code: "UNAUTHORIZED" });
-  // }
-
-  // const decoded = jwt.verify(req.cookies.token, jwtSecret);
-
-  // console.log("decoded ---->", decoded);
-
-  console.log("req.cookies.token ---->", req.cookies.token);
-
   return createInnerTRPCContext({
-    // @ts-ignore
     session: req.cookies.token,
   });
-
-  // const session = await getServerAuthSession({ req, res });
-
-  // return createInnerTRPCContext({
-  //   session,
-  // });
 };
 
 /**
@@ -116,28 +103,17 @@ export const publicProcedure = t.procedure;
  * procedure
  */
 const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
-  // @ts-ignore
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  console.log("ctx?.session ---->", ctx?.session);
+  if (!ctx.session) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
 
-  // // @ts-ignore
-  // if (!ctx.session) {
-  //   throw new TRPCError({ code: "UNAUTHORIZED" });
-  // }
-  // // @ts-ignore
-  // const decoded = jwt.verify(ctx.session, jwtSecret);
+  const decoded = jwt.verify(ctx.session, jwtSecret) as {
+    uuid?: string;
+  };
 
-  // console.log("decoded ---->", decoded);
-
-  // if (!ctx.session || !ctx.session.user) {
-  //   throw new TRPCError({ code: "UNAUTHORIZED" });
-  // }
-  // return next({
-  //   ctx: {
-  //     // infers the `session` as non-nullable
-  //     session: { ...ctx.session, user: ctx.session.user },
-  //   },
-  // });
+  if (!decoded || !decoded?.uuid || !uuidValidate(decoded?.uuid)) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
 
   return next({
     ctx: {
