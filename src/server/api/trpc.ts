@@ -23,7 +23,9 @@ import jwt from "jsonwebtoken";
 
 const jwtSecret = serverEnv.JWT_SECRET || "jwtSecret";
 
-type CreateContextOptions = Record<string, never>;
+type CreateContextOptions = {
+  session: string | undefined;
+};
 
 /**
  * This helper generates the "internals" for a tRPC context. If you need to use
@@ -35,9 +37,10 @@ type CreateContextOptions = Record<string, never>;
  * @see https://create.t3.gg/en/usage/trpc#-servertrpccontextts
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const createInnerTRPCContext = (_opts: CreateContextOptions) => {
+const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     prisma,
+    session: opts.session,
   };
 };
 
@@ -59,9 +62,9 @@ export const createTRPCContext = (opts: CreateNextContextOptions) => {
   // console.log("decoded ---->", decoded);
 
   console.log("req.cookies.token ---->", req.cookies.token);
+  console.log("req.cookies ---->", req.cookies);
 
   return createInnerTRPCContext({
-    // @ts-ignore
     session: req.cookies.token,
   });
 
@@ -116,18 +119,16 @@ export const publicProcedure = t.procedure;
  * procedure
  */
 const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
-  // @ts-ignore
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   console.log("ctx?.session ---->", ctx?.session);
 
   // // @ts-ignore
-  // if (!ctx.session) {
-  //   throw new TRPCError({ code: "UNAUTHORIZED" });
-  // }
+  if (!ctx.session) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
   // // @ts-ignore
-  // const decoded = jwt.verify(ctx.session, jwtSecret);
+  const decoded = jwt.verify(ctx.session, jwtSecret);
 
-  // console.log("decoded ---->", decoded);
+  console.log("decoded ---->", decoded);
 
   // if (!ctx.session || !ctx.session.user) {
   //   throw new TRPCError({ code: "UNAUTHORIZED" });
