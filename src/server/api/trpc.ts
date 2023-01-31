@@ -20,6 +20,7 @@ import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 
 import { prisma } from "../db";
 import jwt from "jsonwebtoken";
+import { validate as uuidValidate } from "uuid";
 
 const jwtSecret = serverEnv.JWT_SECRET || "jwtSecret";
 
@@ -53,26 +54,9 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
 export const createTRPCContext = (opts: CreateNextContextOptions) => {
   const { req } = opts;
 
-  // if (!req.cookies.token) {
-  //   throw new TRPCError({ code: "UNAUTHORIZED" });
-  // }
-
-  // const decoded = jwt.verify(req.cookies.token, jwtSecret);
-
-  // console.log("decoded ---->", decoded);
-
-  console.log("req.cookies.token ---->", req.cookies.token);
-  console.log("req.cookies ---->", req.cookies);
-
   return createInnerTRPCContext({
     session: req.cookies.token,
   });
-
-  // const session = await getServerAuthSession({ req, res });
-
-  // return createInnerTRPCContext({
-  //   session,
-  // });
 };
 
 /**
@@ -119,26 +103,17 @@ export const publicProcedure = t.procedure;
  * procedure
  */
 const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
-  console.log("ctx?.session ---->", ctx?.session);
-
-  // // @ts-ignore
   if (!ctx.session) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
-  // // @ts-ignore
-  const decoded = jwt.verify(ctx.session, jwtSecret);
 
-  console.log("decoded ---->", decoded);
+  const decoded = jwt.verify(ctx.session, jwtSecret) as {
+    uuid?: string;
+  };
 
-  // if (!ctx.session || !ctx.session.user) {
-  //   throw new TRPCError({ code: "UNAUTHORIZED" });
-  // }
-  // return next({
-  //   ctx: {
-  //     // infers the `session` as non-nullable
-  //     session: { ...ctx.session, user: ctx.session.user },
-  //   },
-  // });
+  if (!decoded || !decoded?.uuid || !uuidValidate(decoded?.uuid)) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
 
   return next({
     ctx: {
