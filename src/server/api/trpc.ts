@@ -18,9 +18,9 @@
  */
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 
-import { prisma } from "../db";
 import jwt from "jsonwebtoken";
 import { validate as uuidValidate } from "uuid";
+import { prisma } from "../db";
 
 const jwtSecret = serverEnv.JWT_SECRET || "jwtSecret";
 
@@ -66,8 +66,8 @@ export const createTRPCContext = (opts: CreateNextContextOptions) => {
  * transformer
  */
 import { initTRPC, TRPCError } from "@trpc/server";
+import { serverEnv } from "env/schema.mjs";
 import superjson from "superjson";
-import { serverEnv } from "../../env/schema.mjs";
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
@@ -107,17 +107,53 @@ const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
-  const decoded = jwt.verify(ctx.session, jwtSecret) as {
-    uuid?: string;
-  };
+  // TODO: Save loginToken to redis in future
+  // Check if session is saved in db
+  const session = await prisma.loginToken.findUnique({
+    where: {
+      token: ctx.session,
+    },
+  });
 
-  if (!decoded || !decoded?.uuid || !uuidValidate(decoded?.uuid)) {
+  if (!session) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
+  // Decode session
+  const decoded = jwt.verify(ctx.session, jwtSecret) as {
+    uuid?: string;
+    userId?: string;
+  };
+
+  // Check if session is valid
+  if (
+    !decoded ||
+    !decoded?.uuid ||
+    !decoded?.userId ||
+    !uuidValidate(decoded?.uuid)
+  ) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
+  // Check if user exists in db
+  const user = await prisma.user.findUnique({
+    where: {
+      id: decoded.userId,
+    },
+  });
+
+  // Check if
+
+  if (!user) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
+  // If we get here, the user is logged in and we can continue with the
+  // procedure and pass the user to the context
   return next({
     ctx: {
       ...ctx,
+      user: user,
     },
   });
 });
