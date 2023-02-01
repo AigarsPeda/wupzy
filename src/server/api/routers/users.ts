@@ -1,11 +1,8 @@
 import { TRPCError } from "@trpc/server";
-import { serverEnv } from "env/schema.mjs";
-import jwt from "jsonwebtoken";
 import { createTRPCRouter, publicProcedure } from "server/api/trpc";
+import createToken from "utils/createToken";
+import hashPassword from "utils/hashPassword";
 import { z } from "zod";
-import { v4 as uuidv4 } from "uuid";
-
-const jwtSecret = serverEnv.JWT_SECRET || "jwtSecret";
 
 export const usersRouter = createTRPCRouter({
   signUpUser: publicProcedure
@@ -18,20 +15,37 @@ export const usersRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const password = await hashPassword(input.password);
+
+      if (password instanceof Error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error hashing password",
+        });
+      }
+
       const user = await ctx.prisma.user.create({
         data: {
+          password,
           email: input.email,
           lastName: input.lastName,
-          password: input.password,
           firstName: input.firstName,
         },
       });
 
-      const uuid = uuidv4();
+      const token = createToken(user.id);
 
-      const token = jwt.sign({ uuid }, jwtSecret, { algorithm: "HS256" });
-
-      console.log("token ---->", token);
+      // Save token to db
+      await ctx.prisma.loginToken.create({
+        data: {
+          token,
+          user: {
+            connect: {
+              id: user.id,
+            },
+          },
+        },
+      });
 
       return {
         token,
@@ -56,22 +70,35 @@ export const usersRouter = createTRPCRouter({
         throw new TRPCError({ code: "NOT_FOUND" });
       }
 
-      if (user.password !== input.password) {
+      const password = await hashPassword(input.password);
+
+      if (password instanceof Error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error hashing password",
+        });
+      }
+
+      if (password !== input.password) {
         throw new TRPCError({ code: "UNAUTHORIZED" });
       }
 
-      const token = await ctx.prisma.loginToken.create({
+      const token = createToken(user.id);
+
+      // Save token to db
+      await ctx.prisma.loginToken.create({
         data: {
+          token,
           user: {
             connect: {
               id: user.id,
             },
           },
-
-          token: "token222232323",
         },
       });
 
-      return user;
+      return {
+        token,
+      };
     }),
 });
