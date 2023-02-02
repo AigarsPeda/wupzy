@@ -6,6 +6,7 @@ import { api } from "utils/api";
 
 const GamesPage: NextPage = () => {
   const router = useRouter();
+  const { mutate } = api.users.logoutUser.useMutation();
   const { data, isFetching, error } = api.games.getAllGames.useQuery(
     { text: "from tRPC2" },
     { suspense: false, retry: 0 }
@@ -22,6 +23,13 @@ const GamesPage: NextPage = () => {
   return (
     <div>
       <h1>Games</h1>
+      <button
+        onClick={() => {
+          mutate();
+        }}
+      >
+        Log out
+      </button>
       <p>{data?.greeting}</p>
     </div>
   );

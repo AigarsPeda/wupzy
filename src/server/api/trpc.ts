@@ -115,7 +115,7 @@ const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
     },
   });
 
-  if (!session) {
+  if (!session || !session?.isActive) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
@@ -154,6 +154,7 @@ const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
     ctx: {
       ...ctx,
       user: user,
+      token: ctx.session,
     },
   });
 });

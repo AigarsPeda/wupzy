@@ -2,12 +2,12 @@ import type { FC } from "react";
 import Input from "components/elements/Input/Input";
 
 interface SignUpFormProps {
-  handleLogin: () => void;
+  handleSignUp: () => void;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const SignUpForm: FC<SignUpFormProps> = ({
-  handleLogin,
+  handleSignUp,
   handleInputChange,
 }) => {
   return (
@@ -42,7 +42,7 @@ const SignUpForm: FC<SignUpFormProps> = ({
         name="confirmPassword"
         handleInputChange={handleInputChange}
       />
-      <button type="button" onClick={handleLogin}>
+      <button type="button" onClick={handleSignUp}>
         Sign Up
       </button>
     </form>
