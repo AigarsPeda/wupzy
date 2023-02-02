@@ -31,6 +31,7 @@ model LoginToken {
   userId    String
   token     String   @unique()
   updatedAt DateTime @updatedAt
+  isActive  Boolean  @default(false)
   createdAt DateTime @default(now())
   id        String   @id @default(cuid())
   user      User     @relation(fields: [userId], references: [id])
