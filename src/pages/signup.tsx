@@ -1,13 +1,17 @@
 import SignUpForm from "components/elements/SignUpForm/SignUpForm";
+import { DEFAULT_REDIRECT_URL } from "hardcoded";
+import useRedirect from "hooks/useRedirect";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import type { ChangeEvent } from "react";
+import { useState } from "react";
 import { api } from "utils/api";
 import setCookie from "utils/setCookie";
 
 const SignUp: NextPage = () => {
   const router = useRouter();
-  const { data, isError, mutate } = api.users.signUpUser.useMutation();
+  const { redirectToPath } = useRedirect();
+  const { isError, mutateAsync } = api.users.signUpUser.useMutation();
   const [signUpForm, setSignUpForm] = useState({
     email: "",
     password: "",
@@ -16,31 +20,37 @@ const SignUp: NextPage = () => {
     confirmPassword: "",
   });
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     const { lastName, firstName, email, password } = signUpForm;
 
-    mutate({
+    const res = await mutateAsync({
       email,
       password,
       lastName,
       firstName,
     });
+
+    if (res.token) {
+      setCookie("token", res.token, 1);
+
+      const { redirect } = router.query;
+
+      if (typeof redirect !== "string") {
+        redirectToPath(DEFAULT_REDIRECT_URL);
+        return;
+      }
+
+      redirectToPath(redirect);
+    }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setSignUpForm({
       ...signUpForm,
       [name]: value,
     });
   };
-
-  useEffect(() => {
-    if (data?.token) {
-      setCookie("token", data?.token, 1);
-      router.push("/games").catch((err) => console.error(err));
-    }
-  }, [data?.token, router]);
 
   return (
     <div>

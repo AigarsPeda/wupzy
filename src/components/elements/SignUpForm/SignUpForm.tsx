@@ -2,7 +2,7 @@ import type { FC } from "react";
 import Input from "components/elements/Input/Input";
 
 interface SignUpFormProps {
-  handleSignUp: () => void;
+  handleSignUp: () => Promise<void>;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -11,7 +11,13 @@ const SignUpForm: FC<SignUpFormProps> = ({
   handleInputChange,
 }) => {
   return (
-    <form className="grid w-1/6">
+    <form
+      className="grid w-1/6"
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSignUp().catch(() => console.error("Error signing up"));
+      }}
+    >
       <Input
         type="text"
         label="First name"
@@ -42,9 +48,7 @@ const SignUpForm: FC<SignUpFormProps> = ({
         name="confirmPassword"
         handleInputChange={handleInputChange}
       />
-      <button type="button" onClick={handleSignUp}>
-        Sign Up
-      </button>
+      <button type="submit">Sign Up</button>
     </form>
   );
 };

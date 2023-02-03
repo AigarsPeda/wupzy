@@ -1,20 +1,24 @@
 import Spinner from "components/elements/Spinner/Spinner";
+import useRedirect from "hooks/useRedirect";
 import type { NextPage } from "next";
-import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { api } from "utils/api";
+import removeCookieByName from "utils/removeCookieByName";
 
 const GamesPage: NextPage = () => {
-  const router = useRouter();
   const { mutate } = api.users.logoutUser.useMutation();
-  const { data, isFetching, error } = api.games.getAllGames.useQuery(
-    { text: "from tRPC2" },
+  const { data, isFetching, error, isFetched } = api.games.getAllGames.useQuery(
+    undefined,
     { suspense: false, retry: 0 }
   );
 
+  const { redirectToPath } = useRedirect();
+
   useEffect(() => {
-    error?.data?.code === "UNAUTHORIZED" && router.push("/login");
-  }, [router, error?.data?.code]);
+    if (isFetched && error?.data?.code === "UNAUTHORIZED") {
+      redirectToPath("/login", true);
+    }
+  }, [error, isFetched, redirectToPath]);
 
   if (isFetching) {
     return <Spinner size="small" />;
@@ -26,6 +30,8 @@ const GamesPage: NextPage = () => {
       <button
         onClick={() => {
           mutate();
+          removeCookieByName("token");
+          redirectToPath("/login", true);
         }}
       >
         Log out
