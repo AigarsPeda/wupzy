@@ -38,7 +38,7 @@ const Login: NextPage = () => {
 
       const { redirect } = router.query;
 
-      if (typeof redirect !== "string") {
+      if (typeof redirect !== "string" || !redirect) {
         redirectToPath(DEFAULT_REDIRECT_URL);
         return;
       }

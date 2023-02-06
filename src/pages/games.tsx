@@ -7,20 +7,24 @@ import removeCookieByName from "utils/removeCookieByName";
 
 const GamesPage: NextPage = () => {
   const { mutate } = api.users.logoutUser.useMutation();
-  const { data, isFetching, error, isFetched } = api.games.getAllGames.useQuery(
-    undefined,
-    { suspense: false, retry: 0 }
-  );
+  const res = api.games.getAllGames.useQuery(undefined, {
+    suspense: false,
+    retry: 2,
+  });
 
   const { redirectToPath } = useRedirect();
 
   useEffect(() => {
-    if (isFetched && error?.data?.code === "UNAUTHORIZED") {
+    console.log("res", res);
+  }, [res]);
+
+  useEffect(() => {
+    if (!res.isLoading && res.error?.data?.code === "UNAUTHORIZED") {
       redirectToPath("/login", true);
     }
-  }, [error, isFetched, redirectToPath]);
+  }, [redirectToPath, res.error?.data?.code, res.isLoading, res.isError]);
 
-  if (isFetching) {
+  if (res.isFetching) {
     return <Spinner size="small" />;
   }
 
@@ -36,7 +40,7 @@ const GamesPage: NextPage = () => {
       >
         Log out
       </button>
-      <p>{data?.greeting}</p>
+      <p>{res.data?.greeting}</p>
     </div>
   );
 };
