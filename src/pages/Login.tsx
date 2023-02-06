@@ -1,19 +1,23 @@
 import LoginForm from "components/elements/LoginForm/LoginForm";
+import { DEFAULT_REDIRECT_URL } from "hardcoded";
+import useRedirect from "hooks/useRedirect";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import type { ChangeEvent } from "react";
+import { useState } from "react";
 import { api } from "utils/api";
 import setCookie from "utils/setCookie";
 
 const Login: NextPage = () => {
   const router = useRouter();
-  const { mutate, data } = api.users.loginUser.useMutation();
+  const { redirectToPath } = useRedirect();
+  const { isError, mutateAsync } = api.users.loginUser.useMutation();
   const [signUpForm, setSignUpForm] = useState({
     email: "",
     password: "",
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setSignUpForm({
       ...signUpForm,
@@ -21,21 +25,27 @@ const Login: NextPage = () => {
     });
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     const { email, password } = signUpForm;
 
-    mutate({
+    const res = await mutateAsync({
       email,
       password,
     });
-  };
 
-  useEffect(() => {
-    if (data?.token) {
-      setCookie("token", data?.token, 1);
-      router.push("/games").catch((err) => console.error(err));
+    if (res.token) {
+      setCookie("token", res.token, 1);
+
+      const { redirect } = router.query;
+
+      if (typeof redirect !== "string" || !redirect) {
+        redirectToPath(DEFAULT_REDIRECT_URL);
+        return;
+      }
+
+      redirectToPath(redirect);
     }
-  }, [data?.token, router]);
+  };
 
   return (
     <div>
@@ -45,6 +55,7 @@ const Login: NextPage = () => {
           handleLogin={handleLogin}
           handleInputChange={handleInputChange}
         />
+        {isError && <p className="text-red-500">Something went wrong!</p>}
       </div>
     </div>
   );

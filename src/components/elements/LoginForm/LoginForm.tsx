@@ -2,13 +2,19 @@ import Input from "components/elements/Input/Input";
 import type { FC } from "react";
 
 interface LoginFormProps {
-  handleLogin: () => void;
+  handleLogin: () => Promise<void>;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const LoginForm: FC<LoginFormProps> = ({ handleLogin, handleInputChange }) => {
   return (
-    <form className="grid w-1/6">
+    <form
+      className="grid w-1/6"
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleLogin().catch(() => console.error("Error logging in"));
+      }}
+    >
       <Input
         type="email"
         label="Email"
@@ -22,9 +28,7 @@ const LoginForm: FC<LoginFormProps> = ({ handleLogin, handleInputChange }) => {
         handleInputChange={handleInputChange}
       />
 
-      <button type="button" onClick={handleLogin}>
-        Sign Up
-      </button>
+      <button type="submit">Sign Up</button>
     </form>
   );
 };

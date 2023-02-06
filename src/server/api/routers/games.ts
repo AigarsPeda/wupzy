@@ -10,11 +10,11 @@ export const gameRouter = createTRPCRouter({
   //   };
   // }),
   getAllGames: protectedProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input, ctx }) => {
+    // .input(z.object({ text: z.string() }))
+    .query(({ ctx }) => {
       console.log("ctx.user.id ---->", ctx.user.id);
       return {
-        greeting: `This should be protected ${input.text}`,
+        greeting: `This should be protected `,
       };
     }),
 });
