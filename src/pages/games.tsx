@@ -15,10 +15,6 @@ const GamesPage: NextPage = () => {
   const { redirectToPath } = useRedirect();
 
   useEffect(() => {
-    console.log("res", res);
-  }, [res]);
-
-  useEffect(() => {
     if (!res.isLoading && res.error?.data?.code === "UNAUTHORIZED") {
       redirectToPath("/login", true);
     }
@@ -28,9 +24,61 @@ const GamesPage: NextPage = () => {
     return <Spinner size="small" />;
   }
 
+  type GameType = {
+    firstPair: string[];
+    secondPair: string[];
+  };
+
+  const game = () => {
+    // 5 player they need play in pairs with each other and every player plays with every other player once
+    const players = ["A", "B", "C", "D", "E", "F"];
+    const allPossiblePairs: string[][] = [];
+    const games = new Set<GameType>();
+
+    // Create all possible pairs
+    for (let i = 0; i < players.length; i++) {
+      for (let j = i + 1; j < players.length; j++) {
+        const player1 = players[i];
+        const player2 = players[j];
+        if (!player1 || !player2) return;
+        allPossiblePairs.push([player1, player2]);
+      }
+    }
+
+    // Create a set of games
+    for (let i = 0; i < allPossiblePairs.length; i++) {
+      const firstPair = allPossiblePairs[i];
+
+      if (!firstPair) return;
+
+      // find next pair that doesn't have any of the players that are in firstPair
+      for (let j = i + 1; j < allPossiblePairs.length; j++) {
+        const secondPair = allPossiblePairs[j];
+
+        if (!secondPair || !firstPair[0] || !firstPair[1]) return;
+
+        if (
+          !secondPair.includes(firstPair[0]) &&
+          !secondPair.includes(firstPair[1])
+        ) {
+          games.add({ firstPair, secondPair });
+
+          break;
+        }
+      }
+    }
+
+    games.forEach((game) => {
+      console.log("game ---->", game.firstPair, game.secondPair);
+    });
+
+    console.log("games", games);
+  };
+
   return (
     <div>
       <h1>Games</h1>
+      {game()}
       <button
         onClick={() => {
           mutate();
