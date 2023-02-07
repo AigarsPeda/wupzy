@@ -1,21 +1,30 @@
+import { Koulen } from "@next/font/google";
+import MainLayout from "components/layouts/MainLayout/MainLayout";
 import { type AppType } from "next/app";
 import "styles/globals.css";
 import { api } from "utils/api";
-import MainLayout from "../components/layouts/MainLayout/MainLayout";
-import { Open_Sans } from "@next/font/google";
 
-const inter = Open_Sans({
-  weight: ["300", "400", "500", "600", "700", "800"],
+const koulen = Koulen({
+  weight: "400",
+  display: "swap",
+  variable: "--font-koulen",
   subsets: ["latin"],
 });
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
-    <main className={inter.className}>
+    <>
+      <style jsx global>
+        {`
+          :root {
+            --font-koulen: ${koulen.style.fontFamily};
+          }
+        `}
+      </style>
       <MainLayout>
         <Component {...pageProps} />
       </MainLayout>
-    </main>
+    </>
   );
 };
 

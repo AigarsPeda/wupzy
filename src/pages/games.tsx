@@ -19,7 +19,7 @@ const GamesPage: NextPage = () => {
     retry: 2,
   });
 
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  // const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const { redirectToPath } = useRedirect();
 
@@ -82,46 +82,8 @@ const GamesPage: NextPage = () => {
   return (
     <div>
       <div className="flex w-full items-center justify-between">
-        <h1 className="text-4xl font-bold">Games</h1>
-        <div className="flex">
-          <div className="relative">
-            {/* <RoundButton
-              bgColor="green"
-              btnType="button"
-              btnContent={<HiOutlinePlusSm className="h-7 w-7" />}
-              handleClick={() => {
-                console.log("clicked -> create game");
-              }}
-            /> */}
-          </div>
-
-          <Drawer
-            drawerSide="left"
-            drawerBtn={
-              <RoundButton
-                bgColor="green"
-                btnType="button"
-                btnContent={<HiOutlinePlusSm className="h-7 w-7" />}
-                handleClick={() => {
-                  setIsDrawerOpen((state) => !state);
-                }}
-              />
-            }
-            isDrawerOpen={isDrawerOpen}
-            handleDropdownClose={() => {
-              setIsDrawerOpen(false);
-            }}
-          >
-            <div>Haaaa</div>
-            <div>Haaaa</div>
-            <div>Haaaa</div>
-          </Drawer>
-
-          <SettingContainer />
-        </div>
+        <p>{res.data?.greeting}</p>
       </div>
-
-      <p>{res.data?.greeting}</p>
     </div>
   );
 };

@@ -1,3 +1,7 @@
+* {
+  letter-spacing: 0.025em;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
