@@ -1,13 +1,12 @@
+import SettingContainer from "components/containers/SettingContainer/SettingContainer";
 import RoundButton from "components/elements/RoundButton/RoundButton";
 import Spinner from "components/elements/Spinner/Spinner";
 import useRedirect from "hooks/useRedirect";
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { HiOutlinePlusSm } from "react-icons/hi";
-import { IoSettingsOutline } from "react-icons/io5";
 import { api } from "utils/api";
-import removeCookieByName from "utils/removeCookieByName";
-import Dropdown from "../components/elements/Dropdown/Dropdown";
+import Drawer from "../components/elements/Drawer/Drawer";
 
 type GameType = {
   firstPair: string[];
@@ -15,12 +14,12 @@ type GameType = {
 };
 
 const GamesPage: NextPage = () => {
-  const { mutate } = api.users.logoutUser.useMutation();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const res = api.games.getAllGames.useQuery(undefined, {
     suspense: false,
     retry: 2,
   });
+
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const { redirectToPath } = useRedirect();
 
@@ -86,47 +85,42 @@ const GamesPage: NextPage = () => {
         <h1 className="text-4xl font-bold">Games</h1>
         <div className="flex">
           <div className="relative">
-            <Dropdown
-              dropdownBtn={
-                <RoundButton
-                  bgColor="green"
-                  btnType="button"
-                  btnContent={<HiOutlinePlusSm className="h-7 w-7" />}
-                  handleClick={() => {
-                    setIsDropdownOpen((state) => !state);
-                  }}
-                />
-              }
-              isDropdownOpen={isDropdownOpen}
-              handleDropdownClose={() => {
-                setIsDropdownOpen(false);
+            {/* <RoundButton
+              bgColor="green"
+              btnType="button"
+              btnContent={<HiOutlinePlusSm className="h-7 w-7" />}
+              handleClick={() => {
+                console.log("clicked -> create game");
               }}
-            >
-              <p>Haaa</p>
-            </Dropdown>
+            /> */}
           </div>
 
-          <RoundButton
-            bgColor="gray"
-            btnType="button"
-            btnClass="ml-2"
-            btnContent={<IoSettingsOutline className="h-7 w-7" />}
-            handleClick={() => {
-              console.log("Settings");
+          <Drawer
+            drawerSide="left"
+            drawerBtn={
+              <RoundButton
+                bgColor="green"
+                btnType="button"
+                btnContent={<HiOutlinePlusSm className="h-7 w-7" />}
+                handleClick={() => {
+                  setIsDrawerOpen((state) => !state);
+                }}
+              />
+            }
+            isDrawerOpen={isDrawerOpen}
+            handleDropdownClose={() => {
+              setIsDrawerOpen(false);
             }}
-          />
+          >
+            <div>Haaaa</div>
+            <div>Haaaa</div>
+            <div>Haaaa</div>
+          </Drawer>
+
+          <SettingContainer />
         </div>
       </div>
 
-      <button
-        onClick={() => {
-          mutate();
-          removeCookieByName("token");
-          redirectToPath("/login", true);
-        }}
-      >
-        Log out
-      </button>
       <p>{res.data?.greeting}</p>
     </div>
   );

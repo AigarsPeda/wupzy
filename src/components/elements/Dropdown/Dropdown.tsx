@@ -1,7 +1,7 @@
 import useDelayUnmount from "hooks/useDelayUnmount";
 import useOnClickOutside from "hooks/useOnClickOutside";
 import type { FC } from "react";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
 interface DropdownProps {
   isDropdownOpen: boolean;
@@ -35,7 +35,9 @@ const Dropdown: FC<DropdownProps> = ({
                 : "invisible scale-95 opacity-0"
             } absolute top-[3.8rem] right-0 z-10 w-48 origin-top-right -translate-y-2 transform-gpu rounded-md bg-white shadow-md transition-all duration-150`}
           >
-            <div className="max-h-72 w-full overflow-y-auto">{children}</div>
+            <div className="max-h-80 w-full overflow-y-auto rounded border border-gray-50">
+              {children}
+            </div>
           </div>
         )}
       </div>

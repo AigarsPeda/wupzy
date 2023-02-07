@@ -1,14 +1,14 @@
 import type { ReactNode } from "react";
 import { forwardRef } from "react";
-import { classNames } from "../../../utils/classNames";
+import { classNames } from "utils/classNames";
 
 interface ButtonProps {
   icon?: ReactNode;
   btnTitle: string;
   onClick: () => void;
   iconPosition?: "left" | "right";
-  type: "button" | "submit" | "reset";
-  btnSize?: "large" | "default" | "small";
+  type?: "button" | "submit" | "reset";
+  btnSize?: "large" | "default" | "small" | "full";
 }
 type Ref = HTMLButtonElement;
 
@@ -16,9 +16,9 @@ const Button = forwardRef<Ref, ButtonProps>(
   (
     {
       icon,
-      type,
       onClick,
       btnTitle,
+      type = "button",
       btnSize = "default",
       iconPosition = "right",
     },
@@ -30,6 +30,7 @@ const Button = forwardRef<Ref, ButtonProps>(
       onClick={onClick}
       data-testid="button"
       className={classNames(
+        btnSize === "full" ? "h-10 w-full" : "",
         btnSize === "small" ? "h-8 w-24" : "",
         btnSize === "large" ? "h-11 w-48" : "",
         btnSize === "default" ? "h-11 w-32" : "",
