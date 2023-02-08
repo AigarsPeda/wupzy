@@ -17,9 +17,9 @@ model Example {
 }
 
 model User {
-  password   String
   firstName  String
   lastName   String
+  password   String
   LoginToken LoginToken[]
   email      String       @unique
   updatedAt  DateTime     @updatedAt

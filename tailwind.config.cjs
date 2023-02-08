@@ -5,7 +5,10 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
+        // used for logo
         koulen: ["var(--font-koulen)"],
+        primary: ["var(--font-roboto)"],
+        secondary: ["var(--font-cabin)"],
       },
     },
   },

@@ -29,6 +29,8 @@ export const usersRouter = createTRPCRouter({
         });
       }
 
+      // save password to db
+
       const user = await ctx.prisma.user.create({
         data: {
           password,
@@ -101,6 +103,32 @@ export const usersRouter = createTRPCRouter({
         token,
       };
     }),
+
+  getCurrentUser: protectedProcedure.query(async ({ ctx }) => {
+    if (!ctx.session) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+
+    const user = await ctx.prisma.user.findUnique({
+      where: {
+        id: ctx.user.id,
+      },
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+      },
+    });
+
+    if (!user) {
+      throw new TRPCError({ code: "NOT_FOUND" });
+    }
+
+    return {
+      user,
+    };
+  }),
 
   logoutUser: protectedProcedure.mutation(async ({ ctx }) => {
     if (!ctx.session) {

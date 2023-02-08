@@ -1,12 +1,8 @@
-import SettingContainer from "components/containers/SettingContainer/SettingContainer";
-import RoundButton from "components/elements/RoundButton/RoundButton";
 import Spinner from "components/elements/Spinner/Spinner";
 import useRedirect from "hooks/useRedirect";
 import type { NextPage } from "next";
-import { useEffect, useState } from "react";
-import { HiOutlinePlusSm } from "react-icons/hi";
+import { useEffect } from "react";
 import { api } from "utils/api";
-import Drawer from "../components/elements/Drawer/Drawer";
 
 type GameType = {
   firstPair: string[];
@@ -18,8 +14,6 @@ const GamesPage: NextPage = () => {
     suspense: false,
     retry: 2,
   });
-
-  // const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const { redirectToPath } = useRedirect();
 
