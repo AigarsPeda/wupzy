@@ -29,14 +29,24 @@ export const usersRouter = createTRPCRouter({
         });
       }
 
-      // save password to db
-
       const user = await ctx.prisma.user.create({
         data: {
-          password,
           email: input.email,
           lastName: input.lastName,
           firstName: input.firstName,
+        },
+      });
+
+      // save password to db
+      await ctx.prisma.password.create({
+        data: {
+          password,
+          // userId: user.id,
+          user: {
+            connect: {
+              id: user.id,
+            },
+          },
         },
       });
 
@@ -78,7 +88,17 @@ export const usersRouter = createTRPCRouter({
         throw new TRPCError({ code: "NOT_FOUND" });
       }
 
-      const isMatch = await comparePassword(input.password, user.password);
+      const password = await ctx.prisma.password.findUnique({
+        where: {
+          userId: user.id,
+        },
+      });
+
+      if (!password) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      const isMatch = await comparePassword(input.password, password.password);
 
       if (!isMatch) {
         throw new TRPCError({ code: "UNAUTHORIZED" });
