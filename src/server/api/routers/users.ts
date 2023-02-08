@@ -31,10 +31,22 @@ export const usersRouter = createTRPCRouter({
 
       const user = await ctx.prisma.user.create({
         data: {
-          password,
           email: input.email,
           lastName: input.lastName,
           firstName: input.firstName,
+        },
+      });
+
+      // save password to db
+      await ctx.prisma.password.create({
+        data: {
+          password,
+          // userId: user.id,
+          user: {
+            connect: {
+              id: user.id,
+            },
+          },
         },
       });
 
@@ -76,7 +88,17 @@ export const usersRouter = createTRPCRouter({
         throw new TRPCError({ code: "NOT_FOUND" });
       }
 
-      const isMatch = await comparePassword(input.password, user.password);
+      const password = await ctx.prisma.password.findUnique({
+        where: {
+          userId: user.id,
+        },
+      });
+
+      if (!password) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      const isMatch = await comparePassword(input.password, password.password);
 
       if (!isMatch) {
         throw new TRPCError({ code: "UNAUTHORIZED" });
@@ -101,6 +123,32 @@ export const usersRouter = createTRPCRouter({
         token,
       };
     }),
+
+  getCurrentUser: protectedProcedure.query(async ({ ctx }) => {
+    if (!ctx.session) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+
+    const user = await ctx.prisma.user.findUnique({
+      where: {
+        id: ctx.user.id,
+      },
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+      },
+    });
+
+    if (!user) {
+      throw new TRPCError({ code: "NOT_FOUND" });
+    }
+
+    return {
+      user,
+    };
+  }),
 
   logoutUser: protectedProcedure.mutation(async ({ ctx }) => {
     if (!ctx.session) {
