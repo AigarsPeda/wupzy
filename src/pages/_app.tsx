@@ -1,16 +1,10 @@
-import { Koulen, Open_Sans, Bitter, Roboto, Cabin } from "@next/font/google";
+import { Cabin, Koulen, Roboto } from "@next/font/google";
 import MainLayout from "components/layouts/MainLayout/MainLayout";
 import { type AppType } from "next/app";
 import "styles/globals.css";
 import { api } from "utils/api";
 
-const koulen = Koulen({
-  weight: "400",
-  display: "swap",
-  subsets: ["latin"],
-  variable: "--font-koulen",
-});
-
+// Primary font
 const roboto = Roboto({
   display: "swap",
   subsets: ["latin"],
@@ -18,6 +12,15 @@ const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700", "900"],
 });
 
+// Secondary font
+const koulen = Koulen({
+  weight: "400",
+  display: "swap",
+  subsets: ["latin"],
+  variable: "--font-koulen",
+});
+
+// Fonts for logo
 const cabin = Cabin({
   display: "swap",
   subsets: ["latin"],

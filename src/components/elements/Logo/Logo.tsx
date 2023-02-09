@@ -3,7 +3,7 @@ import type { FC } from "react";
 
 const Logo: FC = () => {
   return (
-    <Link href="/" className="font-koulen text-4xl font-bold tracking-wider">
+    <Link href="/" className="font-koulen text-4xl text-gray-900">
       Game Tracker
     </Link>
   );

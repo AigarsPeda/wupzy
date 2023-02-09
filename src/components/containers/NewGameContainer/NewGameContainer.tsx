@@ -12,7 +12,7 @@ const NewGameContainer: FC = () => {
         btnType="button"
         bgColor="outline"
         btnContent={
-          <span className="flex items-center px-2 text-sm font-bold tracking-wide text-gray-800">
+          <span className="flex items-center px-3 text-sm font-bold tracking-wide text-gray-800">
             New Game
           </span>
         }
