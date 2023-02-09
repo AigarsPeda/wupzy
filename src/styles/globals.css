@@ -11,6 +11,19 @@
   a {
     @apply font-secondary font-normal tracking-wider text-gray-700;
   }
+
+  html {
+    @apply h-full;
+  }
+  body {
+    @apply h-full;
+  }
+  div#__next {
+    @apply h-full;
+  }
+  main {
+    @apply h-full;
+  }
 }
 
 @tailwind base;
