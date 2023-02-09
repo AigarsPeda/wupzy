@@ -1,25 +1,8 @@
-import CTASection from "components/elements/CTASection/CTAsection";
-import Logo from "components/elements/Logo/Logo";
-import RoundLinkButton from "components/elements/RoundLinkButton/RoundLinkButton";
-import useRedirect from "hooks/useRedirect";
+import CTASection from "components/elements/CTASection/CTASection";
 import { type NextPage } from "next";
 import Head from "next/head";
-import { useEffect } from "react";
-import { api } from "utils/api";
 
 const Home: NextPage = () => {
-  // const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
-  const { redirectToPath } = useRedirect();
-  const res = api.users.getCurrentUser.useQuery();
-
-  useEffect(() => {
-    console.log(res.data?.user);
-    // if (!res.isLoading &&  res.data?.user) {
-    //   redirectToPath("/login", true);
-    // }
-  }, [redirectToPath, res.data?.user, res.isLoading]);
-
   return (
     <>
       <Head>
@@ -27,11 +10,7 @@ const Home: NextPage = () => {
         <meta name="description" content="Game Tracker" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="p-6">
-        <div className="flex justify-between">
-          <Logo />
-          <RoundLinkButton href="/login" linkTitle="Login" />
-        </div>
+      <main className="py-4 px-4 md:py-12 md:px-20">
         <CTASection />
       </main>
     </>

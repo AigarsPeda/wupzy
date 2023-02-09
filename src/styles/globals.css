@@ -1,19 +1,15 @@
-* {
-  letter-spacing: 0.025em;
-}
-
 @layer base {
   h1,
   h2,
   h3,
   h4,
   h5 {
-    @apply font-primary font-bold;
+    @apply font-primary font-bold tracking-wider;
   }
 
   p,
   a {
-    @apply font-secondary;
+    @apply font-secondary font-normal tracking-wider text-gray-700;
   }
 }
 

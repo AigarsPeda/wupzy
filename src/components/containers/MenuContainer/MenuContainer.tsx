@@ -21,7 +21,7 @@ const MenuContainer: FC = () => {
         <RoundButton
           bgColor="gray"
           btnType="button"
-          btnContent={<TiThMenu className="h-6 w-6" />}
+          btnContent={<TiThMenu className="h-6 w-10" />}
           handleClick={() => {
             setIsDrawerOpen((state) => !state);
           }}
