@@ -98,7 +98,6 @@ const SignUp: NextPage = () => {
   return (
     <>
       <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))]">
-        {console.log(signUpForm)}
         <div className="mt-0 flex h-full w-full flex-col">
           <div className="lg:mb-30 mb-5 transition-all md:mb-16">
             <Logo />

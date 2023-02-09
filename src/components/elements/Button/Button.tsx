@@ -41,7 +41,7 @@ const Button = forwardRef<Ref, ButtonProps>(
         btnSize === "default" ? "h-11 w-32" : "",
         icon ? "flex items-center justify-between px-4 py-2" : "",
         btnColor === "black" ? "bg-black text-white hover:shadow-gray-400" : "",
-        "text-dark-gray rounded-md bg-white text-center text-sm font-semibold shadow transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+        "text-dark-gray rounded-md text-center text-sm font-semibold shadow transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100"
       )}
     >
       {iconPosition === "left" && icon && (
