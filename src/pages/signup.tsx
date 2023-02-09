@@ -60,7 +60,7 @@ const SignUp: NextPage = () => {
       form: { lastName, firstName, email, password },
     } = signUpForm;
 
-    console.log(signUpForm.form);
+    console.log("signUpForm.form", signUpForm.form);
 
     const res = await mutateAsync({
       email,

@@ -24,14 +24,12 @@ const signUpReducer = (
 ) => {
   // validate email
   if (newState?.form?.email) {
-    const error =
-      !emailRegex.test(newState?.form?.email) &&
-      newState?.form?.email.length > 0
-        ? {
-            field: "email",
-            message: "Invalid email",
-          }
-        : null;
+    const error = !emailRegex.test(newState?.form?.email)
+      ? {
+          field: "email",
+          message: "Invalid email",
+        }
+      : null;
 
     return {
       ...state,

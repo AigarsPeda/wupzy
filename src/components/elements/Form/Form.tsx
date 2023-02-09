@@ -46,7 +46,6 @@ const Form: FC<FormProps> = ({
           />
         ))}
         <Button
-          type="submit"
           btnClass="mt-8"
           btnTitle="Login"
           onClick={() => {
