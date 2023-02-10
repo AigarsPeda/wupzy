@@ -1,13 +1,26 @@
 import type { FC } from "react";
+import { classNames } from "utils/classNames";
+
+export type InputErrorType = {
+  field: string;
+  message: string;
+};
 
 interface InputProps {
   name: string;
   label: string;
+  error?: InputErrorType;
   type: "text" | "password" | "email";
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Input: FC<InputProps> = ({ type, name, label, handleInputChange }) => {
+const Input: FC<InputProps> = ({
+  type,
+  name,
+  error,
+  label,
+  handleInputChange,
+}) => {
   return (
     <div className="my-4">
       <div className="relative">
@@ -16,7 +29,10 @@ const Input: FC<InputProps> = ({ type, name, label, handleInputChange }) => {
           type={type}
           placeholder={label}
           onChange={handleInputChange}
-          className="peer h-10 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:border-gray-700 focus:outline-none"
+          className={classNames(
+            error?.message ? "border-red-500" : "border-gray-300",
+            "peer h-10 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:border-gray-700 focus:outline-none"
+          )}
         />
         <label
           htmlFor={name}
@@ -24,6 +40,10 @@ const Input: FC<InputProps> = ({ type, name, label, handleInputChange }) => {
         >
           {label}
         </label>
+
+        {error?.message && (
+          <p className="absolute mt-1 text-xs text-red-500">{error.message}</p>
+        )}
       </div>
     </div>
   );

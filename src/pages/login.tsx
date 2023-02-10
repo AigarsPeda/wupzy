@@ -71,6 +71,7 @@ const Login: NextPage = () => {
             <Logo />
           </div>
           <Form
+            errors={[]}
             inputs={INPUTS}
             link={{
               href: "/signup",
