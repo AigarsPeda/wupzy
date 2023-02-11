@@ -1,8 +1,6 @@
 import type { InputErrorType } from "components/elements/Input/Input";
-
-const emailRegex = new RegExp(
-  "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
-);
+import { emailRegex } from "hardcoded";
+import handleInputError from "utils/handleInputError";
 
 type SignUpFormType = {
   form: {
@@ -15,7 +13,7 @@ type SignUpFormType = {
   error: InputErrorType[];
 };
 
-const signUpReducer = (
+const signupReducer = (
   state: SignUpFormType,
   newState: Partial<SignUpFormType>
 ) => {
@@ -30,16 +28,7 @@ const signUpReducer = (
         }
       : null;
 
-    if (error) {
-      // add error if it doesn't exist
-      if (!errors.find((e) => e.field === "email")) {
-        errors.push(error);
-      }
-    }
-
-    if (!error) {
-      errors = errors.filter((e) => e.field !== "email");
-    }
+    errors = handleInputError(error, errors, "email");
   }
 
   if (!newState?.form?.email) {
@@ -56,16 +45,7 @@ const signUpReducer = (
           }
         : null;
 
-    if (error) {
-      // add error if it doesn't exist
-      if (!errors.find((e) => e.field === "password")) {
-        errors.push(error);
-      }
-    }
-
-    if (!error) {
-      errors = errors.filter((e) => e.field !== "password");
-    }
+    errors = handleInputError(error, errors, "password");
   }
 
   if (!newState?.form?.password) {
@@ -75,23 +55,14 @@ const signUpReducer = (
   // validate confirm password
   if (newState?.form?.confirmPassword) {
     const error =
-      newState?.form?.confirmPassword.length <= 5
+      newState?.form?.confirmPassword !== newState?.form?.password
         ? {
             field: "confirmPassword",
             message: "Passwords do not match",
           }
         : null;
 
-    if (error) {
-      // add error if it doesn't exist
-      if (!errors.find((e) => e.field === "confirmPassword")) {
-        errors.push(error);
-      }
-    }
-
-    if (!error) {
-      errors = errors.filter((e) => e.field !== "confirmPassword");
-    }
+    errors = handleInputError(error, errors, "confirmPassword");
   }
 
   if (!newState?.form?.confirmPassword) {
@@ -108,16 +79,7 @@ const signUpReducer = (
           }
         : null;
 
-    if (error) {
-      // add error if it doesn't exist
-      if (!errors.find((e) => e.field === "firstName")) {
-        errors.push(error);
-      }
-    }
-
-    if (!error) {
-      errors = errors.filter((e) => e.field !== "firstName");
-    }
+    errors = handleInputError(error, errors, "firstName");
   }
 
   if (!newState?.form?.firstName) {
@@ -134,16 +96,7 @@ const signUpReducer = (
           }
         : null;
 
-    if (error) {
-      // add error if it doesn't exist
-      if (!errors.find((e) => e.field === "lastName")) {
-        errors.push(error);
-      }
-    }
-
-    if (!error) {
-      errors = errors.filter((e) => e.field !== "lastName");
-    }
+    errors = handleInputError(error, errors, "lastName");
   }
 
   if (!newState?.form?.lastName) {
@@ -153,4 +106,4 @@ const signUpReducer = (
   return { ...state, ...newState, error: errors };
 };
 
-export default signUpReducer;
+export default signupReducer;

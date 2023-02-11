@@ -10,6 +10,7 @@ interface InputProps {
   name: string;
   label: string;
   error?: InputErrorType;
+  isDisabled?: boolean;
   type: "text" | "password" | "email";
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -19,6 +20,7 @@ const Input: FC<InputProps> = ({
   name,
   error,
   label,
+  isDisabled,
   handleInputChange,
 }) => {
   return (
@@ -28,15 +30,23 @@ const Input: FC<InputProps> = ({
           name={name}
           type={type}
           placeholder={label}
+          disabled={isDisabled}
           onChange={handleInputChange}
           className={classNames(
-            error?.message ? "border-red-500" : "border-gray-300",
-            "peer h-10 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:border-gray-700 focus:outline-none"
+            error?.message
+              ? "border-red-500 focus:border-red-500"
+              : "border-gray-300 focus:border-gray-700",
+            "peer h-10 w-full border-b-2 text-gray-900 placeholder-transparent transition-all  focus:outline-none disabled:cursor-not-allowed disabled:bg-transparent"
           )}
         />
         <label
           htmlFor={name}
-          className="pointer-events-none absolute left-0 -top-3.5 text-sm text-gray-600 transition-all peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-gray-600"
+          className={classNames(
+            isDisabled
+              ? "peer-placeholder-shown:text-gray-200"
+              : "peer-placeholder-shown:text-gray-400",
+            "pointer-events-none absolute left-0 -top-3.5 text-sm text-gray-600 transition-all peer-placeholder-shown:top-2 peer-placeholder-shown:text-base  peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-gray-600"
+          )}
         >
           {label}
         </label>

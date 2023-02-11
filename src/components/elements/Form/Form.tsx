@@ -18,7 +18,8 @@ type LinkType = {
 interface FormProps {
   link: LinkType;
   inputs: InputsType[];
-  errors: InputErrorType[] | undefined;
+  disabledInputs?: string[];
+  errors?: InputErrorType[];
   handleLogin: () => Promise<void>;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -28,6 +29,7 @@ const Form: FC<FormProps> = ({
   inputs,
   errors,
   handleLogin,
+  disabledInputs,
   handleInputChange,
 }) => {
   return (
@@ -43,12 +45,16 @@ const Form: FC<FormProps> = ({
           // is there an error for this input?
           const error = errors?.find((error) => error.field === input.name);
 
+          // if the input is disabled, then we want to return null
+          const isDisabled = disabledInputs?.includes(input.name);
+
           return (
             <Input
               error={error}
               key={input.name}
               type={input.type}
               name={input.name}
+              isDisabled={isDisabled}
               label={input.placeholder}
               handleInputChange={handleInputChange}
             />

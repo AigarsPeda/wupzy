@@ -7,7 +7,8 @@ import useRedirect from "hooks/useRedirect";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
-import { useState } from "react";
+import { useReducer } from "react";
+import loginReducer from "reducers/loginReducer";
 import { api } from "utils/api";
 import setCookie from "utils/setCookie";
 
@@ -28,21 +29,29 @@ const Login: NextPage = () => {
   const router = useRouter();
   const { redirectToPath } = useRedirect();
   const { isError, mutateAsync } = api.users.loginUser.useMutation();
-  const [signUpForm, setSignUpForm] = useState({
-    email: "",
-    password: "",
+  const [loginForm, setLoginForm] = useReducer(loginReducer, {
+    form: {
+      email: "",
+      password: "",
+    },
+    error: [],
   });
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setSignUpForm({
-      ...signUpForm,
-      [name]: value,
+    setLoginForm({
+      ...loginForm,
+      form: {
+        ...loginForm.form,
+        [name]: value,
+      },
     });
   };
 
   const handleLogin = async () => {
-    const { email, password } = signUpForm;
+    const {
+      form: { email, password },
+    } = loginForm;
 
     const res = await mutateAsync({
       email,
@@ -71,8 +80,10 @@ const Login: NextPage = () => {
             <Logo />
           </div>
           <Form
-            errors={[]}
             inputs={INPUTS}
+            errors={loginForm.error}
+            handleLogin={handleLogin}
+            handleInputChange={handleInputChange}
             link={{
               href: "/signup",
               text: (
@@ -83,8 +94,6 @@ const Login: NextPage = () => {
                 </>
               ),
             }}
-            handleLogin={handleLogin}
-            handleInputChange={handleInputChange}
           />
           {isError && <p className="text-red-500">Something went wrong!</p>}
         </div>
