@@ -1,11 +1,6 @@
-const emailRegex = new RegExp(
-  "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
-);
-
-type SignUpFormError = {
-  field: string;
-  message: string;
-};
+import type { InputErrorType } from "components/elements/Input/Input";
+import { emailRegex } from "hardcoded";
+import handleInputError from "utils/handleInputError";
 
 type SignUpFormType = {
   form: {
@@ -15,13 +10,15 @@ type SignUpFormType = {
     firstName: string;
     confirmPassword: string;
   };
-  error: SignUpFormError[];
+  error: InputErrorType[];
 };
 
-const signUpReducer = (
+const signupReducer = (
   state: SignUpFormType,
   newState: Partial<SignUpFormType>
 ) => {
+  let errors = [...state.error];
+
   // validate email
   if (newState?.form?.email) {
     const error = !emailRegex.test(newState?.form?.email)
@@ -31,17 +28,15 @@ const signUpReducer = (
         }
       : null;
 
-    return {
-      ...state,
-      ...newState,
-      error: error
-        ? [...state.error.filter((e) => e.field !== "email"), error]
-        : state.error.filter((e) => e.field !== "email"),
-    };
+    errors = handleInputError(error, errors, "email");
+  }
+
+  if (!newState?.form?.email) {
+    errors = errors.filter((e) => e.field !== "email");
   }
 
   // validate password
-  if (newState?.form?.password) {
+  if (newState.form?.password) {
     const error =
       newState?.form?.password.length <= 5
         ? {
@@ -50,32 +45,28 @@ const signUpReducer = (
           }
         : null;
 
-    return {
-      ...state,
-      ...newState,
-      error: error
-        ? [...state.error.filter((e) => e.field !== "password"), error]
-        : state.error.filter((e) => e.field !== "password"),
-    };
+    errors = handleInputError(error, errors, "password");
+  }
+
+  if (!newState?.form?.password) {
+    errors = errors.filter((e) => e.field !== "password");
   }
 
   // validate confirm password
   if (newState?.form?.confirmPassword) {
     const error =
-      newState?.form?.confirmPassword !== state.form.password
+      newState?.form?.confirmPassword !== newState?.form?.password
         ? {
             field: "confirmPassword",
             message: "Passwords do not match",
           }
         : null;
 
-    return {
-      ...state,
-      ...newState,
-      error: error
-        ? [...state.error.filter((e) => e.field !== "confirmPassword"), error]
-        : state.error.filter((e) => e.field !== "confirmPassword"),
-    };
+    errors = handleInputError(error, errors, "confirmPassword");
+  }
+
+  if (!newState?.form?.confirmPassword) {
+    errors = errors.filter((e) => e.field !== "confirmPassword");
   }
 
   // validate first name
@@ -88,13 +79,11 @@ const signUpReducer = (
           }
         : null;
 
-    return {
-      ...state,
-      ...newState,
-      error: error
-        ? [...state.error.filter((e) => e.field !== "firstName"), error]
-        : state.error.filter((e) => e.field !== "firstName"),
-    };
+    errors = handleInputError(error, errors, "firstName");
+  }
+
+  if (!newState?.form?.firstName) {
+    errors = errors.filter((e) => e.field !== "firstName");
   }
 
   // validate last name
@@ -103,20 +92,18 @@ const signUpReducer = (
       newState?.form?.lastName && newState.form.lastName.length <= 2
         ? {
             field: "lastName",
-            message: "First name and last name must be at least 2 characters",
+            message: "Last name and last name must be at least 2 characters",
           }
         : null;
 
-    return {
-      ...state,
-      ...newState,
-      error: error
-        ? [...state.error.filter((e) => e.field !== "lastName"), error]
-        : state.error.filter((e) => e.field !== "lastName"),
-    };
+    errors = handleInputError(error, errors, "lastName");
   }
 
-  return { ...state, ...newState };
+  if (!newState?.form?.lastName) {
+    errors = errors.filter((e) => e.field !== "lastName");
+  }
+
+  return { ...state, ...newState, error: errors };
 };
 
-export default signUpReducer;
+export default signupReducer;

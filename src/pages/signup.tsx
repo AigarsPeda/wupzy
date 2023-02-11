@@ -10,7 +10,8 @@ import type { ChangeEvent } from "react";
 import { useReducer } from "react";
 import { api } from "utils/api";
 import setCookie from "utils/setCookie";
-import signUpReducer from "reducers/signUpReducer";
+import { useState } from "react";
+import signupReducer from "reducers/signUpReducer";
 
 const INPUTS: InputsType[] = [
   {
@@ -44,7 +45,8 @@ const SignUp: NextPage = () => {
   const router = useRouter();
   const { redirectToPath } = useRedirect();
   const { isError, mutateAsync } = api.users.signUpUser.useMutation();
-  const [signUpForm, setSignUpForm] = useReducer(signUpReducer, {
+  const [disabledInputs, setDisabledInputs] = useState(["confirmPassword"]);
+  const [signUpForm, setSignUpForm] = useReducer(signupReducer, {
     form: {
       email: "",
       lastName: "",
@@ -59,8 +61,6 @@ const SignUp: NextPage = () => {
     const {
       form: { lastName, firstName, email, password },
     } = signUpForm;
-
-    console.log("signUpForm.form", signUpForm.form);
 
     const res = await mutateAsync({
       email,
@@ -86,6 +86,11 @@ const SignUp: NextPage = () => {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
+    // if the input is the password input, then we want to enable the confirm password input
+    if (name === "password") {
+      setDisabledInputs([]);
+    }
+
     setSignUpForm({
       ...signUpForm,
       form: {
@@ -104,8 +109,12 @@ const SignUp: NextPage = () => {
           </div>
           <Form
             inputs={INPUTS}
+            errors={signUpForm.error}
+            handleLogin={handleSignUp}
+            disabledInputs={disabledInputs}
+            handleInputChange={handleInputChange}
             link={{
-              href: "/signup",
+              href: "/login",
               text: (
                 <>
                   If you already have an account,{" "}
@@ -114,8 +123,6 @@ const SignUp: NextPage = () => {
                 </>
               ),
             }}
-            handleLogin={handleSignUp}
-            handleInputChange={handleInputChange}
           />
           {isError && <p className="text-red-500">Something went wrong!</p>}
         </div>
