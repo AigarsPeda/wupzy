@@ -14,12 +14,6 @@ const CTASection: FC = () => {
           progress by comparing results with other players.
         </p>
         <div className="mt-10 flex flex-col items-center justify-center md:flex-row">
-          <RoundLinkButton
-            href="/signup"
-            bgColor="black"
-            linkTitle="Get started"
-            linkClassName="w-52 text-xl px-10 py-3 text-base md:mr-6 mb-6 md:mb-0"
-          />
           <RoundButton
             bgColor="outline"
             btnClass="w-52 text-xl px-10 text-base"
@@ -27,6 +21,12 @@ const CTASection: FC = () => {
             handleClick={() => {
               console.log("click");
             }}
+          />
+          <RoundLinkButton
+            href="/signup"
+            bgColor="black"
+            linkTitle="Get started"
+            linkClassName="w-52 text-xl px-10 py-3 text-base md:mr-6 mb-6 md:mb-0"
           />
         </div>
       </div>

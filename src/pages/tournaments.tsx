@@ -9,8 +9,8 @@ type GameType = {
   secondPair: string[];
 };
 
-const GamesPage: NextPage = () => {
-  const res = api.games.getAllGames.useQuery(undefined, {
+const TournamentsPage: NextPage = () => {
+  const res = api.tournaments.getAllTournaments.useQuery(undefined, {
     suspense: false,
     retry: 2,
   });
@@ -82,4 +82,4 @@ const GamesPage: NextPage = () => {
   );
 };
 
-export default GamesPage;
+export default TournamentsPage;

@@ -9,18 +9,18 @@ export type InputErrorType = {
 interface InputProps {
   name: string;
   label: string;
-  error?: InputErrorType;
   isDisabled?: boolean;
-  type: "text" | "password" | "email";
+  error?: InputErrorType;
+  type?: "text" | "password" | "email";
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const Input: FC<InputProps> = ({
-  type,
   name,
   error,
   label,
   isDisabled,
+  type = "text",
   handleInputChange,
 }) => {
   return (

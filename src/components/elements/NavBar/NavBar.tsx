@@ -22,7 +22,7 @@ const NavBar: FC = () => {
         <>
           <Logo />
           {data?.user ? (
-            <RoundLinkButton href="/games" linkTitle="Games" />
+            <RoundLinkButton href="/tournaments" linkTitle="Tournaments" />
           ) : (
             <RoundLinkButton href="/login" linkTitle="Login" />
           )}
