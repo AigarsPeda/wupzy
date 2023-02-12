@@ -27,7 +27,7 @@ const RoundLinkButton: FC<RoundLinkButtonProps> = ({
           ? "bg-violet-500 text-white hover:shadow-violet-400"
           : "",
         bgColor === "black" ? "bg-black text-white hover:shadow-gray-900" : "",
-        "flex h-10 items-center justify-center rounded-md font-bold transition-all duration-200 hover:scale-105 hover:shadow-md"
+        "flex h-11 items-center justify-center rounded-md font-bold transition-all duration-200 hover:scale-105 hover:shadow-md"
       )}
     >
       {linkTitle}

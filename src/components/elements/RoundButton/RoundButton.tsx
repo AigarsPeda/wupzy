@@ -33,7 +33,7 @@ const RoundButton: FC<RoundButtonProps> = ({
         bgColor === "outline"
           ? "border-2 border-gray-700 bg-white text-gray-700 hover:shadow-gray-400"
           : "",
-        "h-10 rounded-md font-bold transition-all duration-200 hover:scale-105 hover:shadow-md"
+        "h-11 rounded-md font-bold transition-all duration-200 hover:scale-105 hover:shadow-md"
       )}
       onClick={handleClick}
     >
