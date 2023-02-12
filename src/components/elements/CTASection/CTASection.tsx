@@ -16,7 +16,7 @@ const CTASection: FC = () => {
         <div className="mt-10 flex flex-col items-center justify-center md:flex-row">
           <RoundButton
             bgColor="outline"
-            btnClass="w-52 text-xl px-10 text-base"
+            btnClass="w-52 text-xl px-10 text-base mr-4"
             btnContent="Learn more"
             handleClick={() => {
               console.log("click");
