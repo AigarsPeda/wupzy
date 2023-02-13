@@ -13,11 +13,11 @@ module.exports = {
       keyframes: {
         slideRight: {
           "0%": { right: "1.75rem" },
-          "100%": { right: "0.25rem" },
+          "100%": { right: "0" },
         },
         slideLeft: {
           "0%": { left: "1.75rem" },
-          "100%": { left: "0.25rem" },
+          "100%": { left: "0" },
         },
       },
       animation: {
