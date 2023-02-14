@@ -1,4 +1,3 @@
-import type { InputsType } from "components/elements/Form/Form";
 import Form from "components/elements/Form/Form";
 import Logo from "components/elements/Logo/Logo";
 import SignupLoginImage from "components/elements/SignupLoginImage/SignupLoginImage";
@@ -7,39 +6,10 @@ import useRedirect from "hooks/useRedirect";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
+import signupReducer from "reducers/signUpReducer";
 import { api } from "utils/api";
 import setCookie from "utils/setCookie";
-import { useState } from "react";
-import signupReducer from "reducers/signUpReducer";
-
-const INPUTS: InputsType[] = [
-  {
-    type: "text",
-    name: "firstName",
-    placeholder: "First Name",
-  },
-  {
-    type: "text",
-    name: "lastName",
-    placeholder: "Last Name",
-  },
-  {
-    name: "email",
-    type: "email",
-    placeholder: "Email",
-  },
-  {
-    name: "password",
-    type: "password",
-    placeholder: "Password",
-  },
-  {
-    type: "password",
-    name: "confirmPassword",
-    placeholder: "Confirm Password",
-  },
-];
 
 const SignUp: NextPage = () => {
   const router = useRouter();
@@ -48,10 +18,10 @@ const SignUp: NextPage = () => {
   const [disabledInputs, setDisabledInputs] = useState(["confirmPassword"]);
   const [signUpForm, setSignUpForm] = useReducer(signupReducer, {
     form: {
-      email: "",
-      lastName: "",
-      password: "",
       firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
       confirmPassword: "",
     },
     error: [],
@@ -70,7 +40,7 @@ const SignUp: NextPage = () => {
     });
 
     if (res.token) {
-      setCookie("token", res.token, 1);
+      setCookie("token", res.token, 365);
 
       const { redirect } = router.query;
 
@@ -108,7 +78,7 @@ const SignUp: NextPage = () => {
             <Logo />
           </div>
           <Form
-            inputs={INPUTS}
+            inputs={signUpForm.form}
             errors={signUpForm.error}
             handleLogin={handleSignUp}
             disabledInputs={disabledInputs}
