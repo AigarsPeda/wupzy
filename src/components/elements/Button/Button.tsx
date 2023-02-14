@@ -47,7 +47,7 @@ const Button = forwardRef<Ref, ButtonProps>(
           ? "bg-red-500 text-white hover:scale-105 hover:shadow-red-400"
           : "",
         !isDisabled && btnColor === "black"
-          ? "bg-black text-white hover:scale-105 hover:shadow-gray-400"
+          ? "bg-gray-800 text-white hover:scale-105 hover:shadow-gray-400"
           : "",
         !isDisabled && btnColor === "white"
           ? "bg-white text-black hover:scale-105 hover:shadow-gray-400"

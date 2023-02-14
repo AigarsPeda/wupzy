@@ -1,19 +1,28 @@
 # Game Tracker
 
+### Requirements
 
-## Install dependencies
+  - [Node.js](https://nodejs.org/en/)
+  - [Yarn](https://yarnpkg.com/)
+
+### Install dependencies
 
     yarn install
 
-
-## Create table
+### Create table
 
     yarn prisma db push
 
-## Generate Prisma Client
+### Generate Prisma Client
 
     yarn prisma generate
 
-## Run the app
+### Run the app
 
     yarn start
+
+### Run the app in development mode
+  
+      yarn dev
+
+

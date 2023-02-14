@@ -7,9 +7,14 @@
     @apply font-primary font-bold tracking-wider;
   }
 
-  p,
-  a {
-    @apply font-secondary font-normal tracking-wider text-gray-700;
+  p {
+    @apply font-secondary tracking-wider;
+  }
+
+  a,
+  li,
+  button {
+    @apply font-primary font-medium tracking-wider text-gray-700;
   }
 
   html {
