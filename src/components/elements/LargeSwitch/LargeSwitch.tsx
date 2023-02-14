@@ -17,7 +17,7 @@ const LargeSwitch: FC<LargeSwitchProps> = ({
   return (
     <button
       onClick={handleToggle}
-      className="relative flex h-10 items-center justify-between rounded-md bg-gray-200 px-6 py-1"
+      className="relative flex h-10 items-center justify-between rounded-md bg-gray-300 px-6 py-1"
     >
       <span
         className={classNames(
@@ -38,7 +38,7 @@ const LargeSwitch: FC<LargeSwitchProps> = ({
       <div
         className={classNames(
           isOn ? "-translate-x-full" : "translate-x-[-0.5rem]",
-          "absolute left-1/2 m-1 h-8 w-1/2 rounded bg-slate-800 text-transparent transition-all duration-150 ease-in-out"
+          "absolute left-1/2 m-1 h-8 w-1/2 rounded bg-gray-800 text-transparent shadow shadow-gray-400 transition-all duration-150 ease-in-out"
         )}
       ></div>
     </button>

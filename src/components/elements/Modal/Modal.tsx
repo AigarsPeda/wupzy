@@ -17,6 +17,7 @@ interface ModalWrapProps {
     | "large"
     | "medium";
   modalTitle: string;
+  titleClassName?: string;
   isModalVisible: boolean;
   maxHeight?: "none" | "md";
   children: JSX.Element | JSX.Element[];
@@ -26,6 +27,7 @@ interface ModalWrapProps {
 const ModalWrap: FC<ModalWrapProps> = ({
   children,
   modalTitle,
+  titleClassName,
   isModalVisible,
   handleCancelClick,
   maxHeight = "none",
@@ -68,18 +70,21 @@ const ModalWrap: FC<ModalWrapProps> = ({
               )}
             >
               {/* <!--Title--> */}
-              <div className="flex items-center justify-between pb-3">
+              <div
+                className={classNames(
+                  titleClassName ? titleClassName : "",
+                  "relative flex items-center justify-between pb-8"
+                )}
+              >
                 <p className="font-secondary text-2xl font-bold">
                   {modalTitle}
                 </p>
-                <div
-                  className="modal-close z-[69] cursor-pointer"
-                  onClick={() => {
-                    handleCancelClick();
-                  }}
+                <button
+                  className="modal-close cursor-pointer"
+                  onClick={handleCancelClick}
                 >
-                  <IoClose className="h-7 w-7 text-gray-800 hover:text-gray-500" />
-                </div>
+                  <IoClose className="absolute top-0 -right-2 h-8 w-9 text-gray-800 hover:text-gray-500" />
+                </button>
               </div>
 
               {/* <!--Body--> */}
