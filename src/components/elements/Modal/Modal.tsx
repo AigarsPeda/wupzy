@@ -65,7 +65,7 @@ const ModalWrap: FC<ModalWrapProps> = ({
           >
             <div
               className={classNames(
-                maxHeight === "md" ? "max-h-[50rem] overflow-y-auto" : "",
+                maxHeight === "md" ? "max-h-[50rem]" : "",
                 "w-full px-6 py-4 text-left"
               )}
             >

@@ -21,7 +21,7 @@ const Tooltip: FC<TooltipProps> = ({
         className={classNames(
           placement === "top" ? "bottom-full" : "top-full",
           position ? position : "left-1/2 -translate-x-1/2",
-          "pointer-events-none absolute w-40 transform rounded bg-gray-900 p-2 text-sm text-white opacity-0 transition-all duration-300 ease-in-out group-hover:pointer-events-auto group-hover:opacity-100"
+          "pointer-events-none absolute z-30 w-40 transform rounded bg-gray-900 p-2 text-sm text-white opacity-0 transition-all duration-300 ease-in-out group-hover:pointer-events-auto group-hover:opacity-100"
         )}
       >
         {content}
