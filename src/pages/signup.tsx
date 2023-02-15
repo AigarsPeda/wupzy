@@ -78,6 +78,7 @@ const SignUp: NextPage = () => {
             <Logo />
           </div>
           <Form
+            submitBtnText="Sign Up"
             inputs={signUpForm.form}
             errors={signUpForm.error}
             handleLogin={handleSignUp}

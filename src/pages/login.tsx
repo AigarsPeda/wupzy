@@ -67,6 +67,7 @@ const Login: NextPage = () => {
             <Logo />
           </div>
           <Form
+            submitBtnText="Login"
             inputs={loginForm.form}
             errors={loginForm.error}
             handleLogin={handleLogin}
