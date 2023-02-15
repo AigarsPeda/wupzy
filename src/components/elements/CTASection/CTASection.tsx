@@ -1,4 +1,4 @@
-import RoundButton from "components/elements/RoundButton/RoundButton";
+import Button from "components/elements/Button/Button";
 import RoundLinkButton from "components/elements/RoundLinkButton/RoundLinkButton";
 import type { FC } from "react";
 
@@ -14,14 +14,15 @@ const CTASection: FC = () => {
           progress by comparing results with other players.
         </p>
         <div className="mt-10 flex flex-col items-center justify-center md:flex-row">
-          <RoundButton
-            bgColor="outline"
-            btnClass="w-52 px-10 text-base md:mr-4 mb-4 md:mb-0"
-            btnContent="Learn more"
-            handleClick={() => {
-              console.log("click");
-            }}
-          />
+          <div className="mb-4 md:mr-4 md:mb-0">
+            <Button
+              btnColor="outline"
+              btnTitle={<span className=" w-48 px-3 text-sm ">Learn more</span>}
+              onClick={() => {
+                console.log("click");
+              }}
+            />
+          </div>
           <RoundLinkButton
             href="/signup"
             bgColor="black"

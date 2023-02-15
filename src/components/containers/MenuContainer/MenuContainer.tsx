@@ -1,6 +1,5 @@
 import Button from "components/elements/Button/Button";
 import Drawer from "components/elements/Drawer/Drawer";
-import RoundButton from "components/elements/RoundButton/RoundButton";
 import useRedirect from "hooks/useRedirect";
 import type { FC } from "react";
 import { useState } from "react";
@@ -17,11 +16,10 @@ const MenuContainer: FC = () => {
     <Drawer
       drawerSide="left"
       drawerBtn={
-        <RoundButton
-          bgColor="gray"
-          btnType="button"
-          btnContent={<TiThMenu className="h-6 w-10" />}
-          handleClick={() => {
+        <Button
+          btnSize="square"
+          btnTitle={<TiThMenu className="h-6 w-6" />}
+          onClick={() => {
             setIsDrawerOpen((state) => !state);
           }}
         />

@@ -4,12 +4,6 @@ import Input from "components/elements/Input/Input";
 import Link from "next/link";
 import type { FC } from "react";
 
-export type InputsType = {
-  name: string;
-  placeholder: string;
-  type: "text" | "password" | "email";
-};
-
 type LinkType = {
   href: string;
   text: string | JSX.Element;
@@ -17,9 +11,10 @@ type LinkType = {
 
 interface FormProps {
   link: LinkType;
-  inputs: InputsType[];
+  submitBtnText: string;
   disabledInputs?: string[];
   errors?: InputErrorType[];
+  inputs: { [key in string]: string };
   handleLogin: () => Promise<void>;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -29,6 +24,7 @@ const Form: FC<FormProps> = ({
   inputs,
   errors,
   handleLogin,
+  submitBtnText,
   disabledInputs,
   handleInputChange,
 }) => {
@@ -41,28 +37,28 @@ const Form: FC<FormProps> = ({
           handleLogin().catch(() => console.error("Error logging in"));
         }}
       >
-        {inputs.map((input) => {
-          // is there an error for this input?
-          const error = errors?.find((error) => error.field === input.name);
-
-          // if the input is disabled, then we want to return null
-          const isDisabled = disabledInputs?.includes(input.name);
+        {Object.entries(inputs).map(([key, value]) => {
+          const error = errors?.find((error) => error.field === key);
+          const isDisabled = disabledInputs?.includes(key);
 
           return (
             <Input
+              key={key}
+              type={key}
+              name={key}
+              label={key}
+              value={value}
               error={error}
-              key={input.name}
-              type={input.type}
-              name={input.name}
               isDisabled={isDisabled}
-              label={input.placeholder}
               handleInputChange={handleInputChange}
             />
           );
         })}
+
         <Button
           btnClass="mt-8"
-          btnTitle="Login"
+          btnSize="small"
+          btnTitle={submitBtnText}
           onClick={() => {
             handleLogin().catch(() => console.error("Error logging in"));
           }}

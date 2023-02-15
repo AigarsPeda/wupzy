@@ -1,4 +1,3 @@
-import type { InputsType } from "components/elements/Form/Form";
 import Form from "components/elements/Form/Form";
 import Logo from "components/elements/Logo/Logo";
 import SignupLoginImage from "components/elements/SignupLoginImage/SignupLoginImage";
@@ -11,19 +10,6 @@ import { useReducer } from "react";
 import loginReducer from "reducers/loginReducer";
 import { api } from "utils/api";
 import setCookie from "utils/setCookie";
-
-const INPUTS: InputsType[] = [
-  {
-    name: "email",
-    type: "email",
-    placeholder: "Email",
-  },
-  {
-    name: "password",
-    type: "password",
-    placeholder: "Password",
-  },
-];
 
 const Login: NextPage = () => {
   const router = useRouter();
@@ -39,6 +25,7 @@ const Login: NextPage = () => {
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
     setLoginForm({
       ...loginForm,
       form: {
@@ -59,7 +46,7 @@ const Login: NextPage = () => {
     });
 
     if (res.token) {
-      setCookie("token", res.token, 1);
+      setCookie("token", res.token, 365);
 
       const { redirect } = router.query;
 
@@ -80,7 +67,8 @@ const Login: NextPage = () => {
             <Logo />
           </div>
           <Form
-            inputs={INPUTS}
+            submitBtnText="Login"
+            inputs={loginForm.form}
             errors={loginForm.error}
             handleLogin={handleLogin}
             handleInputChange={handleInputChange}

@@ -2,7 +2,7 @@ import type { FC } from "react";
 import { classNames } from "utils/classNames";
 
 interface GridLayoutProps {
-  minWith?: "150px" | "175px";
+  minWith?: "150px" | "175px" | "200px" | "250px";
   children: JSX.Element | JSX.Element[];
 }
 
@@ -10,6 +10,12 @@ const GridLayout: FC<GridLayoutProps> = ({ minWith = "150px", children }) => {
   return (
     <div
       className={classNames(
+        minWith === "250px"
+          ? "grid-cols-[repeat(auto-fit,minmax(250px,1fr))]"
+          : "",
+        minWith === "200px"
+          ? "grid-cols-[repeat(auto-fit,minmax(200px,1fr))]"
+          : "",
         minWith === "175px"
           ? "grid-cols-[repeat(auto-fit,minmax(175px,1fr))]"
           : "",

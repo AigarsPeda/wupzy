@@ -6,6 +6,7 @@ const SignupLoginImage: FC = () => {
   return (
     <div className="invisible md:visible">
       <Image
+        priority
         width={1000}
         height={1000}
         alt="login image"

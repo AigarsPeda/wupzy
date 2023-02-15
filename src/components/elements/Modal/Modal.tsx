@@ -73,7 +73,7 @@ const ModalWrap: FC<ModalWrapProps> = ({
               <div
                 className={classNames(
                   titleClassName ? titleClassName : "",
-                  "relative flex items-center justify-between pb-8"
+                  "relative flex items-center justify-between pb-2"
                 )}
               >
                 <p className="font-secondary text-2xl font-bold">
