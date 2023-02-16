@@ -42,7 +42,7 @@ const Input = forwardRef<Ref, InputProps>(
           placeholder={label}
           disabled={isDisabled}
           onChange={handleInputChange}
-          type={InputTypes[type] || "password"}
+          type={InputTypes[type] ?? "password"}
           className={classNames(
             error?.message
               ? "border-red-500 focus:border-red-500"

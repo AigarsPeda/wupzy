@@ -16,8 +16,8 @@ const TournamentCreateReview: FC<TournamentCreateReviewProps> = ({
       <div className="mt-4">
         <p className="text-xs text-gray-400">Attendants:</p>
         <ul className="">
-          {attendants.map((attendant) => (
-            <li className="text-gray-800" key={attendant}>
+          {attendants.map((attendant, i) => (
+            <li className="text-gray-800" key={`${attendant}${i}`}>
               {attendant}
             </li>
           ))}

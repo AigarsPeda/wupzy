@@ -3,6 +3,8 @@ import type { InputErrorType } from "components/elements/Input/Input";
 import Input from "components/elements/Input/Input";
 import Link from "next/link";
 import type { FC } from "react";
+import getInputType from "utils/getInputType";
+import formatLabel from "../../../utils/formatLable";
 
 type LinkType = {
   href: string;
@@ -44,12 +46,12 @@ const Form: FC<FormProps> = ({
           return (
             <Input
               key={key}
-              type={key}
               name={key}
-              label={key}
               value={value}
               error={error}
               isDisabled={isDisabled}
+              label={formatLabel(key)}
+              type={getInputType(key)}
               handleInputChange={handleInputChange}
             />
           );
