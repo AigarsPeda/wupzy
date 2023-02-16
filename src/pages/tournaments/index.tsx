@@ -1,6 +1,7 @@
 import Spinner from "components/elements/Spinner/Spinner";
 import useRedirect from "hooks/useRedirect";
 import type { NextPage } from "next";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { api } from "utils/api";
 
@@ -10,6 +11,7 @@ type GameType = {
 };
 
 const TournamentsPage: NextPage = () => {
+  const router = useRouter();
   const res = api.tournaments.getAllTournaments.useQuery(undefined, {
     suspense: false,
     retry: 2,
@@ -76,7 +78,19 @@ const TournamentsPage: NextPage = () => {
   return (
     <div>
       <div className="flex w-full items-center justify-between">
-        <p>{res.data?.greeting}</p>
+        {console.log("res.data?.tournaments", res.data?.tournaments)}
+        {res.data?.tournaments.map((tournament) => (
+          <button
+            key={tournament.id}
+            onClick={() => {
+              router.push(`/tournaments/${tournament.id}`).catch(() => {
+                console.log("error changing route");
+              });
+            }}
+          >
+            {tournament.name}
+          </button>
+        ))}
       </div>
     </div>
   );

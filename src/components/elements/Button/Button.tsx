@@ -35,6 +35,7 @@ const Button = forwardRef<Ref, ButtonProps>(
       type={type}
       onClick={onClick}
       data-testid="button"
+      disabled={isDisabled}
       className={classNames(
         btnSize === "small" ? "h-11 w-24" : "",
         btnSize === "large" ? "h-11 w-48" : "",

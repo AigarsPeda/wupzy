@@ -1,8 +1,9 @@
+import InfoParagraph from "components/elements/InfoParagraph/InfoParagraph";
 import Input from "components/elements/Input/Input";
 import RoundButton from "components/elements/RoundButton/RoundButton";
-import Tooltip from "components/elements/Tooltip/Tooltip";
+import useFocus from "hooks/useFocus";
 import type { FC } from "react";
-import { BiInfoCircle } from "react-icons/bi";
+import { useEffect } from "react";
 import { BsPlusLg } from "react-icons/bs";
 
 interface TournamentAttendantFormProps {
@@ -16,16 +17,14 @@ const TournamentAttendantForm: FC<TournamentAttendantFormProps> = ({
   setAttendants,
   addNewAttendant,
 }) => {
+  const { htmlElRef, setFocus } = useFocus();
+
+  useEffect(() => {
+    setFocus();
+  }, [setFocus]);
+
   return (
-    <div>
-      <div className="flex w-full justify-end">
-        <Tooltip
-          position="-left-[3.8rem]"
-          content="Enter the names of the players or teams who will be participating in the tournament. You can add players or teams by clicking the plus button."
-        >
-          <BiInfoCircle className="ml-2 h-5 w-5 text-gray-800" />
-        </Tooltip>
-      </div>
+    <div className="mt-12">
       <div>
         {attendants.map((attendant, index) => {
           return (
@@ -34,6 +33,7 @@ const TournamentAttendantForm: FC<TournamentAttendantFormProps> = ({
               value={attendant}
               name="tournamentName"
               label={`Attendant ${index + 1}`}
+              ref={index === 0 ? htmlElRef : null}
               handleInputChange={(e) => {
                 const newAttendants = [...attendants];
                 newAttendants[index] = e.target.value;
@@ -43,6 +43,7 @@ const TournamentAttendantForm: FC<TournamentAttendantFormProps> = ({
           );
         })}
       </div>
+      <InfoParagraph text="Enter the names of the players or teams who will be participating in the tournament. You can add players or teams by clicking the plus button." />
       <div className="flex w-full items-center justify-center">
         <RoundButton
           bgColor="green"

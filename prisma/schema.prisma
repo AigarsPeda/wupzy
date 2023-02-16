@@ -17,16 +17,39 @@ model Example {
 }
 
 model User {
-  firstName  String
-  lastName   String
-  Password   Password[]
-  LoginToken LoginToken[]
-  email      String       @unique
-  updatedAt  DateTime     @updatedAt
-  createdAt  DateTime     @default(now())
-  id         String       @id @default(cuid())
+  firstName   String
+  lastName    String
+  Password    Password[]
+  LoginToken  LoginToken[]
+  email       String       @unique
+  updatedAt   DateTime     @updatedAt
+  createdAt   DateTime     @default(now())
+  id          String       @id @default(cuid())
+  Tournaments Tournament[]
 }
 
+// One user can have many Tournaments
+model Tournament {
+  teams     Team[]
+  name      String
+  userId    String
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+// One Tournament can have many teams
+model Team {
+  name         String
+  tournamentId String
+  updatedAt    DateTime   @updatedAt
+  createdAt    DateTime   @default(now())
+  id           String     @id @default(cuid())
+  tournament   Tournament @relation(fields: [tournamentId], references: [id])
+}
+
+// One user can have one password
 model Password {
   password String
   userId   String @unique
@@ -34,6 +57,7 @@ model Password {
   id       String @id @default(cuid())
 }
 
+// One user can have many login tokens
 model LoginToken {
   userId    String
   token     String   @unique()

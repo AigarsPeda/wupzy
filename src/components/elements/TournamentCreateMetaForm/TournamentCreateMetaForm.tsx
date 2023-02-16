@@ -1,7 +1,8 @@
+import InfoParagraph from "components/elements/InfoParagraph/InfoParagraph";
 import Input from "components/elements/Input/Input";
-import Tooltip from "components/elements/Tooltip/Tooltip";
+import useFocus from "hooks/useFocus";
 import type { FC } from "react";
-import { BiInfoCircle } from "react-icons/bi";
+import { useEffect } from "react";
 
 interface TournamentCreateMetaFormProps {
   tournamentName: string;
@@ -12,22 +13,26 @@ const TournamentCreateMetaForm: FC<TournamentCreateMetaFormProps> = ({
   tournamentName,
   setTournamentName,
 }) => {
+  const { htmlElRef, setFocus } = useFocus();
+
+  useEffect(() => {
+    setFocus();
+  }, [setFocus]);
+
   return (
-    <div className="flex">
-      <Input
-        name="tournamentName"
-        value={tournamentName}
-        label="Name of tournament"
-        handleInputChange={(e) => {
-          setTournamentName(e.target.value);
-        }}
-      />
-      <Tooltip
-        position="-left-[3.8rem]"
-        content="Give your competition a name to make it easier to find later"
-      >
-        <BiInfoCircle className="ml-2 h-5 w-5 text-gray-800" />
-      </Tooltip>
+    <div className="mt-12 h-56">
+      <div className="flex w-full">
+        <Input
+          ref={htmlElRef}
+          name="tournamentName"
+          value={tournamentName}
+          label="Name of tournament"
+          handleInputChange={(e) => {
+            setTournamentName(e.target.value);
+          }}
+        />
+      </div>
+      <InfoParagraph text="Give your competition a name to make it easier to find later. * You can use date of competition or competition location" />
     </div>
   );
 };

@@ -1,32 +1,60 @@
 import Button from "components/elements/Button/Button";
 import ModalWrap from "components/elements/Modal/Modal";
 import ProgressBar from "components/elements/ProgressBar/ProgressBar";
-import RoundButton from "components/elements/RoundButton/RoundButton";
 import TournamentAttendantForm from "components/elements/TournamentAttendantForm/TournamentAttendantForm";
 import TournamentCreateMetaForm from "components/elements/TournamentCreateMetaForm/TournamentCreateMetaForm";
+import TournamentCreateReview from "components/elements/TournamentCreateReview/TournamentCreateReview";
+import { useRouter } from "next/router";
 import type { FC } from "react";
 import { useState } from "react";
+import { api } from "utils/api";
 
 const FORM_STEPS = ["Create tournament", "Add tournament attendant", "Review"];
 
 const NewGameContainer: FC = () => {
+  const router = useRouter();
   const [formStep, setFormStep] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tournamentName, setTournamentName] = useState("");
-
+  const { mutateAsync } = api.tournaments.createTournament.useMutation();
   const [attendants, setAttendants] = useState<string[]>(["", "", "", ""]);
+
+  const isFirstStep = formStep === 0;
+  const isLastStep = formStep === FORM_STEPS.length - 1;
+  const progress = Math.round((formStep / (FORM_STEPS.length - 1)) * 100);
 
   const addNewAttendant = () => {
     setAttendants((state) => [...state, ""]);
   };
 
-  const createTournament = () => {
-    console.log(tournamentName);
+  const createTournament = async () => {
+    const tournament = await mutateAsync({
+      attendants,
+      name: tournamentName,
+    });
+
+    if (tournament) {
+      setFormStep(0);
+      setIsModalOpen(false);
+      setTournamentName("");
+      setAttendants(["", "", "", ""]);
+      router.push(`/tournaments/${tournament.tournament.id}`).catch(() => {
+        console.log("error changing route");
+      });
+    }
   };
 
-  const isFirstStep = formStep === 0;
-  const isLastStep = formStep === FORM_STEPS.length - 1;
-  const progress = Math.round((formStep / (FORM_STEPS.length - 1)) * 100);
+  const isNextStepDisabled = () => {
+    if (formStep === 0) {
+      return tournamentName.length === 0;
+    }
+
+    if (formStep === 1) {
+      return attendants.some((attendant) => attendant.length === 0);
+    }
+
+    return false;
+  };
 
   return (
     <>
@@ -45,36 +73,43 @@ const NewGameContainer: FC = () => {
           setIsModalOpen(false);
         }}
       >
-        <div className="mb-5 w-full">
-          <ProgressBar progress={progress} />
+        <div className="h-[26rem]">
+          {(() => {
+            switch (formStep) {
+              case 0:
+                return (
+                  <TournamentCreateMetaForm
+                    tournamentName={tournamentName}
+                    setTournamentName={setTournamentName}
+                  />
+                );
+
+              case 1:
+                return (
+                  <TournamentAttendantForm
+                    attendants={attendants}
+                    setAttendants={setAttendants}
+                    addNewAttendant={addNewAttendant}
+                  />
+                );
+
+              case 2:
+                return (
+                  <TournamentCreateReview
+                    attendants={attendants}
+                    tournamentName={tournamentName}
+                  />
+                );
+
+              default:
+                return <p>Error</p>;
+            }
+          })()}
         </div>
 
-        {(() => {
-          switch (formStep) {
-            case 0:
-              return (
-                <TournamentCreateMetaForm
-                  tournamentName={tournamentName}
-                  setTournamentName={setTournamentName}
-                />
-              );
-
-            case 1:
-              return (
-                <TournamentAttendantForm
-                  attendants={attendants}
-                  setAttendants={setAttendants}
-                  addNewAttendant={addNewAttendant}
-                />
-              );
-
-            case 2:
-              return <p>Review</p>;
-
-            default:
-              return <p>Error</p>;
-          }
-        })()}
+        <div className="my-6 w-full">
+          <ProgressBar progress={progress !== 0 ? progress : 5} />
+        </div>
 
         <div className="flex w-full justify-between">
           <Button
@@ -90,10 +125,13 @@ const NewGameContainer: FC = () => {
             }}
           />
           <Button
+            isDisabled={isNextStepDisabled()}
             btnTitle={isLastStep ? "Create" : "Next"}
             onClick={() => {
               if (isLastStep) {
-                createTournament();
+                createTournament().catch(() => {
+                  console.error("Error creating tournament");
+                });
                 return;
               }
 
