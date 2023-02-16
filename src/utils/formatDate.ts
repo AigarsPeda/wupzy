@@ -1,4 +1,8 @@
-const formatDate = (date: Date) => {
+const formatDate = (date: Date | undefined) => {
+  if (!date) {
+    return "";
+  }
+
   const dateObject = new Date(date);
   const year = dateObject.getFullYear();
   const month = dateObject.getMonth() + 1;

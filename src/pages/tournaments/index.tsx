@@ -1,11 +1,10 @@
 import Spinner from "components/elements/Spinner/Spinner";
+import TournamentCard from "components/elements/TournamentCard/TournamentCard";
 import GridLayout from "components/layouts/GridLayout/GridLayout";
 import useRedirect from "hooks/useRedirect";
 import type { NextPage } from "next";
-import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { api } from "utils/api";
-import TournamentCard from "../../components/elements/TournamentCard/TournamentCard";
 
 type GameType = {
   firstPair: string[];
@@ -13,23 +12,11 @@ type GameType = {
 };
 
 const TournamentsPage: NextPage = () => {
-  // const router = useRouter();
+  const { redirectToPath } = useRedirect();
   const res = api.tournaments.getAllTournaments.useQuery(undefined, {
     suspense: false,
     retry: 2,
   });
-
-  const { redirectToPath } = useRedirect();
-
-  useEffect(() => {
-    if (!res.isLoading && res.error?.data?.code === "UNAUTHORIZED") {
-      redirectToPath("/login", true);
-    }
-  }, [redirectToPath, res.error?.data?.code, res.isLoading, res.isError]);
-
-  if (res.isFetching) {
-    return <Spinner size="small" />;
-  }
 
   const game = () => {
     // 5 player they need play in pairs with each other and every player plays with every other player once
@@ -77,20 +64,20 @@ const TournamentsPage: NextPage = () => {
     console.log("games", games);
   };
 
+  useEffect(() => {
+    if (!res.isLoading && res.error?.data?.code === "UNAUTHORIZED") {
+      redirectToPath("/login", true);
+    }
+  }, [redirectToPath, res.error?.data?.code, res.isLoading]);
+
+  if (res.isFetching) {
+    return <Spinner size="small" />;
+  }
+
   return (
     <GridLayout>
       {res.data?.tournaments.map((tournament) => (
         <TournamentCard key={tournament.id} tournament={tournament} />
-        // <button
-        //   key={tournament.id}
-        //   onClick={() => {
-        //     router.push(`/tournaments/${tournament.id}`).catch(() => {
-        //       console.log("error changing route");
-        //     });
-        //   }}
-        // >
-        //   {tournament.name}
-        // </button>
       ))}
     </GridLayout>
   );

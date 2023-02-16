@@ -168,4 +168,12 @@ export const usersRouter = createTRPCRouter({
       message: "Logged out successfully",
     };
   }),
+
+  // getCurrentUser: protectedProcedure.query(({ ctx }) => {
+  //   return ctx.prisma.user.findUnique({
+  //     where: {
+  //       id: ctx.user.id,
+  //     },
+  //   });
+  // }),
 });
