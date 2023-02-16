@@ -1,11 +1,13 @@
 import type { ReactNode } from "react";
 import { forwardRef } from "react";
 import { classNames } from "utils/classNames";
+import Spinner from "../Spinner/Spinner";
 
 interface ButtonProps {
   icon?: ReactNode;
   btnClass?: string;
   onClick: () => void;
+  isLoading?: boolean;
   isDisabled?: boolean;
   btnTitle: string | ReactNode;
   iconPosition?: "left" | "right";
@@ -22,6 +24,7 @@ const Button = forwardRef<Ref, ButtonProps>(
       onClick,
       btnTitle,
       btnClass,
+      isLoading,
       isDisabled,
       type = "button",
       btnColor = "black",
@@ -63,7 +66,7 @@ const Button = forwardRef<Ref, ButtonProps>(
       {iconPosition === "left" && icon && (
         <span className="pointer-events-none text-gray-600">{icon}</span>
       )}
-      {btnTitle}
+      {isLoading ? <Spinner size="small" /> : btnTitle}
       {iconPosition === "right" && icon && (
         <span className="pointer-events-none text-gray-600">{icon}</span>
       )}

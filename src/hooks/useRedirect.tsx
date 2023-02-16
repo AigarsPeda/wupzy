@@ -3,6 +3,16 @@ import { useRouter } from "next/router";
 const useRedirect = () => {
   const router = useRouter();
 
+  // return current path
+  const getCurrentPath = () => {
+    return router.pathname;
+  };
+
+  // go back to previous page
+  const goBack = () => {
+    router.back();
+  };
+
   const redirectToPath = (path: string, isRedirectQuery = false) => {
     router
       .push({
@@ -17,7 +27,7 @@ const useRedirect = () => {
       .catch((err) => console.error(err));
   };
 
-  return { redirectToPath };
+  return { goBack, getCurrentPath, redirectToPath };
 };
 
 export default useRedirect;

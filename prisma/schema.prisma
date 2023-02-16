@@ -33,6 +33,7 @@ model Tournament {
   teams     Team[]
   name      String
   userId    String
+  winner    String?
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
   id        String   @id @default(cuid())

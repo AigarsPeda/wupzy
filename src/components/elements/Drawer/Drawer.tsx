@@ -1,6 +1,6 @@
 import useDelayUnmount from "hooks/useDelayUnmount";
 import useOnClickOutside from "hooks/useOnClickOutside";
-import type { FC } from "react";
+import type { FC, ReactNode } from "react";
 import { useRef } from "react";
 import { classNames } from "utils/classNames";
 
@@ -10,7 +10,7 @@ interface DrawerProps {
   isDrawerOpen: boolean;
   drawerBtn: JSX.Element;
   handleDropdownClose: () => void;
-  children: JSX.Element | JSX.Element[];
+  children: JSX.Element | JSX.Element[] | ReactNode;
 }
 
 const Drawer: FC<DrawerProps> = ({

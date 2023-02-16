@@ -1,4 +1,5 @@
 import Button from "components/elements/Button/Button";
+import ErrorMessage from "components/elements/ErrorMessage/ErrorMessage";
 import ModalWrap from "components/elements/Modal/Modal";
 import ProgressBar from "components/elements/ProgressBar/ProgressBar";
 import TournamentAttendantForm from "components/elements/TournamentAttendantForm/TournamentAttendantForm";
@@ -16,8 +17,9 @@ const NewGameContainer: FC = () => {
   const [formStep, setFormStep] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tournamentName, setTournamentName] = useState("");
-  const { mutateAsync } = api.tournaments.createTournament.useMutation();
   const [attendants, setAttendants] = useState<string[]>(["", "", "", ""]);
+  const { mutateAsync, isLoading, isError } =
+    api.tournaments.createTournament.useMutation();
 
   const isFirstStep = formStep === 0;
   const isLastStep = formStep === FORM_STEPS.length - 1;
@@ -33,15 +35,13 @@ const NewGameContainer: FC = () => {
       name: tournamentName,
     });
 
-    if (tournament) {
-      setFormStep(0);
-      setIsModalOpen(false);
-      setTournamentName("");
-      setAttendants(["", "", "", ""]);
-      router.push(`/tournaments/${tournament.tournament.id}`).catch(() => {
-        console.log("error changing route");
-      });
-    }
+    setFormStep(0);
+    setIsModalOpen(false);
+    setTournamentName("");
+    setAttendants(["", "", "", ""]);
+    router.push(`/tournaments/${tournament.tournament.id}`).catch(() => {
+      console.log("error changing route");
+    });
   };
 
   const isNextStepDisabled = () => {
@@ -108,7 +108,13 @@ const NewGameContainer: FC = () => {
         </div>
 
         <div className="my-6 w-full">
-          <ProgressBar progress={progress !== 0 ? progress : 5} />
+          {isError ? (
+            <div className="flex w-full justify-center">
+              <ErrorMessage message="Something went wrong! Please tray again." />
+            </div>
+          ) : (
+            <ProgressBar progress={progress !== 0 ? progress : 5} />
+          )}
         </div>
 
         <div className="flex w-full justify-between">
@@ -125,6 +131,7 @@ const NewGameContainer: FC = () => {
             }}
           />
           <Button
+            isLoading={isLoading}
             isDisabled={isNextStepDisabled()}
             btnTitle={isLastStep ? "Create" : "Next"}
             onClick={() => {

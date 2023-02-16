@@ -1,9 +1,11 @@
 import Spinner from "components/elements/Spinner/Spinner";
+import GridLayout from "components/layouts/GridLayout/GridLayout";
 import useRedirect from "hooks/useRedirect";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { api } from "utils/api";
+import TournamentCard from "../../components/elements/TournamentCard/TournamentCard";
 
 type GameType = {
   firstPair: string[];
@@ -11,7 +13,7 @@ type GameType = {
 };
 
 const TournamentsPage: NextPage = () => {
-  const router = useRouter();
+  // const router = useRouter();
   const res = api.tournaments.getAllTournaments.useQuery(undefined, {
     suspense: false,
     retry: 2,
@@ -76,23 +78,21 @@ const TournamentsPage: NextPage = () => {
   };
 
   return (
-    <div>
-      <div className="flex w-full items-center justify-between">
-        {console.log("res.data?.tournaments", res.data?.tournaments)}
-        {res.data?.tournaments.map((tournament) => (
-          <button
-            key={tournament.id}
-            onClick={() => {
-              router.push(`/tournaments/${tournament.id}`).catch(() => {
-                console.log("error changing route");
-              });
-            }}
-          >
-            {tournament.name}
-          </button>
-        ))}
-      </div>
-    </div>
+    <GridLayout>
+      {res.data?.tournaments.map((tournament) => (
+        <TournamentCard key={tournament.id} tournament={tournament} />
+        // <button
+        //   key={tournament.id}
+        //   onClick={() => {
+        //     router.push(`/tournaments/${tournament.id}`).catch(() => {
+        //       console.log("error changing route");
+        //     });
+        //   }}
+        // >
+        //   {tournament.name}
+        // </button>
+      ))}
+    </GridLayout>
   );
 };
 

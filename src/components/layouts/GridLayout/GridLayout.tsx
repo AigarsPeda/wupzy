@@ -1,9 +1,9 @@
-import type { FC } from "react";
+import type { FC, ReactNode } from "react";
 import { classNames } from "utils/classNames";
 
 interface GridLayoutProps {
   minWith?: "150px" | "175px" | "200px" | "250px";
-  children: JSX.Element | JSX.Element[];
+  children: JSX.Element | JSX.Element[] | ReactNode;
 }
 
 const GridLayout: FC<GridLayoutProps> = ({ minWith = "150px", children }) => {

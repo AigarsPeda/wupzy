@@ -23,6 +23,6 @@
 
 ### Run the app in development mode
   
-      yarn dev
+    yarn dev
 
 
