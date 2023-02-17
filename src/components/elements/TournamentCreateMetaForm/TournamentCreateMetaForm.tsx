@@ -32,7 +32,7 @@ const TournamentCreateMetaForm: FC<TournamentCreateMetaFormProps> = ({
           }}
         />
       </div>
-      <InfoParagraph text="Give your competition a name to make it easier to find later. * You can use date of competition or competition location" />
+      <InfoParagraph text="Give your competition a name to make it easier to find later." />
     </div>
   );
 };

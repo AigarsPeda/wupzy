@@ -4,51 +4,19 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const tournamentsRouter = createTRPCRouter({
-  // getAllGames: protectedProcedure.query(() => {
-  //   return {
-  //     greeting: `This should be protected`,
-  //   };
-  // }),
-  getAllTournaments: protectedProcedure
-    // .input(z.object({ text: z.string() }))
-    .query(async ({ ctx }) => {
-      console.log("ctx.user.id ---->", ctx.user.id);
+  getAllTournaments: protectedProcedure.query(async ({ ctx }) => {
+    const tournaments = await ctx.prisma.tournament.findMany({
+      where: {
+        userId: ctx.user.id,
+      },
+    });
 
-      // if (!ctx.user.id) {
-      //   throw new TRPCError({
-      //     code: "UNAUTHORIZED",
-      //     message: "You are not authorized to access this resource",
-      //   });
-      // }
-
-      const tournaments = await ctx.prisma.tournament.findMany({
-        where: {
-          userId: ctx.user.id,
-        },
-      });
-
-      return { tournaments };
-      //  const allTournaments = await ctx.prisma.tournament.findMany();
-
-      // get all tournaments
-
-      // return {
-      //   greeting: `This should be protected `,
-      // };
-    }),
+    return { tournaments };
+  }),
 
   createTournament: protectedProcedure
     .input(z.object({ name: z.string(), attendants: z.array(z.string()) }))
     .mutation(async ({ ctx, input }) => {
-      console.log("ctx.user.id ---->", ctx.user.id);
-
-      // if (!ctx.user.id) {
-      //   throw new TRPCError({
-      //     code: "UNAUTHORIZED",
-      //     message: "You are not authorized to access this resource",
-      //   });
-      // }
-
       const tournament = await ctx.prisma.tournament.create({
         data: {
           name: input.name,
@@ -62,9 +30,28 @@ export const tournamentsRouter = createTRPCRouter({
           data: {
             name: attendant,
             tournamentId: tournament.id,
+            // score: 0,
           },
         });
-        console.log(`Attendant ${attendant} created!~`);
+      }
+
+      return { tournament };
+    }),
+
+  getTournament: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const tournament = await ctx.prisma.tournament.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+
+      if (!tournament) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Tournament not found",
+        });
       }
 
       return { tournament };
