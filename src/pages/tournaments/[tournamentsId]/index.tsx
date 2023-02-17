@@ -11,9 +11,14 @@ const Tournament: NextPage = () => {
   const { redirectToPath } = useRedirect();
   const [tournamentId, setTournamentId] = useState("");
   const { data: teams, isLoading: isTeamsLoading } =
-    api.teams.getTournamentTeams.useQuery({
-      id: tournamentId,
-    });
+    api.teams.getTournamentTeams.useQuery(
+      {
+        id: tournamentId,
+      },
+      {
+        refetchOnWindowFocus: true,
+      }
+    );
   const {
     error,
     isLoading,
@@ -35,12 +40,9 @@ const Tournament: NextPage = () => {
 
   useEffect(() => {
     if (!isTeamsLoading && !isLoading && error?.data?.code === "UNAUTHORIZED") {
-      console.log("window.location.search", window.location.search);
-      console.log("window.location.pathname", window.location.pathname);
-
       redirectToPath("/login", window.location.pathname);
     }
-  }, [error?.data?.code, isLoading, isTeamsLoading, redirectToPath]);
+  }, [error?.data?.code, isLoading, isTeamsLoading, redirectToPath, router]);
 
   if (isLoading) {
     return <Spinner size="small" />;
