@@ -33,6 +33,11 @@ const Tournament: NextPage = () => {
   }, [router.query.tournamentsId]);
 
   useEffect(() => {
+    console.log("tournamentId", tournamentId);
+    console.log("router.pathname", router.query.tournamentsId);
+  }, [router, tournamentId]);
+
+  useEffect(() => {
     if (!isLoading && error?.data?.code === "UNAUTHORIZED") {
       redirectToPath("/login", true);
     }

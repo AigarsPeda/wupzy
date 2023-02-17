@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 
 const useRedirect = () => {
   const router = useRouter();
@@ -18,10 +17,13 @@ const useRedirect = () => {
     router
       .push({
         pathname: path,
+
         // if isRedirectQuery is true, add redirect query to the path to redirect to after login
         ...(isRedirectQuery && {
           query: {
             redirect: router.pathname,
+            // if id is provided, add id to the query
+            // ...(id && { redirectId: id }),
           },
         }),
       })
