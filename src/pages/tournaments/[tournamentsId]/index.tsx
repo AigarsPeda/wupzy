@@ -10,9 +10,10 @@ const Tournament: NextPage = () => {
   const router = useRouter();
   const { redirectToPath } = useRedirect();
   const [tournamentId, setTournamentId] = useState("");
-  const { data: teams } = api.teams.getTournamentTeams.useQuery({
-    id: tournamentId,
-  });
+  const { data: teams, isLoading: isTeamsLoading } =
+    api.teams.getTournamentTeams.useQuery({
+      id: tournamentId,
+    });
   const {
     error,
     isLoading,
@@ -33,15 +34,13 @@ const Tournament: NextPage = () => {
   }, [router.query.tournamentsId]);
 
   useEffect(() => {
-    console.log("tournamentId", tournamentId);
-    console.log("router.pathname", router.query.tournamentsId);
-  }, [router, tournamentId]);
+    if (!isTeamsLoading && !isLoading && error?.data?.code === "UNAUTHORIZED") {
+      console.log("window.location.search", window.location.search);
+      console.log("window.location.pathname", window.location.pathname);
 
-  useEffect(() => {
-    if (!isLoading && error?.data?.code === "UNAUTHORIZED") {
-      redirectToPath("/login", true);
+      redirectToPath("/login", window.location.pathname);
     }
-  }, [error?.data?.code, isLoading, redirectToPath]);
+  }, [error?.data?.code, isLoading, isTeamsLoading, redirectToPath]);
 
   if (isLoading) {
     return <Spinner size="small" />;

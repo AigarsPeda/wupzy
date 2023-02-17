@@ -1,6 +1,7 @@
 import Button from "components/elements/Button/Button";
 import Drawer from "components/elements/Drawer/Drawer";
 import useRedirect from "hooks/useRedirect";
+import { useRouter } from "next/router";
 import type { FC } from "react";
 import { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
@@ -20,6 +21,7 @@ const MENU_ITEMS = [
 ];
 
 const MenuContainer: FC = () => {
+  const router = useRouter();
   const { mutate } = api.users.logoutUser.useMutation();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { goBack, getCurrentPath, redirectToPath } = useRedirect();
@@ -78,7 +80,7 @@ const MenuContainer: FC = () => {
         onClick={() => {
           mutate();
           removeCookieByName("token");
-          redirectToPath("/login", true);
+          redirectToPath("/login", window.location.pathname);
         }}
       />
     </Drawer>
