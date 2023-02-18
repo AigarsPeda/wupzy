@@ -66,7 +66,7 @@ const TournamentsPage: NextPage = () => {
 
   useEffect(() => {
     if (!res.isLoading && res.error?.data?.code === "UNAUTHORIZED") {
-      redirectToPath("/login", true);
+      redirectToPath("/login", window.location.pathname);
     }
   }, [redirectToPath, res.error?.data?.code, res.isLoading]);
 
@@ -76,9 +76,13 @@ const TournamentsPage: NextPage = () => {
 
   return (
     <GridLayout>
-      {res.data?.tournaments.map((tournament) => (
-        <TournamentCard key={tournament.id} tournament={tournament} />
-      ))}
+      {res.data && res.data.tournaments.length > 0 ? (
+        res.data.tournaments.map((tournament) => (
+          <TournamentCard key={tournament.id} tournament={tournament} />
+        ))
+      ) : (
+        <p>No tournaments</p>
+      )}
     </GridLayout>
   );
 };

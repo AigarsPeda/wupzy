@@ -13,15 +13,15 @@ const useRedirect = () => {
     router.back();
   };
 
-  const redirectToPath = (path: string, isRedirectQuery = false) => {
+  const redirectToPath = (path: string, redirectPathname?: string) => {
     router
       .push({
         pathname: path,
 
         // if isRedirectQuery is true, add redirect query to the path to redirect to after login
-        ...(isRedirectQuery && {
+        ...(redirectPathname && {
           query: {
-            redirect: router.pathname,
+            redirect: encodeURI(redirectPathname),
             // if id is provided, add id to the query
             // ...(id && { redirectId: id }),
           },

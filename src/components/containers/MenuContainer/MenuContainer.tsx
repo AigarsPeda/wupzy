@@ -1,12 +1,11 @@
 import Button from "components/elements/Button/Button";
 import Drawer from "components/elements/Drawer/Drawer";
+import LogoutButton from "components/elements/LogoutButton/LogoutButton";
 import useRedirect from "hooks/useRedirect";
 import type { FC } from "react";
 import { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { TiThMenu } from "react-icons/ti";
-import { api } from "utils/api";
-import removeCookieByName from "utils/removeCookieByName";
 
 const MENU_ITEMS = [
   {
@@ -20,7 +19,6 @@ const MENU_ITEMS = [
 ];
 
 const MenuContainer: FC = () => {
-  const { mutate } = api.users.logoutUser.useMutation();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { goBack, getCurrentPath, redirectToPath } = useRedirect();
 
@@ -71,16 +69,7 @@ const MenuContainer: FC = () => {
           }}
         />
       ))}
-      <Button
-        type="button"
-        btnSize="full"
-        btnTitle="Log out"
-        onClick={() => {
-          mutate();
-          removeCookieByName("token");
-          redirectToPath("/login", true);
-        }}
-      />
+      <LogoutButton />
     </Drawer>
   );
 };

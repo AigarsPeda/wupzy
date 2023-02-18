@@ -6,14 +6,17 @@ import useRedirect from "hooks/useRedirect";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import { useReducer } from "react";
 import loginReducer from "reducers/loginReducer";
 import { api } from "utils/api";
-import setCookie from "utils/setCookie";
+import setCookie from "utils/cookie";
 
 const Login: NextPage = () => {
   const router = useRouter();
   const { redirectToPath } = useRedirect();
+  const [isCookie, setIsCookie] = useState(false);
   const { isError, mutateAsync } = api.users.loginUser.useMutation();
   const [loginForm, setLoginForm] = useReducer(loginReducer, {
     form: {
@@ -46,18 +49,26 @@ const Login: NextPage = () => {
     });
 
     if (res.token) {
-      setCookie("token", res.token, 365);
+      const cookie = setCookie("token", res.token, 365);
 
-      const { redirect } = router.query;
-
-      if (typeof redirect !== "string" || !redirect) {
-        redirectToPath(DEFAULT_REDIRECT_URL);
-        return;
+      if (cookie) {
+        setIsCookie(true);
       }
-
-      redirectToPath(redirect);
     }
   };
+
+  useEffect(() => {
+    if (!isCookie) return;
+
+    const { redirect } = router.query;
+
+    if (typeof redirect !== "string" || !redirect) {
+      redirectToPath(DEFAULT_REDIRECT_URL);
+      return;
+    }
+
+    redirectToPath(redirect);
+  }, [isCookie, redirectToPath, router.query]);
 
   return (
     <>
