@@ -9,7 +9,7 @@ import type { ChangeEvent } from "react";
 import { useReducer, useState } from "react";
 import signupReducer from "reducers/signUpReducer";
 import { api } from "utils/api";
-import setCookie from "utils/setCookie";
+import setCookie from "utils/cookie";
 
 const SignUp: NextPage = () => {
   const router = useRouter();

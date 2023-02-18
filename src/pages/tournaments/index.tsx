@@ -3,7 +3,6 @@ import TournamentCard from "components/elements/TournamentCard/TournamentCard";
 import GridLayout from "components/layouts/GridLayout/GridLayout";
 import useRedirect from "hooks/useRedirect";
 import type { NextPage } from "next";
-import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { api } from "utils/api";
 
@@ -13,7 +12,6 @@ type GameType = {
 };
 
 const TournamentsPage: NextPage = () => {
-  const router = useRouter();
   const { redirectToPath } = useRedirect();
   const res = api.tournaments.getAllTournaments.useQuery(undefined, {
     suspense: false,
@@ -78,9 +76,13 @@ const TournamentsPage: NextPage = () => {
 
   return (
     <GridLayout>
-      {res.data?.tournaments.map((tournament) => (
-        <TournamentCard key={tournament.id} tournament={tournament} />
-      ))}
+      {res.data && res.data.tournaments.length > 0 ? (
+        res.data.tournaments.map((tournament) => (
+          <TournamentCard key={tournament.id} tournament={tournament} />
+        ))
+      ) : (
+        <p>No tournaments</p>
+      )}
     </GridLayout>
   );
 };
