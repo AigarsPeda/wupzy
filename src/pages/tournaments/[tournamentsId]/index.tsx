@@ -1,3 +1,4 @@
+import GroupCardContainer from "components/containers/GroupCardContainer/GroupCardContainer";
 import Spinner from "components/elements/Spinner/Spinner";
 import useRedirect from "hooks/useRedirect";
 import type { NextPage } from "next";
@@ -56,15 +57,7 @@ const Tournament: NextPage = () => {
           {formatDate(tournament?.tournament.updatedAt)}
         </p>
       </div>
-      <div className="max-w-[16rem] rounded border-gray-100 bg-gray-100 p-4 shadow-lg">
-        <p className="mb-3 text-sm text-gray-400">Teams:</p>
-        {teams?.teams.map((team) => (
-          <div key={team.id} className="my-2 flex justify-between border-b">
-            <p>{team.name}</p>
-            <p>{team.score}</p>
-          </div>
-        ))}
-      </div>
+      <GroupCardContainer teams={teams?.teams || []} />
     </>
   );
 };

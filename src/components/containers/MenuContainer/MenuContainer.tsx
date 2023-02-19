@@ -2,6 +2,7 @@ import Button from "components/elements/Button/Button";
 import Drawer from "components/elements/Drawer/Drawer";
 import LogoutButton from "components/elements/LogoutButton/LogoutButton";
 import useRedirect from "hooks/useRedirect";
+import Link from "next/link";
 import type { FC } from "react";
 import { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
@@ -19,8 +20,8 @@ const MENU_ITEMS = [
 ];
 
 const MenuContainer: FC = () => {
+  const { goBack, getCurrentPath } = useRedirect();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const { goBack, getCurrentPath, redirectToPath } = useRedirect();
 
   const isBackButtonDisabled = () => {
     const path = getCurrentPath();
@@ -59,15 +60,16 @@ const MenuContainer: FC = () => {
       }
     >
       {MENU_ITEMS.map((menuItem, i) => (
-        <Button
-          btnColor="outline"
-          btnTitle={menuItem.title}
+        <Link
+          href={menuItem.path}
           key={`${menuItem.title}${i}`}
+          className="rounded py-2 px-4 text-lg font-medium text-gray-800 hover:bg-gray-200"
           onClick={() => {
-            redirectToPath(menuItem.path);
             setIsDrawerOpen(false);
           }}
-        />
+        >
+          {menuItem.title}
+        </Link>
       ))}
       <LogoutButton />
     </Drawer>
