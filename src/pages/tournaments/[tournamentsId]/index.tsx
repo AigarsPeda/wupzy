@@ -1,11 +1,11 @@
 import GroupCardContainer from "components/containers/GroupCardContainer/GroupCardContainer";
 import Spinner from "components/elements/Spinner/Spinner";
+import TournamentHeader from "components/elements/TournamentHeader/TournamentHeader";
 import useRedirect from "hooks/useRedirect";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { api } from "utils/api";
-import formatDate from "utils/formatDate";
 
 const Tournament: NextPage = () => {
   const router = useRouter();
@@ -20,13 +20,20 @@ const Tournament: NextPage = () => {
         refetchOnWindowFocus: true,
       }
     );
+
   const {
     error,
     isLoading,
     data: tournament,
-  } = api.tournaments.getTournament.useQuery({
-    id: tournamentId,
-  });
+  } = api.tournaments.getTournament.useQuery(
+    {
+      id: tournamentId,
+    },
+    {
+      // fetch the tournament data only if the tournamentId is
+      enabled: !!tournamentId,
+    }
+  );
 
   useEffect(() => {
     if (
@@ -51,12 +58,7 @@ const Tournament: NextPage = () => {
 
   return (
     <>
-      <div className="mb-4">
-        <p className="text-2xl">{tournament?.tournament.name}</p>
-        <p className="text-sm text-gray-400">
-          {formatDate(tournament?.tournament.updatedAt)}
-        </p>
-      </div>
+      <TournamentHeader tournament={tournament?.tournament} />
       <GroupCardContainer teams={teams?.teams || []} />
     </>
   );

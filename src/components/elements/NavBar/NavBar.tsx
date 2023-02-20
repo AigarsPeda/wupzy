@@ -1,5 +1,5 @@
 import MenuContainer from "components/containers/MenuContainer/MenuContainer";
-import NewGameContainer from "components/containers/NewGameContainer/NewGameContainer";
+import NewTournamentContainer from "components/containers/NewGameContainer/NewGameContainer";
 import Logo from "components/elements/Logo/Logo";
 import RoundLinkButton from "components/elements/RoundLinkButton/RoundLinkButton";
 import { useRouter } from "next/router";
@@ -31,7 +31,7 @@ const NavBar: FC = () => {
         <>
           <MenuContainer />
           <Logo />
-          <NewGameContainer />
+          <NewTournamentContainer />
         </>
       )}
     </nav>

@@ -12,8 +12,8 @@ interface ButtonProps {
   btnTitle: string | ReactNode;
   iconPosition?: "left" | "right";
   type?: "button" | "submit" | "reset";
-  btnColor?: "black" | "white" | "red" | "outline";
   btnSize?: "large" | "default" | "small" | "full" | "square";
+  btnColor?: "black" | "white" | "red" | "outline" | "underline";
 }
 type Ref = HTMLButtonElement;
 
