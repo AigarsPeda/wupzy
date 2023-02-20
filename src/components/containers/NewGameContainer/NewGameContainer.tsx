@@ -12,7 +12,7 @@ import { api } from "utils/api";
 
 const FORM_STEPS = ["Create tournament", "Add tournament attendant", "Review"];
 
-const NewGameContainer: FC = () => {
+const NewTournamentContainer: FC = () => {
   const router = useRouter();
   const [formStep, setFormStep] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -151,4 +151,4 @@ const NewGameContainer: FC = () => {
   );
 };
 
-export default NewGameContainer;
+export default NewTournamentContainer;

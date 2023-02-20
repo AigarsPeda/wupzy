@@ -1,19 +1,8 @@
-import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const teamsRouter = createTRPCRouter({
-  // getAllTournaments: protectedProcedure.query(async ({ ctx }) => {
-  //   const tournaments = await ctx.prisma.tournament.findMany({
-  //     where: {
-  //       userId: ctx.user.id,
-  //     },
-  //   });
-
-  //   return { tournaments };
-  // }),
-
   getTournamentTeams: protectedProcedure
     .input(
       z.object({
@@ -21,19 +10,6 @@ export const teamsRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      // const tournament = await ctx.prisma.tournament.findUnique({
-      //   where: {
-      //     id: input.tournamentId,
-      //   },
-      // });
-
-      // if (!tournament) {
-      //   throw new TRPCError({
-      //     code: "NOT_FOUND",
-      //     message: "Tournament not found",
-      //   });
-      // }
-
       const teams = await ctx.prisma.team.findMany({
         where: {
           tournamentId: input.id,
@@ -41,5 +17,29 @@ export const teamsRouter = createTRPCRouter({
       });
 
       return { teams };
+    }),
+
+  updateTeam: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        group: z.string(),
+        score: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const team = await ctx.prisma.team.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          name: input.name,
+          group: input.group,
+          score: input.score,
+        },
+      });
+
+      return { team };
     }),
 });

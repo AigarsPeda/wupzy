@@ -28,7 +28,7 @@ const CTASection: FC = () => {
           </div>
           <RoundLinkButton
             bgColor="black"
-            href={user.data ? "/tournaments" : "/login"}
+            href={user.data ? "/tournaments" : "/signup"}
             linkTitle={user.data ? "Tournaments" : "Get started"}
             linkClassName="w-52 px-10 py-3 text-base md:mr-6 mb-6 md:mb-0"
           />
