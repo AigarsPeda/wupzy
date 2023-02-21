@@ -1,3 +1,4 @@
+import EditTournament from "components/containers/EditTournament/EditTournament";
 import GroupCardContainer from "components/containers/GroupCardContainer/GroupCardContainer";
 import Spinner from "components/elements/Spinner/Spinner";
 import TournamentHeader from "components/elements/TournamentHeader/TournamentHeader";
@@ -58,7 +59,13 @@ const Tournament: NextPage = () => {
 
   return (
     <>
-      <TournamentHeader tournament={tournament?.tournament} />
+      <div className="mb-4 flex justify-between">
+        <TournamentHeader tournament={tournament?.tournament} />
+        <div>
+          <EditTournament teams={teams?.teams || []} />
+        </div>
+        <div className="w-40"></div>
+      </div>
       <GroupCardContainer teams={teams?.teams || []} />
     </>
   );
