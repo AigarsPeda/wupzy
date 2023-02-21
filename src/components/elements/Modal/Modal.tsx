@@ -1,7 +1,7 @@
 import useDelayUnmount from "hooks/useDelayUnmount";
 import useOnClickOutside from "hooks/useOnClickOutside";
-import type { FC } from "react";
-import { useRef } from "react";
+import type { FC, ReactNode } from "react";
+import React, { useRef } from "react";
 import { IoClose } from "react-icons/io5";
 import { classNames } from "utils/classNames";
 
@@ -20,7 +20,7 @@ interface ModalWrapProps {
   titleClassName?: string;
   isModalVisible: boolean;
   maxHeight?: "none" | "md";
-  children: JSX.Element | JSX.Element[];
+  children: JSX.Element | JSX.Element[] | ReactNode | ReactNode[];
   handleCancelClick: () => void;
 }
 

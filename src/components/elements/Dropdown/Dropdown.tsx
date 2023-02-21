@@ -33,9 +33,9 @@ const Dropdown: FC<DropdownProps> = ({
               isAnimation
                 ? "visible translate-x-0 scale-100 opacity-100"
                 : "invisible scale-95 opacity-0"
-            } absolute top-[3.8rem] right-0 z-10 w-48 origin-top-right -translate-y-2 transform-gpu rounded-md bg-white shadow-md transition-all duration-150`}
+            } absolute top-[3.8rem] right-0 z-10 w-48 origin-top-right -translate-y-2.5 transform-gpu rounded-md bg-white shadow-md transition-all duration-150`}
           >
-            <div className="max-h-80 w-full overflow-y-auto rounded border border-gray-50">
+            <div className="max-h-80 w-full overflow-y-auto rounded border border-gray-100">
               {children}
             </div>
           </div>
