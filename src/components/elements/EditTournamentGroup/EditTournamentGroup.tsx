@@ -5,7 +5,7 @@ import type { FC } from "react";
 import { useEffect, useState } from "react";
 import sortTeamsByGroup from "utils/sortTeamsByGroup";
 
-type TeamsByGroupType = Record<string, Team[]>;
+type TeamsByGroupType = Map<string, Team[]>;
 
 interface EditTournamentGroupProps {
   teams: Team[];
@@ -18,10 +18,13 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   isModalOpen,
   handleCloseModal,
 }) => {
-  const [teamsByGroup, setTeamsByGroup] = useState<TeamsByGroupType>({});
+  const [teamsByGroup, setTeamsByGroup] = useState<TeamsByGroupType>(new Map());
 
   const addGroupToTeams = (group: string) => {
-    setTeamsByGroup((state) => ({ ...state, [group]: [] }));
+    const newStates = new Map(teamsByGroup);
+    newStates.set(group, []);
+
+    setTeamsByGroup(newStates);
   };
 
   useEffect(() => {
@@ -41,15 +44,16 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
           alreadyCreatedGroups={Object.keys(teamsByGroup)}
         />
       </div>
-      {Object.keys(teamsByGroup).map((group) => (
-        <div key={group}>
-          {/* <div>{group}</div> */}
-          <p className="mb-3 text-sm text-gray-400">Group - {group}</p>
-          {teamsByGroup[group]?.map((team) => (
-            <div key={team.id}>{team.name}</div>
-          ))}
-        </div>
-      ))}
+      {[...teamsByGroup].map(([key, value]) => {
+        return (
+          <div key={key}>
+            <p className="mb-3 text-sm text-gray-400">Group - {key}</p>
+            {value.map((team) => (
+              <div key={team.id}>{team.name}</div>
+            ))}
+          </div>
+        );
+      })}
     </ModalWrap>
   );
 };

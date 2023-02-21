@@ -1,17 +1,19 @@
 import type { Team } from "@prisma/client";
 
 const sortTeamsByGroup = (teams: Team[]) => {
-  const teamsByGroup = teams.reduce((acc, team) => {
-    const group = team.group as string;
+  const teamsByGroup = new Map<string, Team[]>();
 
-    if (!acc[group]) {
-      acc[group] = [];
+  teams.forEach((team) => {
+    const group = team.group as string;
+    const teamsInGroup = teamsByGroup.get(group);
+
+    if (teamsInGroup) {
+      teamsInGroup.push(team);
+      return;
     }
 
-    acc[group]?.push(team);
-
-    return acc;
-  }, {} as Record<string, Team[]>);
+    teamsByGroup.set(group, [team]);
+  });
 
   return teamsByGroup;
 };

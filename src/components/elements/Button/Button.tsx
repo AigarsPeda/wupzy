@@ -1,7 +1,7 @@
+import Spinner from "components/elements/Spinner/Spinner";
 import type { ReactNode } from "react";
 import { forwardRef } from "react";
 import { classNames } from "utils/classNames";
-import Spinner from "../Spinner/Spinner";
 
 interface ButtonProps {
   icon?: ReactNode;
@@ -40,27 +40,27 @@ const Button = forwardRef<Ref, ButtonProps>(
       data-testid="button"
       disabled={isDisabled}
       className={classNames(
-        btnSize === "small" ? "h-11 w-24" : "",
-        btnSize === "large" ? "h-11 w-48" : "",
-        btnSize === "full" ? "h-10 w-full" : "",
-        btnSize === "square" ? " h-11 w-11 " : "",
-        btnSize === "default" ? "h-11 min-w-[8rem]" : "",
-        isDisabled ? "cursor-not-allowed bg-gray-300" : "",
+        btnSize === "small" && "h-11 w-24",
+        btnSize === "large" && "h-11 w-48",
+        btnSize === "full" && "h-10 w-full",
+        btnSize === "square" && " h-11 w-11 ",
+        btnSize === "default" && "h-11 min-w-[8rem]",
+        isDisabled && "cursor-not-allowed bg-gray-300",
         icon ? "justify-between px-4 py-2" : "justify-center",
-        !isDisabled && btnColor === "red"
-          ? "bg-red-500 text-white hover:scale-105 hover:shadow-red-400"
-          : "",
-        !isDisabled && btnColor === "black"
-          ? "bg-gray-800 text-white hover:scale-105 hover:shadow-gray-400"
-          : "",
-        !isDisabled && btnColor === "white"
-          ? "bg-white text-black hover:scale-105 hover:shadow-gray-400"
-          : "",
-        !isDisabled && btnColor === "outline"
-          ? "border-2 border-gray-800 bg-white text-gray-800 hover:scale-105 hover:shadow-gray-400"
-          : "",
+        !isDisabled &&
+          btnColor === "red" &&
+          "bg-red-500 text-white hover:scale-105 hover:shadow-red-400",
+        !isDisabled &&
+          btnColor === "black" &&
+          "bg-gray-800 text-white hover:scale-105 hover:shadow-gray-400",
+        !isDisabled &&
+          btnColor === "white" &&
+          "bg-white text-black hover:scale-105 hover:shadow-gray-400",
+        !isDisabled &&
+          btnColor === "outline" &&
+          "border-2 border-gray-800 bg-white text-gray-800 hover:scale-105 hover:shadow-gray-400",
         "flex items-center rounded-md text-center text-sm font-semibold shadow transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-gray-100",
-        btnClass ? btnClass : ""
+        btnClass && btnClass
       )}
     >
       {iconPosition === "left" && icon && (
