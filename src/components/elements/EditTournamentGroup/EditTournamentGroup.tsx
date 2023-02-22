@@ -1,6 +1,7 @@
 import type { Team } from "@prisma/client";
 import GroupDropdown from "components/elements/GroupDropdown/GroupDropdown";
 import ModalWrap from "components/elements/Modal/Modal";
+import GridLayout from "components/layouts/GridLayout/GridLayout";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import sortTeamsByGroup from "utils/sortTeamsByGroup";
@@ -27,13 +28,50 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     setTeamsByGroup(newStates);
   };
 
+  const getKeys = (teamsMap: TeamsByGroupType) => {
+    return [...teamsMap.keys()];
+  };
+
+  const getAvailableGroups = (group: string, teams: TeamsByGroupType) => {
+    return getKeys(teams).filter((f) => f !== group);
+  };
+
+  const handleGroupChange = (
+    team: Team,
+    oldGroup: string,
+    newGroup: string
+  ) => {
+    const newStates = new Map(teamsByGroup);
+
+    console.log("team --->", team);
+    console.log("newGroup --->", newGroup);
+    console.log("oldGroup --->", oldGroup);
+
+    const oldGroupTeams = newStates.get(oldGroup);
+    const newGroupTeams = newStates.get(newGroup);
+
+    if (oldGroupTeams && newGroupTeams) {
+      const newOldGroupTeams = oldGroupTeams.filter((f) => f.id !== team.id);
+
+      team.group = newGroup;
+
+      const newNewGroupTeams = [...newGroupTeams, team];
+
+      newStates.set(oldGroup, newOldGroupTeams);
+      newStates.set(newGroup, newNewGroupTeams);
+    }
+
+    setTeamsByGroup(newStates);
+  };
+
   useEffect(() => {
+    console.log("teams --->", teams);
     setTeamsByGroup(sortTeamsByGroup(teams));
   }, [teams]);
 
   return (
     <ModalWrap
-      modalWidth="xl"
+      modalWidth="7xl"
       isModalVisible={isModalOpen}
       modalTitle="Crete new tournament"
       handleCancelClick={handleCloseModal}
@@ -41,19 +79,33 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       <div className="flex w-full justify-end">
         <GroupDropdown
           handleGroupClick={addGroupToTeams}
-          alreadyCreatedGroups={Object.keys(teamsByGroup)}
+          alreadyCreatedGroups={getKeys(teamsByGroup)}
         />
       </div>
-      {[...teamsByGroup].map(([key, value]) => {
-        return (
-          <div key={key}>
-            <p className="mb-3 text-sm text-gray-400">Group - {key}</p>
-            {value.map((team) => (
-              <div key={team.id}>{team.name}</div>
-            ))}
-          </div>
-        );
-      })}
+      <GridLayout>
+        {[...teamsByGroup].map(([group, value]) => {
+          return (
+            <div key={group}>
+              <p className="mb-3 text-sm text-gray-400">Group - {group}</p>
+              {value.map((team) => {
+                return (
+                  <div key={team.id} className="flex">
+                    <p>{team.name}</p>
+                    {getAvailableGroups(group, teamsByGroup).map((newGroup) => (
+                      <button
+                        key={newGroup}
+                        onClick={() => handleGroupChange(team, group, newGroup)}
+                      >
+                        {newGroup}
+                      </button>
+                    ))}
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })}
+      </GridLayout>
     </ModalWrap>
   );
 };
