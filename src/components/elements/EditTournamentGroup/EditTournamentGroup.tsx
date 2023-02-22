@@ -43,23 +43,17 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   ) => {
     const newStates = new Map(teamsByGroup);
 
-    console.log("team --->", team);
-    console.log("newGroup --->", newGroup);
-    console.log("oldGroup --->", oldGroup);
+    // remove team from old group
+    newStates.set(oldGroup, [
+      ...(newStates.get(oldGroup)?.filter((t) => t.id !== team.id) || []),
+    ]);
 
-    const oldGroupTeams = newStates.get(oldGroup);
-    const newGroupTeams = newStates.get(newGroup);
-
-    if (oldGroupTeams && newGroupTeams) {
-      const newOldGroupTeams = oldGroupTeams.filter((f) => f.id !== team.id);
-
-      team.group = newGroup;
-
-      const newNewGroupTeams = [...newGroupTeams, team];
-
-      newStates.set(oldGroup, newOldGroupTeams);
-      newStates.set(newGroup, newNewGroupTeams);
-    }
+    // add team to new group
+    newStates.set(newGroup, [
+      ...(newStates.get(newGroup) || []),
+      // update team group property to new group
+      { ...team, group: newGroup },
+    ]);
 
     setTeamsByGroup(newStates);
   };
