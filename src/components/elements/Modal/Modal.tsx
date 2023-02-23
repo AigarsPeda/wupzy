@@ -3,7 +3,7 @@ import useOnClickOutside from "hooks/useOnClickOutside";
 import type { FC, ReactNode } from "react";
 import React, { useRef } from "react";
 import { IoClose } from "react-icons/io5";
-import { classNames } from "utils/classNames";
+import classNames from "utils/classNames";
 
 interface ModalWrapProps {
   modalWidth?:
@@ -20,6 +20,7 @@ interface ModalWrapProps {
   titleClassName?: string;
   isModalVisible: boolean;
   maxHeight?: "none" | "md";
+  topPosition?: "default" | "top";
   children: JSX.Element | JSX.Element[] | ReactNode | ReactNode[];
   handleCancelClick: () => void;
 }
@@ -32,6 +33,7 @@ const ModalWrap: FC<ModalWrapProps> = ({
   handleCancelClick,
   maxHeight = "none",
   modalWidth = "medium",
+  topPosition = "default",
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const { shouldRender, isAnimation } = useDelayUnmount(isModalVisible, 100);
@@ -50,16 +52,18 @@ const ModalWrap: FC<ModalWrapProps> = ({
           <div className="modal-overlay absolute h-full w-full bg-gray-900 opacity-50"></div>
           <div
             className={classNames(
-              modalWidth === "xl" ? "md:max-w-xl" : "",
-              modalWidth === "2xl" ? "md:max-w-2xl" : "",
-              modalWidth === "3xl" ? "md:max-w-3xl" : "",
-              modalWidth === "4xl" ? "md:max-w-4xl" : "",
-              modalWidth === "5xl" ? "md:max-w-5xl" : "",
-              modalWidth === "6xl" ? "md:max-w-6xl" : "",
-              modalWidth === "7xl" ? "md:max-w-7xl" : "",
-              modalWidth === "large" ? "md:max-w-lg" : "",
-              modalWidth === "medium" ? "md:max-w-md" : "",
-              "modal-container absolute top-[2%] z-[69] mx-auto w-11/12 rounded bg-white shadow-lg md:top-[15%]"
+              modalWidth === "xl" && "md:max-w-xl",
+              modalWidth === "2xl" && "md:max-w-2xl",
+              modalWidth === "3xl" && "md:max-w-3xl",
+              modalWidth === "4xl" && "md:max-w-4xl",
+              modalWidth === "5xl" && "md:max-w-5xl",
+              modalWidth === "6xl" && "md:max-w-6xl",
+              modalWidth === "7xl" && "md:max-w-7xl",
+              modalWidth === "large" && "md:max-w-lg",
+              modalWidth === "medium" && "md:max-w-md",
+              topPosition === "default" && "top-[2%] md:top-[15%]",
+              topPosition === "top" && "top-[2%] md:top-[5%]",
+              "modal-container absolute z-[69] mx-auto w-11/12 rounded bg-white shadow-lg "
             )}
             ref={modalRef}
           >

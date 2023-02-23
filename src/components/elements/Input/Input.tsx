@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { classNames } from "utils/classNames";
+import classNames from "utils/classNames";
 
 export type InputErrorType = {
   field: string;

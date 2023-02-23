@@ -5,7 +5,7 @@ import { AVAILABLE_GROUPS } from "hardcoded";
 import type { FC } from "react";
 import { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
-import { classNames } from "utils/classNames";
+import classNames from "utils/classNames";
 
 interface GroupDropdownProps {
   alreadyCreatedGroups: string[];

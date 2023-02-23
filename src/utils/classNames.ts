@@ -5,8 +5,10 @@
  * classNames("foo", "bar") // "foo bar"
  * classNames("foo", undefined, "bar") // "foo bar"
  * */
-export const classNames = (...classes: (string | boolean | undefined)[]) => {
+const classNames = (...classes: (string | boolean | undefined)[]) => {
   if (!classes) return undefined;
 
   return classes.filter(Boolean).join(" ");
 };
+
+export default classNames;

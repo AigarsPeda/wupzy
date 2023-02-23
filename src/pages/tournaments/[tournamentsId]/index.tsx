@@ -12,13 +12,16 @@ const Tournament: NextPage = () => {
   const router = useRouter();
   const { redirectToPath } = useRedirect();
   const [tournamentId, setTournamentId] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const { data: teams, isLoading: isTeamsLoading } =
     api.teams.getTournamentTeams.useQuery(
       {
         id: tournamentId,
       },
       {
-        refetchOnWindowFocus: true,
+        // fetch on window focus only if the modal is not open
+        refetchOnWindowFocus: !isModalOpen,
       }
     );
 
@@ -62,7 +65,11 @@ const Tournament: NextPage = () => {
       <div className="mb-4 flex justify-between">
         <TournamentHeader tournament={tournament?.tournament} />
         <div>
-          <EditTournament teams={teams?.teams || []} />
+          <EditTournament
+            isModalOpen={isModalOpen}
+            teams={teams?.teams || []}
+            handleModalClicks={setIsModalOpen}
+          />
         </div>
         <div className="w-40"></div>
       </div>

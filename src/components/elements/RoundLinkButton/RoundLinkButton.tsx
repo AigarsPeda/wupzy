@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { FC } from "react";
-import { classNames } from "utils/classNames";
+import classNames from "utils/classNames";
 
 interface RoundLinkButtonProps {
   href: string;
