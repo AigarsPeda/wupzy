@@ -1,12 +1,12 @@
 import EditTournament from "components/containers/EditTournament/EditTournament";
 import GroupCardContainer from "components/containers/GroupCardContainer/GroupCardContainer";
-import type { TeamsByGroupType } from "components/elements/EditTournamentGroup/EditTournamentGroup.types";
 import Spinner from "components/elements/Spinner/Spinner";
 import TournamentHeader from "components/elements/TournamentHeader/TournamentHeader";
 import useRedirect from "hooks/useRedirect";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import type { TeamsByGroupType } from "types/team.types";
 import { api } from "utils/api";
 
 const Tournament: NextPage = () => {

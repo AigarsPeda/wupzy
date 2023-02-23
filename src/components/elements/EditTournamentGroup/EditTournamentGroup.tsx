@@ -1,15 +1,15 @@
-import type { Team } from "@prisma/client";
-import type { TeamsByGroupType } from "components/elements/EditTournamentGroup/EditTournamentGroup.types";
+import Button from "components/elements/Button/Button";
 import GroupDropdown from "components/elements/GroupDropdown/GroupDropdown";
 import ModalWrap from "components/elements/Modal/Modal";
 import GridLayout from "components/layouts/GridLayout/GridLayout";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
+import type { TeamsByGroupType, TeamType } from "types/team.types";
 import classNames from "utils/classNames";
 import sortTeamsByGroup from "utils/sortTeamsByGroup";
 
 interface EditTournamentGroupProps {
-  teams: Team[];
+  teams: TeamType[];
   isModalOpen: boolean;
   handleCloseModal: () => void;
   handleUpdateTeam: (team: TeamsByGroupType) => Promise<void>;
@@ -39,7 +39,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   };
 
   const handleGroupChange = (
-    team: Team,
+    team: TeamType,
     oldGroup: string,
     newGroup: string
   ) => {
@@ -80,7 +80,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       </div>
 
       <GridLayout minWith="320">
-        {[...teamsByGroup].map(([group, value], i) => {
+        {[...teamsByGroup].map(([group, value]) => {
           const isMoreThanOneGroup = getKeys(teamsByGroup).length > 1;
 
           return (
@@ -131,20 +131,19 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
             </div>
           );
         })}
-        <div>
-          <button
-            className="mt-3 mb-6 flex w-full justify-end"
-            onClick={() => {
-              handleUpdateTeam(teamsByGroup).catch((e) =>
-                console.error("Error updating team", e)
-              );
-              handleCloseModal();
-            }}
-          >
-            Save
-          </button>
-        </div>
       </GridLayout>
+      <div className="flex w-full justify-end">
+        <Button
+          btnColor="outline"
+          btnTitle={<span className="px-3 text-sm">Save changes</span>}
+          onClick={() => {
+            handleUpdateTeam(teamsByGroup).catch((e) =>
+              console.error("Error updating team", e)
+            );
+            handleCloseModal();
+          }}
+        />
+      </div>
     </ModalWrap>
   );
 };
