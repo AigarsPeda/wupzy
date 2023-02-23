@@ -4,6 +4,7 @@ import ModalWrap from "components/elements/Modal/Modal";
 import GridLayout from "components/layouts/GridLayout/GridLayout";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
+import classNames from "utils/classNames";
 import sortTeamsByGroup from "utils/sortTeamsByGroup";
 
 type TeamsByGroupType = Map<string, Team[]>;
@@ -59,40 +60,66 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   };
 
   useEffect(() => {
-    console.log("teams --->", teams);
     setTeamsByGroup(sortTeamsByGroup(teams));
   }, [teams]);
 
   return (
     <ModalWrap
       modalWidth="7xl"
+      topPosition="top"
       isModalVisible={isModalOpen}
-      modalTitle="Crete new tournament"
+      modalTitle="Edit tournament groups"
       handleCancelClick={handleCloseModal}
     >
-      <div className="flex w-full justify-end">
+      <div className="mt-3 mb-6 flex w-full justify-end">
         <GroupDropdown
           handleGroupClick={addGroupToTeams}
           alreadyCreatedGroups={getKeys(teamsByGroup)}
         />
       </div>
-      <GridLayout>
-        {[...teamsByGroup].map(([group, value]) => {
+
+      <GridLayout minWith="320">
+        {[...teamsByGroup].map(([group, value], i) => {
+          const isLastGroup = getKeys(teamsByGroup).length - 1 === i;
+          const isMoreThanOneGroup = getKeys(teamsByGroup).length > 1;
+
           return (
-            <div key={group}>
-              <p className="mb-3 text-sm text-gray-400">Group - {group}</p>
+            <div
+              key={group}
+              className={classNames(
+                isMoreThanOneGroup && !isLastGroup
+                  ? "border-collapse border-r-2 border-gray-800"
+                  : "",
+                "min-h-[20rem] min-w-[20rem] px-8 py-3"
+              )}
+            >
+              <div className="flex justify-between">
+                <p className="mb-3 text-sm text-gray-400">Group - {group}</p>
+                {isMoreThanOneGroup && (
+                  <p className={classNames("mb-3 text-sm text-gray-400")}>
+                    Move to
+                  </p>
+                )}
+              </div>
               {value.map((team) => {
                 return (
-                  <div key={team.id} className="flex">
+                  <div key={team.id} className="my-2 flex justify-between">
                     <p>{team.name}</p>
-                    {getAvailableGroups(group, teamsByGroup).map((newGroup) => (
-                      <button
-                        key={newGroup}
-                        onClick={() => handleGroupChange(team, group, newGroup)}
-                      >
-                        {newGroup}
-                      </button>
-                    ))}
+                    <div>
+                      {getAvailableGroups(group, teamsByGroup).map(
+                        (newGroup) => (
+                          <button
+                            key={newGroup}
+                            className="ml-2 h-6 w-6 rounded-md bg-gray-200 text-sm hover:bg-gray-800 hover:text-white"
+                            onClick={() =>
+                              handleGroupChange(team, group, newGroup)
+                            }
+                          >
+                            {newGroup}
+                          </button>
+                        )
+                      )}
+                    </div>
                   </div>
                 );
               })}

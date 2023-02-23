@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { classNames } from "utils/classNames";
+import classNames from "utils/classNames";
 
 interface SpinnerProps {
   size?: "small" | "medium" | "large";

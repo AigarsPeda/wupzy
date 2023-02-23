@@ -1,7 +1,7 @@
 import Spinner from "components/elements/Spinner/Spinner";
 import type { ReactNode } from "react";
 import { forwardRef } from "react";
-import { classNames } from "utils/classNames";
+import classNames from "utils/classNames";
 
 interface ButtonProps {
   icon?: ReactNode;

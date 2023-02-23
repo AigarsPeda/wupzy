@@ -2,7 +2,7 @@ import useDelayUnmount from "hooks/useDelayUnmount";
 import useOnClickOutside from "hooks/useOnClickOutside";
 import type { FC, ReactNode } from "react";
 import { useRef } from "react";
-import { classNames } from "utils/classNames";
+import classNames from "utils/classNames";
 
 interface DrawerProps {
   header?: string;
