@@ -61,9 +61,9 @@ const ModalWrap: FC<ModalWrapProps> = ({
               modalWidth === "7xl" && "md:max-w-7xl",
               modalWidth === "large" && "md:max-w-lg",
               modalWidth === "medium" && "md:max-w-md",
-              topPosition === "default" && "top-[2%] md:top-[15%]",
               topPosition === "top" && "top-[2%] md:top-[5%]",
-              "modal-container absolute z-[69] mx-auto w-11/12 rounded bg-white shadow-lg "
+              topPosition === "default" && "top-[2%] md:top-[15%]",
+              "modal-container absolute z-[69] mx-auto w-11/12 rounded bg-white shadow-lg"
             )}
             ref={modalRef}
           >

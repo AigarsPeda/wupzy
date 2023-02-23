@@ -44,9 +44,10 @@ model Tournament {
 model Team {
   name         String
   tournamentId String
+  group        String
   updatedAt    DateTime   @updatedAt
   score        Int        @default(0)
-  group        String     @default("A")
+  // group        String     @default("A")
   createdAt    DateTime   @default(now())
   id           String     @id @default(cuid())
   tournament   Tournament @relation(fields: [tournamentId], references: [id])

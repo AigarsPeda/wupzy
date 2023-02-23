@@ -1,4 +1,5 @@
 import type { Team } from "@prisma/client";
+import type { TeamsByGroupType } from "components/elements/EditTournamentGroup/EditTournamentGroup.types";
 import GroupDropdown from "components/elements/GroupDropdown/GroupDropdown";
 import ModalWrap from "components/elements/Modal/Modal";
 import GridLayout from "components/layouts/GridLayout/GridLayout";
@@ -7,18 +8,18 @@ import { useEffect, useState } from "react";
 import classNames from "utils/classNames";
 import sortTeamsByGroup from "utils/sortTeamsByGroup";
 
-type TeamsByGroupType = Map<string, Team[]>;
-
 interface EditTournamentGroupProps {
   teams: Team[];
   isModalOpen: boolean;
   handleCloseModal: () => void;
+  handleUpdateTeam: (team: TeamsByGroupType) => Promise<void>;
 }
 
 const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   teams,
   isModalOpen,
   handleCloseModal,
+  handleUpdateTeam,
 }) => {
   const [teamsByGroup, setTeamsByGroup] = useState<TeamsByGroupType>(new Map());
 
@@ -80,30 +81,34 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
 
       <GridLayout minWith="320">
         {[...teamsByGroup].map(([group, value], i) => {
-          const isLastGroup = getKeys(teamsByGroup).length - 1 === i;
           const isMoreThanOneGroup = getKeys(teamsByGroup).length > 1;
 
           return (
             <div
               key={group}
               className={classNames(
-                isMoreThanOneGroup && !isLastGroup
-                  ? "border-collapse border-r-2 border-gray-800"
-                  : "",
-                "min-h-[20rem] min-w-[20rem] px-8 py-3"
+                !isMoreThanOneGroup && "max-w-[50%]",
+                "ml-2 grid min-h-[20rem] min-w-[20rem] grid-cols-1 content-start rounded-md border border-gray-50 bg-gray-50 px-8 py-3 shadow-md"
               )}
             >
               <div className="flex justify-between">
-                <p className="mb-3 text-sm text-gray-400">Group - {group}</p>
+                <p className="mb-5 text-sm text-gray-400">Group - {group}</p>
                 {isMoreThanOneGroup && (
                   <p className={classNames("mb-3 text-sm text-gray-400")}>
                     Move to
                   </p>
                 )}
               </div>
-              {value.map((team) => {
+              {value.map((team, i) => {
+                const isFirstGroup = i === 0;
                 return (
-                  <div key={team.id} className="my-2 flex justify-between">
+                  <div
+                    key={team.id}
+                    className={classNames(
+                      !isFirstGroup && "border-t-2",
+                      "flex items-center justify-between  py-2"
+                    )}
+                  >
                     <p>{team.name}</p>
                     <div>
                       {getAvailableGroups(group, teamsByGroup).map(
@@ -126,6 +131,19 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
             </div>
           );
         })}
+        <div>
+          <button
+            className="mt-3 mb-6 flex w-full justify-end"
+            onClick={() => {
+              handleUpdateTeam(teamsByGroup).catch((e) =>
+                console.error("Error updating team", e)
+              );
+              handleCloseModal();
+            }}
+          >
+            Save
+          </button>
+        </div>
       </GridLayout>
     </ModalWrap>
   );
