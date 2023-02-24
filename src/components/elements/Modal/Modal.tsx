@@ -64,7 +64,7 @@ const ModalWrap: FC<ModalWrapProps> = ({
               modalWidth === "medium" && "md:max-w-md",
               topPosition === "top" && "top-[2%] md:top-[5%]",
               topPosition === "default" && "top-[2%] md:top-[15%]",
-              "modal-container absolute z-[69] mx-auto w-11/12 rounded bg-white shadow-lg"
+              "modal-container absolute z-[69] mx-auto h-[95%] w-11/12 overflow-y-auto rounded bg-white shadow-lg sm:h-auto"
             )}
             ref={modalRef}
           >
@@ -84,10 +84,7 @@ const ModalWrap: FC<ModalWrapProps> = ({
                 <p className="font-secondary text-2xl font-bold">
                   {modalTitle}
                 </p>
-                <button
-                  className="modal-close cursor-pointer"
-                  onClick={handleCancelClick}
-                >
+                <button className="cursor-pointer" onClick={handleCancelClick}>
                   <IoClose className="absolute top-0 -right-2 h-8 w-9 text-gray-800 hover:text-gray-500" />
                 </button>
               </div>
