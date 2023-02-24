@@ -1,11 +1,10 @@
-import type { Team } from "@prisma/client";
 import EditTournamentGroup from "components/elements/EditTournamentGroup/EditTournamentGroup";
 import UnderLineButton from "components/elements/UnderLineButton/UnderLineButton";
 import type { FC } from "react";
-import type { TeamsByGroupType } from "types/team.types";
+import type { TeamsByGroupType, TeamType } from "types/team.types";
 
 interface EditTournamentProps {
-  teams: Team[];
+  teams: TeamType[];
   isModalOpen: boolean;
   handleModalClicks: (b: boolean) => void;
   handleUpdateTeam: (team: TeamsByGroupType) => Promise<void>;

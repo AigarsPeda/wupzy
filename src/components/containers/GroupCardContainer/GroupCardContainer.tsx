@@ -1,11 +1,11 @@
-import type { Team } from "@prisma/client";
 import GridLayout from "components/layouts/GridLayout/GridLayout";
 import type { FC } from "react";
+import type { TeamType } from "types/team.types";
 import classNames from "utils/classNames";
 import sortTeamsByGroup from "utils/sortTeamsByGroup";
 
 interface GroupCardContainerProps {
-  teams: Team[];
+  teams: TeamType[];
 }
 
 const GroupCardContainer: FC<GroupCardContainerProps> = ({ teams }) => {
