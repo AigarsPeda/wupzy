@@ -106,7 +106,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
                     key={team.id}
                     className={classNames(
                       !isFirstGroup && "border-t-2",
-                      "flex items-center justify-between  py-2"
+                      "flex items-center justify-between py-2"
                     )}
                   >
                     <p>{team.name}</p>

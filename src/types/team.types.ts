@@ -9,5 +9,5 @@ const TeamZodSchema = z.object({
 
 const TeamsZodSchema = z.map(z.string(), z.array(TeamZodSchema));
 
-export type TeamsByGroupType = z.infer<typeof TeamsZodSchema>;
 export type TeamType = z.infer<typeof TeamZodSchema>;
+export type TeamsByGroupType = z.infer<typeof TeamsZodSchema>;

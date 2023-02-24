@@ -1,8 +1,8 @@
 import type { Team } from "@prisma/client";
 import EditTournamentGroup from "components/elements/EditTournamentGroup/EditTournamentGroup";
-import type { TeamsByGroupType } from "components/elements/EditTournamentGroup/EditTournamentGroup.types";
 import UnderLineButton from "components/elements/UnderLineButton/UnderLineButton";
 import type { FC } from "react";
+import type { TeamsByGroupType } from "types/team.types";
 
 interface EditTournamentProps {
   teams: Team[];
