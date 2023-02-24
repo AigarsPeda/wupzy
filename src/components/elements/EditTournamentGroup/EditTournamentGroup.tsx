@@ -1,3 +1,4 @@
+import AddNewTeam from "components/elements/AddNewTeam/AddNewTeam";
 import Button from "components/elements/Button/Button";
 import EditTournamentHeader from "components/elements/EditTournamentHeader/EditTournamentHeader";
 import EditTournamentTeam from "components/elements/EditTournamentTeam/EditTournamentTeam";
@@ -9,6 +10,7 @@ import type { FC } from "react";
 import { useEffect, useState } from "react";
 import type { TeamsByGroupType, TeamType } from "types/team.types";
 import { api } from "utils/api";
+import classNames from "utils/classNames";
 import sortTeamsByGroup from "utils/sortTeamsByGroup";
 import { getKeys } from "utils/teamsMapFunctions";
 
@@ -21,11 +23,12 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   isModalOpen,
   handleCloseModal,
 }) => {
-  const { teams, refetchTeams } = useTeams();
+  const { teams, refetchTeams, tournamentId } = useTeams();
   const { mutateAsync } = api.teams.updateTeam.useMutation();
+  const [addNewTeamGroup, setAddNewTeamGroup] = useState<string | null>(null);
   const [teamsByGroup, setTeamsByGroup] = useState<TeamsByGroupType>(new Map());
 
-  const addGroupToTeams = (group: string) => {
+  const addGroupToTournament = (group: string) => {
     const newStates = new Map(teamsByGroup);
     newStates.set(group, []);
 
@@ -84,8 +87,6 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     await refetchTeams();
   };
 
-  // TODO: Add option to add and remove teams
-
   useEffect(() => {
     setTeamsByGroup(sortTeamsByGroup(teams?.teams || []));
   }, [teams]);
@@ -99,47 +100,73 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       handleCancelClick={handleCloseModal}
     >
       <div className="mt-3 mb-6 flex w-full justify-end">
-        <Button
-          btnClass="mr-4"
-          btnTitle="Add new team"
-          onClick={() => {
-            console.log("add new team");
-          }}
-        />
         <GroupDropdown
-          handleGroupClick={addGroupToTeams}
+          handleGroupClick={addGroupToTournament}
           alreadyCreatedGroups={getKeys(teamsByGroup)}
         />
       </div>
 
-      <GridLayout isGap minWith="320">
-        {[...teamsByGroup].map(([group, value], i) => {
-          const isMoreThanOneGroup = getKeys(teamsByGroup).length > 1;
+      <AddNewTeam
+        tournamentId={tournamentId}
+        addNewTeamGroup={addNewTeamGroup}
+        isAddNewTeamOpen={Boolean(addNewTeamGroup)}
+        handleCancelClick={() => {
+          setAddNewTeamGroup(null);
+          refetchTeams().catch((err) => console.error(err));
+        }}
+      />
 
-          return (
-            <EditTournamentHeader
-              group={group}
-              key={`${group}-${i}`}
-              isMoreThanOneGroup={isMoreThanOneGroup}
-            >
-              {value.map((team, i) => {
-                const isFirstGroup = i === 0;
-                return (
-                  <EditTournamentTeam
-                    team={team}
-                    key={team.id}
+      <div className="max-h-[40rem] overflow-y-auto">
+        <GridLayout isGap minWith="320">
+          {[...teamsByGroup].map(([group, value], i) => {
+            const isMoreThanOneGroup = getKeys(teamsByGroup).length > 1;
+
+            return (
+              <div
+                key={`${group}-${i}`}
+                className="rounded-md border border-gray-50 bg-gray-50 px-8 py-3 shadow-md"
+              >
+                <div
+                  className={classNames(
+                    !isMoreThanOneGroup && "max-w-[50%]",
+                    "relative ml-2 grid max-h-[22rem] min-h-[17rem] min-w-[20rem] grid-cols-1 content-start overflow-y-auto "
+                  )}
+                >
+                  <EditTournamentHeader
                     group={group}
-                    teamsByGroup={teamsByGroup}
-                    isFirstGroup={isFirstGroup}
-                    handleGroupChange={handleGroupChange}
-                    handleTeamsNameChange={handleTeamsNameChange}
+                    isMoreThanOneGroup={isMoreThanOneGroup}
                   />
-                );
-              })}
-            </EditTournamentHeader>
-          );
-        })}
-      </GridLayout>
+                  {value.map((team, i) => {
+                    const isFirstGroup = i === 0;
+                    return (
+                      <EditTournamentTeam
+                        team={team}
+                        key={team.id}
+                        group={group}
+                        teamsByGroup={teamsByGroup}
+                        isFirstGroup={isFirstGroup}
+                        handleGroupChange={handleGroupChange}
+                        handleTeamsNameChange={handleTeamsNameChange}
+                      />
+                    );
+                  })}
+                </div>
+                <div className="mt-4">
+                  <Button
+                    btnClass="mr-4 w-40"
+                    btnTitle="Add new team"
+                    onClick={() => {
+                      setAddNewTeamGroup((state) =>
+                        state === group ? null : group
+                      );
+                    }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </GridLayout>
+      </div>
       <div className="flex w-full justify-end">
         <Button
           btnColor="outline"
