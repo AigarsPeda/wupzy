@@ -3,81 +3,42 @@ import GroupCardContainer from "components/containers/GroupCardContainer/GroupCa
 import Spinner from "components/elements/Spinner/Spinner";
 import TournamentHeader from "components/elements/TournamentHeader/TournamentHeader";
 import useRedirect from "hooks/useRedirect";
+import useTeams from "hooks/useTeams";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import type { TeamsByGroupType } from "types/team.types";
+import { useEffect } from "react";
 import { api } from "utils/api";
 
 const Tournament: NextPage = () => {
   const router = useRouter();
   const { redirectToPath } = useRedirect();
-  const [tournamentId, setTournamentId] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { mutateAsync } = api.teams.updateTeam.useMutation();
-
-  const {
-    data: teams,
-    isLoading: isTeamsLoading,
-    refetch,
-  } = api.teams.getTournamentTeams.useQuery(
-    {
-      id: tournamentId,
-    },
-    {
-      // fetch on window focus only if the modal is not open
-      refetchOnWindowFocus: !isModalOpen,
-    }
-  );
-
-  const {
-    error,
-    isLoading,
-    data: tournament,
-  } = api.tournaments.getTournament.useQuery(
-    {
-      id: tournamentId,
-    },
-    {
-      // fetch the tournament data only if the tournamentId is
-      enabled: !!tournamentId,
-    }
-  );
-
-  const handleUpdateTeam = async (teamsMap: TeamsByGroupType) => {
-    // create a new array of teams from the teams Map
-
-    const teamsArray = [...teamsMap.values()].flat().map((team) => ({
-      id: team.id,
-      name: team.name,
-      score: team.score,
-      group: team.group,
-    }));
-
-    await mutateAsync({
-      teams: teamsArray,
-    });
-
-    // refetch the teams data
-    await refetch();
-  };
+  const { teams, teamsError, tournamentId, isTeamsLoading } = useTeams();
+  const { isLoading, data: tournament } =
+    api.tournaments.getTournament.useQuery(
+      {
+        id: tournamentId,
+      },
+      {
+        // fetch the tournament only if the tournamentId is set
+        enabled: !!tournamentId,
+      }
+    );
 
   useEffect(() => {
     if (
-      !router.query.tournamentsId ||
-      typeof router.query.tournamentsId !== "string"
+      !isLoading &&
+      !isTeamsLoading &&
+      teamsError?.data?.code === "UNAUTHORIZED"
     ) {
-      return;
-    }
-
-    setTournamentId(router.query.tournamentsId);
-  }, [router.query.tournamentsId]);
-
-  useEffect(() => {
-    if (!isTeamsLoading && !isLoading && error?.data?.code === "UNAUTHORIZED") {
       redirectToPath("/login", window.location.pathname);
     }
-  }, [error?.data?.code, isLoading, isTeamsLoading, redirectToPath, router]);
+  }, [
+    router,
+    isLoading,
+    isTeamsLoading,
+    redirectToPath,
+    teamsError?.data?.code,
+  ]);
 
   if (isLoading) {
     return <Spinner size="small" />;
@@ -88,12 +49,7 @@ const Tournament: NextPage = () => {
       <div className="mb-4 flex justify-between">
         <TournamentHeader tournament={tournament?.tournament} />
         <div>
-          <EditTournament
-            isModalOpen={isModalOpen}
-            teams={teams?.teams || []}
-            handleModalClicks={setIsModalOpen}
-            handleUpdateTeam={handleUpdateTeam}
-          />
+          <EditTournament />
         </div>
         <div className="w-40"></div>
       </div>

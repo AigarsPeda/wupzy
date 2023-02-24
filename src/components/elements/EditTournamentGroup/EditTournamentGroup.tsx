@@ -4,25 +4,25 @@ import EditTournamentTeam from "components/elements/EditTournamentTeam/EditTourn
 import GroupDropdown from "components/elements/GroupDropdown/GroupDropdown";
 import ModalWrap from "components/elements/Modal/Modal";
 import GridLayout from "components/layouts/GridLayout/GridLayout";
+import useTeams from "hooks/useTeams";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import type { TeamsByGroupType, TeamType } from "types/team.types";
+import { api } from "utils/api";
 import sortTeamsByGroup from "utils/sortTeamsByGroup";
 import { getKeys } from "utils/teamsMapFunctions";
 
 interface EditTournamentGroupProps {
-  teams: TeamType[];
   isModalOpen: boolean;
   handleCloseModal: () => void;
-  handleUpdateTeam: (team: TeamsByGroupType) => Promise<void>;
 }
 
 const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
-  teams,
   isModalOpen,
   handleCloseModal,
-  handleUpdateTeam,
 }) => {
+  const { teams, refetchTeams } = useTeams();
+  const { mutateAsync } = api.teams.updateTeam.useMutation();
   const [teamsByGroup, setTeamsByGroup] = useState<TeamsByGroupType>(new Map());
 
   const addGroupToTeams = (group: string) => {
@@ -69,8 +69,25 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     setTeamsByGroup(newStates);
   };
 
+  const handleUpdateTeam = async (teamsMap: TeamsByGroupType) => {
+    const teamsArray = [...teamsMap.values()].flat().map((team) => ({
+      id: team.id,
+      name: team.name,
+      score: team.score,
+      group: team.group,
+    }));
+
+    await mutateAsync({
+      teams: teamsArray,
+    });
+
+    await refetchTeams();
+  };
+
+  // TODO: Add option to add and remove teams
+
   useEffect(() => {
-    setTeamsByGroup(sortTeamsByGroup(teams));
+    setTeamsByGroup(sortTeamsByGroup(teams?.teams || []));
   }, [teams]);
 
   return (
