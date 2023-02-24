@@ -1,10 +1,10 @@
-import type { Team } from "@prisma/client";
+import type { TeamType } from "types/team.types";
 
-const sortTeamsByGroup = (teams: Team[]) => {
-  const teamsByGroup = new Map<string, Team[]>();
+const sortTeamsByGroup = (teams: TeamType[]) => {
+  const teamsByGroup = new Map<string, TeamType[]>();
 
   teams.forEach((team) => {
-    const group = team.group as string;
+    const group = team.group;
     const teamsInGroup = teamsByGroup.get(group);
 
     if (teamsInGroup) {

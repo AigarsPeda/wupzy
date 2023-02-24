@@ -22,24 +22,30 @@ export const teamsRouter = createTRPCRouter({
   updateTeam: protectedProcedure
     .input(
       z.object({
-        id: z.string(),
-        name: z.string(),
-        group: z.string(),
-        score: z.number(),
+        teams: z.array(
+          z.object({
+            id: z.string(),
+            name: z.string(),
+            group: z.string(),
+            score: z.number(),
+          })
+        ),
       })
     )
-    .query(async ({ ctx, input }) => {
-      const team = await ctx.prisma.team.update({
-        where: {
-          id: input.id,
-        },
-        data: {
-          name: input.name,
-          group: input.group,
-          score: input.score,
-        },
-      });
+    .mutation(async ({ ctx, input }) => {
+      for (const team of input.teams) {
+        await ctx.prisma.team.update({
+          where: {
+            id: team.id,
+          },
+          data: {
+            name: team.name,
+            group: team.group,
+            score: team.score,
+          },
+        });
+      }
 
-      return { team };
+      return { teams: input.teams };
     }),
 });

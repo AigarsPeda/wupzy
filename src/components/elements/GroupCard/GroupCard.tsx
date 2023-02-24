@@ -1,8 +1,8 @@
-import type { Team } from "@prisma/client";
 import type { FC } from "react";
+import type { TeamType } from "types/team.types";
 
 interface GroupCardProps {
-  team: Team;
+  team: TeamType;
 }
 
 const GroupCard: FC<GroupCardProps> = ({ team }) => {

@@ -3,8 +3,8 @@ import type { InputErrorType } from "components/elements/Input/Input";
 import Input from "components/elements/Input/Input";
 import Link from "next/link";
 import type { FC } from "react";
+import formatLabel from "utils/formatLabel";
 import getInputType from "utils/getInputType";
-import formatLabel from "../../../utils/formatLable";
 
 type LinkType = {
   href: string;

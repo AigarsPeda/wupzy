@@ -1,7 +1,7 @@
 import useDelayUnmount from "hooks/useDelayUnmount";
 import useOnClickOutside from "hooks/useOnClickOutside";
 import type { FC, ReactNode } from "react";
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { IoClose } from "react-icons/io5";
 import classNames from "utils/classNames";
 
@@ -45,9 +45,10 @@ const ModalWrap: FC<ModalWrapProps> = ({
     <>
       {shouldRender && (
         <div
-          className={`${
-            isAnimation ? "opacity-100" : "opacity-0"
-          } fixed top-0 left-0 z-[69] flex h-full w-full items-center justify-center transition-all duration-300 ease-in-out`}
+          className={classNames(
+            isAnimation ? "opacity-100" : "opacity-0",
+            "fixed top-0 left-0 z-[69] flex h-full w-full items-center justify-center transition-all duration-300 ease-in-out"
+          )}
         >
           <div className="modal-overlay absolute h-full w-full bg-gray-900 opacity-50"></div>
           <div
@@ -61,9 +62,9 @@ const ModalWrap: FC<ModalWrapProps> = ({
               modalWidth === "7xl" && "md:max-w-7xl",
               modalWidth === "large" && "md:max-w-lg",
               modalWidth === "medium" && "md:max-w-md",
-              topPosition === "default" && "top-[2%] md:top-[15%]",
               topPosition === "top" && "top-[2%] md:top-[5%]",
-              "modal-container absolute z-[69] mx-auto w-11/12 rounded bg-white shadow-lg "
+              topPosition === "default" && "top-[2%] md:top-[15%]",
+              "modal-container absolute z-[69] mx-auto w-11/12 rounded bg-white shadow-lg"
             )}
             ref={modalRef}
           >

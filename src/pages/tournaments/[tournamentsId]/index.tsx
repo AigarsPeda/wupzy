@@ -6,6 +6,7 @@ import useRedirect from "hooks/useRedirect";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import type { TeamsByGroupType } from "types/team.types";
 import { api } from "utils/api";
 
 const Tournament: NextPage = () => {
@@ -13,17 +14,21 @@ const Tournament: NextPage = () => {
   const { redirectToPath } = useRedirect();
   const [tournamentId, setTournamentId] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { mutateAsync } = api.teams.updateTeam.useMutation();
 
-  const { data: teams, isLoading: isTeamsLoading } =
-    api.teams.getTournamentTeams.useQuery(
-      {
-        id: tournamentId,
-      },
-      {
-        // fetch on window focus only if the modal is not open
-        refetchOnWindowFocus: !isModalOpen,
-      }
-    );
+  const {
+    data: teams,
+    isLoading: isTeamsLoading,
+    refetch,
+  } = api.teams.getTournamentTeams.useQuery(
+    {
+      id: tournamentId,
+    },
+    {
+      // fetch on window focus only if the modal is not open
+      refetchOnWindowFocus: !isModalOpen,
+    }
+  );
 
   const {
     error,
@@ -38,6 +43,24 @@ const Tournament: NextPage = () => {
       enabled: !!tournamentId,
     }
   );
+
+  const handleUpdateTeam = async (teamsMap: TeamsByGroupType) => {
+    // create a new array of teams from the teams Map
+
+    const teamsArray = [...teamsMap.values()].flat().map((team) => ({
+      id: team.id,
+      name: team.name,
+      score: team.score,
+      group: team.group,
+    }));
+
+    await mutateAsync({
+      teams: teamsArray,
+    });
+
+    // refetch the teams data
+    await refetch();
+  };
 
   useEffect(() => {
     if (
@@ -69,6 +92,7 @@ const Tournament: NextPage = () => {
             isModalOpen={isModalOpen}
             teams={teams?.teams || []}
             handleModalClicks={setIsModalOpen}
+            handleUpdateTeam={handleUpdateTeam}
           />
         </div>
         <div className="w-40"></div>
