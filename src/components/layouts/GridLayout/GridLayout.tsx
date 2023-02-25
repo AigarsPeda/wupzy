@@ -5,7 +5,7 @@ interface GridLayoutProps {
   isGap?: boolean;
   isDivideX?: boolean;
   children: JSX.Element | JSX.Element[] | ReactNode;
-  minWith?: "150" | "175" | "200" | "250" | "320";
+  minWith?: "150" | "175" | "200" | "250" | "320" | "350";
 }
 
 const GridLayout: FC<GridLayoutProps> = ({
@@ -19,6 +19,8 @@ const GridLayout: FC<GridLayoutProps> = ({
       className={classNames(
         isGap && "gap-5",
         isDivideX && "divide-x divide-gray-200",
+        minWith === "350" &&
+          "md:grid-cols-[repeat(auto-fit,minmax(350px,1fr))]",
         minWith === "320" && "grid-cols-[repeat(auto-fit,minmax(320px,1fr))]",
         minWith === "250" && "grid-cols-[repeat(auto-fit,minmax(250px,1fr))]",
         minWith === "200" && "grid-cols-[repeat(auto-fit,minmax(200px,1fr))]",

@@ -6,6 +6,7 @@ import GroupDropdown from "components/elements/GroupDropdown/GroupDropdown";
 import ModalWrap from "components/elements/Modal/Modal";
 import GridLayout from "components/layouts/GridLayout/GridLayout";
 import useTeams from "hooks/useTeams";
+import useWindowSize from "hooks/useWindowSize";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import type { TeamsByGroupType, TeamType } from "types/team.types";
@@ -23,6 +24,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   isModalOpen,
   handleCloseModal,
 }) => {
+  const { windowSize } = useWindowSize();
   const deleteTeam = api.teams.deleteTeam.useMutation();
   const { teams, refetchTeams, tournamentId } = useTeams();
   const { mutateAsync } = api.teams.updateTeam.useMutation();
@@ -125,8 +127,15 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
         }}
       />
 
-      <div className="max-h-[40rem] overflow-y-auto">
-        <GridLayout isGap minWith="320">
+      <div
+        className="overflow-y-auto"
+        style={
+          windowSize.width && windowSize.width > 650
+            ? { maxHeight: "calc(100vh - 17rem)" }
+            : { maxHeight: "calc(100vh - 14rem)" }
+        }
+      >
+        <GridLayout isGap minWith="350">
           {[...teamsByGroup].map(([group, value], i) => {
             const isMoreThanOneGroup = getKeys(teamsByGroup).length > 1;
 
@@ -137,8 +146,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
               >
                 <div
                   className={classNames(
-                    !isMoreThanOneGroup && "max-w-[50%]",
-                    "relative ml-2 grid max-h-[22rem] min-h-[17rem] min-w-[20rem] grid-cols-1 content-start overflow-y-auto "
+                    "relative ml-2 grid max-h-[22rem] min-h-[17rem] min-w-[9.375rem] grid-cols-1 content-start overflow-y-auto "
                   )}
                 >
                   <EditTournamentHeader

@@ -4,6 +4,7 @@ import type { FC, ReactNode } from "react";
 import { useRef } from "react";
 import { IoClose } from "react-icons/io5";
 import classNames from "utils/classNames";
+import useWindowSize from "../../../hooks/useWindowSize";
 
 interface ModalWrapProps {
   modalWidth?:
@@ -50,7 +51,7 @@ const ModalWrap: FC<ModalWrapProps> = ({
             "fixed top-0 left-0 z-[69] flex h-full w-full items-center justify-center transition-all duration-300 ease-in-out"
           )}
         >
-          <div className="modal-overlay absolute h-full w-full bg-gray-900 opacity-50"></div>
+          <div className="absolute h-full w-full bg-gray-900 opacity-50"></div>
           <div
             className={classNames(
               modalWidth === "xl" && "md:max-w-xl",
@@ -64,7 +65,8 @@ const ModalWrap: FC<ModalWrapProps> = ({
               modalWidth === "medium" && "md:max-w-md",
               topPosition === "top" && "top-[2%] md:top-[5%]",
               topPosition === "default" && "top-[2%] md:top-[15%]",
-              "modal-container absolute z-[69] mx-auto h-[95%] w-11/12 overflow-y-auto rounded bg-white shadow-lg sm:h-auto"
+              // h-[95%]
+              "absolute z-[69]  mx-auto w-11/12 overflow-y-auto rounded bg-white shadow-lg sm:h-auto"
             )}
             ref={modalRef}
           >
