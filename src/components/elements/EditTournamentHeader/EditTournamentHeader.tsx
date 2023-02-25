@@ -11,11 +11,14 @@ const EditTournamentHeader: FC<EditTournamentHeaderProps> = ({
   isMoreThanOneGroup,
 }) => {
   return (
-    <div className="flex justify-between">
-      <p className="mb-5 text-sm text-gray-400">Group - {group}</p>
+    <div className="mb-5 flex items-center justify-between">
+      <p className=" text-sm text-gray-400">Group - {group}</p>
+
       {isMoreThanOneGroup && (
-        <p className={classNames("mb-3 text-sm text-gray-400")}>Move to</p>
+        <p className={classNames(" text-sm text-gray-400")}>Move to</p>
       )}
+
+      <p className="text-sm text-gray-400">Options</p>
     </div>
   );
 };

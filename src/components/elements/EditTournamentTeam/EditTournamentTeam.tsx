@@ -1,8 +1,11 @@
 import ConfirmTooltip from "components/elements/ConfirmTooltip/ConfirmTooltip";
+import SmallButton from "components/elements/SmallButton/SmallButton";
 import type { FC } from "react";
+import { useRef } from "react";
 import type { TeamsByGroupType, TeamType } from "types/team.types";
 import classNames from "utils/classNames";
 import { getAvailableGroups } from "utils/teamsMapFunctions";
+import { FiEdit2 } from "react-icons/fi";
 
 interface EditTournamentTeamProps {
   group: string;
@@ -33,6 +36,13 @@ const EditTournamentTeam: FC<EditTournamentTeamProps> = ({
   handleTeamsNameChange,
   handleCancelDeleteTeam,
 }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // focus input on click
+  const handleFocusInput = () => {
+    inputRef.current?.focus();
+  };
+
   return (
     <div
       key={team.id}
@@ -41,23 +51,45 @@ const EditTournamentTeam: FC<EditTournamentTeamProps> = ({
         "flex items-center justify-between py-2"
       )}
     >
-      <input
-        className="bg-gray-50 text-sm text-gray-800 focus:outline-none"
-        value={team.name}
-        onChange={(e) => {
-          handleTeamsNameChange(team, e.target.value);
-        }}
-      />
-      <div className="flex">
+      <div>
+        <input
+          ref={inputRef}
+          value={team.name}
+          className="w-full bg-gray-50 text-sm text-gray-800 focus:outline-none"
+          onChange={(e) => {
+            handleTeamsNameChange(team, e.target.value);
+          }}
+        />
+      </div>
+      <div className="flex w-full items-center justify-end">
+        {getAvailableGroups(group, teamsByGroup).map((newGroup, i) => (
+          <SmallButton
+            btnTitle={newGroup}
+            btnClassNames="h-6 w-6"
+            key={`${newGroup}-${i}`}
+            handleClick={() => {
+              handleGroupChange(team, group, newGroup);
+            }}
+          />
+        ))}
+      </div>
+      <div className="flex w-full items-center justify-end">
+        <SmallButton
+          handleClick={() => {
+            handleFocusInput();
+          }}
+          btnTitle={<FiEdit2 />}
+          btnClassNames="h-6 px-2"
+        />
         <div className="relative">
-          <button
-            className="ml-2 rounded-md bg-red-500 py-0.5 px-2 text-sm text-white"
-            onClick={() => {
+          <SmallButton
+            btnColor="red"
+            btnTitle="X"
+            btnClassNames="h-6 px-2"
+            handleClick={() => {
               setTeamToDelete(team);
             }}
-          >
-            Delete
-          </button>
+          />
           <ConfirmTooltip
             cancelTitle="Cancel"
             confirmTitle="Delete"
@@ -68,15 +100,6 @@ const EditTournamentTeam: FC<EditTournamentTeamProps> = ({
             isTooltip={team.id === teamToDelete?.id}
           />
         </div>
-        {getAvailableGroups(group, teamsByGroup).map((newGroup) => (
-          <button
-            key={newGroup}
-            className="ml-2 h-6 w-6 rounded-md bg-gray-200 text-sm hover:bg-gray-800 hover:text-white"
-            onClick={() => handleGroupChange(team, group, newGroup)}
-          >
-            {newGroup}
-          </button>
-        ))}
       </div>
     </div>
   );
