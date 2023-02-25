@@ -23,8 +23,10 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   isModalOpen,
   handleCloseModal,
 }) => {
+  const deleteTeam = api.teams.deleteTeam.useMutation();
   const { teams, refetchTeams, tournamentId } = useTeams();
   const { mutateAsync } = api.teams.updateTeam.useMutation();
+  const [teamToDelete, setTeamToDelete] = useState<TeamType | null>(null);
   const [addNewTeamGroup, setAddNewTeamGroup] = useState<string | null>(null);
   const [teamsByGroup, setTeamsByGroup] = useState<TeamsByGroupType>(new Map());
 
@@ -87,6 +89,13 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     await refetchTeams();
   };
 
+  const handleDeleteTeam = async (team: TeamType) => {
+    await deleteTeam.mutateAsync({
+      id: team.id,
+    });
+    await refetchTeams();
+  };
+
   useEffect(() => {
     setTeamsByGroup(sortTeamsByGroup(teams?.teams || []));
   }, [teams]);
@@ -143,10 +152,14 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
                         team={team}
                         key={team.id}
                         group={group}
+                        teamToDelete={teamToDelete}
                         teamsByGroup={teamsByGroup}
                         isFirstGroup={isFirstGroup}
+                        setTeamToDelete={setTeamToDelete}
+                        handleDeleteTeam={handleDeleteTeam}
                         handleGroupChange={handleGroupChange}
                         handleTeamsNameChange={handleTeamsNameChange}
+                        handleCancelDeleteTeam={() => setTeamToDelete(null)}
                       />
                     );
                   })}

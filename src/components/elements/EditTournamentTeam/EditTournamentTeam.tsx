@@ -1,3 +1,4 @@
+import ConfirmTooltip from "components/elements/ConfirmTooltip/ConfirmTooltip";
 import type { FC } from "react";
 import type { TeamsByGroupType, TeamType } from "types/team.types";
 import classNames from "utils/classNames";
@@ -7,7 +8,11 @@ interface EditTournamentTeamProps {
   group: string;
   team: TeamType;
   isFirstGroup: boolean;
+  teamToDelete: TeamType | null;
   teamsByGroup: TeamsByGroupType;
+  handleCancelDeleteTeam: () => void;
+  setTeamToDelete: (team: TeamType) => void;
+  handleDeleteTeam: (team: TeamType) => Promise<void>;
   handleTeamsNameChange: (team: TeamType, newName: string) => void;
   handleGroupChange: (
     team: TeamType,
@@ -21,8 +26,12 @@ const EditTournamentTeam: FC<EditTournamentTeamProps> = ({
   group,
   teamsByGroup,
   isFirstGroup,
+  teamToDelete,
+  setTeamToDelete,
+  handleDeleteTeam,
   handleGroupChange,
   handleTeamsNameChange,
+  handleCancelDeleteTeam,
 }) => {
   return (
     <div
@@ -39,7 +48,26 @@ const EditTournamentTeam: FC<EditTournamentTeamProps> = ({
           handleTeamsNameChange(team, e.target.value);
         }}
       />
-      <div>
+      <div className="flex">
+        <div className="relative">
+          <button
+            className="ml-2 rounded-md bg-red-500 py-0.5 px-2 text-sm text-white"
+            onClick={() => {
+              setTeamToDelete(team);
+            }}
+          >
+            Delete
+          </button>
+          <ConfirmTooltip
+            cancelTitle="Cancel"
+            confirmTitle="Delete"
+            handleConfirm={() => {
+              handleDeleteTeam(team).catch((e) => console.log(e));
+            }}
+            handleCancel={handleCancelDeleteTeam}
+            isTooltip={team.id === teamToDelete?.id}
+          />
+        </div>
         {getAvailableGroups(group, teamsByGroup).map((newGroup) => (
           <button
             key={newGroup}
