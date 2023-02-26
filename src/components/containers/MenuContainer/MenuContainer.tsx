@@ -7,6 +7,7 @@ import type { FC } from "react";
 import { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { TiThMenu } from "react-icons/ti";
+import { CgClose } from "react-icons/cg";
 
 const MENU_ITEMS = [
   {
@@ -59,6 +60,16 @@ const MenuContainer: FC = () => {
         </div>
       }
     >
+      <div className="flex w-full justify-end">
+        <Button
+          btnSize="square"
+          btnColor="outline"
+          btnTitle={<CgClose className="h-6 w-6" />}
+          onClick={() => {
+            setIsDrawerOpen(false);
+          }}
+        />
+      </div>
       {MENU_ITEMS.map((menuItem, i) => (
         <Link
           href={menuItem.path}

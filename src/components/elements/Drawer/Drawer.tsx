@@ -43,7 +43,7 @@ const Drawer: FC<DrawerProps> = ({
               isAnimation && drawerSide === "left"
                 ? "left-0 translate-x-0"
                 : "-translate-x-full",
-              "delay-400 absolute h-full w-screen max-w-[33rem] transform bg-white shadow-md transition-all duration-500 ease-in-out"
+              "delay-400 absolute h-full w-screen max-w-[23rem] transform bg-white shadow-md transition-all duration-500 ease-in-out"
             )}
           >
             {/* <article className="relative flex h-full w-screen max-w-lg flex-col space-y-6 overflow-y-scroll "> */}
