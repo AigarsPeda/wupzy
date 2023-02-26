@@ -48,10 +48,9 @@ const Tournament: NextPage = () => {
     <>
       <div className="mb-4 flex justify-between">
         <TournamentHeader tournament={tournament?.tournament} />
-        <div>
+        <div className="flex w-full justify-end">
           <EditTournament />
         </div>
-        <div className="w-40"></div>
       </div>
       <GroupCardContainer teams={teams?.teams || []} />
     </>

@@ -4,7 +4,6 @@ import type { FC, ReactNode } from "react";
 import { useRef } from "react";
 import { IoClose } from "react-icons/io5";
 import classNames from "utils/classNames";
-import useWindowSize from "../../../hooks/useWindowSize";
 
 interface ModalWrapProps {
   modalWidth?:

@@ -8,7 +8,7 @@ interface TournamentProps {
 
 const TournamentHeader: FC<TournamentProps> = ({ tournament }) => {
   return (
-    <div>
+    <div className="w-full">
       <p className="text-2xl">{tournament?.name}</p>
       <p className="text-sm text-gray-400">
         {formatDate(tournament?.updatedAt)}

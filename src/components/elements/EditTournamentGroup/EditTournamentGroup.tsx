@@ -146,7 +146,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
               >
                 <div
                   className={classNames(
-                    "relative ml-2 grid max-h-[22rem] min-h-[17rem] min-w-[9.375rem] grid-cols-1 content-start overflow-y-auto "
+                    "relative ml-2 grid max-h-[22rem] min-h-[17rem] min-w-[9.375rem] grid-cols-1 content-start overflow-y-auto"
                   )}
                 >
                   <EditTournamentHeader
