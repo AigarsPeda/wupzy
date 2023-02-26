@@ -9,8 +9,32 @@ interface GroupCardContainerProps {
 }
 
 const GroupCardContainer: FC<GroupCardContainerProps> = ({ teams }) => {
+  const createAllPossiblePairsInGroup = (teams: TeamType[]) => {
+    const sorted = sortTeamsByGroup(teams);
+
+    const allPossiblePairs: TeamType[][] = [];
+
+    const pairs = new Map<string, TeamType[][]>([]);
+
+    sorted.forEach((teams, group) => {
+      for (let i = 0; i < teams.length; i++) {
+        for (let j = i + 1; j < teams.length; j++) {
+          const player1 = teams[i];
+          const player2 = teams[j];
+          if (!player1 || !player2) return;
+
+          allPossiblePairs.push([player1, player2]);
+        }
+      }
+
+      pairs.set(group, allPossiblePairs);
+    });
+
+    return pairs;
+  };
+
   return (
-    <div className="">
+    <div>
       <GridLayout minWith="320" isGap>
         {[...sortTeamsByGroup(teams)].map(([group, value]) => {
           return (

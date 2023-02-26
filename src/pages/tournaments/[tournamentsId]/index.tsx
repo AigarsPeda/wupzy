@@ -7,6 +7,7 @@ import useTeams from "hooks/useTeams";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import type { TeamType } from "types/team.types";
 import { api } from "utils/api";
 
 const Tournament: NextPage = () => {
