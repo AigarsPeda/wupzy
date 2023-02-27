@@ -4,6 +4,11 @@ import type { TeamType } from "types/team.types";
 import classNames from "utils/classNames";
 import sortTeamsByGroup from "utils/sortTeamsByGroup";
 
+type GameType = {
+  first: TeamType[];
+  second: TeamType[];
+};
+
 interface GroupCardContainerProps {
   teams: TeamType[];
 }
@@ -11,30 +16,97 @@ interface GroupCardContainerProps {
 const GroupCardContainer: FC<GroupCardContainerProps> = ({ teams }) => {
   const createAllPossiblePairsInGroup = (teams: TeamType[]) => {
     const sorted = sortTeamsByGroup(teams);
+    const groupPairs = new Map<string, TeamType[][]>([]);
 
-    const allPossiblePairs: TeamType[][] = [];
+    for (const group of sorted.keys()) {
+      const teams = sorted.get(group);
 
-    const pairs = new Map<string, TeamType[][]>([]);
+      if (!teams) return groupPairs;
 
-    sorted.forEach((teams, group) => {
+      const allPossiblePairs: TeamType[][] = [];
+
       for (let i = 0; i < teams.length; i++) {
         for (let j = i + 1; j < teams.length; j++) {
           const player1 = teams[i];
           const player2 = teams[j];
-          if (!player1 || !player2) return;
+
+          if (!player1 || !player2) return groupPairs;
 
           allPossiblePairs.push([player1, player2]);
         }
+
+        groupPairs.set(group, allPossiblePairs);
       }
+    }
 
-      pairs.set(group, allPossiblePairs);
-    });
+    return groupPairs;
+  };
 
-    return pairs;
+  const containsObject = (obj: TeamType, list: TeamType[]) => {
+    for (let i = 0; i < list.length; i++) {
+      if (list[i]?.id === obj.id) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+  // Create games of pairs
+  const createGames = (pairs: Map<string, TeamType[][]>) => {
+    const games = new Map<string, GameType[]>([]);
+
+    console.log("pairs ---->", pairs);
+
+    for (const group of pairs.keys()) {
+      const teams = pairs.get(group);
+
+      if (!teams) return games;
+
+      const allPossiblePairs = teams;
+
+      console.log("allPossiblePairs", group, allPossiblePairs);
+
+      for (let i = 0; i < allPossiblePairs.length; i++) {
+        const firstPair = allPossiblePairs[i];
+
+        if (!firstPair) return games;
+
+        for (let j = i + 1; j < allPossiblePairs.length; j++) {
+          const secondPair = allPossiblePairs[j];
+
+          if (!secondPair || !firstPair[0] || !firstPair[1]) return games;
+
+          if (
+            !containsObject(firstPair[0], secondPair) &&
+            !containsObject(firstPair[1], secondPair)
+          ) {
+            const game: GameType = {
+              first: firstPair,
+              second: secondPair,
+            };
+
+            const test = games.get(group);
+
+            if (test) {
+              test.push(game);
+              break;
+            }
+
+            games.set(group, [game]);
+          }
+        }
+      }
+    }
+
+    console.log("games", games);
+
+    // return games;
   };
 
   return (
     <div>
+      {createGames(createAllPossiblePairsInGroup(teams))}
       <GridLayout minWith="320" isGap>
         {[...sortTeamsByGroup(teams)].map(([group, value]) => {
           return (
