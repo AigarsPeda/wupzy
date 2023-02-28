@@ -14,6 +14,7 @@ interface GroupCardContainerProps {
 }
 
 const GroupCardContainer: FC<GroupCardContainerProps> = ({ teams }) => {
+  // TODO: Create all possible pairs in group and create games in backend?
   const createAllPossiblePairsInGroup = (teams: TeamType[]) => {
     const sorted = sortTeamsByGroup(teams);
     const groupPairs = new Map<string, TeamType[][]>([]);
