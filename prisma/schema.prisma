@@ -30,28 +30,55 @@ model User {
 
 // One user can have many Tournaments
 model Tournament {
-  teams     Team[]
   name      String
   userId    String
   winner    String?
-  updatedAt DateTime @updatedAt
-  createdAt DateTime @default(now())
-  id        String   @id @default(cuid())
-  user      User     @relation(fields: [userId], references: [id])
+  teams     Participant[]
+  updatedAt DateTime      @updatedAt
+  createdAt DateTime      @default(now())
+  id        String        @id @default(cuid())
+  user      User          @relation(fields: [userId], references: [id])
+  // Games     Games[]
 }
 
 // One Tournament can have many teams
-model Team {
+// model Team {
+model Participant {
   name         String
   tournamentId String
   group        String
   updatedAt    DateTime   @updatedAt
   score        Int        @default(0)
-  // group        String     @default("A")
   createdAt    DateTime   @default(now())
   id           String     @id @default(cuid())
   tournament   Tournament @relation(fields: [tournamentId], references: [id])
+  // games1       Games[]    @relation(name: "team1")
+  // games2       Games[]    @relation(name: "team2")
 }
+
+// Game
+// winner
+// Team1 = [Team, Team]
+// Team2 = [Team, Team]
+// tournamentId
+
+model Games {
+  id       String  @id @default(cuid())
+  winnerId String?
+}
+
+// model Games {
+//   team1id      String
+//   team2id      String
+//   tournamentId String?
+//   winnerId     String?
+//   score1       Int         @default(0)
+//   score2       Int         @default(0)
+//   id           String      @id @default(cuid())
+//   Tournament   Tournament? @relation(fields: [tournamentId], references: [id])
+//   team1        Team        @relation(name: "team1", fields: [team1id], references: [id])
+//   team2        Team        @relation(name: "team2", fields: [team2id], references: [id])
+// }
 
 // One user can have one password
 model Password {
