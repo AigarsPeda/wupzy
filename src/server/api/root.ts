@@ -1,8 +1,8 @@
-import { createTRPCRouter } from "./trpc";
 import { exampleRouter } from "./routers/example";
-import { usersRouter } from "./routers/users";
+import { participantRouter } from "./routers/teams";
 import { tournamentsRouter } from "./routers/tournaments";
-import { teamsRouter } from "./routers/teams";
+import { usersRouter } from "./routers/users";
+import { createTRPCRouter } from "./trpc";
 
 /**
  * This is the primary router for your server.
@@ -11,9 +11,9 @@ import { teamsRouter } from "./routers/teams";
  */
 export const appRouter = createTRPCRouter({
   users: usersRouter,
-  teams: teamsRouter,
   example: exampleRouter,
   tournaments: tournamentsRouter,
+  participant: participantRouter,
 });
 
 // export type definition of API

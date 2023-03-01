@@ -19,7 +19,7 @@ const AddNewTeam: FC<AddNewTeamProps> = ({
   handleCancelClick,
 }) => {
   const [teamsName, setTeamsName] = useState("");
-  const { mutateAsync } = api.teams.addTeam.useMutation();
+  const { mutateAsync } = api.participant.addParticipant.useMutation();
 
   const handleAddingTeam = async () => {
     if (!addNewTeamGroup) {

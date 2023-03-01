@@ -6,11 +6,11 @@ const useTeams = () => {
   const router = useRouter();
   const [tournamentId, setTournamentId] = useState("");
   const {
-    data: teams,
-    error: teamsError,
-    refetch: refetchTeams,
-    isLoading: isTeamsLoading,
-  } = api.teams.getTournamentTeams.useQuery({
+    data: participant,
+    error: participantError,
+    refetch: refetchParticipant,
+    isLoading: isParticipantLoading,
+  } = api.participant.getTournamentParticipant.useQuery({
     id: tournamentId,
   });
 
@@ -26,11 +26,11 @@ const useTeams = () => {
   }, [router.query.tournamentsId]);
 
   return {
-    teams,
-    teamsError,
-    refetchTeams,
+    participant,
     tournamentId,
-    isTeamsLoading,
+    participantError,
+    refetchParticipant,
+    isParticipantLoading,
   };
 };
 

@@ -2,24 +2,24 @@ import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
-export const teamsRouter = createTRPCRouter({
-  getTournamentTeams: protectedProcedure
+export const participantRouter = createTRPCRouter({
+  getTournamentParticipant: protectedProcedure
     .input(
       z.object({
         id: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
-      const teams = await ctx.prisma.team.findMany({
+      const participant = await ctx.prisma.participant.findMany({
         where: {
           tournamentId: input.id,
         },
       });
 
-      return { teams };
+      return { participant };
     }),
 
-  addTeam: protectedProcedure
+  addParticipant: protectedProcedure
     .input(
       z.object({
         name: z.string(),
@@ -29,7 +29,7 @@ export const teamsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const team = await ctx.prisma.team.create({
+      const team = await ctx.prisma.participant.create({
         data: {
           name: input.name,
           group: input.group,
@@ -41,14 +41,14 @@ export const teamsRouter = createTRPCRouter({
       return { team };
     }),
 
-  deleteTeam: protectedProcedure
+  deleteParticipant: protectedProcedure
     .input(
       z.object({
         id: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const team = await ctx.prisma.team.delete({
+      const team = await ctx.prisma.participant.delete({
         where: {
           id: input.id,
         },
@@ -57,7 +57,7 @@ export const teamsRouter = createTRPCRouter({
       return { team };
     }),
 
-  updateTeam: protectedProcedure
+  updateParticipant: protectedProcedure
     .input(
       z.object({
         teams: z.array(
@@ -72,7 +72,7 @@ export const teamsRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       for (const team of input.teams) {
-        await ctx.prisma.team.update({
+        await ctx.prisma.participant.update({
           where: {
             id: team.id,
           },

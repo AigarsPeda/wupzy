@@ -25,9 +25,9 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   handleCloseModal,
 }) => {
   const { windowSize } = useWindowSize();
-  const deleteTeam = api.teams.deleteTeam.useMutation();
-  const { teams, refetchTeams, tournamentId } = useTeams();
-  const { mutateAsync } = api.teams.updateTeam.useMutation();
+  const deleteTeam = api.participant.deleteParticipant.useMutation();
+  const { participant, refetchParticipant, tournamentId } = useTeams();
+  const { mutateAsync } = api.participant.updateParticipant.useMutation();
   const [teamToDelete, setTeamToDelete] = useState<TeamType | null>(null);
   const [addNewTeamGroup, setAddNewTeamGroup] = useState<string | null>(null);
   const [teamsByGroup, setTeamsByGroup] = useState<TeamsByGroupType>(new Map());
@@ -88,19 +88,19 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       teams: teamsArray,
     });
 
-    await refetchTeams();
+    await refetchParticipant();
   };
 
   const handleDeleteTeam = async (team: TeamType) => {
     await deleteTeam.mutateAsync({
       id: team.id,
     });
-    await refetchTeams();
+    await refetchParticipant();
   };
 
   useEffect(() => {
-    setTeamsByGroup(sortTeamsByGroup(teams?.teams || []));
-  }, [teams]);
+    setTeamsByGroup(sortTeamsByGroup(participant?.participant || []));
+  }, [participant]);
 
   return (
     <ModalWrap
@@ -123,7 +123,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
         isAddNewTeamOpen={Boolean(addNewTeamGroup)}
         handleCancelClick={() => {
           setAddNewTeamGroup(null);
-          refetchTeams().catch((err) => console.error(err));
+          refetchParticipant().catch((err) => console.error(err));
         }}
       />
 
