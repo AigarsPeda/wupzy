@@ -5,12 +5,10 @@ import TournamentHeader from "components/elements/TournamentHeader/TournamentHea
 import useRedirect from "hooks/useRedirect";
 import useTeams from "hooks/useTeams";
 import type { NextPage } from "next";
-import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { api } from "utils/api";
 
 const Tournament: NextPage = () => {
-  const router = useRouter();
   const { redirectToPath } = useRedirect();
   const { participant, participantError, tournamentId, isParticipantLoading } =
     useTeams();

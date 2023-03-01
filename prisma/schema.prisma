@@ -33,16 +33,14 @@ model Tournament {
   name      String
   userId    String
   winner    String?
+  Games     Games[]
   teams     Participant[]
   updatedAt DateTime      @updatedAt
   createdAt DateTime      @default(now())
   id        String        @id @default(cuid())
   user      User          @relation(fields: [userId], references: [id])
-  // Games     Games[]
 }
 
-// One Tournament can have many teams
-// model Team {
 model Participant {
   name         String
   tournamentId String
@@ -52,19 +50,16 @@ model Participant {
   createdAt    DateTime   @default(now())
   id           String     @id @default(cuid())
   tournament   Tournament @relation(fields: [tournamentId], references: [id])
-  // games1       Games[]    @relation(name: "team1")
-  // games2       Games[]    @relation(name: "team2")
+  games        Games[]
 }
 
-// Game
-// winner
-// Team1 = [Team, Team]
-// Team2 = [Team, Team]
-// tournamentId
-
 model Games {
-  id       String  @id @default(cuid())
-  winnerId String?
+  winnerId      String?
+  participantId String? // <-- this should be a participant id's array 
+  tournamentId  String?
+  id            String       @id @default(cuid())
+  Turnament     Tournament?  @relation(fields: [tournamentId], references: [id])
+  Participant   Participant? @relation(fields: [participantId], references: [id])
 }
 
 // model Games {
