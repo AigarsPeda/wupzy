@@ -1,9 +1,12 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import createAllPossiblePairsInGroup from "../../../utils/createAllPossiblePairsInGroup";
-import createGames from "../../../utils/createGames";
-
+import createAllPossiblePairsInGroup from "utils/createAllPossiblePairsInGroup";
+import createGames from "utils/createGames";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
+
+type IdsType = {
+  id: string;
+};
 
 export const tournamentsRouter = createTRPCRouter({
   getAllTournaments: protectedProcedure.query(async ({ ctx }) => {
@@ -48,32 +51,35 @@ export const tournamentsRouter = createTRPCRouter({
       for (const group of games.keys()) {
         const gamesInGroup = games.get(group);
 
+        const idsArray: IdsType[] = [];
+
         if (!gamesInGroup) return;
 
         for (let i = 0; i < gamesInGroup.length; i++) {
           const game = gamesInGroup[i];
 
+          if (!game) return;
+
+          for (const item in game) {
+            const p = game[item as keyof typeof game];
+
+            const ids = p.map((participant) => {
+              return {
+                id: participant.id,
+              };
+            });
+
+            idsArray.push(...ids);
+          }
+
           await ctx.prisma.games.create({
             data: {
+              group,
               team1score: 0,
               team2score: 0,
               tournamentId: tournament.id,
-              group,
               participant: {
-                connect: [
-                  {
-                    id: game?.first[0]?.id,
-                  },
-                  {
-                    id: game?.second[1]?.id,
-                  },
-                  {
-                    id: game?.second[0]?.id,
-                  },
-                  {
-                    id: game?.second[1]?.id,
-                  },
-                ],
+                connect: [...idsArray],
               },
             },
           });

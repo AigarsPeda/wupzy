@@ -49,8 +49,6 @@ model Participant {
   games1Id     String?
   games2Id     String?
   games        Games[]
-  // team1        Games[]    @relation(name: "team1")
-  // team2        Games[]    @relation(name: "team2")
 }
 
 model Games {
@@ -59,13 +57,9 @@ model Games {
   tournamentId String
   winnerId     String?
   group        String
-  // team1        Participant[] @relation(name: "team1")
-  // team2        Participant[] @relation(name: "team2")
   id           String        @id @default(cuid())
   Turnament    Tournament?   @relation(fields: [tournamentId], references: [id])
   participant  Participant[]
-
-  // participantId String?
 }
 
 // One user can have one password
