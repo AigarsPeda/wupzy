@@ -2,7 +2,9 @@ import GridLayout from "components/layouts/GridLayout/GridLayout";
 import type { FC } from "react";
 import type { TeamType } from "types/team.types";
 import classNames from "utils/classNames";
+import createAllPossiblePairsInGroup from "utils/createAllPossiblePairsInGroup";
 import sortTeamsByGroup from "utils/sortTeamsByGroup";
+import containsParticipants from "../../../utils/containsParticipants";
 
 type GameType = {
   first: TeamType[];
@@ -10,48 +12,48 @@ type GameType = {
 };
 
 interface GroupCardContainerProps {
-  teams: TeamType[];
+  participants: TeamType[];
 }
 
-const GroupCardContainer: FC<GroupCardContainerProps> = ({ teams }) => {
+const GroupCardContainer: FC<GroupCardContainerProps> = ({ participants }) => {
   // TODO: Create all possible pairs in group and create games in backend?
-  const createAllPossiblePairsInGroup = (teams: TeamType[]) => {
-    const sorted = sortTeamsByGroup(teams);
-    const groupPairs = new Map<string, TeamType[][]>([]);
+  // const createAllPossiblePairsInGroup = (teams: TeamType[]) => {
+  //   const sorted = sortTeamsByGroup(teams);
+  //   const groupPairs = new Map<string, TeamType[][]>([]);
 
-    for (const group of sorted.keys()) {
-      const teams = sorted.get(group);
+  //   for (const group of sorted.keys()) {
+  //     const teams = sorted.get(group);
 
-      if (!teams) return groupPairs;
+  //     if (!teams) return groupPairs;
 
-      const allPossiblePairs: TeamType[][] = [];
+  //     const allPossiblePairs: TeamType[][] = [];
 
-      for (let i = 0; i < teams.length; i++) {
-        for (let j = i + 1; j < teams.length; j++) {
-          const player1 = teams[i];
-          const player2 = teams[j];
+  //     for (let i = 0; i < teams.length; i++) {
+  //       for (let j = i + 1; j < teams.length; j++) {
+  //         const player1 = teams[i];
+  //         const player2 = teams[j];
 
-          if (!player1 || !player2) return groupPairs;
+  //         if (!player1 || !player2) return groupPairs;
 
-          allPossiblePairs.push([player1, player2]);
-        }
+  //         allPossiblePairs.push([player1, player2]);
+  //       }
 
-        groupPairs.set(group, allPossiblePairs);
-      }
-    }
+  //       groupPairs.set(group, allPossiblePairs);
+  //     }
+  //   }
 
-    return groupPairs;
-  };
+  //   return groupPairs;
+  // };
 
-  const containsObject = (obj: TeamType, list: TeamType[]) => {
-    for (let i = 0; i < list.length; i++) {
-      if (list[i]?.id === obj.id) {
-        return true;
-      }
-    }
+  // const containsParticipants = (obj: TeamType, list: TeamType[]) => {
+  //   for (let i = 0; i < list.length; i++) {
+  //     if (list[i]?.id === obj.id) {
+  //       return true;
+  //     }
+  //   }
 
-    return false;
-  };
+  //   return false;
+  // };
 
   // Create games of pairs
   const createGames = (pairs: Map<string, TeamType[][]>) => {
@@ -79,8 +81,8 @@ const GroupCardContainer: FC<GroupCardContainerProps> = ({ teams }) => {
           if (!secondPair || !firstPair[0] || !firstPair[1]) return games;
 
           if (
-            !containsObject(firstPair[0], secondPair) &&
-            !containsObject(firstPair[1], secondPair)
+            !containsParticipants(firstPair[0], secondPair) &&
+            !containsParticipants(firstPair[1], secondPair)
           ) {
             const game: GameType = {
               first: firstPair,
@@ -107,9 +109,9 @@ const GroupCardContainer: FC<GroupCardContainerProps> = ({ teams }) => {
 
   return (
     <div>
-      {createGames(createAllPossiblePairsInGroup(teams))}
+      {createGames(createAllPossiblePairsInGroup(participants))}
       <GridLayout minWith="320" isGap>
-        {[...sortTeamsByGroup(teams)].map(([group, value]) => {
+        {[...sortTeamsByGroup(participants)].map(([group, value]) => {
           return (
             <div
               key={group}

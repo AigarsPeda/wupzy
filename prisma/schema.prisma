@@ -6,15 +6,9 @@ generator client {
 }
 
 datasource db {
-  // provider = "sqlite"
+  // provider = "sqlite" // uncomment this line to use SQLite
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-model Example {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model User {
@@ -22,11 +16,11 @@ model User {
   lastName    String
   Password    Password[]
   LoginToken  LoginToken[]
+  Tournaments Tournament[]
   email       String       @unique
   updatedAt   DateTime     @updatedAt
   createdAt   DateTime     @default(now())
   id          String       @id @default(cuid())
-  Tournaments Tournament[]
 }
 
 // One user can have many Tournaments
@@ -46,42 +40,40 @@ model Participant {
   name         String
   tournamentId String
   group        String
+  // Games        Games[]
   updatedAt    DateTime   @updatedAt
   score        Int        @default(0)
   createdAt    DateTime   @default(now())
   id           String     @id @default(cuid())
   tournament   Tournament @relation(fields: [tournamentId], references: [id])
+  games1Id     String?
+  games2Id     String?
   games        Games[]
+  // team1        Games[]    @relation(name: "team1")
+  // team2        Games[]    @relation(name: "team2")
 }
 
 model Games {
-  winnerId      String?
-  participantId String? // <-- this should be a participant id's array 
-  tournamentId  String?
-  id            String       @id @default(cuid())
-  Turnament     Tournament?  @relation(fields: [tournamentId], references: [id])
-  Participant   Participant? @relation(fields: [participantId], references: [id])
-}
+  team1score   Int
+  team2score   Int
+  tournamentId String
+  winnerId     String?
+  group        String
+  // team1        Participant[] @relation(name: "team1")
+  // team2        Participant[] @relation(name: "team2")
+  id           String        @id @default(cuid())
+  Turnament    Tournament?   @relation(fields: [tournamentId], references: [id])
+  participant  Participant[]
 
-// model Games {
-//   team1id      String
-//   team2id      String
-//   tournamentId String?
-//   winnerId     String?
-//   score1       Int         @default(0)
-//   score2       Int         @default(0)
-//   id           String      @id @default(cuid())
-//   Tournament   Tournament? @relation(fields: [tournamentId], references: [id])
-//   team1        Team        @relation(name: "team1", fields: [team1id], references: [id])
-//   team2        Team        @relation(name: "team2", fields: [team2id], references: [id])
-// }
+  // participantId String?
+}
 
 // One user can have one password
 model Password {
   password String
   userId   String @unique
-  user     User   @relation(fields: [userId], references: [id])
   id       String @id @default(cuid())
+  user     User   @relation(fields: [userId], references: [id])
 }
 
 // One user can have many login tokens

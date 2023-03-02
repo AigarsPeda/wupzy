@@ -50,7 +50,7 @@ const Tournament: NextPage = () => {
           <EditTournament />
         </div>
       </div>
-      <GroupCardContainer teams={participant?.participant || []} />
+      <GroupCardContainer participants={participant?.participants || []} />
     </>
   );
 };

@@ -35,6 +35,11 @@ const NewTournamentContainer: FC = () => {
       name: tournamentName,
     });
 
+    if (!tournament) {
+      console.error("error creating tournament");
+      return;
+    }
+
     setFormStep(0);
     setIsModalOpen(false);
     setTournamentName("");

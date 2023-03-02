@@ -3,20 +3,20 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const participantRouter = createTRPCRouter({
-  getTournamentParticipant: protectedProcedure
+  getTournamentParticipants: protectedProcedure
     .input(
       z.object({
         id: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
-      const participant = await ctx.prisma.participant.findMany({
+      const participants = await ctx.prisma.participant.findMany({
         where: {
           tournamentId: input.id,
         },
       });
 
-      return { participant };
+      return { participants };
     }),
 
   addParticipant: protectedProcedure
