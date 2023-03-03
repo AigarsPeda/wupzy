@@ -51,8 +51,6 @@ export const tournamentsRouter = createTRPCRouter({
       for (const group of games.keys()) {
         const gamesInGroup = games.get(group);
 
-        const idsArray: IdsType[] = [];
-
         if (!gamesInGroup) return;
 
         for (let i = 0; i < gamesInGroup.length; i++) {
@@ -60,26 +58,26 @@ export const tournamentsRouter = createTRPCRouter({
 
           if (!game) return;
 
-          for (const item in game) {
-            const p = game[item as keyof typeof game];
-
-            const ids = p.map((participant) => {
-              return {
-                id: participant.id,
-              };
-            });
-
-            idsArray.push(...ids);
-          }
+          const firsIds = game.first.map((participant) => {
+            return {
+              id: participant.id,
+            };
+          });
+          const secondIds = game.second.map((participant) => {
+            return {
+              id: participant.id,
+            };
+          });
 
           await ctx.prisma.games.create({
             data: {
               group,
-              team1score: 0,
-              team2score: 0,
               tournamentId: tournament.id,
-              participant: {
-                connect: [...idsArray],
+              participant_team_1: {
+                connect: [...firsIds],
+              },
+              participant_team_2: {
+                connect: [...secondIds],
               },
             },
           });
@@ -87,6 +85,24 @@ export const tournamentsRouter = createTRPCRouter({
       }
 
       return { tournament };
+    }),
+
+  getTournamentGames: protectedProcedure
+    .input(z.object({ id: z.string(), group: z.string().nullish() }))
+    .query(async ({ ctx, input }) => {
+      const games = await ctx.prisma.games.findMany({
+        where: {
+          group: input.group ?? undefined,
+          tournamentId: input.id,
+        },
+        include: {
+          participant_team_1: true,
+          participant_team_2: true,
+          tournament: true,
+        },
+      });
+
+      return { games };
     }),
 
   getTournament: protectedProcedure

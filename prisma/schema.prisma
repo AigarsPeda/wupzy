@@ -40,26 +40,25 @@ model Participant {
   name         String
   tournamentId String
   group        String
-  // Games        Games[]
-  updatedAt    DateTime   @updatedAt
-  score        Int        @default(0)
-  createdAt    DateTime   @default(now())
-  id           String     @id @default(cuid())
-  tournament   Tournament @relation(fields: [tournamentId], references: [id])
-  games1Id     String?
-  games2Id     String?
-  games        Games[]
+
+  updatedAt  DateTime   @updatedAt
+  score      Int        @default(0)
+  createdAt  DateTime   @default(now())
+  id         String     @id @default(cuid())
+  games      Games[]    @relation("participant_team_1")
+  games2     Games[]    @relation("participant_team_2")
+  tournament Tournament @relation(fields: [tournamentId], references: [id])
 }
 
 model Games {
-  team1score   Int
-  team2score   Int
-  tournamentId String
-  winnerId     String?
-  group        String
-  id           String        @id @default(cuid())
-  Turnament    Tournament?   @relation(fields: [tournamentId], references: [id])
-  participant  Participant[]
+  winnerId           String?
+  group              String
+  tournamentId       String
+  participantId      String[]
+  id                 String        @id @default(cuid())
+  participant_team_1 Participant[] @relation("participant_team_1")
+  participant_team_2 Participant[] @relation("participant_team_2")
+  tournament         Tournament    @relation(fields: [tournamentId], references: [id])
 }
 
 // One user can have one password

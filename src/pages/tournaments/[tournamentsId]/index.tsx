@@ -10,6 +10,7 @@ import { api } from "utils/api";
 
 const Tournament: NextPage = () => {
   const { redirectToPath } = useRedirect();
+
   const { participant, participantError, tournamentId, isParticipantLoading } =
     useTeams();
   const { isLoading, data: tournament } =
@@ -22,6 +23,10 @@ const Tournament: NextPage = () => {
         enabled: !!tournamentId,
       }
     );
+
+  const { data: games } = api.tournaments.getTournamentGames.useQuery({
+    id: tournamentId,
+  });
 
   useEffect(() => {
     if (
@@ -45,6 +50,7 @@ const Tournament: NextPage = () => {
   return (
     <>
       <div className="mb-4 flex justify-between">
+        {console.log("games ---->", games?.games)}
         <TournamentHeader tournament={tournament?.tournament} />
         <div className="flex w-full justify-end">
           <EditTournament />

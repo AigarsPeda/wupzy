@@ -99,7 +99,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   };
 
   useEffect(() => {
-    setTeamsByGroup(sortTeamsByGroup(participant?.participant || []));
+    setTeamsByGroup(sortTeamsByGroup(participant?.participants || []));
   }, [participant]);
 
   return (
