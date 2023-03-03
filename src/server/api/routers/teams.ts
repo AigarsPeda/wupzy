@@ -52,9 +52,6 @@ export const participantRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
-        // include: {
-        //   tournament: true,
-        // },
       });
 
       return { games };
@@ -67,41 +64,35 @@ export const participantRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      // const team = await ctx.prisma.participant.delete({
-      //   where: {
-      //     id: input.id,
-      //   },
-      // });
-      // await ctx.prisma.participant.delete({
-      //   where: {
-      //     id: input.id,
-      //   },
-      // });
-      // const games = await ctx.prisma.games.findMany({
-      //   where: {
-      //     OR: [
-      //       {
-      //         team_1_id: input.id,
-      //       },
-      //       {
-      //         team_2_id: input.id,
-      //       },
-      //     ],
-      //   },
-      // });
-      // await ctx.prisma.games.deleteMany({
-      //   where: {
-      //     OR: [
-      //       {
-      //         // team_1_id
-      //         team_1_id: input.id,
-      //       },
-      //       {
-      //         team2Id: input.id,
-      //       },
-      //     ],
-      //   },
-      // });
+      const games = await ctx.prisma.games.findMany({
+        where: {
+          OR: [
+            {
+              participant_team_1: {
+                some: {
+                  id: input.id,
+                },
+              },
+            },
+            {
+              participant_team_2: {
+                some: {
+                  id: input.id,
+                },
+              },
+            },
+          ],
+        },
+      });
+
+      console.log("games => ", games);
+
+      for (const game of games) {
+        await ctx.prisma.games.delete({ where: { id: game.id } });
+      }
+
+      await ctx.prisma.participant.delete({ where: { id: input.id } });
+
       // return { team };
     }),
 

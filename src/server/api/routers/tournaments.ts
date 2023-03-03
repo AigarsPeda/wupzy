@@ -4,10 +4,6 @@ import createAllPossiblePairsInGroup from "utils/createAllPossiblePairsInGroup";
 import createGames from "utils/createGames";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
-type IdsType = {
-  id: string;
-};
-
 export const tournamentsRouter = createTRPCRouter({
   getAllTournaments: protectedProcedure.query(async ({ ctx }) => {
     const tournaments = await ctx.prisma.tournament.findMany({
