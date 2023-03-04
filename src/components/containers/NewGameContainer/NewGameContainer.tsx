@@ -35,12 +35,17 @@ const NewTournamentContainer: FC = () => {
       name: tournamentName,
     });
 
+    if (!tournament) {
+      console.error("error creating tournament");
+      return;
+    }
+
     setFormStep(0);
     setIsModalOpen(false);
     setTournamentName("");
     setAttendants(["", "", "", ""]);
     router.push(`/tournaments/${tournament.tournament.id}`).catch(() => {
-      console.log("error changing route");
+      console.error("error changing route");
     });
   };
 

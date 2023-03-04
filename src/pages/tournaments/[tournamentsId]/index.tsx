@@ -5,11 +5,12 @@ import TournamentHeader from "components/elements/TournamentHeader/TournamentHea
 import useRedirect from "hooks/useRedirect";
 import useTeams from "hooks/useTeams";
 import type { NextPage } from "next";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { api } from "utils/api";
 
 const Tournament: NextPage = () => {
   const { redirectToPath } = useRedirect();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { participant, participantError, tournamentId, isParticipantLoading } =
     useTeams();
   const { isLoading, data: tournament } =
@@ -22,6 +23,10 @@ const Tournament: NextPage = () => {
         enabled: !!tournamentId,
       }
     );
+
+  const { data: games } = api.tournaments.getTournamentGames.useQuery({
+    id: tournamentId,
+  });
 
   useEffect(() => {
     if (
@@ -38,6 +43,10 @@ const Tournament: NextPage = () => {
     participantError?.data?.code,
   ]);
 
+  const handleModalClick = (b: boolean) => {
+    setIsModalOpen(b);
+  };
+
   if (isLoading) {
     return <Spinner size="small" />;
   }
@@ -45,12 +54,16 @@ const Tournament: NextPage = () => {
   return (
     <>
       <div className="mb-4 flex justify-between">
+        {console.log("games from API ---->", games?.games)}
         <TournamentHeader tournament={tournament?.tournament} />
         <div className="flex w-full justify-end">
-          <EditTournament />
+          <EditTournament
+            isModalOpen={isModalOpen}
+            handleModalClick={handleModalClick}
+          />
         </div>
       </div>
-      <GroupCardContainer teams={participant?.participant || []} />
+      <GroupCardContainer participants={participant?.participants || []} />
     </>
   );
 };

@@ -1,22 +1,24 @@
+import createIdsArrays from "server/api/routers/utils/createIdsArrays";
+import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
+import createAllPossiblePairsInGroup from "utils/createAllPossiblePairsInGroup";
+import createGames from "utils/createGames";
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure } from "../trpc";
-
 export const participantRouter = createTRPCRouter({
-  getTournamentParticipant: protectedProcedure
+  getTournamentParticipants: protectedProcedure
     .input(
       z.object({
         id: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
-      const participant = await ctx.prisma.participant.findMany({
+      const participants = await ctx.prisma.participant.findMany({
         where: {
           tournamentId: input.id,
         },
       });
 
-      return { participant };
+      return { participants };
     }),
 
   addParticipant: protectedProcedure
@@ -41,6 +43,22 @@ export const participantRouter = createTRPCRouter({
       return { team };
     }),
 
+  getParticipantGames: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const games = await ctx.prisma.games.findMany({
+        where: {
+          id: input.id,
+        },
+      });
+
+      return { games };
+    }),
+
   deleteParticipant: protectedProcedure
     .input(
       z.object({
@@ -48,16 +66,46 @@ export const participantRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const team = await ctx.prisma.participant.delete({
+      const games = await ctx.prisma.games.findMany({
         where: {
-          id: input.id,
+          OR: [
+            {
+              participant_team_1: {
+                some: {
+                  id: input.id,
+                },
+              },
+            },
+            {
+              participant_team_2: {
+                some: {
+                  id: input.id,
+                },
+              },
+            },
+          ],
         },
       });
 
-      return { team };
+      // for (const game of games) {
+      //   await ctx.prisma.games.delete({ where: { id: game.id } });
+      // }
+      await Promise.all(
+        games.map((game) =>
+          ctx.prisma.games.delete({
+            where: {
+              id: game.id,
+            },
+          })
+        )
+      );
+
+      await ctx.prisma.participant.delete({ where: { id: input.id } });
+
+      // return { team };
     }),
 
-  updateParticipant: protectedProcedure
+  updateParticipants: protectedProcedure
     .input(
       z.object({
         teams: z.array(
@@ -68,6 +116,7 @@ export const participantRouter = createTRPCRouter({
             score: z.number(),
           })
         ),
+        tournamentId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -83,6 +132,35 @@ export const participantRouter = createTRPCRouter({
           },
         });
       }
+
+      // Before creating new games, delete all old games
+      await ctx.prisma.games.deleteMany({
+        where: { tournamentId: input.tournamentId },
+      });
+
+      const participants = await ctx.prisma.participant.findMany({
+        where: {
+          tournamentId: input.tournamentId,
+        },
+      });
+
+      const participantsMap = createAllPossiblePairsInGroup(participants);
+      const gamesMap = createGames(participantsMap);
+
+      await createIdsArrays(gamesMap, async (group, firsIds, secondIds) => {
+        await ctx.prisma.games.create({
+          data: {
+            group,
+            tournamentId: input.tournamentId,
+            participant_team_1: {
+              connect: [...firsIds],
+            },
+            participant_team_2: {
+              connect: [...secondIds],
+            },
+          },
+        });
+      });
 
       return { teams: input.teams };
     }),

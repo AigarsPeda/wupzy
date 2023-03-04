@@ -6,15 +6,9 @@ generator client {
 }
 
 datasource db {
-  // provider = "sqlite"
+  // provider = "sqlite" // uncomment this line to use SQLite
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-model Example {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model User {
@@ -22,11 +16,11 @@ model User {
   lastName    String
   Password    Password[]
   LoginToken  LoginToken[]
+  Tournaments Tournament[]
   email       String       @unique
   updatedAt   DateTime     @updatedAt
   createdAt   DateTime     @default(now())
   id          String       @id @default(cuid())
-  Tournaments Tournament[]
 }
 
 // One user can have many Tournaments
@@ -50,38 +44,28 @@ model Participant {
   score        Int        @default(0)
   createdAt    DateTime   @default(now())
   id           String     @id @default(cuid())
+  games        Games[]    @relation("participant_team_1")
+  games2       Games[]    @relation("participant_team_2")
   tournament   Tournament @relation(fields: [tournamentId], references: [id])
-  games        Games[]
 }
 
 model Games {
-  winnerId      String?
-  participantId String? // <-- this should be a participant id's array 
-  tournamentId  String?
-  id            String       @id @default(cuid())
-  Turnament     Tournament?  @relation(fields: [tournamentId], references: [id])
-  Participant   Participant? @relation(fields: [participantId], references: [id])
+  winnerId           String?
+  group              String
+  tournamentId       String
+  participantId      String[]
+  id                 String        @id @default(cuid())
+  participant_team_1 Participant[] @relation("participant_team_1")
+  participant_team_2 Participant[] @relation("participant_team_2")
+  tournament         Tournament    @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
 }
-
-// model Games {
-//   team1id      String
-//   team2id      String
-//   tournamentId String?
-//   winnerId     String?
-//   score1       Int         @default(0)
-//   score2       Int         @default(0)
-//   id           String      @id @default(cuid())
-//   Tournament   Tournament? @relation(fields: [tournamentId], references: [id])
-//   team1        Team        @relation(name: "team1", fields: [team1id], references: [id])
-//   team2        Team        @relation(name: "team2", fields: [team2id], references: [id])
-// }
 
 // One user can have one password
 model Password {
   password String
   userId   String @unique
-  user     User   @relation(fields: [userId], references: [id])
   id       String @id @default(cuid())
+  user     User   @relation(fields: [userId], references: [id])
 }
 
 // One user can have many login tokens

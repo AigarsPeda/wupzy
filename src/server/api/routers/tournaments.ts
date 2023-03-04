@@ -1,7 +1,9 @@
 import { TRPCError } from "@trpc/server";
+import createIdsArrays from "server/api/routers/utils/createIdsArrays";
+import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
+import createAllPossiblePairsInGroup from "utils/createAllPossiblePairsInGroup";
+import createGames from "utils/createGames";
 import { z } from "zod";
-
-import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const tournamentsRouter = createTRPCRouter({
   getAllTournaments: protectedProcedure.query(async ({ ctx }) => {
@@ -34,7 +36,50 @@ export const tournamentsRouter = createTRPCRouter({
         });
       }
 
+      const participants = await ctx.prisma.participant.findMany({
+        where: {
+          tournamentId: tournament.id,
+        },
+      });
+
+      const participantsMap = createAllPossiblePairsInGroup(participants);
+      const gamesMap = createGames(participantsMap);
+
+      await createIdsArrays(gamesMap, async (group, firsIds, secondIds) => {
+        // Save games to database
+        await ctx.prisma.games.create({
+          data: {
+            group,
+            tournamentId: tournament.id,
+            participant_team_1: {
+              connect: [...firsIds],
+            },
+            participant_team_2: {
+              connect: [...secondIds],
+            },
+          },
+        });
+      });
+
       return { tournament };
+    }),
+
+  getTournamentGames: protectedProcedure
+    .input(z.object({ id: z.string(), group: z.string().nullish() }))
+    .query(async ({ ctx, input }) => {
+      const games = await ctx.prisma.games.findMany({
+        where: {
+          group: input.group ?? undefined,
+          tournamentId: input.id,
+        },
+        include: {
+          participant_team_1: true,
+          participant_team_2: true,
+          tournament: true,
+        },
+      });
+
+      return { games };
     }),
 
   getTournament: protectedProcedure

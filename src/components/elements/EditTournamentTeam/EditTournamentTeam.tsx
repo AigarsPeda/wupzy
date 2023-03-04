@@ -2,7 +2,7 @@ import ConfirmTooltip from "components/elements/ConfirmTooltip/ConfirmTooltip";
 import SmallButton from "components/elements/SmallButton/SmallButton";
 import type { FC } from "react";
 import { useRef } from "react";
-import type { TeamsByGroupType, TeamType } from "types/team.types";
+import type { TeamsMapType, TeamType } from "types/team.types";
 import classNames from "utils/classNames";
 import { getAvailableGroups } from "utils/teamsMapFunctions";
 import { FiEdit2 } from "react-icons/fi";
@@ -11,8 +11,8 @@ interface EditTournamentTeamProps {
   group: string;
   team: TeamType;
   isFirstGroup: boolean;
+  teamsByGroup: TeamsMapType;
   teamToDelete: TeamType | null;
-  teamsByGroup: TeamsByGroupType;
   handleCancelDeleteTeam: () => void;
   setTeamToDelete: (team: TeamType) => void;
   handleDeleteTeam: (team: TeamType) => Promise<void>;
@@ -48,6 +48,7 @@ const EditTournamentTeam: FC<EditTournamentTeamProps> = ({
       key={team.id}
       className={classNames(
         !isFirstGroup && "border-t-2",
+
         "flex items-center justify-between py-2"
       )}
     >
@@ -94,7 +95,7 @@ const EditTournamentTeam: FC<EditTournamentTeamProps> = ({
             cancelTitle="Cancel"
             confirmTitle="Delete"
             handleConfirm={() => {
-              handleDeleteTeam(team).catch((e) => console.log(e));
+              handleDeleteTeam(team).catch((e) => console.error(e));
             }}
             handleCancel={handleCancelDeleteTeam}
             isTooltip={team.id === teamToDelete?.id}

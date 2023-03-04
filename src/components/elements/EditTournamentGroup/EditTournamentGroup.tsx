@@ -9,7 +9,7 @@ import useTeams from "hooks/useTeams";
 import useWindowSize from "hooks/useWindowSize";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
-import type { TeamsByGroupType, TeamType } from "types/team.types";
+import type { TeamsMapType, TeamType } from "types/team.types";
 import { api } from "utils/api";
 import classNames from "utils/classNames";
 import sortTeamsByGroup from "utils/sortTeamsByGroup";
@@ -25,18 +25,38 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   handleCloseModal,
 }) => {
   const { windowSize } = useWindowSize();
+  const [groupToSmall, setGroupToSmall] = useState<string[]>([]);
   const deleteTeam = api.participant.deleteParticipant.useMutation();
   const { participant, refetchParticipant, tournamentId } = useTeams();
-  const { mutateAsync } = api.participant.updateParticipant.useMutation();
   const [teamToDelete, setTeamToDelete] = useState<TeamType | null>(null);
+  const { mutateAsync } = api.participant.updateParticipants.useMutation();
+  const [teamsByGroup, setTeamsByGroup] = useState<TeamsMapType>(new Map());
   const [addNewTeamGroup, setAddNewTeamGroup] = useState<string | null>(null);
-  const [teamsByGroup, setTeamsByGroup] = useState<TeamsByGroupType>(new Map());
+  const { refetch: refetchGames } = api.tournaments.getTournamentGames.useQuery(
+    {
+      id: tournamentId,
+    }
+  );
+
+  const isGroupToSmall = (teams: TeamsMapType) => {
+    const groupToSmall: string[] = [];
+
+    teams.forEach((teams, group) => {
+      if (teams.length !== 0 && teams.length < 4) {
+        groupToSmall.push(group);
+      }
+    });
+
+    return groupToSmall;
+  };
 
   const addGroupToTournament = (group: string) => {
     const newStates = new Map(teamsByGroup);
     newStates.set(group, []);
 
-    setTeamsByGroup(newStates);
+    const sortedAsc = new Map([...newStates].sort());
+
+    setTeamsByGroup(sortedAsc);
   };
 
   const handleGroupChange = (
@@ -58,6 +78,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       { ...team, group: newGroup },
     ]);
 
+    setGroupToSmall(isGroupToSmall(newStates));
     setTeamsByGroup(newStates);
   };
 
@@ -76,7 +97,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     setTeamsByGroup(newStates);
   };
 
-  const handleUpdateTeam = async (teamsMap: TeamsByGroupType) => {
+  const handleUpdateTeam = async (teamsMap: TeamsMapType) => {
     const teamsArray = [...teamsMap.values()].flat().map((team) => ({
       id: team.id,
       name: team.name,
@@ -85,10 +106,12 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     }));
 
     await mutateAsync({
+      tournamentId,
       teams: teamsArray,
     });
 
     await refetchParticipant();
+    await refetchGames();
   };
 
   const handleDeleteTeam = async (team: TeamType) => {
@@ -96,10 +119,14 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       id: team.id,
     });
     await refetchParticipant();
+    await refetchGames();
   };
 
   useEffect(() => {
-    setTeamsByGroup(sortTeamsByGroup(participant?.participant || []));
+    const sortedTeams = sortTeamsByGroup(participant?.participants || []);
+
+    setGroupToSmall(isGroupToSmall(sortedTeams));
+    setTeamsByGroup(sortedTeams);
   }, [participant]);
 
   return (
@@ -137,12 +164,16 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       >
         <GridLayout isGap minWith="350">
           {[...teamsByGroup].map(([group, value], i) => {
+            const isErrorMessageVisible = groupToSmall.includes(group);
             const isMoreThanOneGroup = getKeys(teamsByGroup).length > 1;
 
             return (
               <div
                 key={`${group}-${i}`}
-                className="rounded-md border border-gray-50 bg-gray-50 px-8 py-3 shadow-md"
+                className={classNames(
+                  isErrorMessageVisible && "border-2 border-red-500",
+                  "rounded-md border border-gray-50 bg-gray-50 px-8 py-3 shadow-md"
+                )}
               >
                 <div
                   className={classNames(
@@ -172,6 +203,14 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
                     );
                   })}
                 </div>
+                <div className="flex items-center justify-between">
+                  {isErrorMessageVisible && (
+                    <p className="text-xs text-red-500">
+                      Group don&apos;t have enough teams. You need at least 4
+                      teams.
+                    </p>
+                  )}
+                </div>
                 <div className="mt-4">
                   <Button
                     btnClass="mr-4 w-40"
@@ -191,6 +230,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       <div className="flex w-full justify-end">
         <Button
           btnColor="outline"
+          isDisabled={groupToSmall.length > 0}
           btnTitle={<span className="px-3 text-sm">Save changes</span>}
           onClick={() => {
             handleUpdateTeam(teamsByGroup).catch((e) =>
