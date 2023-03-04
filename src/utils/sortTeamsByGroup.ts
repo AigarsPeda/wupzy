@@ -15,7 +15,11 @@ const sortTeamsByGroup = (teams: TeamType[]) => {
     teamsByGroup.set(group, [team]);
   });
 
-  return teamsByGroup;
+  // sort map keys alphabetically
+
+  const sortedAsc = new Map([...teamsByGroup].sort());
+
+  return sortedAsc;
 };
 
 export default sortTeamsByGroup;

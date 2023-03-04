@@ -11,8 +11,8 @@ interface EditTournamentTeamProps {
   group: string;
   team: TeamType;
   isFirstGroup: boolean;
-  teamToDelete: TeamType | null;
   teamsByGroup: TeamsMapType;
+  teamToDelete: TeamType | null;
   handleCancelDeleteTeam: () => void;
   setTeamToDelete: (team: TeamType) => void;
   handleDeleteTeam: (team: TeamType) => Promise<void>;
@@ -48,6 +48,7 @@ const EditTournamentTeam: FC<EditTournamentTeamProps> = ({
       key={team.id}
       className={classNames(
         !isFirstGroup && "border-t-2",
+
         "flex items-center justify-between py-2"
       )}
     >

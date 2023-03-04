@@ -42,7 +42,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     const groupToSmall: string[] = [];
 
     teams.forEach((teams, group) => {
-      if (teams.length < 4) {
+      if (teams.length !== 0 && teams.length < 4) {
         groupToSmall.push(group);
       }
     });
@@ -54,7 +54,9 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     const newStates = new Map(teamsByGroup);
     newStates.set(group, []);
 
-    setTeamsByGroup(newStates);
+    const sortedAsc = new Map([...newStates].sort());
+
+    setTeamsByGroup(sortedAsc);
   };
 
   const handleGroupChange = (
@@ -76,27 +78,6 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       { ...team, group: newGroup },
     ]);
 
-    // newStates.forEach((teams, group) => {
-    //   if (teams.length < 4) {
-    //     // setIsGroupToSmall(true);
-    //     setGroupToSmall(group);
-
-    //   }
-    // });
-    // const groupToSmall: string[] = [];
-
-    // newStates.forEach((teams, group) => {
-    //   if (teams.length < 4) {
-    //     // setGroupToSmall(group);
-    //     groupToSmall.push(group);
-    //   }
-    // });
-
-    // setGroupToSmall(groupToSmall);
-
-    // isGroupToSmall(sortedTeams)
-
-    // setIsGroupToSmall(false);
     setGroupToSmall(isGroupToSmall(newStates));
     setTeamsByGroup(newStates);
   };
@@ -156,7 +137,6 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       modalTitle="Edit tournament groups"
       handleCancelClick={handleCloseModal}
     >
-      {console.log("groupToSmall", groupToSmall)}
       <div className="mt-3 mb-6 flex w-full justify-end">
         <GroupDropdown
           handleGroupClick={addGroupToTournament}
@@ -184,12 +164,16 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       >
         <GridLayout isGap minWith="350">
           {[...teamsByGroup].map(([group, value], i) => {
+            const isErrorMessageVisible = groupToSmall.includes(group);
             const isMoreThanOneGroup = getKeys(teamsByGroup).length > 1;
 
             return (
               <div
                 key={`${group}-${i}`}
-                className="rounded-md border border-gray-50 bg-gray-50 px-8 py-3 shadow-md"
+                className={classNames(
+                  isErrorMessageVisible && "border-2 border-red-500",
+                  "rounded-md border border-gray-50 bg-gray-50 px-8 py-3 shadow-md"
+                )}
               >
                 <div
                   className={classNames(
@@ -218,6 +202,14 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
                       />
                     );
                   })}
+                </div>
+                <div className="flex items-center justify-between">
+                  {isErrorMessageVisible && (
+                    <p className="text-xs text-red-500">
+                      Group don&apos;t have enough teams. You need at least 4
+                      teams.
+                    </p>
+                  )}
                 </div>
                 <div className="mt-4">
                   <Button
