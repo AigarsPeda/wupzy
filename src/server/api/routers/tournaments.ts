@@ -3,6 +3,7 @@ import { z } from "zod";
 import createAllPossiblePairsInGroup from "utils/createAllPossiblePairsInGroup";
 import createGames from "utils/createGames";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
+import createIdsArrays from "./utils/createIdsArrays";
 
 export const tournamentsRouter = createTRPCRouter({
   getAllTournaments: protectedProcedure.query(async ({ ctx }) => {
@@ -42,43 +43,22 @@ export const tournamentsRouter = createTRPCRouter({
       });
 
       const participantsMap = createAllPossiblePairsInGroup(participants);
-      const games = createGames(participantsMap);
+      const gamesMap = createGames(participantsMap);
 
-      for (const group of games.keys()) {
-        const gamesInGroup = games.get(group);
-
-        if (!gamesInGroup) return;
-
-        for (let i = 0; i < gamesInGroup.length; i++) {
-          const game = gamesInGroup[i];
-
-          if (!game) return;
-
-          const firsIds = game.first.map((participant) => {
-            return {
-              id: participant.id,
-            };
-          });
-          const secondIds = game.second.map((participant) => {
-            return {
-              id: participant.id,
-            };
-          });
-
-          await ctx.prisma.games.create({
-            data: {
-              group,
-              tournamentId: tournament.id,
-              participant_team_1: {
-                connect: [...firsIds],
-              },
-              participant_team_2: {
-                connect: [...secondIds],
-              },
+      await createIdsArrays(gamesMap, async (group, firsIds, secondIds) => {
+        await ctx.prisma.games.create({
+          data: {
+            group,
+            tournamentId: tournament.id,
+            participant_team_1: {
+              connect: [...firsIds],
             },
-          });
-        }
-      }
+            participant_team_2: {
+              connect: [...secondIds],
+            },
+          },
+        });
+      });
 
       return { tournament };
     }),

@@ -9,7 +9,7 @@ import useTeams from "hooks/useTeams";
 import useWindowSize from "hooks/useWindowSize";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
-import type { TeamsByGroupType, TeamType } from "types/team.types";
+import type { TeamsMapType, TeamsMapType, TeamType } from "types/team.types";
 import { api } from "utils/api";
 import classNames from "utils/classNames";
 import sortTeamsByGroup from "utils/sortTeamsByGroup";
@@ -25,12 +25,26 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   handleCloseModal,
 }) => {
   const { windowSize } = useWindowSize();
+
   const deleteTeam = api.participant.deleteParticipant.useMutation();
   const { participant, refetchParticipant, tournamentId } = useTeams();
-  const { mutateAsync } = api.participant.updateParticipant.useMutation();
+  const [groupToSmall, setGroupToSmall] = useState<string[]>([]);
+  const { mutateAsync } = api.participant.updateParticipants.useMutation();
   const [teamToDelete, setTeamToDelete] = useState<TeamType | null>(null);
   const [addNewTeamGroup, setAddNewTeamGroup] = useState<string | null>(null);
-  const [teamsByGroup, setTeamsByGroup] = useState<TeamsByGroupType>(new Map());
+  const [teamsByGroup, setTeamsByGroup] = useState<TeamsMapType>(new Map());
+
+  const isGroupToSmall = (teams: TeamsMapType) => {
+    const groupToSmall: string[] = [];
+
+    teams.forEach((teams, group) => {
+      if (teams.length < 4) {
+        groupToSmall.push(group);
+      }
+    });
+
+    return groupToSmall;
+  };
 
   const addGroupToTournament = (group: string) => {
     const newStates = new Map(teamsByGroup);
@@ -58,6 +72,28 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       { ...team, group: newGroup },
     ]);
 
+    // newStates.forEach((teams, group) => {
+    //   if (teams.length < 4) {
+    //     // setIsGroupToSmall(true);
+    //     setGroupToSmall(group);
+
+    //   }
+    // });
+    // const groupToSmall: string[] = [];
+
+    // newStates.forEach((teams, group) => {
+    //   if (teams.length < 4) {
+    //     // setGroupToSmall(group);
+    //     groupToSmall.push(group);
+    //   }
+    // });
+
+    // setGroupToSmall(groupToSmall);
+
+    // isGroupToSmall(sortedTeams)
+
+    // setIsGroupToSmall(false);
+    setGroupToSmall(isGroupToSmall(newStates));
     setTeamsByGroup(newStates);
   };
 
@@ -76,7 +112,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     setTeamsByGroup(newStates);
   };
 
-  const handleUpdateTeam = async (teamsMap: TeamsByGroupType) => {
+  const handleUpdateTeam = async (teamsMap: TeamsMapType) => {
     const teamsArray = [...teamsMap.values()].flat().map((team) => ({
       id: team.id,
       name: team.name,
@@ -85,6 +121,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     }));
 
     await mutateAsync({
+      tournamentId,
       teams: teamsArray,
     });
 
@@ -99,7 +136,18 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   };
 
   useEffect(() => {
-    setTeamsByGroup(sortTeamsByGroup(participant?.participants || []));
+    const sortedTeams = sortTeamsByGroup(participant?.participants || []);
+
+    // const groupToSmall: string[] = [];
+
+    // sortedTeams.forEach((teams, group) => {
+    //   if (teams.length < 4) {
+    //     groupToSmall.push(group);
+    //   }
+    // });
+
+    setGroupToSmall(isGroupToSmall(sortedTeams));
+    setTeamsByGroup(sortedTeams);
   }, [participant]);
 
   return (
@@ -110,6 +158,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       modalTitle="Edit tournament groups"
       handleCancelClick={handleCloseModal}
     >
+      {console.log("groupToSmall", groupToSmall)}
       <div className="mt-3 mb-6 flex w-full justify-end">
         <GroupDropdown
           handleGroupClick={addGroupToTournament}
@@ -191,6 +240,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       <div className="flex w-full justify-end">
         <Button
           btnColor="outline"
+          isDisabled={groupToSmall.length > 0}
           btnTitle={<span className="px-3 text-sm">Save changes</span>}
           onClick={() => {
             handleUpdateTeam(teamsByGroup).catch((e) =>

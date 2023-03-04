@@ -36,7 +36,11 @@ const Button = forwardRef<Ref, ButtonProps>(
     <button
       ref={ref}
       type={type}
-      onClick={onClick}
+      onClick={() => {
+        if (!isDisabled) {
+          onClick();
+        }
+      }}
       data-testid="button"
       disabled={isDisabled}
       className={classNames(

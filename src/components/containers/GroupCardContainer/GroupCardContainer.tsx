@@ -118,7 +118,12 @@ const GroupCardContainer: FC<GroupCardContainerProps> = ({ participants }) => {
               className="grid min-h-[20rem] min-w-[20rem] grid-cols-1 content-start rounded-md border border-gray-50 bg-gray-50 px-8 py-3 shadow-md"
             >
               <div>
-                <p className="mb-5 text-sm text-gray-400">Group - {group}</p>
+                <p className="mb-5 text-sm text-gray-400">
+                  <span className="mr-2 text-3xl font-bold text-gray-800">
+                    {group}
+                  </span>
+                  group
+                </p>
               </div>
               {value.map((team, i) => {
                 const isFirstGroup = i === 0;

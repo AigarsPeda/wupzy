@@ -40,14 +40,13 @@ model Participant {
   name         String
   tournamentId String
   group        String
-
-  updatedAt  DateTime   @updatedAt
-  score      Int        @default(0)
-  createdAt  DateTime   @default(now())
-  id         String     @id @default(cuid())
-  games      Games[]    @relation("participant_team_1")
-  games2     Games[]    @relation("participant_team_2")
-  tournament Tournament @relation(fields: [tournamentId], references: [id])
+  updatedAt    DateTime   @updatedAt
+  score        Int        @default(0)
+  createdAt    DateTime   @default(now())
+  id           String     @id @default(cuid())
+  games        Games[]    @relation("participant_team_1")
+  games2       Games[]    @relation("participant_team_2")
+  tournament   Tournament @relation(fields: [tournamentId], references: [id])
 }
 
 model Games {
@@ -58,7 +57,7 @@ model Games {
   id                 String        @id @default(cuid())
   participant_team_1 Participant[] @relation("participant_team_1")
   participant_team_2 Participant[] @relation("participant_team_2")
-  tournament         Tournament    @relation(fields: [tournamentId], references: [id])
+  tournament         Tournament    @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
 }
 
 // One user can have one password
