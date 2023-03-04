@@ -1,4 +1,3 @@
-import { exampleRouter } from "./routers/example";
 import { participantRouter } from "./routers/teams";
 import { tournamentsRouter } from "./routers/tournaments";
 import { usersRouter } from "./routers/users";
@@ -11,7 +10,6 @@ import { createTRPCRouter } from "./trpc";
  */
 export const appRouter = createTRPCRouter({
   users: usersRouter,
-  example: exampleRouter,
   tournaments: tournamentsRouter,
   participant: participantRouter,
 });

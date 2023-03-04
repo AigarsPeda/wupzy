@@ -94,7 +94,7 @@ const EditTournamentTeam: FC<EditTournamentTeamProps> = ({
             cancelTitle="Cancel"
             confirmTitle="Delete"
             handleConfirm={() => {
-              handleDeleteTeam(team).catch((e) => console.log(e));
+              handleDeleteTeam(team).catch((e) => console.error(e));
             }}
             handleCancel={handleCancelDeleteTeam}
             isTooltip={team.id === teamToDelete?.id}

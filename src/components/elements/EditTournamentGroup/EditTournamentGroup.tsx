@@ -9,7 +9,7 @@ import useTeams from "hooks/useTeams";
 import useWindowSize from "hooks/useWindowSize";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
-import type { TeamsMapType, TeamsMapType, TeamType } from "types/team.types";
+import type { TeamsMapType, TeamType } from "types/team.types";
 import { api } from "utils/api";
 import classNames from "utils/classNames";
 import sortTeamsByGroup from "utils/sortTeamsByGroup";
@@ -25,14 +25,18 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   handleCloseModal,
 }) => {
   const { windowSize } = useWindowSize();
-
+  const [groupToSmall, setGroupToSmall] = useState<string[]>([]);
   const deleteTeam = api.participant.deleteParticipant.useMutation();
   const { participant, refetchParticipant, tournamentId } = useTeams();
-  const [groupToSmall, setGroupToSmall] = useState<string[]>([]);
-  const { mutateAsync } = api.participant.updateParticipants.useMutation();
   const [teamToDelete, setTeamToDelete] = useState<TeamType | null>(null);
-  const [addNewTeamGroup, setAddNewTeamGroup] = useState<string | null>(null);
+  const { mutateAsync } = api.participant.updateParticipants.useMutation();
   const [teamsByGroup, setTeamsByGroup] = useState<TeamsMapType>(new Map());
+  const [addNewTeamGroup, setAddNewTeamGroup] = useState<string | null>(null);
+  const { refetch: refetchGames } = api.tournaments.getTournamentGames.useQuery(
+    {
+      id: tournamentId,
+    }
+  );
 
   const isGroupToSmall = (teams: TeamsMapType) => {
     const groupToSmall: string[] = [];
@@ -126,6 +130,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     });
 
     await refetchParticipant();
+    await refetchGames();
   };
 
   const handleDeleteTeam = async (team: TeamType) => {
@@ -133,18 +138,11 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       id: team.id,
     });
     await refetchParticipant();
+    await refetchGames();
   };
 
   useEffect(() => {
     const sortedTeams = sortTeamsByGroup(participant?.participants || []);
-
-    // const groupToSmall: string[] = [];
-
-    // sortedTeams.forEach((teams, group) => {
-    //   if (teams.length < 4) {
-    //     groupToSmall.push(group);
-    //   }
-    // });
 
     setGroupToSmall(isGroupToSmall(sortedTeams));
     setTeamsByGroup(sortedTeams);

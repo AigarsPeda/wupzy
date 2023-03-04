@@ -45,7 +45,7 @@ const NewTournamentContainer: FC = () => {
     setTournamentName("");
     setAttendants(["", "", "", ""]);
     router.push(`/tournaments/${tournament.tournament.id}`).catch(() => {
-      console.log("error changing route");
+      console.error("error changing route");
     });
   };
 

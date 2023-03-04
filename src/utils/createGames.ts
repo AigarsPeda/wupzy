@@ -9,16 +9,12 @@ type GameType = {
 const createGames = (pairs: Map<string, TeamType[][]>) => {
   const games = new Map<string, GameType[]>([]);
 
-  console.log("pairs ---->", pairs);
-
   for (const group of pairs.keys()) {
     const teams = pairs.get(group);
 
     if (!teams) return games;
 
     const allPossiblePairs = teams;
-
-    console.log("allPossiblePairs", group, allPossiblePairs);
 
     for (let i = 0; i < allPossiblePairs.length; i++) {
       const firstPair = allPossiblePairs[i];
@@ -52,7 +48,7 @@ const createGames = (pairs: Map<string, TeamType[][]>) => {
     }
   }
 
-  console.log("games", games);
+  // console.log("games", games);
 
   return games;
 };

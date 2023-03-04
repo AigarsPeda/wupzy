@@ -1,9 +1,9 @@
 import { TRPCError } from "@trpc/server";
-import { z } from "zod";
+import createIdsArrays from "server/api/routers/utils/createIdsArrays";
+import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
 import createAllPossiblePairsInGroup from "utils/createAllPossiblePairsInGroup";
 import createGames from "utils/createGames";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
-import createIdsArrays from "./utils/createIdsArrays";
+import { z } from "zod";
 
 export const tournamentsRouter = createTRPCRouter({
   getAllTournaments: protectedProcedure.query(async ({ ctx }) => {
@@ -46,6 +46,7 @@ export const tournamentsRouter = createTRPCRouter({
       const gamesMap = createGames(participantsMap);
 
       await createIdsArrays(gamesMap, async (group, firsIds, secondIds) => {
+        // Save games to database
         await ctx.prisma.games.create({
           data: {
             group,

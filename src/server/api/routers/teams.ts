@@ -87,11 +87,18 @@ export const participantRouter = createTRPCRouter({
         },
       });
 
-      console.log("games => ", games);
-
-      for (const game of games) {
-        await ctx.prisma.games.delete({ where: { id: game.id } });
-      }
+      // for (const game of games) {
+      //   await ctx.prisma.games.delete({ where: { id: game.id } });
+      // }
+      await Promise.all(
+        games.map((game) =>
+          ctx.prisma.games.delete({
+            where: {
+              id: game.id,
+            },
+          })
+        )
+      );
 
       await ctx.prisma.participant.delete({ where: { id: input.id } });
 
@@ -125,28 +132,6 @@ export const participantRouter = createTRPCRouter({
           },
         });
       }
-
-      // const updates = input.teams.map((team) => {
-      //   return {
-      //     where: { id: team.id },
-      //     data: {
-      //       name: team.name,
-      //       group: team.group,
-      //       score: team.score,
-      //     },
-      //   };
-      // });
-
-      // console.log("updates => ", updates);
-
-      // await ctx.prisma.participant.updateMany({ data: updates });
-
-      // delete all games
-      // const games = await ctx.prisma.games.findMany({
-      //   where: {
-      //     tournamentId: input.tournamentId,
-      //   },
-      // });
 
       // Before creating new games, delete all old games
       await ctx.prisma.games.deleteMany({
