@@ -26,3 +26,10 @@
     yarn dev
 
 
+## ERD Diagram
+
+###
+  To run generator, run this command in your terminal:
+
+    npx prisma generate
+
