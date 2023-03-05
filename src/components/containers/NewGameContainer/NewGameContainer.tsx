@@ -5,10 +5,12 @@ import ProgressBar from "components/elements/ProgressBar/ProgressBar";
 import TournamentAttendantForm from "components/elements/TournamentAttendantForm/TournamentAttendantForm";
 import TournamentCreateMetaForm from "components/elements/TournamentCreateMetaForm/TournamentCreateMetaForm";
 import TournamentCreateReview from "components/elements/TournamentCreateReview/TournamentCreateReview";
+import { DEFAULT_ATTENDANTS_COUNT } from "hardcoded";
 import { useRouter } from "next/router";
 import type { FC } from "react";
 import { useState } from "react";
 import { api } from "utils/api";
+import createStringArrayFromNumber from "utils/createStringArrayFromNumber";
 
 const FORM_STEPS = ["Create tournament", "Add tournament attendant", "Review"];
 
@@ -17,7 +19,9 @@ const NewTournamentContainer: FC = () => {
   const [formStep, setFormStep] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tournamentName, setTournamentName] = useState("");
-  const [attendants, setAttendants] = useState<string[]>(["", "", "", ""]);
+  const [attendants, setAttendants] = useState<string[]>(
+    createStringArrayFromNumber(DEFAULT_ATTENDANTS_COUNT)
+  );
   const { mutateAsync, isLoading, isError } =
     api.tournaments.createTournament.useMutation();
 
@@ -78,7 +82,7 @@ const NewTournamentContainer: FC = () => {
           setIsModalOpen(false);
         }}
       >
-        <div className="h-[26rem]">
+        <div className="h-[30rem]">
           {(() => {
             switch (formStep) {
               case 0:
