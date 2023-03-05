@@ -1,9 +1,9 @@
 import InfoParagraph from "components/elements/InfoParagraph/InfoParagraph";
 import Input from "components/elements/Input/Input";
 import RoundButton from "components/elements/RoundButton/RoundButton";
-import useFocus from "hooks/useFocus";
+import { DEFAULT_ATTENDANTS_COUNT } from "hardcoded";
 import type { FC } from "react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { BsPlusLg } from "react-icons/bs";
 
 interface TournamentAttendantFormProps {
@@ -17,15 +17,26 @@ const TournamentAttendantForm: FC<TournamentAttendantFormProps> = ({
   setAttendants,
   addNewAttendant,
 }) => {
-  const { htmlElRef, setFocus } = useFocus();
+  const elRefs = useRef<HTMLInputElement[]>([]);
 
   useEffect(() => {
-    setFocus();
-  }, [setFocus]);
+    const size = elRefs.current.length;
+
+    if (size === 0 || elRefs.current.length === 0) return;
+
+    // If there are no attendants, focus the first input
+    if (attendants.length === DEFAULT_ATTENDANTS_COUNT) {
+      elRefs.current[0]?.focus();
+      return;
+    }
+
+    // If there are new attendants added, focus the last input
+    elRefs.current && elRefs.current[size - 1]?.focus();
+  }, [attendants.length]);
 
   return (
     <div className="mt-12">
-      <div>
+      <div className="max-h-[23rem] overflow-y-auto">
         {attendants.map((attendant, index) => {
           return (
             <Input
@@ -33,7 +44,12 @@ const TournamentAttendantForm: FC<TournamentAttendantFormProps> = ({
               value={attendant}
               name="tournamentName"
               label={`Attendant ${index + 1}`}
-              ref={index === 0 ? htmlElRef : null}
+              ref={(el) => {
+                if (!el) return;
+
+                // create a new array with the new element
+                elRefs.current = [...elRefs.current, el];
+              }}
               handleInputChange={(e) => {
                 const newAttendants = [...attendants];
                 newAttendants[index] = e.target.value;
