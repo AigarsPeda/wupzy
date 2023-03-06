@@ -6,6 +6,7 @@ import type { TeamsMapType, TeamType } from "types/team.types";
 import classNames from "utils/classNames";
 import { getAvailableGroups } from "utils/teamsMapFunctions";
 import { FiEdit2 } from "react-icons/fi";
+import EditInput from "../EditInput/EditInput";
 
 interface EditTournamentTeamProps {
   group: string;
@@ -48,16 +49,14 @@ const EditTournamentTeam: FC<EditTournamentTeamProps> = ({
       key={team.id}
       className={classNames(
         !isFirstGroup && "border-t-2",
-
         "flex items-center justify-between py-2"
       )}
     >
       <div>
-        <input
+        <EditInput
           ref={inputRef}
           value={team.name}
-          className="w-full bg-gray-50 text-sm text-gray-800 focus:outline-none"
-          onChange={(e) => {
+          handleChange={(e) => {
             handleTeamsNameChange(team, e.target.value);
           }}
         />
@@ -76,11 +75,9 @@ const EditTournamentTeam: FC<EditTournamentTeamProps> = ({
       </div>
       <div className="flex w-full items-center justify-end">
         <SmallButton
-          handleClick={() => {
-            handleFocusInput();
-          }}
           btnTitle={<FiEdit2 />}
           btnClassNames="h-6 px-2"
+          handleClick={handleFocusInput}
         />
         <div className="relative">
           <SmallButton

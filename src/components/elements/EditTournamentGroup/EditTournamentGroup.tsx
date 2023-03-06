@@ -1,10 +1,12 @@
 import AddNewTeam from "components/elements/AddNewTeam/AddNewTeam";
 import Button from "components/elements/Button/Button";
 import EditTournamentHeader from "components/elements/EditTournamentHeader/EditTournamentHeader";
+import EditTournamentName from "components/elements/EditTournamentName/EditTournamentName";
 import EditTournamentTeam from "components/elements/EditTournamentTeam/EditTournamentTeam";
 import GroupDropdown from "components/elements/GroupDropdown/GroupDropdown";
 import ModalWrap from "components/elements/Modal/Modal";
 import GridLayout from "components/layouts/GridLayout/GridLayout";
+import { DEFAULT_ATTENDANTS_COUNT } from "hardcoded";
 import useTeams from "hooks/useTeams";
 import useWindowSize from "hooks/useWindowSize";
 import type { FC } from "react";
@@ -42,7 +44,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     const groupToSmall: string[] = [];
 
     teams.forEach((teams, group) => {
-      if (teams.length !== 0 && teams.length < 4) {
+      if (teams.length !== 0 && teams.length < DEFAULT_ATTENDANTS_COUNT) {
         groupToSmall.push(group);
       }
     });
@@ -137,7 +139,8 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       modalTitle="Edit tournament groups"
       handleCancelClick={handleCloseModal}
     >
-      <div className="mt-3 mb-6 flex w-full justify-end">
+      <div className="mt-3 mb-6 flex w-full justify-between">
+        <EditTournamentName tournamentId={tournamentId} />
         <GroupDropdown
           handleGroupClick={addGroupToTournament}
           alreadyCreatedGroups={getKeys(teamsByGroup)}

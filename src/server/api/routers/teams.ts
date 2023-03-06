@@ -16,6 +16,9 @@ export const participantRouter = createTRPCRouter({
         where: {
           tournamentId: input.id,
         },
+        // include: {
+        //   tournament: true,
+        // },
       });
 
       return { participants };

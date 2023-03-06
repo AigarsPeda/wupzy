@@ -100,4 +100,24 @@ export const tournamentsRouter = createTRPCRouter({
 
       return { tournament };
     }),
+
+  updateTournament: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const tournament = await ctx.prisma.tournament.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          name: input.name,
+        },
+      });
+
+      return { tournament };
+    }),
 });
