@@ -1,9 +1,8 @@
 import AddNewTeam from "components/elements/AddNewTeam/AddNewTeam";
 import Button from "components/elements/Button/Button";
+import EditTournamentCard from "components/elements/EditTournamentCard/EditTournamentCard";
 import isGroupToSmall from "components/elements/EditTournamentGroup/utils/isGroupToSmall";
-import EditTournamentHeader from "components/elements/EditTournamentHeader/EditTournamentHeader";
 import EditTournamentName from "components/elements/EditTournamentName/EditTournamentName";
-import EditTournamentTeam from "components/elements/EditTournamentTeam/EditTournamentTeam";
 import GroupDropdown from "components/elements/GroupDropdown/GroupDropdown";
 import ModalWrap from "components/elements/Modal/Modal";
 import GridLayout from "components/layouts/GridLayout/GridLayout";
@@ -15,7 +14,6 @@ import type { FC } from "react";
 import { useEffect, useState } from "react";
 import type { TeamsMapType, TeamType } from "types/team.types";
 import { api } from "utils/api";
-import classNames from "utils/classNames";
 import getTodayDate from "utils/getTodayDate";
 import sortTeamsByGroup from "utils/sortTeamsByGroup";
 import { getKeys } from "utils/teamsMapFunctions";
@@ -41,16 +39,13 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   const [teamsByGroup, setTeamsByGroup] = useState<TeamsMapType>(new Map());
   const [addNewTeamGroup, setAddNewTeamGroup] = useState<string | null>(null);
   const { refetch: refetchGames } = api.tournaments.getTournamentGames.useQuery(
-    {
-      id: tournamentId,
-    }
+    { id: tournamentId }
   );
-
-  const { mutateAsync: updateTournamentName } =
-    api.tournaments.updateTournament.useMutation();
   const [newTournamentName, setNewTournamentName] = useState<string | null>(
     null
   );
+  const { mutateAsync: updateTournamentName } =
+    api.tournaments.updateTournament.useMutation();
 
   const addGroupToTournament = (group: string) => {
     const newStates = new Map(teamsByGroup);
@@ -186,68 +181,21 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
         }
       >
         <GridLayout isGap minWith="350">
-          {[...teamsByGroup].map(([group, value], i) => {
-            const isErrorMessageVisible = groupToSmall.includes(group);
-            const isMoreThanOneGroup = getKeys(teamsByGroup).length > 1;
-
-            return (
-              <div
-                key={`${group}-${i}`}
-                className={classNames(
-                  isErrorMessageVisible && "border-2 border-red-500",
-                  "rounded-md border border-gray-50 bg-gray-50 px-8 py-3 shadow-md"
-                )}
-              >
-                <div
-                  className={classNames(
-                    "relative ml-2 grid max-h-[22rem] min-h-[17rem] min-w-[9.375rem] grid-cols-1 content-start overflow-y-auto"
-                  )}
-                >
-                  <EditTournamentHeader
-                    group={group}
-                    isMoreThanOneGroup={isMoreThanOneGroup}
-                  />
-                  {value.map((team, i) => {
-                    const isFirstGroup = i === 0;
-                    return (
-                      <EditTournamentTeam
-                        team={team}
-                        key={team.id}
-                        group={group}
-                        teamToDelete={teamToDelete}
-                        teamsByGroup={teamsByGroup}
-                        isFirstGroup={isFirstGroup}
-                        setTeamToDelete={setTeamToDelete}
-                        handleDeleteTeam={handleDeleteTeam}
-                        handleGroupChange={handleGroupChange}
-                        handleTeamsNameChange={handleTeamsNameChange}
-                        handleCancelDeleteTeam={() => setTeamToDelete(null)}
-                      />
-                    );
-                  })}
-                </div>
-                <div className="flex items-center justify-between">
-                  {isErrorMessageVisible && (
-                    <p className="text-xs text-red-500">
-                      Group don&apos;t have enough teams. You need at least 4
-                      teams.
-                    </p>
-                  )}
-                </div>
-                <div className="mt-4">
-                  <Button
-                    btnClass="mr-4 w-40"
-                    btnTitle="Add new team"
-                    onClick={() => {
-                      setAddNewTeamGroup((state) =>
-                        state === group ? null : group
-                      );
-                    }}
-                  />
-                </div>
-              </div>
-            );
-          })}
+          <EditTournamentCard
+            teamsMap={teamsByGroup}
+            groupToSmall={groupToSmall}
+            teamToDelete={teamToDelete}
+            setTeamToDelete={setTeamToDelete}
+            handleDeleteTeam={handleDeleteTeam}
+            handleGroupChange={handleGroupChange}
+            handleTeamsNameChange={handleTeamsNameChange}
+            handleCancelDeleteTeam={() => {
+              setTeamToDelete(null);
+            }}
+            handleStartAddTeam={(group) => {
+              setAddNewTeamGroup((state) => (state === group ? null : group));
+            }}
+          />
         </GridLayout>
       </div>
       <div className="flex w-full justify-end">

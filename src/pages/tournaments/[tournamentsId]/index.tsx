@@ -1,4 +1,4 @@
-import EditTournament from "components/containers/EditTournament/EditTournament";
+import EditTournamentContainer from "components/containers/EditTournamentContainer/EditTournamentContainer";
 import GroupCardContainer from "components/containers/GroupCardContainer/GroupCardContainer";
 import Spinner from "components/elements/Spinner/Spinner";
 import TournamentHeader from "components/elements/TournamentHeader/TournamentHeader";
@@ -42,7 +42,7 @@ const Tournament: NextPage = () => {
         {console.log("games from API ---->", games?.games)}
         <TournamentHeader tournament={tournament?.tournament} />
         <div className="flex w-full justify-end">
-          <EditTournament />
+          <EditTournamentContainer />
         </div>
       </div>
       <GroupCardContainer tournamentId={tournamentId} />
