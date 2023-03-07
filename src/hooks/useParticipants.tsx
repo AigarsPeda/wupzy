@@ -1,6 +1,6 @@
 import { api } from "utils/api";
 
-const useTeams = (id: string) => {
+const useParticipants = (id: string) => {
   const {
     data: participants,
     error: participantsError,
@@ -18,4 +18,4 @@ const useTeams = (id: string) => {
   };
 };
 
-export default useTeams;
+export default useParticipants;
