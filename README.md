@@ -28,6 +28,8 @@
 
 ## ERD Diagram
 
+![ER Diagram](./prisma/ERD.svg/)
+
 ###
   To run generator, run this command in your terminal:
 
