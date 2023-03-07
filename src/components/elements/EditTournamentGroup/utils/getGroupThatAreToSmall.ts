@@ -1,7 +1,7 @@
 import { DEFAULT_ATTENDANTS_COUNT } from "hardcoded";
 import type { TeamsMapType } from "types/team.types";
 
-const isGroupToSmall = (teams: TeamsMapType) => {
+const getGroupThatAreToSmall = (teams: TeamsMapType) => {
   const groupToSmall: string[] = [];
 
   teams.forEach((teams, group) => {
@@ -13,4 +13,4 @@ const isGroupToSmall = (teams: TeamsMapType) => {
   return groupToSmall;
 };
 
-export default isGroupToSmall;
+export default getGroupThatAreToSmall;

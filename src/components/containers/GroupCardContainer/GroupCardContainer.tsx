@@ -1,22 +1,17 @@
+import GroupCard from "components/elements/GroupCard/GroupCard";
 import GridLayout from "components/layouts/GridLayout/GridLayout";
-import useTeams from "hooks/useTeams";
+import useParticipants from "hooks/useParticipants";
 import type { FC } from "react";
-import type { TeamType } from "types/team.types";
-import classNames from "utils/classNames";
+import type { GameType, ParticipantsType } from "types/team.types";
 import containsParticipants from "utils/containsParticipants";
-import sortTeamsByGroup from "utils/sortTeamsByGroup";
-
-type GameType = {
-  first: TeamType[];
-  second: TeamType[];
-};
+import sortParticipantsByGroup from "utils/sortParticipantsByGroup";
 
 interface GroupCardContainerProps {
   tournamentId: string;
 }
 
 const GroupCardContainer: FC<GroupCardContainerProps> = ({ tournamentId }) => {
-  const { participants, isParticipantsLoading } = useTeams(tournamentId);
+  const { participants, isParticipantsLoading } = useParticipants(tournamentId);
 
   // TODO: Create all possible pairs in group and create games in backend?
   // const createAllPossiblePairsInGroup = (teams: TeamType[]) => {
@@ -58,7 +53,7 @@ const GroupCardContainer: FC<GroupCardContainerProps> = ({ tournamentId }) => {
   // };
 
   // Create games of pairs
-  const createGames = (pairs: Map<string, TeamType[][]>) => {
+  const createGames = (pairs: Map<string, ParticipantsType[][]>) => {
     const games = new Map<string, GameType[]>([]);
 
     for (const group of pairs.keys()) {
@@ -109,40 +104,11 @@ const GroupCardContainer: FC<GroupCardContainerProps> = ({ tournamentId }) => {
 
   return (
     <div>
-      {/* {createGames(createAllPossiblePairsInGroup(participants))} */}
+      {console.log("participants", participants)}
       <GridLayout minWith="320" isGap>
-        {[...sortTeamsByGroup(participants?.participants || [])].map(
+        {[...sortParticipantsByGroup(participants?.participants || [])].map(
           ([group, value]) => {
-            return (
-              <div
-                key={group}
-                className="grid min-h-[20rem] min-w-[20rem] grid-cols-1 content-start rounded-md border border-gray-50 bg-gray-50 px-8 py-3 shadow-md"
-              >
-                <div>
-                  <p className="mb-5 text-sm text-gray-400">
-                    <span className="mr-2 text-3xl font-bold text-gray-800">
-                      {group}
-                    </span>
-                    group
-                  </p>
-                </div>
-                {value.map((team, i) => {
-                  const isFirstGroup = i === 0;
-                  return (
-                    <div
-                      key={`${i}${team.id}`}
-                      className={classNames(
-                        !isFirstGroup && "border-t-2",
-                        "flex items-center justify-between py-2"
-                      )}
-                    >
-                      <p>{team.name}</p>
-                      <p>{team.score}</p>
-                    </div>
-                  );
-                })}
-              </div>
-            );
+            return <GroupCard key={group} group={group} teams={value} />;
           }
         )}
       </GridLayout>

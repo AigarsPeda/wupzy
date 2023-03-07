@@ -1,7 +1,7 @@
-import type { TeamType } from "types/team.types";
+import type { ParticipantsType } from "types/team.types";
 
-const sortTeamsByGroup = (teams: TeamType[]) => {
-  const teamsByGroup = new Map<string, TeamType[]>();
+const sortParticipantsByGroup = (teams: ParticipantsType[]) => {
+  const teamsByGroup = new Map<string, ParticipantsType[]>();
 
   teams.forEach((team) => {
     const group = team.group;
@@ -16,10 +16,9 @@ const sortTeamsByGroup = (teams: TeamType[]) => {
   });
 
   // sort map keys alphabetically
-
   const sortedAsc = new Map([...teamsByGroup].sort());
 
   return sortedAsc;
 };
 
-export default sortTeamsByGroup;
+export default sortParticipantsByGroup;

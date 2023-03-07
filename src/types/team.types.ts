@@ -1,26 +1,37 @@
 import { z } from "zod";
 
-const TeamZodSchema = z.object({
+const ParticipantsZodSchema = z.object({
   id: z.string(),
   name: z.string(),
   group: z.string(),
   score: z.number(),
 });
 
-const TeamsZodSchema = z.map(z.string(), z.array(TeamZodSchema));
+const ParticipantsMapZodSchema = z.map(
+  z.string(),
+  z.array(ParticipantsZodSchema)
+);
 
-export type TeamType = z.infer<typeof TeamZodSchema>;
-export type TeamsMapType = z.infer<typeof TeamsZodSchema>;
+export type ParticipantsType = z.infer<typeof ParticipantsZodSchema>;
+export type TeamsMapType = z.infer<typeof ParticipantsMapZodSchema>;
 
 export type GameType = {
-  first: TeamType[];
-  second: TeamType[];
+  first: ParticipantsType[];
+  second: ParticipantsType[];
 };
 
-const ParticipantZodSchema = z.object({
-  name: z.string(),
-  group: z.string(),
-  tournamentId: z.string(),
-});
+// const ParticipantZodSchema = z.object({
+//   name: z.string(),
+//   group: z.string(),
+//   tournamentId: z.string(),
+// });
 
-export type ParticipantType = z.infer<typeof ParticipantZodSchema>;
+// export type ParticipantType = z.infer<typeof ParticipantZodSchema>;
+
+// const ParticipantZodSchema = z.object({
+//   name: z.string(),
+//   group: z.string(),
+//   tournamentId: z.string(),
+// });
+
+// export type ParticipantType = z.infer<typeof ParticipantZodSchema>;

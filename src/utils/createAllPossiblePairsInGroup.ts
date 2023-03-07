@@ -1,16 +1,16 @@
-import type { TeamType } from "types/team.types";
-import sortTeamsByGroup from "utils/sortTeamsByGroup";
+import type { ParticipantsType } from "types/team.types";
+import sortParticipantsByGroup from "utils/sortParticipantsByGroup";
 
-const createAllPossiblePairsInGroup = (teams: TeamType[]) => {
-  const sorted = sortTeamsByGroup(teams);
-  const groupPairs = new Map<string, TeamType[][]>([]);
+const createAllPossiblePairsInGroup = (teams: ParticipantsType[]) => {
+  const sorted = sortParticipantsByGroup(teams);
+  const groupPairs = new Map<string, ParticipantsType[][]>([]);
 
   for (const group of sorted.keys()) {
     const teams = sorted.get(group);
 
     if (!teams) return groupPairs;
 
-    const allPossiblePairs: TeamType[][] = [];
+    const allPossiblePairs: ParticipantsType[][] = [];
 
     for (let i = 0; i < teams.length; i++) {
       for (let j = i + 1; j < teams.length; j++) {
