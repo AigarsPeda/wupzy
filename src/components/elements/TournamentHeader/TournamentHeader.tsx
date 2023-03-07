@@ -1,9 +1,9 @@
-import type { Tournament } from "@prisma/client";
 import type { FC } from "react";
+import type { TournamentType } from "types/tournament.types";
 import formatDate from "utils/formatDate";
 
 interface TournamentProps {
-  tournament: Tournament | undefined;
+  tournament: TournamentType | undefined;
 }
 
 const TournamentHeader: FC<TournamentProps> = ({ tournament }) => {

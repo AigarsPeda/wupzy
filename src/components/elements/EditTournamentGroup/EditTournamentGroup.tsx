@@ -1,19 +1,22 @@
 import AddNewTeam from "components/elements/AddNewTeam/AddNewTeam";
 import Button from "components/elements/Button/Button";
+import isGroupToSmall from "components/elements/EditTournamentGroup/utils/isGroupToSmall";
 import EditTournamentHeader from "components/elements/EditTournamentHeader/EditTournamentHeader";
 import EditTournamentName from "components/elements/EditTournamentName/EditTournamentName";
 import EditTournamentTeam from "components/elements/EditTournamentTeam/EditTournamentTeam";
 import GroupDropdown from "components/elements/GroupDropdown/GroupDropdown";
 import ModalWrap from "components/elements/Modal/Modal";
 import GridLayout from "components/layouts/GridLayout/GridLayout";
-import { DEFAULT_ATTENDANTS_COUNT } from "hardcoded";
 import useTeams from "hooks/useTeams";
+import useTournament from "hooks/useTournament";
 import useWindowSize from "hooks/useWindowSize";
+import { useRouter } from "next/router";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import type { TeamsMapType, TeamType } from "types/team.types";
 import { api } from "utils/api";
 import classNames from "utils/classNames";
+import getTodayDate from "utils/getTodayDate";
 import sortTeamsByGroup from "utils/sortTeamsByGroup";
 import { getKeys } from "utils/teamsMapFunctions";
 
@@ -26,10 +29,13 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   isModalOpen,
   handleCloseModal,
 }) => {
+  const { query } = useRouter();
   const { windowSize } = useWindowSize();
+  const [tournamentId, setTournamentId] = useState<string>("");
   const [groupToSmall, setGroupToSmall] = useState<string[]>([]);
   const deleteTeam = api.participant.deleteParticipant.useMutation();
-  const { participant, refetchParticipant, tournamentId } = useTeams();
+  const { participants, refetchParticipants } = useTeams(tournamentId);
+  const { tournament, refetchTournament } = useTournament(tournamentId);
   const [teamToDelete, setTeamToDelete] = useState<TeamType | null>(null);
   const { mutateAsync } = api.participant.updateParticipants.useMutation();
   const [teamsByGroup, setTeamsByGroup] = useState<TeamsMapType>(new Map());
@@ -40,17 +46,11 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     }
   );
 
-  const isGroupToSmall = (teams: TeamsMapType) => {
-    const groupToSmall: string[] = [];
-
-    teams.forEach((teams, group) => {
-      if (teams.length !== 0 && teams.length < DEFAULT_ATTENDANTS_COUNT) {
-        groupToSmall.push(group);
-      }
-    });
-
-    return groupToSmall;
-  };
+  const { mutateAsync: updateTournamentName } =
+    api.tournaments.updateTournament.useMutation();
+  const [newTournamentName, setNewTournamentName] = useState<string | null>(
+    null
+  );
 
   const addGroupToTournament = (group: string) => {
     const newStates = new Map(teamsByGroup);
@@ -107,29 +107,46 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       group: team.group,
     }));
 
+    await updateTournamentName({
+      id: tournamentId,
+      name: newTournamentName || tournament?.tournament.name || getTodayDate(),
+    });
+
     await mutateAsync({
-      tournamentId,
+      tournamentId: tournamentId,
       teams: teamsArray,
     });
 
-    await refetchParticipant();
     await refetchGames();
+    await refetchTournament();
+    await refetchParticipants();
   };
 
   const handleDeleteTeam = async (team: TeamType) => {
     await deleteTeam.mutateAsync({
       id: team.id,
     });
-    await refetchParticipant();
+    await refetchParticipants();
     await refetchGames();
   };
 
   useEffect(() => {
-    const sortedTeams = sortTeamsByGroup(participant?.participants || []);
+    if (!query.tournamentsId || typeof query.tournamentsId !== "string") return;
+
+    setTournamentId(query.tournamentsId);
+  }, [query.tournamentsId]);
+
+  useEffect(() => {
+    if (!tournament) return;
+    setNewTournamentName(tournament.tournament.name);
+  }, [tournament]);
+
+  useEffect(() => {
+    const sortedTeams = sortTeamsByGroup(participants?.participants || []);
 
     setGroupToSmall(isGroupToSmall(sortedTeams));
     setTeamsByGroup(sortedTeams);
-  }, [participant]);
+  }, [participants]);
 
   return (
     <ModalWrap
@@ -140,7 +157,10 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       handleCancelClick={handleCloseModal}
     >
       <div className="mt-3 mb-6 flex w-full justify-between">
-        <EditTournamentName tournamentId={tournamentId} />
+        <EditTournamentName
+          newTournamentName={newTournamentName}
+          setNewTournamentName={setNewTournamentName}
+        />
         <GroupDropdown
           handleGroupClick={addGroupToTournament}
           alreadyCreatedGroups={getKeys(teamsByGroup)}
@@ -148,12 +168,12 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       </div>
 
       <AddNewTeam
-        tournamentId={tournamentId}
         addNewTeamGroup={addNewTeamGroup}
+        tournamentId={tournamentId}
         isAddNewTeamOpen={Boolean(addNewTeamGroup)}
         handleCancelClick={() => {
           setAddNewTeamGroup(null);
-          refetchParticipant().catch((err) => console.error(err));
+          refetchParticipants().catch((err) => console.error(err));
         }}
       />
 

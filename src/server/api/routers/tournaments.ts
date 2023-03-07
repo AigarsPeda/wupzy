@@ -75,14 +75,13 @@ export const tournamentsRouter = createTRPCRouter({
         include: {
           participant_team_1: true,
           participant_team_2: true,
-          tournament: true,
         },
       });
 
       return { games };
     }),
 
-  getTournament: protectedProcedure
+  getTournamentById: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
       const tournament = await ctx.prisma.tournament.findUnique({

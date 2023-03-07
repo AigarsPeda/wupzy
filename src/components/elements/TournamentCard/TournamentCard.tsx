@@ -1,10 +1,10 @@
-import type { Tournament } from "@prisma/client";
 import { useRouter } from "next/router";
 import type { FC } from "react";
+import type { TournamentType } from "types/tournament.types";
 import formatDate from "utils/formatDate";
 
 interface TournamentCardProps {
-  tournament: Tournament;
+  tournament: TournamentType;
 }
 
 const TournamentCard: FC<TournamentCardProps> = ({ tournament }) => {

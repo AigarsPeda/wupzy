@@ -1,36 +1,20 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import { api } from "utils/api";
 
-const useTeams = () => {
-  const router = useRouter();
-  const [tournamentId, setTournamentId] = useState("");
+const useTeams = (id: string) => {
   const {
-    data: participant,
-    error: participantError,
-    refetch: refetchParticipant,
-    isLoading: isParticipantLoading,
+    data: participants,
+    error: participantsError,
+    refetch: refetchParticipants,
+    isLoading: isParticipantsLoading,
   } = api.participant.getTournamentParticipants.useQuery({
-    id: tournamentId,
+    id,
   });
 
-  useEffect(() => {
-    if (
-      !router.query.tournamentsId ||
-      typeof router.query.tournamentsId !== "string"
-    ) {
-      return;
-    }
-
-    setTournamentId(router.query.tournamentsId);
-  }, [router.query.tournamentsId]);
-
   return {
-    participant,
-    tournamentId,
-    participantError,
-    refetchParticipant,
-    isParticipantLoading,
+    participants,
+    participantsError,
+    refetchParticipants,
+    isParticipantsLoading,
   };
 };
 
