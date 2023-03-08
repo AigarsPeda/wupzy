@@ -3,6 +3,7 @@ import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
 import createAllPossiblePairsInGroup from "utils/createAllPossiblePairsInGroup";
 import createGames from "utils/createGames";
 import { z } from "zod";
+import sortParticipantsByGroup from "../../../utils/sortParticipantsByGroup";
 
 export const participantRouter = createTRPCRouter({
   getTournamentParticipants: protectedProcedure
@@ -18,7 +19,10 @@ export const participantRouter = createTRPCRouter({
         },
       });
 
-      return { participants };
+      const sorted = sortParticipantsByGroup(participants);
+
+      return { participants: sorted };
+      // return { sortParticipantsByGroup(participants) };
     }),
 
   addParticipant: protectedProcedure
@@ -147,20 +151,24 @@ export const participantRouter = createTRPCRouter({
       const participantsMap = createAllPossiblePairsInGroup(participants);
       const gamesMap = createGames(participantsMap);
 
-      await createIdsArrays(gamesMap, async (group, firsIds, secondIds) => {
-        await ctx.prisma.games.create({
-          data: {
-            group,
-            tournamentId: input.tournamentId,
-            participant_team_1: {
-              connect: [...firsIds],
+      await createIdsArrays(
+        gamesMap,
+        async (group, firsIds, secondIds, index) => {
+          await ctx.prisma.games.create({
+            data: {
+              group,
+              gameOrder: index + 1,
+              tournamentId: input.tournamentId,
+              participant_team_1: {
+                connect: [...firsIds],
+              },
+              participant_team_2: {
+                connect: [...secondIds],
+              },
             },
-            participant_team_2: {
-              connect: [...secondIds],
-            },
-          },
-        });
-      });
+          });
+        }
+      );
 
       return { teams: input.teams };
     }),

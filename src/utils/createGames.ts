@@ -1,13 +1,13 @@
-import type { TeamType } from "types/team.types";
+import type { ParticipantsType } from "types/team.types";
 import containsParticipants from "utils/containsParticipants";
 
-type GameType = {
-  first: TeamType[];
-  second: TeamType[];
+type TeamObjType = {
+  first: ParticipantsType[];
+  second: ParticipantsType[];
 };
 
-const createGames = (pairs: Map<string, TeamType[][]>) => {
-  const games = new Map<string, GameType[]>([]);
+const createGames = (pairs: Map<string, ParticipantsType[][]>) => {
+  const games = new Map<string, TeamObjType[]>([]);
 
   for (const group of pairs.keys()) {
     const teams = pairs.get(group);
@@ -30,7 +30,7 @@ const createGames = (pairs: Map<string, TeamType[][]>) => {
           !containsParticipants(firstPair[0], secondPair) &&
           !containsParticipants(firstPair[1], secondPair)
         ) {
-          const game: GameType = {
+          const game: TeamObjType = {
             first: firstPair,
             second: secondPair,
           };
@@ -47,8 +47,6 @@ const createGames = (pairs: Map<string, TeamType[][]>) => {
       }
     }
   }
-
-  // console.log("games", games);
 
   return games;
 };

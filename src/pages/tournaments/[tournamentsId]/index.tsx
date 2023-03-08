@@ -13,12 +13,8 @@ const Tournament: NextPage = () => {
   const { query } = useRouter();
   const { redirectToPath } = useRedirect();
   const [tournamentId, setTournamentId] = useState<string>("");
-  const { isTournamentLoading, tournament } = useTournament(tournamentId);
-
-  const { data: games, error: gameError } =
-    api.tournaments.getTournamentGames.useQuery({
-      id: tournamentId,
-    });
+  const { tournamentError, isTournamentLoading, tournament } =
+    useTournament(tournamentId);
 
   useEffect(() => {
     if (!query.tournamentsId || typeof query.tournamentsId !== "string") return;
@@ -27,10 +23,13 @@ const Tournament: NextPage = () => {
   }, [query.tournamentsId]);
 
   useEffect(() => {
-    if (!isTournamentLoading && gameError?.data?.code === "UNAUTHORIZED") {
+    if (
+      !isTournamentLoading &&
+      tournamentError?.data?.code === "UNAUTHORIZED"
+    ) {
       redirectToPath("/login", window.location.pathname);
     }
-  }, [gameError?.data?.code, isTournamentLoading, redirectToPath]);
+  }, [tournamentError?.data?.code, isTournamentLoading, redirectToPath]);
 
   if (isTournamentLoading) {
     return <Spinner size="small" />;
@@ -39,7 +38,6 @@ const Tournament: NextPage = () => {
   return (
     <>
       <div className="mb-4 flex justify-between">
-        {console.log("games from API ---->", games?.games)}
         <TournamentHeader tournament={tournament?.tournament} />
         <div className="flex w-full justify-end">
           <EditTournamentContainer />

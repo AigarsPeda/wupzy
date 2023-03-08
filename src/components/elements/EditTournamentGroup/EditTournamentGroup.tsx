@@ -12,10 +12,9 @@ import useWindowSize from "hooks/useWindowSize";
 import { useRouter } from "next/router";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
-import type { TeamsMapType, ParticipantsType } from "types/team.types";
+import type { ParticipantsType, TeamsMapType } from "types/team.types";
 import { api } from "utils/api";
 import getTodayDate from "utils/getTodayDate";
-import sortTeamsByGroup from "utils/sortParticipantsByGroup";
 import { getKeys } from "utils/teamsMapFunctions";
 
 interface EditTournamentGroupProps {
@@ -139,10 +138,10 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   }, [tournament]);
 
   useEffect(() => {
-    const sortedTeams = sortTeamsByGroup(participants?.participants || []);
+    if (!participants) return;
 
-    setGroupToSmall(getGroupThatAreToSmall(sortedTeams));
-    setTeamsByGroup(sortedTeams);
+    setTeamsByGroup(participants.participants);
+    setGroupToSmall(getGroupThatAreToSmall(participants.participants));
   }, [participants]);
 
   return (

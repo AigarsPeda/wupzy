@@ -6,7 +6,7 @@ import type { NextPage } from "next";
 import { useEffect } from "react";
 import { api } from "utils/api";
 
-type GameType = {
+type TeamObjType = {
   firstPair: string[];
   secondPair: string[];
 };
@@ -22,7 +22,7 @@ const TournamentsPage: NextPage = () => {
     // 5 player they need play in pairs with each other and every player plays with every other player once
     const players = ["A", "B", "C", "D", "E", "F"];
     const allPossiblePairs: string[][] = [];
-    const games = new Set<GameType>();
+    const games = new Set<TeamObjType>();
 
     // Create all possible pairs
     for (let i = 0; i < players.length; i++) {
