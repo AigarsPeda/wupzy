@@ -45,21 +45,25 @@ export const tournamentsRouter = createTRPCRouter({
       const participantsMap = createAllPossiblePairsInGroup(participants);
       const gamesMap = createGames(participantsMap);
 
-      await createIdsArrays(gamesMap, async (group, firsIds, secondIds) => {
-        // Save games to database
-        await ctx.prisma.games.create({
-          data: {
-            group,
-            tournamentId: tournament.id,
-            participant_team_1: {
-              connect: [...firsIds],
+      await createIdsArrays(
+        gamesMap,
+        async (group, firsIds, secondIds, index) => {
+          // Save games to database
+          await ctx.prisma.games.create({
+            data: {
+              group,
+              gameOrder: index + 1,
+              tournamentId: tournament.id,
+              participant_team_1: {
+                connect: [...firsIds],
+              },
+              participant_team_2: {
+                connect: [...secondIds],
+              },
             },
-            participant_team_2: {
-              connect: [...secondIds],
-            },
-          },
-        });
-      });
+          });
+        }
+      );
 
       return { tournament };
     }),

@@ -54,10 +54,12 @@ model Participant {
 }
 
 model Games {
+  gameOrder          Int
   winnerId           String?
   group              String
   tournamentId       String
-  participantId      String[]
+  team1Score         Int           @default(0)
+  team2Score         Int           @default(0)
   id                 String        @id @default(cuid())
   participant_team_1 Participant[] @relation("participant_team_1")
   participant_team_2 Participant[] @relation("participant_team_2")

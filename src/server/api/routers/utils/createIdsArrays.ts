@@ -1,15 +1,16 @@
-import type { GameType } from "types/team.types";
+import type { TeamObjType } from "types/team.types";
 
 type IdsArrayType = {
   id: string;
 }[];
 
 const createIdsArrays = async (
-  gamesMap: Map<string, GameType[]>,
+  gamesMap: Map<string, TeamObjType[]>,
   callback: (
     group: string,
     firsIds: IdsArrayType,
-    secondIds: IdsArrayType
+    secondIds: IdsArrayType,
+    index: number
   ) => Promise<void>
 ) => {
   for (const group of gamesMap.keys()) {
@@ -33,7 +34,7 @@ const createIdsArrays = async (
         };
       });
 
-      await callback(group, firsIds, secondIds);
+      await callback(group, firsIds, secondIds, i);
     }
   }
 };
