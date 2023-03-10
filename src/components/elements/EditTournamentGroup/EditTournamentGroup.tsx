@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import type { ParticipantType, TeamsMapType } from "types/team.types";
 import { api } from "utils/api";
 import { getKeys } from "utils/teamsMapFunctions";
+import compareMaps from "../../../utils/compareMaps";
 
 interface EditTournamentGroupProps {
   isModalOpen: boolean;
@@ -31,6 +32,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   const [groupToSmall, setGroupToSmall] = useState<string[]>([]);
   const deleteTeam = api.participant.deleteParticipant.useMutation();
   const { tournament, refetchTournament } = useTournament(tournamentId);
+  const [isGroupsChanged, setIsGroupsChanged] = useState<boolean>(false);
   const [teamToDelete, setTeamToDelete] = useState<ParticipantType | null>(
     null
   );
@@ -67,6 +69,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     oldGroup: string,
     newGroup: string
   ) => {
+    if (!participants) return;
     const newStates = new Map(teamsByGroup);
 
     // remove team from old group
@@ -80,6 +83,14 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       // update team group property to new group
       { ...team, group: newGroup },
     ]);
+
+    if (!compareMaps(newStates, participants?.participants)) {
+      setIsGroupsChanged(true);
+    }
+
+    if (compareMaps(newStates, participants?.participants)) {
+      setIsGroupsChanged(false);
+    }
 
     setGroupToSmall(getGroupThatAreToSmall(newStates));
     setTeamsByGroup(newStates);
@@ -248,17 +259,19 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
         </GridLayout>
       </div>
       <div className="flex w-full justify-end">
-        <Button
-          btnColor="outline"
-          isDisabled={groupToSmall.length > 0}
-          btnTitle={<span className="px-3 text-sm">Save changes</span>}
-          onClick={() => {
-            handleUpdateTeam(teamsByGroup).catch((e) =>
-              console.error("Error updating team", e)
-            );
-            handleCloseModal();
-          }}
-        />
+        {isGroupsChanged && (
+          <Button
+            btnColor="outline"
+            isDisabled={groupToSmall.length > 0}
+            btnTitle={<span className="px-3 text-sm">Save changes</span>}
+            onClick={() => {
+              handleUpdateTeam(teamsByGroup).catch((e) =>
+                console.error("Error updating team", e)
+              );
+              handleCloseModal();
+            }}
+          />
+        )}
       </div>
     </ModalWrap>
   );
