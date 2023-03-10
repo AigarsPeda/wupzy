@@ -8,15 +8,17 @@ import type { ParticipantType, TeamsMapType } from "types/team.types";
 import classNames from "utils/classNames";
 import { getAvailableGroups } from "utils/teamsMapFunctions";
 import { RiSaveLine } from "react-icons/ri";
+import { GrPowerReset } from "react-icons/gr";
 
-interface EditTournamentTeamProps {
+interface EditParticipantProps {
   group: string;
   isChanged: boolean;
-  team: ParticipantType;
   teamsByGroup: TeamsMapType;
+  participant: ParticipantType;
   teamToDelete: ParticipantType | null;
   handleCancelDeleteTeam: () => void;
   setTeamToDelete: (team: ParticipantType) => void;
+  resetNameChange: (participant: ParticipantType) => void;
   handleDeleteTeam: (team: ParticipantType) => Promise<void>;
   handleParticipantNameChange: (team: ParticipantType, newName: string) => void;
   handleParticipantUpdate: (participant: ParticipantType) => Promise<void>;
@@ -27,12 +29,13 @@ interface EditTournamentTeamProps {
   ) => void;
 }
 
-const EditTournamentTeam: FC<EditTournamentTeamProps> = ({
-  team,
+const EditParticipant: FC<EditParticipantProps> = ({
   group,
   isChanged,
+  participant,
   teamsByGroup,
   teamToDelete,
+  resetNameChange,
   setTeamToDelete,
   handleDeleteTeam,
   handleGroupChange,
@@ -49,7 +52,7 @@ const EditTournamentTeam: FC<EditTournamentTeamProps> = ({
 
   return (
     <div
-      key={team.id}
+      key={participant.id}
       className={classNames(
         isChanged && "border-gray-800",
         "flex items-center justify-between border-b-2 py-2 transition-all duration-300"
@@ -58,9 +61,9 @@ const EditTournamentTeam: FC<EditTournamentTeamProps> = ({
       <div>
         <EditInput
           ref={inputRef}
-          value={team.name}
+          value={participant.name}
           handleChange={(e) => {
-            handleParticipantNameChange(team, e.target.value);
+            handleParticipantNameChange(participant, e.target.value);
           }}
         />
       </div>
@@ -71,7 +74,7 @@ const EditTournamentTeam: FC<EditTournamentTeamProps> = ({
             btnClassNames="h-6 w-6"
             key={`${newGroup}-${i}`}
             handleClick={() => {
-              handleGroupChange(team, group, newGroup);
+              handleGroupChange(participant, group, newGroup);
             }}
           />
         ))}
@@ -85,13 +88,24 @@ const EditTournamentTeam: FC<EditTournamentTeamProps> = ({
           />
         )}
         {isChanged && (
-          <SmallButton
-            btnTitle={<RiSaveLine />}
-            btnClassNames="h-6 px-2"
-            handleClick={() => {
-              handleParticipantUpdate(team).catch((e) => console.error(e));
-            }}
-          />
+          <>
+            <SmallButton
+              btnClassNames="h-6 px-2"
+              btnTitle={<RiSaveLine />}
+              handleClick={() => {
+                handleParticipantUpdate(participant).catch((e) =>
+                  console.error(e)
+                );
+              }}
+            />
+            <SmallButton
+              btnClassNames="h-6 px-2"
+              btnTitle={<GrPowerReset />}
+              handleClick={() => {
+                resetNameChange(participant);
+              }}
+            />
+          </>
         )}
         <div className="relative">
           <SmallButton
@@ -99,17 +113,17 @@ const EditTournamentTeam: FC<EditTournamentTeamProps> = ({
             btnTitle="X"
             btnClassNames="h-6 px-2"
             handleClick={() => {
-              setTeamToDelete(team);
+              setTeamToDelete(participant);
             }}
           />
           <ConfirmTooltip
             cancelTitle="Cancel"
             confirmTitle="Delete"
             handleConfirm={() => {
-              handleDeleteTeam(team).catch((e) => console.error(e));
+              handleDeleteTeam(participant).catch((e) => console.error(e));
             }}
             handleCancel={handleCancelDeleteTeam}
-            isTooltip={team.id === teamToDelete?.id}
+            isTooltip={participant.id === teamToDelete?.id}
           />
         </div>
       </div>
@@ -117,4 +131,4 @@ const EditTournamentTeam: FC<EditTournamentTeamProps> = ({
   );
 };
 
-export default EditTournamentTeam;
+export default EditParticipant;

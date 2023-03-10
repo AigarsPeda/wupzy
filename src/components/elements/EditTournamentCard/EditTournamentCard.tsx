@@ -1,6 +1,6 @@
 import Button from "components/elements/Button/Button";
+import EditParticipant from "components/elements/EditParticipant/EditParticipant";
 import EditTournamentHeader from "components/elements/EditTournamentHeader/EditTournamentHeader";
-import EditTournamentTeam from "components/elements/EditTournamentTeam/EditTournamentTeam";
 import type { FC } from "react";
 import type { ParticipantType, TeamsMapType } from "types/team.types";
 import classNames from "utils/classNames";
@@ -14,6 +14,7 @@ interface EditTournamentCardProps {
   handleCancelDeleteTeam: () => void;
   handleStartAddTeam: (str: string) => void;
   setTeamToDelete: (team: ParticipantType) => void;
+  resetNameChange: (participant: ParticipantType) => void;
   handleDeleteTeam: (team: ParticipantType) => Promise<void>;
   handleParticipantUpdate: (participant: ParticipantType) => Promise<void>;
   handleParticipantNameChange: (team: ParticipantType, newName: string) => void;
@@ -28,6 +29,7 @@ const EditTournamentCard: FC<EditTournamentCardProps> = ({
   teamsMap,
   groupToSmall,
   teamToDelete,
+  resetNameChange,
   setTeamToDelete,
   handleDeleteTeam,
   handleGroupChange,
@@ -67,13 +69,14 @@ const EditTournamentCard: FC<EditTournamentCardProps> = ({
                   participant.id
                 );
                 return (
-                  <EditTournamentTeam
+                  <EditParticipant
                     group={group}
-                    team={participant}
                     key={participant.id}
                     isChanged={isChanged}
                     teamsByGroup={teamsMap}
+                    participant={participant}
                     teamToDelete={teamToDelete}
+                    resetNameChange={resetNameChange}
                     setTeamToDelete={setTeamToDelete}
                     handleDeleteTeam={handleDeleteTeam}
                     handleGroupChange={handleGroupChange}

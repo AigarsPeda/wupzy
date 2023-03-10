@@ -115,12 +115,26 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     setTeamsByGroup(newStates);
   };
 
+  const resetNameChange = (participant: ParticipantType) => {
+    if (!participants) return;
+
+    setTeamsByGroup(participants.participants);
+    setChangedParticipantsIds((state) =>
+      state.filter((id) => id !== participant.id)
+    );
+  };
+
   // after update teams, update tournament name
   const handleParticipantUpdate = async (participant: ParticipantType) => {
     await updateParticipant({
       id: participant.id,
       name: participant.name,
     });
+
+    setChangedParticipantsIds((state) =>
+      state.filter((id) => id !== participant.id)
+    );
+
     await refetchGames();
     await refetchParticipants();
   };
@@ -217,6 +231,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
             teamsMap={teamsByGroup}
             groupToSmall={groupToSmall}
             teamToDelete={teamToDelete}
+            resetNameChange={resetNameChange}
             setTeamToDelete={setTeamToDelete}
             handleDeleteTeam={handleDeleteTeam}
             handleGroupChange={handleGroupChange}
