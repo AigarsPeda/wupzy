@@ -55,9 +55,9 @@ model Participant {
 
 model Games {
   gameOrder          Int
-  winnerId           String?
   group              String
   tournamentId       String
+  winnerIds          String[]      @default([])
   team1Score         Int           @default(0)
   team2Score         Int           @default(0)
   id                 String        @id @default(cuid())

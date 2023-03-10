@@ -85,6 +85,57 @@ export const tournamentsRouter = createTRPCRouter({
       return { games };
     }),
 
+  updateGame: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        team1Score: z.number(),
+        team2Score: z.number(),
+        winnerTeamIds: z.array(z.string()).nullable(),
+        // winnerId: z.string().nullable(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const game = await ctx.prisma.games.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          winnerIds: input.winnerTeamIds ?? undefined,
+          team1Score: input.team1Score,
+          team2Score: input.team2Score,
+        },
+        include: {
+          participant_team_1: true,
+          participant_team_2: true,
+        },
+      });
+
+      for (const participant of game.participant_team_1) {
+        await ctx.prisma.participant.update({
+          where: {
+            id: participant.id,
+          },
+          data: {
+            score: participant.score + input.team1Score,
+          },
+        });
+      }
+
+      for (const participant of game.participant_team_2) {
+        await ctx.prisma.participant.update({
+          where: {
+            id: participant.id,
+          },
+          data: {
+            score: participant.score + input.team2Score,
+          },
+        });
+      }
+
+      return { game };
+    }),
+
   getTournamentById: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {

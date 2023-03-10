@@ -1,10 +1,12 @@
 import type { ActivesGameType } from "components/containers/GroupCardContainer/GroupCardContainer";
+import Button from "components/elements/Button/Button";
 import GroupCardHeader from "components/elements/GroupCardHeader/GroupCardHeader";
+import NumberInput from "components/elements/NumberInput/NumberInput";
 import type { FC } from "react";
+import { useState } from "react";
 import type { ParticipantsType } from "types/team.types";
+import { api } from "utils/api";
 import classNames from "utils/classNames";
-import GridLayout from "../../layouts/GridLayout/GridLayout";
-import NumberInput from "../NumberInput/NumberInput";
 
 const GAME_STATUS: {
   [key: string]: string;
@@ -17,7 +19,7 @@ const GAME_STATUS: {
 interface GroupCardProps {
   group: string;
   teams: ParticipantsType[];
-  createGamesOfInterest: ActivesGameType;
+  gamesOfInterest: ActivesGameType;
   totalGames: {
     [key: string]: number;
   };
@@ -27,25 +29,48 @@ const GroupCard: FC<GroupCardProps> = ({
   teams,
   group,
   totalGames,
-  createGamesOfInterest,
+  gamesOfInterest,
 }) => {
-  // TODO: Should we use useQuery here? Or just pas prev games and next games as props?
-  // const { data: games } = api.tournaments.getTournamentGames.useQuery({
-  //   id: tournamentId,
-  //   group,
-  // });
+  const [score, setScore] = useState({
+    firstTeam: 0,
+    secondTeam: 0,
+  });
+  const { mutateAsync } = api.tournaments.updateGame.useMutation();
 
-  // loop through createGamesOfInterest and find the current game
-  // if there is no current game, then find the next game
+  const createTournament = async (
+    id: string,
+    firstTeamIds: string[],
+    secondTeamsIds: string[]
+  ) => {
+    const tournament = await mutateAsync({
+      id,
+      team1Score: score.firstTeam,
+      team2Score: score.secondTeam,
+      winnerTeamIds:
+        score.firstTeam > score.secondTeam ? firstTeamIds : secondTeamsIds,
+    });
 
+    if (!tournament) {
+      console.error("error creating tournament");
+      return;
+    }
+
+    setScore({
+      firstTeam: 0,
+      secondTeam: 0,
+    });
+  };
+
+  // TODO: Refactor this component
   return (
     <div className="mb-6 min-h-[20rem] min-w-[20rem] grid-cols-6 content-start gap-4 rounded-md border border-gray-50 bg-gray-50 px-8 py-3 shadow-md xl:grid">
       <div className="col-span-3 pr-5">
+        {console.log(gamesOfInterest)}
         <GroupCardHeader label="games" title={group} />
-        <div className="h-full max-h-[30rem] overflow-y-auto">
-          {Object.entries(createGamesOfInterest[group] || {})
+        <div className="h-full">
+          {Object.entries(gamesOfInterest[group] || {})
             .sort() // Sort by key (-1, 0, 1,)
-            .map(([key, games]) => {
+            .map(([key, game]) => {
               const gameStatus = GAME_STATUS[key];
               const isCurrentGame = gameStatus === "Current";
               const gameCount = totalGames[group] || 0;
@@ -59,40 +84,103 @@ const GroupCard: FC<GroupCardProps> = ({
                     "mb-3 rounded-md px-3 md:flex"
                   )}
                 >
-                  <div className="mb-3 w-20 border-b-2 border-gray-100 md:mr-3 md:mb-0 md:border-b-0 md:border-r-2 md:px-2">
-                    <p>{gameStatus}</p>
-                    <p className="pb-1 text-xs text-gray-400">
-                      {games && `${games?.gameOrder} of ${gameCount}`}
-                    </p>
-                  </div>
-                  {games ? (
-                    <div className="flex w-full items-center justify-between space-x-4">
-                      <div>
-                        <div className="flex w-full items-center">
-                          {games.participant_team_1.map((team) => (
-                            <p key={team.id} className="mr-2">
-                              {team.name}
-                            </p>
-                          ))}
+                  <div className="w-full md:flex">
+                    <div
+                      className={classNames(
+                        isCurrentGame ? "border-gray-400" : "border-gray-100",
+                        "mb-3 w-20 border-b-2  md:mr-3 md:mb-0 md:border-b-0 md:border-r-2 md:px-2"
+                      )}
+                    >
+                      <p className="mb-1 text-xs text-gray-400">{gameStatus}</p>
+                      <p className="pb-1 text-xs">
+                        {game && `${game?.gameOrder} of ${gameCount}`}
+                      </p>
+                    </div>
+                    {game ? (
+                      <div className="flex">
+                        <div>
+                          <div>
+                            <p className="text-xs text-gray-400">First team</p>
+                          </div>
+                          <div className="flex w-full items-center">
+                            {game.participant_team_1.map((team) => (
+                              <p key={team.id} className="mr-2">
+                                {team.name}
+                              </p>
+                            ))}
+                          </div>
+                          {isCurrentGame && (
+                            <NumberInput
+                              value={score.firstTeam}
+                              onChange={(n) => {
+                                setScore((prev) => ({ ...prev, firstTeam: n }));
+                              }}
+                            />
+                          )}
+                          {!isCurrentGame && (
+                            <p className="text-gray-600">{game.team1Score}</p>
+                          )}
                         </div>
-                        {isCurrentGame && <NumberInput />}
+                        <div className="ml-4">
+                          <div>
+                            <p className="text-xs text-gray-400">Second team</p>
+                          </div>
+                          <div className="flex w-full items-center">
+                            {game.participant_team_2.map((team) => (
+                              <p key={team.id} className="mr-2">
+                                {team.name}
+                              </p>
+                            ))}
+                          </div>
+                          {isCurrentGame && (
+                            <NumberInput
+                              value={score.secondTeam}
+                              onChange={(n) => {
+                                setScore((prev) => ({
+                                  ...prev,
+                                  secondTeam: n,
+                                }));
+                              }}
+                            />
+                          )}
+                          {!isCurrentGame && (
+                            <p className="text-gray-600">{game.team2Score}</p>
+                          )}
+                        </div>
                       </div>
-                      {/* <div className="">
-                        <p className="text-gray-400">vs</p>
-                      </div> */}
-                      <div>
-                        <div className="flex w-full items-center">
-                          {games.participant_team_2.map((team) => (
-                            <p key={team.id} className="mr-2">
-                              {team.name}
-                            </p>
-                          ))}
-                        </div>
-                        {isCurrentGame && <NumberInput />}
+                    ) : (
+                      <p className="text-gray-400">no game</p>
+                    )}
+                  </div>
+
+                  {isCurrentGame && (
+                    <div>
+                      <div className="grid h-full w-full content-end">
+                        <Button
+                          btnColor="outline"
+                          btnTitle="Save score"
+                          onClick={() => {
+                            if (!game) return;
+
+                            const firstTeamIds = game.participant_team_1.map(
+                              (team) => team.id
+                            );
+
+                            const secondTeamsIds = game.participant_team_2.map(
+                              (team) => team.id
+                            );
+
+                            createTournament(
+                              game.id,
+                              firstTeamIds,
+                              secondTeamsIds
+                            ).catch((err) =>
+                              console.error("error creating tournament", err)
+                            );
+                          }}
+                        />
                       </div>
                     </div>
-                  ) : (
-                    <p className="text-gray-400">no game</p>
                   )}
                 </div>
               );

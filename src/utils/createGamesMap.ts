@@ -8,10 +8,10 @@ const createGamesMap = (games: GamesType[]) => {
     groupGames.push(game);
     acc.set(group, groupGames);
 
+    groupGames.sort((a, b) => a.gameOrder - b.gameOrder);
+
     return acc;
   }, new Map<string, GamesType[]>());
-
-  // return gamesMap;
 };
 
 export default createGamesMap;
