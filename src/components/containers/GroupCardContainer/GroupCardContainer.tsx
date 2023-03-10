@@ -36,7 +36,7 @@ const GroupCardContainer: FC<GroupCardContainerProps> = ({ tournamentId }) => {
 
         if (!game) continue;
 
-        if (!game.winnerId && !gamesOfInterest[group]) {
+        if (game.winnerIds?.length === 0 && !gamesOfInterest[group]) {
           gamesOfInterest[group] = {
             "0": game,
             "1": games[i + 1] || undefined,
@@ -49,18 +49,26 @@ const GroupCardContainer: FC<GroupCardContainerProps> = ({ tournamentId }) => {
     return gamesOfInterest;
   };
 
-  // useEffect(() => {
-  //   if (!games) return;
+  // count total games in group and pass it to GroupCard
+  const getGameCountPerGroup = (games: GamesType[]) => {
+    const gamesMap = createGamesMap(games);
+    const totalGames: {
+      [key: string]: number;
+    } = {};
 
-  //   createGamesOfInterest(games.games);
-  // }, [games]);
+    gamesMap.forEach((games, group) => {
+      if (!games) return;
+
+      totalGames[group] = games.length;
+    });
+
+    return totalGames;
+  };
 
   if (isParticipantsLoading) return <p>Loading...</p>;
 
   return (
     <div>
-      {/* {createActiveGame(games?.games)} */}
-      {/* <GridLayout minWith="700" isGap> */}
       {participants &&
         [...participants.participants].map(([group, value]) => {
           return (
@@ -68,11 +76,11 @@ const GroupCardContainer: FC<GroupCardContainerProps> = ({ tournamentId }) => {
               key={group}
               group={group}
               teams={value}
-              createGamesOfInterest={createGamesOfInterest(games?.games || [])}
+              totalGames={getGameCountPerGroup(games?.games || [])}
+              gamesOfInterest={createGamesOfInterest(games?.games || [])}
             />
           );
         })}
-      {/* </GridLayout> */}
     </div>
   );
 };

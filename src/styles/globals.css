@@ -1,4 +1,8 @@
 @layer base {
+  * {
+    box-sizing: border-box;
+  }
+
   h1,
   h2,
   h3,
@@ -20,14 +24,23 @@
   html {
     @apply h-full;
   }
+
   body {
     @apply h-full;
   }
+
   div#__next {
     @apply h-full;
   }
+
   main {
     @apply h-full;
+  }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 }
 

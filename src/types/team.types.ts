@@ -27,7 +27,7 @@ const GamesZodSchema = z.object({
   team1Score: z.number(),
   team2Score: z.number(),
   tournamentId: z.string(),
-  winnerId: z.string().nullable(),
+  winnerIds: z.array(z.string()).nullable(),
   participant_team_1: z.array(ParticipantsZodSchema),
   participant_team_2: z.array(ParticipantsZodSchema),
 });
