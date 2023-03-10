@@ -12,9 +12,8 @@ import useWindowSize from "hooks/useWindowSize";
 import { useRouter } from "next/router";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
-import type { ParticipantsType, TeamsMapType } from "types/team.types";
+import type { ParticipantType, TeamsMapType } from "types/team.types";
 import { api } from "utils/api";
-import getTodayDate from "utils/getTodayDate";
 import { getKeys } from "utils/teamsMapFunctions";
 
 interface EditTournamentGroupProps {
@@ -32,11 +31,14 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   const [groupToSmall, setGroupToSmall] = useState<string[]>([]);
   const deleteTeam = api.participant.deleteParticipant.useMutation();
   const { tournament, refetchTournament } = useTournament(tournamentId);
-  const [teamToDelete, setTeamToDelete] = useState<ParticipantsType | null>(
+  const [teamToDelete, setTeamToDelete] = useState<ParticipantType | null>(
     null
   );
   const { mutateAsync } = api.participant.updateParticipants.useMutation();
   const [teamsByGroup, setTeamsByGroup] = useState<TeamsMapType>(new Map());
+  const [changedParticipantsIds, setChangedParticipantsIds] = useState<
+    string[]
+  >([]);
   const [addNewTeamGroup, setAddNewTeamGroup] = useState<string | null>(null);
   const { participants, refetchParticipants } = useParticipants(tournamentId);
   const { refetch: refetchGames } = api.tournaments.getTournamentGames.useQuery(
@@ -48,6 +50,9 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   const { mutateAsync: updateTournamentName } =
     api.tournaments.updateTournament.useMutation();
 
+  const { mutateAsync: updateParticipant } =
+    api.participant.updatedParticipant.useMutation();
+
   const addGroupToTournament = (group: string) => {
     const newStates = new Map(teamsByGroup);
     newStates.set(group, []);
@@ -58,7 +63,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   };
 
   const handleGroupChange = (
-    team: ParticipantsType,
+    team: ParticipantType,
     oldGroup: string,
     newGroup: string
   ) => {
@@ -80,12 +85,27 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     setTeamsByGroup(newStates);
   };
 
-  const handleTeamsNameChange = (team: ParticipantsType, newName: string) => {
+  const handleParticipantNameChange = (
+    participant: ParticipantType,
+    newName: string
+  ) => {
     const newStates = new Map(teamsByGroup);
 
-    newStates.set(team.group, [
-      ...(newStates.get(team.group)?.map((t) => {
-        if (t.id === team.id) {
+    participants?.participants.get(participant.group)?.find((p) => {
+      if (p.id === participant.id && p.name !== newName) {
+        setChangedParticipantsIds((state) => [...state, participant.id]);
+      }
+
+      if (p.id === participant.id && p.name === newName) {
+        setChangedParticipantsIds((state) =>
+          state.filter((id) => id !== participant.id)
+        );
+      }
+    });
+
+    newStates.set(participant.group, [
+      ...(newStates.get(participant.group)?.map((t) => {
+        if (t.id === participant.id) {
           return { ...t, name: newName };
         }
         return t;
@@ -93,6 +113,16 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     ]);
 
     setTeamsByGroup(newStates);
+  };
+
+  // after update teams, update tournament name
+  const handleParticipantUpdate = async (participant: ParticipantType) => {
+    await updateParticipant({
+      id: participant.id,
+      name: participant.name,
+    });
+    await refetchGames();
+    await refetchParticipants();
   };
 
   const handleUpdateTeam = async (teamsMap: TeamsMapType) => {
@@ -103,10 +133,11 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       group: team.group,
     }));
 
-    await updateTournamentName({
-      id: tournamentId,
-      name: newTournamentName || tournament?.tournament.name || getTodayDate(),
-    });
+    // TODO: update tournament name WITHOUT DELETE ALL GAMES
+    // await updateTournamentName({
+    //   id: tournamentId,
+    //   name: newTournamentName || tournament?.tournament.name || getTodayDate(),
+    // });
 
     await mutateAsync({
       tournamentId: tournamentId,
@@ -118,12 +149,12 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     await refetchParticipants();
   };
 
-  const handleDeleteTeam = async (team: ParticipantsType) => {
+  const handleDeleteTeam = async (participant: ParticipantType) => {
     await deleteTeam.mutateAsync({
-      id: team.id,
+      id: participant.id,
     });
-    await refetchParticipants();
     await refetchGames();
+    await refetchParticipants();
   };
 
   useEffect(() => {
@@ -164,8 +195,8 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       </div>
 
       <AddNewTeam
-        addNewTeamGroup={addNewTeamGroup}
         tournamentId={tournamentId}
+        addNewTeamGroup={addNewTeamGroup}
         isAddNewTeamOpen={Boolean(addNewTeamGroup)}
         handleCancelClick={() => {
           setAddNewTeamGroup(null);
@@ -189,7 +220,9 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
             setTeamToDelete={setTeamToDelete}
             handleDeleteTeam={handleDeleteTeam}
             handleGroupChange={handleGroupChange}
-            handleTeamsNameChange={handleTeamsNameChange}
+            changedParticipantsIds={changedParticipantsIds}
+            handleParticipantUpdate={handleParticipantUpdate}
+            handleParticipantNameChange={handleParticipantNameChange}
             handleCancelDeleteTeam={() => {
               setTeamToDelete(null);
             }}

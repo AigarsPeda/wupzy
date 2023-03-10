@@ -1,7 +1,7 @@
-import type { ParticipantsType } from "types/team.types";
+import type { ParticipantType } from "types/team.types";
 
-const sortParticipantsByGroup = (teams: ParticipantsType[]) => {
-  const teamsByGroup = new Map<string, ParticipantsType[]>();
+const sortParticipantsByGroup = (teams: ParticipantType[]) => {
+  const teamsByGroup = new Map<string, ParticipantType[]>();
 
   teams.forEach((team) => {
     const group = team.group;

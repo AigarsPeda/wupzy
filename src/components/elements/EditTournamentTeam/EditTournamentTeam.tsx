@@ -1,25 +1,27 @@
 import ConfirmTooltip from "components/elements/ConfirmTooltip/ConfirmTooltip";
+import EditInput from "components/elements/EditInput/EditInput";
 import SmallButton from "components/elements/SmallButton/SmallButton";
 import type { FC } from "react";
 import { useRef } from "react";
-import type { TeamsMapType, TeamType } from "types/team.types";
+import { FiEdit2 } from "react-icons/fi";
+import type { ParticipantType, TeamsMapType } from "types/team.types";
 import classNames from "utils/classNames";
 import { getAvailableGroups } from "utils/teamsMapFunctions";
-import { FiEdit2 } from "react-icons/fi";
-import EditInput from "../EditInput/EditInput";
+import { RiSaveLine } from "react-icons/ri";
 
 interface EditTournamentTeamProps {
   group: string;
-  team: TeamType;
-  isFirstGroup: boolean;
+  isChanged: boolean;
+  team: ParticipantType;
   teamsByGroup: TeamsMapType;
-  teamToDelete: TeamType | null;
+  teamToDelete: ParticipantType | null;
   handleCancelDeleteTeam: () => void;
-  setTeamToDelete: (team: TeamType) => void;
-  handleDeleteTeam: (team: TeamType) => Promise<void>;
-  handleTeamsNameChange: (team: TeamType, newName: string) => void;
+  setTeamToDelete: (team: ParticipantType) => void;
+  handleDeleteTeam: (team: ParticipantType) => Promise<void>;
+  handleParticipantNameChange: (team: ParticipantType, newName: string) => void;
+  handleParticipantUpdate: (participant: ParticipantType) => Promise<void>;
   handleGroupChange: (
-    team: TeamType,
+    team: ParticipantType,
     oldGroup: string,
     newGroup: string
   ) => void;
@@ -28,14 +30,15 @@ interface EditTournamentTeamProps {
 const EditTournamentTeam: FC<EditTournamentTeamProps> = ({
   team,
   group,
+  isChanged,
   teamsByGroup,
-  isFirstGroup,
   teamToDelete,
   setTeamToDelete,
   handleDeleteTeam,
   handleGroupChange,
-  handleTeamsNameChange,
   handleCancelDeleteTeam,
+  handleParticipantUpdate,
+  handleParticipantNameChange,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -48,8 +51,8 @@ const EditTournamentTeam: FC<EditTournamentTeamProps> = ({
     <div
       key={team.id}
       className={classNames(
-        !isFirstGroup && "border-t-2",
-        "flex items-center justify-between py-2"
+        isChanged && "border-gray-800",
+        "flex items-center justify-between border-b-2 py-2 transition-all duration-300"
       )}
     >
       <div>
@@ -57,7 +60,7 @@ const EditTournamentTeam: FC<EditTournamentTeamProps> = ({
           ref={inputRef}
           value={team.name}
           handleChange={(e) => {
-            handleTeamsNameChange(team, e.target.value);
+            handleParticipantNameChange(team, e.target.value);
           }}
         />
       </div>
@@ -74,11 +77,22 @@ const EditTournamentTeam: FC<EditTournamentTeamProps> = ({
         ))}
       </div>
       <div className="flex w-full items-center justify-end">
-        <SmallButton
-          btnTitle={<FiEdit2 />}
-          btnClassNames="h-6 px-2"
-          handleClick={handleFocusInput}
-        />
+        {!isChanged && (
+          <SmallButton
+            btnTitle={<FiEdit2 />}
+            btnClassNames="h-6 px-2"
+            handleClick={handleFocusInput}
+          />
+        )}
+        {isChanged && (
+          <SmallButton
+            btnTitle={<RiSaveLine />}
+            btnClassNames="h-6 px-2"
+            handleClick={() => {
+              handleParticipantUpdate(team).catch((e) => console.error(e));
+            }}
+          />
+        )}
         <div className="relative">
           <SmallButton
             btnColor="red"

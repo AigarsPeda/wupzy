@@ -2,8 +2,8 @@ import createIdsArrays from "server/api/routers/utils/createIdsArrays";
 import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
 import createAllPossiblePairsInGroup from "utils/createAllPossiblePairsInGroup";
 import createGames from "utils/createGames";
+import sortParticipantsByGroup from "utils/sortParticipantsByGroup";
 import { z } from "zod";
-import sortParticipantsByGroup from "../../../utils/sortParticipantsByGroup";
 
 export const participantRouter = createTRPCRouter({
   getTournamentParticipants: protectedProcedure
@@ -45,6 +45,28 @@ export const participantRouter = createTRPCRouter({
       });
 
       return { team };
+    }),
+
+  updatedParticipant: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string().optional(),
+        score: z.number().optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const participant = await ctx.prisma.participant.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          name: input.name,
+          score: input.score,
+        },
+      });
+
+      return { participant };
     }),
 
   getParticipantGames: protectedProcedure

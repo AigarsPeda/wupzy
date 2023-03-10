@@ -2,21 +2,23 @@ import Button from "components/elements/Button/Button";
 import EditTournamentHeader from "components/elements/EditTournamentHeader/EditTournamentHeader";
 import EditTournamentTeam from "components/elements/EditTournamentTeam/EditTournamentTeam";
 import type { FC } from "react";
-import type { TeamsMapType, TeamType } from "types/team.types";
+import type { ParticipantType, TeamsMapType } from "types/team.types";
 import classNames from "utils/classNames";
 import { getKeys } from "utils/teamsMapFunctions";
 
 interface EditTournamentCardProps {
   teamsMap: TeamsMapType;
   groupToSmall: string[];
-  teamToDelete: TeamType | null;
+  changedParticipantsIds: string[];
+  teamToDelete: ParticipantType | null;
   handleCancelDeleteTeam: () => void;
-  setTeamToDelete: (team: TeamType) => void;
   handleStartAddTeam: (str: string) => void;
-  handleDeleteTeam: (team: TeamType) => Promise<void>;
-  handleTeamsNameChange: (team: TeamType, newName: string) => void;
+  setTeamToDelete: (team: ParticipantType) => void;
+  handleDeleteTeam: (team: ParticipantType) => Promise<void>;
+  handleParticipantUpdate: (participant: ParticipantType) => Promise<void>;
+  handleParticipantNameChange: (team: ParticipantType, newName: string) => void;
   handleGroupChange: (
-    team: TeamType,
+    team: ParticipantType,
     oldGroup: string,
     newGroup: string
   ) => void;
@@ -28,16 +30,20 @@ const EditTournamentCard: FC<EditTournamentCardProps> = ({
   teamToDelete,
   setTeamToDelete,
   handleDeleteTeam,
-  handleStartAddTeam,
   handleGroupChange,
-  handleTeamsNameChange,
+  handleStartAddTeam,
   handleCancelDeleteTeam,
+  changedParticipantsIds,
+  handleParticipantUpdate,
+  handleParticipantNameChange,
 }) => {
   return (
     <>
-      {[...teamsMap].map(([group, value], i) => {
+      {[...teamsMap].map(([group, participants], i) => {
         const isErrorMessageVisible = groupToSmall.includes(group);
         const isMoreThanOneGroup = getKeys(teamsMap).length > 1;
+
+        console.log("participant", participants);
 
         return (
           <div
@@ -56,21 +62,24 @@ const EditTournamentCard: FC<EditTournamentCardProps> = ({
                 group={group}
                 isMoreThanOneGroup={isMoreThanOneGroup}
               />
-              {value.map((team, i) => {
-                const isFirstGroup = i === 0;
+              {participants.map((participant) => {
+                const isChanged = changedParticipantsIds.includes(
+                  participant.id
+                );
                 return (
                   <EditTournamentTeam
-                    team={team}
-                    key={team.id}
                     group={group}
+                    team={participant}
+                    key={participant.id}
+                    isChanged={isChanged}
                     teamsByGroup={teamsMap}
                     teamToDelete={teamToDelete}
-                    isFirstGroup={isFirstGroup}
                     setTeamToDelete={setTeamToDelete}
                     handleDeleteTeam={handleDeleteTeam}
                     handleGroupChange={handleGroupChange}
-                    handleTeamsNameChange={handleTeamsNameChange}
                     handleCancelDeleteTeam={handleCancelDeleteTeam}
+                    handleParticipantUpdate={handleParticipantUpdate}
+                    handleParticipantNameChange={handleParticipantNameChange}
                   />
                 );
               })}

@@ -12,12 +12,12 @@ const ParticipantsMapZodSchema = z.map(
   z.array(ParticipantsZodSchema)
 );
 
-export type ParticipantsType = z.infer<typeof ParticipantsZodSchema>;
+export type ParticipantType = z.infer<typeof ParticipantsZodSchema>;
 export type TeamsMapType = z.infer<typeof ParticipantsMapZodSchema>;
 
 export type TeamObjType = {
-  first: ParticipantsType[];
-  second: ParticipantsType[];
+  first: ParticipantType[];
+  second: ParticipantType[];
 };
 
 const GamesZodSchema = z.object({
