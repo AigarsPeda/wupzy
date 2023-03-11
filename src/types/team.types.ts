@@ -32,18 +32,4 @@ const GamesZodSchema = z.object({
   participant_team_2: z.array(ParticipantsZodSchema),
 });
 
-// gameOrder: 1
-// group: "A"
-// id: "cleyqmnod0055slzwk59xbyfb"
-// participantId: []
-// participant_team_1:  [{…}, {…}]
-// participant_team_2: [{…}, {…}]
-// team1Score: 0
-// team2Score: 0
-// tournamentId: "cleyqm14g0005slzw51criwvh"
-// winnerId: null
-
-// const GamesMapZodSchema = z.map(z.string(), z.array(GamesZodSchema));
-
-// export type GamesMapType = z.infer<typeof GamesMapZodSchema>;
 export type GamesType = z.infer<typeof GamesZodSchema>;

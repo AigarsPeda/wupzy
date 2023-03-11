@@ -1,12 +1,12 @@
 import type { ActivesGameType } from "components/containers/GroupCardContainer/GroupCardContainer";
 import Button from "components/elements/Button/Button";
 import GroupCardHeader from "components/elements/GroupCardHeader/GroupCardHeader";
-import NumberInput from "components/elements/NumberInput/NumberInput";
 import type { FC } from "react";
 import { useState } from "react";
 import type { ParticipantType } from "types/team.types";
 import { api } from "utils/api";
 import classNames from "utils/classNames";
+import DisplayTeams from "components/elements/DisplayTeams/DisplayTeams";
 
 const GAME_STATUS: {
   [key: string]: string;
@@ -23,12 +23,14 @@ interface GroupCardProps {
   totalGames: {
     [key: string]: number;
   };
+  refetchGames: () => void;
 }
 
 const GroupCard: FC<GroupCardProps> = ({
   teams,
   group,
   totalGames,
+  refetchGames,
   gamesOfInterest,
 }) => {
   const [score, setScore] = useState({
@@ -37,7 +39,7 @@ const GroupCard: FC<GroupCardProps> = ({
   });
   const { mutateAsync } = api.tournaments.updateGame.useMutation();
 
-  const createTournament = async (
+  const handleScoreSave = async (
     id: string,
     firstTeamIds: string[],
     secondTeamsIds: string[]
@@ -55,17 +57,17 @@ const GroupCard: FC<GroupCardProps> = ({
       return;
     }
 
+    refetchGames();
+
     setScore({
       firstTeam: 0,
       secondTeam: 0,
     });
   };
 
-  // TODO: Refactor this component
   return (
     <div className="mb-6 min-h-[20rem] min-w-[20rem] grid-cols-6 content-start gap-4 rounded-md border border-gray-50 bg-gray-50 px-8 py-3 shadow-md xl:grid">
       <div className="col-span-3 pr-5">
-        {console.log(gamesOfInterest)}
         <GroupCardHeader label="games" title={group} />
         <div className="h-full">
           {Object.entries(gamesOfInterest[group] || {})
@@ -97,56 +99,26 @@ const GroupCard: FC<GroupCardProps> = ({
                       </p>
                     </div>
                     {game ? (
-                      <div className="flex">
-                        <div>
-                          <div>
-                            <p className="text-xs text-gray-400">First team</p>
-                          </div>
-                          <div className="flex w-full items-center">
-                            {game.participant_team_1.map((team) => (
-                              <p key={team.id} className="mr-2">
-                                {team.name}
-                              </p>
-                            ))}
-                          </div>
-                          {isCurrentGame && (
-                            <NumberInput
-                              value={score.firstTeam}
-                              onChange={(n) => {
-                                setScore((prev) => ({ ...prev, firstTeam: n }));
-                              }}
-                            />
-                          )}
-                          {!isCurrentGame && (
-                            <p className="text-gray-600">{game.team1Score}</p>
-                          )}
-                        </div>
-                        <div className="ml-4">
-                          <div>
-                            <p className="text-xs text-gray-400">Second team</p>
-                          </div>
-                          <div className="flex w-full items-center">
-                            {game.participant_team_2.map((team) => (
-                              <p key={team.id} className="mr-2">
-                                {team.name}
-                              </p>
-                            ))}
-                          </div>
-                          {isCurrentGame && (
-                            <NumberInput
-                              value={score.secondTeam}
-                              onChange={(n) => {
-                                setScore((prev) => ({
-                                  ...prev,
-                                  secondTeam: n,
-                                }));
-                              }}
-                            />
-                          )}
-                          {!isCurrentGame && (
-                            <p className="text-gray-600">{game.team2Score}</p>
-                          )}
-                        </div>
+                      <div className="flex space-x-4">
+                        <DisplayTeams
+                          infoScore={game.team1Score}
+                          teamsScore={score.firstTeam}
+                          isCurrentGame={isCurrentGame}
+                          team={game.participant_team_1}
+                          handleScoreChange={(n) => {
+                            setScore((prev) => ({ ...prev, firstTeam: n }));
+                          }}
+                        />
+
+                        <DisplayTeams
+                          infoScore={game.team2Score}
+                          teamsScore={score.secondTeam}
+                          isCurrentGame={isCurrentGame}
+                          team={game.participant_team_2}
+                          handleScoreChange={(n) => {
+                            setScore((prev) => ({ ...prev, secondTeam: n }));
+                          }}
+                        />
                       </div>
                     ) : (
                       <p className="text-gray-400">no game</p>
@@ -170,7 +142,7 @@ const GroupCard: FC<GroupCardProps> = ({
                               (team) => team.id
                             );
 
-                            createTournament(
+                            handleScoreSave(
                               game.id,
                               firstTeamIds,
                               secondTeamsIds

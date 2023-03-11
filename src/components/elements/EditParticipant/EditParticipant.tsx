@@ -21,8 +21,8 @@ interface EditParticipantProps {
   setTeamToDelete: (team: ParticipantType) => void;
   resetNameChange: (participant: ParticipantType) => void;
   handleDeleteTeam: (team: ParticipantType) => Promise<void>;
-  handleParticipantNameChange: (team: ParticipantType, newName: string) => void;
   handleParticipantUpdate: (participant: ParticipantType) => Promise<void>;
+  handleParticipantNameChange: (team: ParticipantType, newName: string) => void;
   handleGroupChange: (
     team: ParticipantType,
     oldGroup: string,

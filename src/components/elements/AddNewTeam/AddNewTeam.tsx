@@ -20,6 +20,9 @@ const AddNewTeam: FC<AddNewTeamProps> = ({
 }) => {
   const [teamsName, setTeamsName] = useState("");
   const { mutateAsync } = api.participant.addParticipant.useMutation();
+  const { refetch: refetchGames } = api.tournaments.getTournamentGames.useQuery(
+    { id: tournamentId }
+  );
 
   const handleAddingTeam = async () => {
     if (!addNewTeamGroup) {
@@ -33,6 +36,7 @@ const AddNewTeam: FC<AddNewTeamProps> = ({
       group: addNewTeamGroup,
     });
 
+    await refetchGames();
     setTeamsName("");
     handleCancelClick();
   };
@@ -54,7 +58,7 @@ const AddNewTeam: FC<AddNewTeamProps> = ({
 
       <div className="flex justify-end">
         <Button
-          btnClass=" w-40"
+          btnClass="w-40"
           btnTitle="Add new team"
           btnColor={teamsName.length > 2 ? "black" : "outline"}
           onClick={() => {
