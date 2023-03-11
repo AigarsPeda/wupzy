@@ -7,7 +7,6 @@ import useTournament from "hooks/useTournament";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { api } from "utils/api";
 
 const Tournament: NextPage = () => {
   const { query } = useRouter();

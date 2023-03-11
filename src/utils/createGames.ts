@@ -1,12 +1,12 @@
-import type { ParticipantsType } from "types/team.types";
+import type { ParticipantType } from "types/team.types";
 import containsParticipants from "utils/containsParticipants";
 
 type TeamObjType = {
-  first: ParticipantsType[];
-  second: ParticipantsType[];
+  first: ParticipantType[];
+  second: ParticipantType[];
 };
 
-const createGames = (pairs: Map<string, ParticipantsType[][]>) => {
+const createGames = (pairs: Map<string, ParticipantType[][]>) => {
   const games = new Map<string, TeamObjType[]>([]);
 
   for (const group of pairs.keys()) {

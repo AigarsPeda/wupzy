@@ -4,7 +4,7 @@ import GroupCardHeader from "components/elements/GroupCardHeader/GroupCardHeader
 import NumberInput from "components/elements/NumberInput/NumberInput";
 import type { FC } from "react";
 import { useState } from "react";
-import type { ParticipantsType } from "types/team.types";
+import type { ParticipantType } from "types/team.types";
 import { api } from "utils/api";
 import classNames from "utils/classNames";
 
@@ -18,7 +18,7 @@ const GAME_STATUS: {
 
 interface GroupCardProps {
   group: string;
-  teams: ParticipantsType[];
+  teams: ParticipantType[];
   gamesOfInterest: ActivesGameType;
   totalGames: {
     [key: string]: number;

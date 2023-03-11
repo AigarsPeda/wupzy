@@ -15,7 +15,6 @@ const NumberInput: FC<NumberInputProps> = ({ value, onChange }) => {
           onClick={() => {
             if (value > 0) {
               onChange(value - 1);
-              // onChange((state) => state - 1);
             }
           }}
         >
@@ -32,7 +31,6 @@ const NumberInput: FC<NumberInputProps> = ({ value, onChange }) => {
           data-action="increment"
           className="h-full w-20 cursor-pointer rounded-r bg-gray-300 text-gray-600 transition-all hover:bg-gray-400 hover:text-gray-700"
           onClick={() => {
-            // setValue((state) => state + 1);
             onChange(value + 1);
           }}
         >

@@ -1,4 +1,4 @@
-import { participantRouter } from "./routers/teams";
+import { participantRouter } from "./routers/participant";
 import { tournamentsRouter } from "./routers/tournaments";
 import { usersRouter } from "./routers/users";
 import { createTRPCRouter } from "./trpc";
