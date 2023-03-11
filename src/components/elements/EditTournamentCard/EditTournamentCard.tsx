@@ -45,8 +45,6 @@ const EditTournamentCard: FC<EditTournamentCardProps> = ({
         const isErrorMessageVisible = groupToSmall.includes(group);
         const isMoreThanOneGroup = getKeys(teamsMap).length > 1;
 
-        console.log("participant", participants);
-
         return (
           <div
             key={`${group}-${i}`}

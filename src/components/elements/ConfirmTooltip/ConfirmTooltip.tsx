@@ -5,19 +5,23 @@ import { useRef } from "react";
 import classNames from "utils/classNames";
 
 interface ConfirmTooltipProps {
+  position?: string;
   isTooltip: boolean;
   cancelTitle: string;
   confirmTitle: string;
+  tailPosition?: "top" | "right";
   handleCancel: () => void;
   handleConfirm: () => void;
 }
 
 const ConfirmTooltip: FC<ConfirmTooltipProps> = ({
+  position,
   isTooltip,
   cancelTitle,
   confirmTitle,
   handleCancel,
   handleConfirm,
+  tailPosition = "top",
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const { shouldRender, isAnimation } = useDelayUnmount(isTooltip, 100);
@@ -32,7 +36,8 @@ const ConfirmTooltip: FC<ConfirmTooltipProps> = ({
           ref={modalRef}
           className={classNames(
             isAnimation ? "opacity-100" : "opacity-0",
-            "absolute top-10 right-1 z-10 flex items-center rounded-md bg-gray-300 px-5 py-3 shadow-md transition-all duration-300 ease-in-out"
+            "absolute z-10 flex items-center rounded-md bg-gray-300 px-5 py-3 shadow-md transition-all duration-300 ease-in-out",
+            position ? position : "top-10 right-1"
           )}
         >
           <button
@@ -47,7 +52,13 @@ const ConfirmTooltip: FC<ConfirmTooltipProps> = ({
           >
             {cancelTitle}
           </button>
-          <div className="pointer-events-none absolute -top-2 right-3 -z-[1] h-5 w-5 rotate-45 bg-gray-300" />
+          <div
+            className={classNames(
+              tailPosition === "top" && " -top-2 right-3",
+              tailPosition === "right" && " -right-2 top-3",
+              "pointer-events-none absolute -z-[1] h-5 w-5 rotate-45 bg-gray-300"
+            )}
+          />
         </div>
       )}
     </>

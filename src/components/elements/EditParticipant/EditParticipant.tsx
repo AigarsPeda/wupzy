@@ -3,12 +3,13 @@ import EditInput from "components/elements/EditInput/EditInput";
 import SmallButton from "components/elements/SmallButton/SmallButton";
 import type { FC } from "react";
 import { useRef } from "react";
+import { CgClose } from "react-icons/cg";
 import { FiEdit2 } from "react-icons/fi";
+import { GrPowerReset } from "react-icons/gr";
+import { RiSaveLine } from "react-icons/ri";
 import type { ParticipantType, TeamsMapType } from "types/team.types";
 import classNames from "utils/classNames";
 import { getAvailableGroups } from "utils/teamsMapFunctions";
-import { RiSaveLine } from "react-icons/ri";
-import { GrPowerReset } from "react-icons/gr";
 
 interface EditParticipantProps {
   group: string;
@@ -110,7 +111,7 @@ const EditParticipant: FC<EditParticipantProps> = ({
         <div className="relative">
           <SmallButton
             btnColor="red"
-            btnTitle="X"
+            btnTitle={<CgClose />}
             btnClassNames="h-6 px-2"
             handleClick={() => {
               setTeamToDelete(participant);
@@ -118,12 +119,14 @@ const EditParticipant: FC<EditParticipantProps> = ({
           />
           <ConfirmTooltip
             cancelTitle="Cancel"
+            tailPosition="right"
             confirmTitle="Delete"
+            position="-top-2 right-10"
+            handleCancel={handleCancelDeleteTeam}
+            isTooltip={participant.id === teamToDelete?.id}
             handleConfirm={() => {
               handleDeleteTeam(participant).catch((e) => console.error(e));
             }}
-            handleCancel={handleCancelDeleteTeam}
-            isTooltip={participant.id === teamToDelete?.id}
           />
         </div>
       </div>

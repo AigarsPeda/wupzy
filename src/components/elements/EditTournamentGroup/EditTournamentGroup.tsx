@@ -12,10 +12,14 @@ import useWindowSize from "hooks/useWindowSize";
 import { useRouter } from "next/router";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
+import { GrPowerReset } from "react-icons/gr";
+import { RiSaveLine } from "react-icons/ri";
 import type { ParticipantType, TeamsMapType } from "types/team.types";
 import { api } from "utils/api";
+import compareMaps from "utils/compareMaps";
 import { getKeys } from "utils/teamsMapFunctions";
-import compareMaps from "../../../utils/compareMaps";
+import SmallButton from "../SmallButton/SmallButton";
+import changeGroup from "./utils/changeGroup";
 
 interface EditTournamentGroupProps {
   isModalOpen: boolean;
@@ -41,6 +45,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   const [changedParticipantsIds, setChangedParticipantsIds] = useState<
     string[]
   >([]);
+  const [isTournamentNameChanged, setIsTournamentNameChanged] = useState(false);
   const [addNewTeamGroup, setAddNewTeamGroup] = useState<string | null>(null);
   const { participants, refetchParticipants } = useParticipants(tournamentId);
   const { refetch: refetchGames } = api.tournaments.getTournamentGames.useQuery(
@@ -70,30 +75,19 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     newGroup: string
   ) => {
     if (!participants) return;
-    const newStates = new Map(teamsByGroup);
 
-    // remove team from old group
-    newStates.set(oldGroup, [
-      ...(newStates.get(oldGroup)?.filter((t) => t.id !== team.id) || []),
-    ]);
+    const newState = changeGroup(teamsByGroup, oldGroup, newGroup, team);
 
-    // add team to new group
-    newStates.set(newGroup, [
-      ...(newStates.get(newGroup) || []),
-      // update team group property to new group
-      { ...team, group: newGroup },
-    ]);
-
-    if (!compareMaps(newStates, participants?.participants)) {
+    if (!compareMaps(newState, participants?.participants)) {
       setIsGroupsChanged(true);
     }
 
-    if (compareMaps(newStates, participants?.participants)) {
+    if (compareMaps(newState, participants?.participants)) {
       setIsGroupsChanged(false);
     }
 
-    setGroupToSmall(getGroupThatAreToSmall(newStates));
-    setTeamsByGroup(newStates);
+    setGroupToSmall(getGroupThatAreToSmall(newState));
+    setTeamsByGroup(newState);
   };
 
   const handleParticipantNameChange = (
@@ -114,6 +108,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       }
     });
 
+    // find participant in group and change name
     newStates.set(participant.group, [
       ...(newStates.get(participant.group)?.map((t) => {
         if (t.id === participant.id) {
@@ -150,6 +145,31 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     await refetchParticipants();
   };
 
+  const handleTournamentName = async () => {
+    if (newTournamentName) {
+      await updateTournamentName({
+        id: tournamentId,
+        name: newTournamentName,
+      });
+
+      setIsTournamentNameChanged(false);
+
+      await refetchTournament();
+    }
+  };
+
+  const handleTournamentNameChange = (str: string) => {
+    if (str === tournament?.tournament.name) {
+      setIsTournamentNameChanged(false);
+    }
+
+    if (str !== tournament?.tournament.name) {
+      setIsTournamentNameChanged(true);
+    }
+
+    setNewTournamentName(str);
+  };
+
   const handleUpdateTeam = async (teamsMap: TeamsMapType) => {
     const teamsArray = [...teamsMap.values()].flat().map((team) => ({
       id: team.id,
@@ -157,12 +177,6 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       score: team.score,
       group: team.group,
     }));
-
-    // TODO: update tournament name WITHOUT DELETE ALL GAMES
-    // await updateTournamentName({
-    //   id: tournamentId,
-    //   name: newTournamentName || tournament?.tournament.name || getTodayDate(),
-    // });
 
     await mutateAsync({
       tournamentId: tournamentId,
@@ -209,10 +223,31 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       handleCancelClick={handleCloseModal}
     >
       <div className="mt-3 mb-6 flex w-full justify-between">
-        <EditTournamentName
-          newTournamentName={newTournamentName}
-          setNewTournamentName={setNewTournamentName}
-        />
+        <div className="flex">
+          <EditTournamentName
+            newTournamentName={newTournamentName}
+            setNewTournamentName={handleTournamentNameChange}
+          />
+          {isTournamentNameChanged && (
+            <>
+              <SmallButton
+                btnTitle={<RiSaveLine className="h-6 w-6" />}
+                btnClassNames="h-11 w-11 flex items-center justify-center"
+                handleClick={() => {
+                  handleTournamentName().catch((e) => console.error(e));
+                }}
+              />
+              <SmallButton
+                btnTitle={<GrPowerReset className="h-6 w-6" />}
+                btnClassNames="h-11 w-11 flex items-center justify-center"
+                handleClick={() => {
+                  setIsTournamentNameChanged(false);
+                  setNewTournamentName(tournament?.tournament.name || "");
+                }}
+              />
+            </>
+          )}
+        </div>
         <GroupDropdown
           handleGroupClick={addGroupToTournament}
           alreadyCreatedGroups={getKeys(teamsByGroup)}
