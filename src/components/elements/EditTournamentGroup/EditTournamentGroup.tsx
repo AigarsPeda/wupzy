@@ -116,9 +116,9 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     //   setIsGroupsChanged(false);
     // }
 
-    console.log("newState", newState);
+    // console.log("newState", newState);
 
-    // setGroupToSmall(getGroupThatAreToSmall(newState));
+    setGroupToSmall(getGroupThatAreToSmall(newState));
     setTeamsByGroup(newState);
   };
 
@@ -206,12 +206,12 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       teams: updatedGroups,
     });
 
-    // await refetchGames();
-    // await refetchTournament();
-    // await refetchParticipants();
+    await refetchGames();
+    await refetchTournament();
+    await refetchParticipants();
 
-    // setUpdatedGroups([]);
-    // handleCloseModal();
+    setUpdatedGroups([]);
+    handleCloseModal();
   };
 
   const handleDeleteTeam = async (participant: ParticipantType) => {
@@ -238,7 +238,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     if (!participants) return;
 
     setTeamsByGroup(participants.participants);
-    // setGroupToSmall(getGroupThatAreToSmall(participants.participants));
+    setGroupToSmall(getGroupThatAreToSmall(participants.participants));
   }, [participants]);
 
   return (
