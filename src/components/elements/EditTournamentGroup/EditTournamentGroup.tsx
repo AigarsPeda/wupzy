@@ -13,21 +13,18 @@ import useParticipants from "hooks/useParticipants";
 import useTournament from "hooks/useTournament";
 import useWindowSize from "hooks/useWindowSize";
 import { useRouter } from "next/router";
-import { type } from "os";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { GrPowerReset } from "react-icons/gr";
 import { RiSaveLine } from "react-icons/ri";
-import type { ParticipantType, TeamsMapType } from "types/team.types";
+import type {
+  ChangeTeamsType,
+  ParticipantType,
+  TeamsMapType,
+} from "types/team.types";
 import { api } from "utils/api";
-import compareMaps from "utils/compareMaps";
 import { getKeys } from "utils/teamsMapFunctions";
-
-type ChangeTeams = {
-  oldGroup: string;
-  newGroup: string;
-  team: ParticipantType;
-};
+import getUpdatedGroup from "./utils/getUpdatedGroup";
 
 interface EditTournamentGroupProps {
   isModalOpen: boolean;
@@ -41,7 +38,6 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   const { query } = useRouter();
   const { windowSize } = useWindowSize();
   const [tournamentId, setTournamentId] = useState("");
-  // const [isGroupsChanged, setIsGroupsChanged] = useState(false);
   const [groupToSmall, setGroupToSmall] = useState<string[]>([]);
   const deleteTeam = api.participant.deleteParticipant.useMutation();
   const { tournament, refetchTournament } = useTournament(tournamentId);
@@ -53,10 +49,10 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   const [changedParticipantsIds, setChangedParticipantsIds] = useState<
     string[]
   >([]);
-  const [isTournamentNameChanged, setIsTournamentNameChanged] = useState(false);
-  const [updatedGroups, setUpdatedGroups] = useState<ChangeTeams[]>([]);
+  const [updatedGroups, setUpdatedGroups] = useState<ChangeTeamsType[]>([]);
   const [addNewTeamGroup, setAddNewTeamGroup] = useState<string | null>(null);
   const { participants, refetchParticipants } = useParticipants(tournamentId);
+  const [isTournamentNameChanged, setIsTournamentNameChanged] = useState(false);
   const { refetch: refetchGames } = api.tournaments.getTournamentGames.useQuery(
     { id: tournamentId }
   );
@@ -85,38 +81,9 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   ) => {
     if (!participants) return;
 
-    setUpdatedGroups((state) => {
-      // if new group and old group are the same remove it from updatedGroups
-      if (oldGroup === newGroup) {
-        return state.filter((g) => g.oldGroup !== oldGroup);
-      }
-
-      // if team is in updatedGroups and group is changed, update it
-      const teamToUpdate = state.find((g) => g.team.id === team.id);
-
-      if (teamToUpdate) {
-        return state.map((g) => {
-          if (g.team.id === team.id) {
-            return { ...g, newGroup };
-          }
-          return g;
-        });
-      }
-
-      return [...state, { oldGroup, newGroup, team }];
-    });
+    setUpdatedGroups(getUpdatedGroup(updatedGroups, oldGroup, newGroup, team));
 
     const newState = changeGroup(teamsByGroup, oldGroup, newGroup, team);
-
-    // if (!compareMaps(newState, participants?.participants)) {
-    //   setIsGroupsChanged(true);
-    // }
-
-    // if (compareMaps(newState, participants?.participants)) {
-    //   setIsGroupsChanged(false);
-    // }
-
-    // console.log("newState", newState);
 
     setGroupToSmall(getGroupThatAreToSmall(newState));
     setTeamsByGroup(newState);
@@ -321,14 +288,16 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
         </GridLayout>
       </div>
       <div className="flex w-full justify-end">
-        <Button
-          btnColor="outline"
-          isDisabled={groupToSmall.length > 0}
-          btnTitle={<span className="px-3 text-sm">Save changes</span>}
-          onClick={() => {
-            handleUpdateTeam().catch((e) => console.error(e));
-          }}
-        />
+        {updatedGroups.length > 0 && (
+          <Button
+            btnColor="outline"
+            isDisabled={groupToSmall.length > 0}
+            btnTitle={<span className="px-3 text-sm">Save changes</span>}
+            onClick={() => {
+              handleUpdateTeam().catch((e) => console.error(e));
+            }}
+          />
+        )}
       </div>
     </ModalWrap>
   );

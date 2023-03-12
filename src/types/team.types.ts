@@ -33,3 +33,9 @@ const GamesZodSchema = z.object({
 });
 
 export type GamesType = z.infer<typeof GamesZodSchema>;
+
+export type ChangeTeamsType = {
+  oldGroup: string;
+  newGroup: string;
+  team: ParticipantType;
+};
