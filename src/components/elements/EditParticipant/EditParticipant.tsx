@@ -95,7 +95,7 @@ const EditParticipant: FC<EditParticipantProps> = ({
               btnTitle={<RiSaveLine />}
               handleClick={() => {
                 handleParticipantUpdate(participant).catch((e) =>
-                  console.error(e)
+                  console.error("Error updating participant: ", e)
                 );
               }}
             />
@@ -125,7 +125,9 @@ const EditParticipant: FC<EditParticipantProps> = ({
             handleCancel={handleCancelDeleteTeam}
             isTooltip={participant.id === teamToDelete?.id}
             handleConfirm={() => {
-              handleDeleteTeam(participant).catch((e) => console.error(e));
+              handleDeleteTeam(participant).catch((e) =>
+                console.error("Error deleting team: ", e)
+              );
             }}
           />
         </div>

@@ -18,7 +18,8 @@ interface GroupCardContainerProps {
 }
 
 const GroupCardContainer: FC<GroupCardContainerProps> = ({ tournamentId }) => {
-  const { participants, isParticipantsLoading } = useParticipants(tournamentId);
+  const { participants, refetchParticipants, isParticipantsLoading } =
+    useParticipants(tournamentId);
   const { data: games, refetch } = api.tournaments.getTournamentGames.useQuery({
     id: tournamentId,
   });
@@ -69,7 +70,6 @@ const GroupCardContainer: FC<GroupCardContainerProps> = ({ tournamentId }) => {
 
   return (
     <div>
-      {console.log("games", games)}
       {participants &&
         [...participants.participants].map(([group, value]) => {
           return (
@@ -79,6 +79,7 @@ const GroupCardContainer: FC<GroupCardContainerProps> = ({ tournamentId }) => {
               teams={value}
               refetchGames={() => {
                 refetch().catch((err) => console.error(err));
+                refetchParticipants().catch((err) => console.error(err));
               }}
               totalGames={getGameCountPerGroup(games?.games || [])}
               gamesOfInterest={createGamesOfInterest(games?.games || [])}
