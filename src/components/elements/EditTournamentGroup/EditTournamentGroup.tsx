@@ -1,15 +1,19 @@
 import AddNewTeam from "components/elements/AddNewTeam/AddNewTeam";
 import Button from "components/elements/Button/Button";
 import EditTournamentCard from "components/elements/EditTournamentCard/EditTournamentCard";
+import changeGroup from "components/elements/EditTournamentGroup/utils/changeGroup";
 import getGroupThatAreToSmall from "components/elements/EditTournamentGroup/utils/getGroupThatAreToSmall";
+import getUpdatedParticipants from "components/elements/EditTournamentGroup/utils/getUpdatedParticipants";
 import EditTournamentName from "components/elements/EditTournamentName/EditTournamentName";
 import GroupDropdown from "components/elements/GroupDropdown/GroupDropdown";
 import ModalWrap from "components/elements/Modal/Modal";
+import SmallButton from "components/elements/SmallButton/SmallButton";
 import GridLayout from "components/layouts/GridLayout/GridLayout";
 import useParticipants from "hooks/useParticipants";
 import useTournament from "hooks/useTournament";
 import useWindowSize from "hooks/useWindowSize";
 import { useRouter } from "next/router";
+import { type } from "os";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { GrPowerReset } from "react-icons/gr";
@@ -18,8 +22,12 @@ import type { ParticipantType, TeamsMapType } from "types/team.types";
 import { api } from "utils/api";
 import compareMaps from "utils/compareMaps";
 import { getKeys } from "utils/teamsMapFunctions";
-import SmallButton from "../SmallButton/SmallButton";
-import changeGroup from "./utils/changeGroup";
+
+type ChangeTeams = {
+  oldGroup: string;
+  newGroup: string;
+  team: ParticipantType;
+};
 
 interface EditTournamentGroupProps {
   isModalOpen: boolean;
@@ -32,11 +40,11 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
 }) => {
   const { query } = useRouter();
   const { windowSize } = useWindowSize();
-  const [tournamentId, setTournamentId] = useState<string>("");
+  const [tournamentId, setTournamentId] = useState("");
+  // const [isGroupsChanged, setIsGroupsChanged] = useState(false);
   const [groupToSmall, setGroupToSmall] = useState<string[]>([]);
   const deleteTeam = api.participant.deleteParticipant.useMutation();
   const { tournament, refetchTournament } = useTournament(tournamentId);
-  const [isGroupsChanged, setIsGroupsChanged] = useState<boolean>(false);
   const [teamToDelete, setTeamToDelete] = useState<ParticipantType | null>(
     null
   );
@@ -46,6 +54,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     string[]
   >([]);
   const [isTournamentNameChanged, setIsTournamentNameChanged] = useState(false);
+  const [updatedGroups, setUpdatedGroups] = useState<ChangeTeams[]>([]);
   const [addNewTeamGroup, setAddNewTeamGroup] = useState<string | null>(null);
   const { participants, refetchParticipants } = useParticipants(tournamentId);
   const { refetch: refetchGames } = api.tournaments.getTournamentGames.useQuery(
@@ -76,15 +85,38 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   ) => {
     if (!participants) return;
 
+    setUpdatedGroups((state) => {
+      // if new group and old group are the same remove it from updatedGroups
+      if (oldGroup === newGroup) {
+        return state.filter((g) => g.oldGroup !== oldGroup);
+      }
+
+      // if team is in updatedGroups and group is changed, update it
+      const teamToUpdate = state.find((g) => g.team.id === team.id);
+
+      if (teamToUpdate) {
+        return state.map((g) => {
+          if (g.team.id === team.id) {
+            return { ...g, newGroup };
+          }
+          return g;
+        });
+      }
+
+      return [...state, { oldGroup, newGroup, team }];
+    });
+
     const newState = changeGroup(teamsByGroup, oldGroup, newGroup, team);
 
-    if (!compareMaps(newState, participants?.participants)) {
-      setIsGroupsChanged(true);
-    }
+    // if (!compareMaps(newState, participants?.participants)) {
+    //   setIsGroupsChanged(true);
+    // }
 
-    if (compareMaps(newState, participants?.participants)) {
-      setIsGroupsChanged(false);
-    }
+    // if (compareMaps(newState, participants?.participants)) {
+    //   setIsGroupsChanged(false);
+    // }
+
+    // console.log("newState", newState);
 
     setGroupToSmall(getGroupThatAreToSmall(newState));
     setTeamsByGroup(newState);
@@ -96,17 +128,11 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   ) => {
     const newStates = new Map(teamsByGroup);
 
-    participants?.participants.get(participant.group)?.find((p) => {
-      if (p.id === participant.id && p.name !== newName) {
-        setChangedParticipantsIds((state) => [...state, participant.id]);
-      }
+    if (!participants) return;
 
-      if (p.id === participant.id && p.name === newName) {
-        setChangedParticipantsIds((state) =>
-          state.filter((id) => id !== participant.id)
-        );
-      }
-    });
+    setChangedParticipantsIds(
+      getUpdatedParticipants(newName, participants.participants, participant)
+    );
 
     // find participant in group and change name
     newStates.set(participant.group, [
@@ -170,22 +196,22 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     setNewTournamentName(str);
   };
 
-  const handleUpdateTeam = async (teamsMap: TeamsMapType) => {
-    const teamsArray = [...teamsMap.values()].flat().map((team) => ({
-      id: team.id,
-      name: team.name,
-      score: team.score,
-      group: team.group,
-    }));
+  const handleUpdateTeam = async () => {
+    if (!participants) return;
+
+    console.log("updatedGroups", updatedGroups);
 
     await mutateAsync({
-      tournamentId: tournamentId,
-      teams: teamsArray,
+      tournamentId,
+      teams: updatedGroups,
     });
 
     await refetchGames();
     await refetchTournament();
     await refetchParticipants();
+
+    setUpdatedGroups([]);
+    handleCloseModal();
   };
 
   const handleDeleteTeam = async (participant: ParticipantType) => {
@@ -204,6 +230,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
 
   useEffect(() => {
     if (!tournament) return;
+
     setNewTournamentName(tournament.tournament.name);
   }, [tournament]);
 
@@ -294,19 +321,14 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
         </GridLayout>
       </div>
       <div className="flex w-full justify-end">
-        {isGroupsChanged && (
-          <Button
-            btnColor="outline"
-            isDisabled={groupToSmall.length > 0}
-            btnTitle={<span className="px-3 text-sm">Save changes</span>}
-            onClick={() => {
-              handleUpdateTeam(teamsByGroup).catch((e) =>
-                console.error("Error updating team", e)
-              );
-              handleCloseModal();
-            }}
-          />
-        )}
+        <Button
+          btnColor="outline"
+          isDisabled={groupToSmall.length > 0}
+          btnTitle={<span className="px-3 text-sm">Save changes</span>}
+          onClick={() => {
+            handleUpdateTeam().catch((e) => console.error(e));
+          }}
+        />
       </div>
     </ModalWrap>
   );

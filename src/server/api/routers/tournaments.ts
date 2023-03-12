@@ -92,7 +92,6 @@ export const tournamentsRouter = createTRPCRouter({
         team1Score: z.number(),
         team2Score: z.number(),
         winnerTeamIds: z.array(z.string()).nullable(),
-        // winnerId: z.string().nullable(),
       })
     )
     .mutation(async ({ ctx, input }) => {

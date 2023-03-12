@@ -3,20 +3,25 @@ import type { ParticipantType } from "types/team.types";
 const sortParticipantsByGroup = (teams: ParticipantType[]) => {
   const teamsByGroup = new Map<string, ParticipantType[]>();
 
-  teams.forEach((team) => {
+  for (const team of teams) {
     const group = team.group;
-    const teamsInGroup = teamsByGroup.get(group);
 
-    if (teamsInGroup) {
-      teamsInGroup.push(team);
-      return;
+    if (!teamsByGroup.has(group)) {
+      teamsByGroup.set(group, []);
     }
 
-    teamsByGroup.set(group, [team]);
-  });
+    teamsByGroup.get(group)?.push(team);
+  }
 
   // sort map keys alphabetically
   const sortedAsc = new Map([...teamsByGroup].sort());
+
+  // sort teams in each group alphabetically
+  sortedAsc.forEach((teamsInGroup) => {
+    teamsInGroup.sort((a, b) => {
+      return a.name.localeCompare(b.name);
+    });
+  });
 
   return sortedAsc;
 };
