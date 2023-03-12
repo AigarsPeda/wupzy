@@ -19,7 +19,7 @@ const AddNewTeam: FC<AddNewTeamProps> = ({
   handleCancelClick,
 }) => {
   const [teamsName, setTeamsName] = useState("");
-  const { mutateAsync } = api.participant.addParticipant.useMutation();
+  const { mutateAsync } = api.participant.addParticipantToGroup.useMutation();
   const { refetch: refetchGames } = api.tournaments.getTournamentGames.useQuery(
     { id: tournamentId }
   );

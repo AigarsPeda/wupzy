@@ -166,8 +166,6 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   const handleUpdateTeam = async () => {
     if (!participants) return;
 
-    console.log("updatedGroups", updatedGroups);
-
     await mutateAsync({
       tournamentId,
       teams: updatedGroups,

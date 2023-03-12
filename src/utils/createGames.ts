@@ -35,10 +35,10 @@ const createGames = (pairs: Map<string, ParticipantType[][]>) => {
             second: secondPair,
           };
 
-          const test = games.get(group);
+          const teams = games.get(group);
 
-          if (test) {
-            test.push(game);
+          if (teams) {
+            teams.push(game);
             break;
           }
 

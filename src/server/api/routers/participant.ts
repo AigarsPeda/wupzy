@@ -1,10 +1,16 @@
-import type { Participant } from "@prisma/client";
+import type { Games, Participant } from "@prisma/client";
 import createIdsArrays from "server/api/routers/utils/createIdsArrays";
 import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
+import type { ParticipantType } from "types/team.types";
 import createAllPossiblePairsInGroup from "utils/createAllPossiblePairsInGroup";
 import createGames from "utils/createGames";
 import sortParticipantsByGroup from "utils/sortParticipantsByGroup";
 import { z } from "zod";
+
+type OldGamesType = Games & {
+  participant_team_1: Participant[];
+  participant_team_2: Participant[];
+};
 
 export const participantRouter = createTRPCRouter({
   getTournamentParticipants: protectedProcedure
@@ -25,8 +31,7 @@ export const participantRouter = createTRPCRouter({
       return { participants: sorted };
     }),
 
-  // TODO: Adding a participant should not delete all games and create new ones
-  addParticipant: protectedProcedure
+  addParticipantToGroup: protectedProcedure
     .input(
       z.object({
         name: z.string(),
@@ -36,7 +41,7 @@ export const participantRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const team = await ctx.prisma.participant.create({
+      const participant = await ctx.prisma.participant.create({
         data: {
           name: input.name,
           group: input.group,
@@ -45,10 +50,7 @@ export const participantRouter = createTRPCRouter({
         },
       });
 
-      await ctx.prisma.games.deleteMany({
-        where: { group: input.group, tournamentId: input.tournamentId },
-      });
-
+      // create new games with the new participant
       const participants = await ctx.prisma.participant.findMany({
         where: {
           group: input.group,
@@ -56,8 +58,39 @@ export const participantRouter = createTRPCRouter({
         },
       });
 
-      const participantsMap = createAllPossiblePairsInGroup(participants);
-      const gamesMap = createGames(participantsMap);
+      const oldGames = await ctx.prisma.games.findMany({
+        where: {
+          group: input.group,
+          tournamentId: input.tournamentId,
+        },
+        include: {
+          participant_team_1: true,
+          participant_team_2: true,
+        },
+      });
+
+      const newGames = addNewGames(
+        participant,
+        participants,
+        input.group,
+        oldGames
+      );
+
+      // get games with last order number
+      const lastOrderNumber = await ctx.prisma.games.findMany({
+        where: {
+          group: input.group,
+          tournamentId: input.tournamentId,
+        },
+        orderBy: {
+          gameOrder: "desc",
+        },
+        take: 1,
+      });
+
+      const lastGamesOrderNumber = lastOrderNumber[0]?.gameOrder || 0;
+
+      const gamesMap = createGames(newGames);
 
       await createIdsArrays(
         gamesMap,
@@ -65,7 +98,7 @@ export const participantRouter = createTRPCRouter({
           await ctx.prisma.games.create({
             data: {
               group,
-              gameOrder: index + 1,
+              gameOrder: lastGamesOrderNumber + 1 + index,
               tournamentId: input.tournamentId,
               participant_team_1: {
                 connect: [...firsIds],
@@ -78,7 +111,7 @@ export const participantRouter = createTRPCRouter({
         }
       );
 
-      return { team };
+      // return { team };
     }),
 
   updatedParticipant: protectedProcedure
@@ -210,8 +243,6 @@ export const participantRouter = createTRPCRouter({
         updatedGroups.add(team.newGroup);
       }
 
-      console.log("updatedGroups ---->", updatedGroups);
-
       let participants: Participant[] = [];
 
       for (const group of updatedGroups) {
@@ -241,7 +272,7 @@ export const participantRouter = createTRPCRouter({
       await createIdsArrays(
         gamesMap,
         async (group, firsIds, secondIds, index) => {
-          const t = await ctx.prisma.games.create({
+          await ctx.prisma.games.create({
             data: {
               group,
               gameOrder: index + 1,
@@ -258,3 +289,78 @@ export const participantRouter = createTRPCRouter({
       );
     }),
 });
+
+// create new games with the new participant
+const addNewGames = (
+  participant: Participant,
+  participants: Participant[],
+  group: string,
+  oldGames: OldGamesType[]
+) => {
+  const groupPairs = new Map<string, ParticipantType[][]>([]);
+  const newGames: ParticipantType[][] = [];
+
+  // create new games with the new participant and the rest of the participants
+  for (let i = 0; i < participants.length; i++) {
+    const p = participants[i];
+
+    if (!p) {
+      return groupPairs;
+    }
+
+    if (participant.id !== p.id) {
+      newGames.push([participant, p]);
+    }
+  }
+
+  console.log("oldGames --->", oldGames);
+
+  for (let i = 0; i < participants.length; i++) {
+    for (let j = i + 1; j < participants.length; j++) {
+      const player1 = participants[i];
+      const player2 = participants[j];
+
+      if (!player1 || !player2) return groupPairs;
+
+      newGames.push([player1, player2]);
+    }
+  }
+
+  // remove games that teams already are in old games
+  for (let i = 0; i < oldGames.length; i++) {
+    const oldGame = oldGames[i];
+
+    if (
+      !oldGame ||
+      !oldGame.participant_team_1[0] ||
+      !oldGame.participant_team_2[0]
+    )
+      return groupPairs;
+
+    for (let j = 0; j < newGames.length; j++) {
+      const newGame = newGames[j];
+
+      if (!newGame || !newGame[0] || !newGame[1]) return groupPairs;
+
+      if (
+        newGame[0].id === oldGame.participant_team_1[0].id &&
+        newGame[1].id === oldGame.participant_team_2[0].id
+      ) {
+        newGames.splice(j, 1);
+      }
+
+      if (
+        newGame[0].id === oldGame.participant_team_2[0].id &&
+        newGame[1].id === oldGame.participant_team_1[0].id
+      ) {
+        newGames.splice(j, 1);
+      }
+    }
+  }
+
+  console.log("newGames --->", newGames);
+
+  groupPairs.set(group, newGames);
+
+  return groupPairs;
+};
