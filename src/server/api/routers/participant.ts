@@ -4,7 +4,7 @@ import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
 import type { ParticipantType } from "types/team.types";
 import createAllPossiblePairsInGroup from "utils/createAllPossiblePairsInGroup";
 import createGames from "utils/createGames";
-import sortParticipantsByGroup from "utils/sortParticipantsByGroup";
+import createParticipantMap from "utils/createParticipantMap";
 import { z } from "zod";
 
 type OldGamesType = Games & {
@@ -26,7 +26,7 @@ export const participantRouter = createTRPCRouter({
         },
       });
 
-      const sorted = sortParticipantsByGroup(participants);
+      const sorted = createParticipantMap(participants);
 
       return { participants: sorted };
     }),
@@ -41,7 +41,8 @@ export const participantRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const participant = await ctx.prisma.participant.create({
+      // can we get all participants from the group?
+      await ctx.prisma.participant.create({
         data: {
           name: input.name,
           group: input.group,
@@ -70,7 +71,7 @@ export const participantRouter = createTRPCRouter({
       });
 
       const newGames = addNewGames(
-        participant,
+        // newParticipant,
         participants,
         input.group,
         oldGames
@@ -89,6 +90,8 @@ export const participantRouter = createTRPCRouter({
       });
 
       const lastGamesOrderNumber = lastOrderNumber[0]?.gameOrder || 0;
+
+      // createAllPossiblePairsInGroup(participants);
 
       const gamesMap = createGames(newGames);
 
@@ -292,7 +295,7 @@ export const participantRouter = createTRPCRouter({
 
 // create new games with the new participant
 const addNewGames = (
-  participant: Participant,
+  // participant: Participant,
   participants: Participant[],
   group: string,
   oldGames: OldGamesType[]
@@ -301,17 +304,17 @@ const addNewGames = (
   const newGames: ParticipantType[][] = [];
 
   // create new games with the new participant and the rest of the participants
-  for (let i = 0; i < participants.length; i++) {
-    const p = participants[i];
+  // for (let i = 0; i < participants.length; i++) {
+  //   const p = participants[i];
 
-    if (!p) {
-      return groupPairs;
-    }
+  //   if (!p) {
+  //     return groupPairs;
+  //   }
 
-    if (participant.id !== p.id) {
-      newGames.push([participant, p]);
-    }
-  }
+  //   if (participant.id !== p.id) {
+  //     newGames.push([participant, p]);
+  //   }
+  // }
 
   console.log("oldGames --->", oldGames);
 

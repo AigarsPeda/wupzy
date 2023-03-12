@@ -1,6 +1,6 @@
 import type { ParticipantType } from "types/team.types";
 
-const sortParticipantsByGroup = (teams: ParticipantType[]) => {
+const createParticipantMap = (teams: ParticipantType[]) => {
   const teamsByGroup = new Map<string, ParticipantType[]>();
 
   for (const team of teams) {
@@ -26,4 +26,4 @@ const sortParticipantsByGroup = (teams: ParticipantType[]) => {
   return sortedAsc;
 };
 
-export default sortParticipantsByGroup;
+export default createParticipantMap;
