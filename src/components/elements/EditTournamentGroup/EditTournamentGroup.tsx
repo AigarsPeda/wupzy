@@ -169,7 +169,8 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
 
   const handleDeleteTeam = async (participant: ParticipantType) => {
     await deleteTeam.mutateAsync({
-      id: participant.id,
+      participant,
+      tournamentId,
     });
     await refetchGames();
     await refetchParticipants();

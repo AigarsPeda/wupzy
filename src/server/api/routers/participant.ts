@@ -149,42 +149,112 @@ export const participantRouter = createTRPCRouter({
   deleteParticipant: protectedProcedure
     .input(
       z.object({
-        id: z.string(),
+        participant: z.object({
+          id: z.string(),
+          name: z.string(),
+          group: z.string(),
+          score: z.number(),
+        }),
+        tournamentId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const games = await ctx.prisma.games.findMany({
+      const group = input.participant.group;
+
+      await ctx.prisma.games.deleteMany({
         where: {
-          OR: [
-            {
-              participant_team_1: {
-                some: {
-                  id: input.id,
-                },
-              },
-            },
-            {
-              participant_team_2: {
-                some: {
-                  id: input.id,
-                },
-              },
-            },
-          ],
+          tournamentId: input.tournamentId,
+          group,
+          // OR: [
+          //   {
+          //     participant_team_1: {
+          //       some: {
+          //         id: input.participant.id,
+          //       },
+          //     },
+          //   },
+          //   {
+          //     participant_team_2: {
+          //       some: {
+          //         id: input.participant.id,
+          //       },
+          //     },
+          //   },
+          // ],
         },
       });
 
-      await Promise.all(
-        games.map((game) =>
-          ctx.prisma.games.delete({
-            where: {
-              id: game.id,
+      await ctx.prisma.participant.delete({
+        where: {
+          id: input.participant.id,
+        },
+      });
+
+      const participants = await ctx.prisma.participant.findMany({
+        where: {
+          group,
+          tournamentId: input.tournamentId,
+        },
+      });
+
+      const participantsMap = createAllPossiblePairsInGroup(participants);
+      const gamesMap = createGames(participantsMap);
+
+      await createIdsArrays(
+        gamesMap,
+        async (group, firsIds, secondIds, index) => {
+          // Save games to database
+          await ctx.prisma.games.create({
+            data: {
+              group,
+              gameOrder: index + 1,
+              tournamentId: input.tournamentId,
+              participant_team_1: {
+                connect: [...firsIds],
+              },
+              participant_team_2: {
+                connect: [...secondIds],
+              },
             },
-          })
-        )
+          });
+        }
       );
 
-      await ctx.prisma.participant.delete({ where: { id: input.id } });
+      // const games = await ctx.prisma.games.findMany({
+      //   where: {
+
+      //     OR: [
+      //       {
+      //         participant_team_1: {
+      //           some: {
+      //             id: input.id,
+      //           },
+      //         },
+      //       },
+      //       {
+      //         participant_team_2: {
+      //           some: {
+      //             id: input.id,
+      //           },
+      //         },
+      //       },
+      //     ],
+      //   },
+      // });
+
+      // await Promise.all(
+      //   games.map((game) =>
+      //     ctx.prisma.games.delete({
+      //       where: {
+      //         id: game.id,
+      //       },
+      //     })
+      //   )
+      // );
+
+      // await ctx.prisma.participant.delete({
+      //   where: { id: input.participant.id },
+      // });
     }),
 
   updateParticipantsGroup: protectedProcedure
