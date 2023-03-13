@@ -5,8 +5,6 @@ const createAllPossiblePairsInGroup = (participants: ParticipantType[]) => {
   const participantsMap = createParticipantMap(participants);
   const groupPairs = new Map<string, ParticipantType[][]>([]);
   for (const group of participantsMap.keys()) {
-    console.log("group --->", group);
-
     const participants = participantsMap.get(group);
     const allPossiblePairs: ParticipantType[][] = [];
 

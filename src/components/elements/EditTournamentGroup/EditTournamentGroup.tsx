@@ -44,7 +44,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   const [teamToDelete, setTeamToDelete] = useState<ParticipantType | null>(
     null
   );
-  const { mutateAsync } = api.participant.updateParticipants.useMutation();
+  const { mutateAsync } = api.participant.updateParticipantsGroup.useMutation();
   const [teamsByGroup, setTeamsByGroup] = useState<TeamsMapType>(new Map());
   const [changedParticipantsIds, setChangedParticipantsIds] = useState<
     string[]

@@ -196,7 +196,7 @@ export const participantRouter = createTRPCRouter({
       await ctx.prisma.participant.delete({ where: { id: input.id } });
     }),
 
-  updateParticipants: protectedProcedure
+  updateParticipantsGroup: protectedProcedure
     .input(
       z.object({
         teams: z
@@ -295,7 +295,6 @@ export const participantRouter = createTRPCRouter({
 
 // create new games with the new participant
 const addNewGames = (
-  // participant: Participant,
   participants: Participant[],
   group: string,
   oldGames: OldGamesType[]
@@ -303,67 +302,39 @@ const addNewGames = (
   const groupPairs = new Map<string, ParticipantType[][]>([]);
   const newGames: ParticipantType[][] = [];
 
-  // create new games with the new participant and the rest of the participants
-  // for (let i = 0; i < participants.length; i++) {
-  //   const p = participants[i];
-
-  //   if (!p) {
-  //     return groupPairs;
-  //   }
-
-  //   if (participant.id !== p.id) {
-  //     newGames.push([participant, p]);
-  //   }
-  // }
-
-  console.log("oldGames --->", oldGames);
-
   for (let i = 0; i < participants.length; i++) {
     for (let j = i + 1; j < participants.length; j++) {
       const player1 = participants[i];
       const player2 = participants[j];
 
-      if (!player1 || !player2) return groupPairs;
-
-      newGames.push([player1, player2]);
-    }
-  }
-
-  // remove games that teams already are in old games
-  for (let i = 0; i < oldGames.length; i++) {
-    const oldGame = oldGames[i];
-
-    if (
-      !oldGame ||
-      !oldGame.participant_team_1[0] ||
-      !oldGame.participant_team_2[0]
-    )
-      return groupPairs;
-
-    for (let j = 0; j < newGames.length; j++) {
-      const newGame = newGames[j];
-
-      if (!newGame || !newGame[0] || !newGame[1]) return groupPairs;
-
       if (
-        newGame[0].id === oldGame.participant_team_1[0].id &&
-        newGame[1].id === oldGame.participant_team_2[0].id
+        player1 &&
+        player2 &&
+        !isGameAlreadyCreated(player1.id, player2.id, oldGames)
       ) {
-        newGames.splice(j, 1);
-      }
-
-      if (
-        newGame[0].id === oldGame.participant_team_2[0].id &&
-        newGame[1].id === oldGame.participant_team_1[0].id
-      ) {
-        newGames.splice(j, 1);
+        newGames.push([player1, player2]);
       }
     }
   }
-
-  console.log("newGames --->", newGames);
 
   groupPairs.set(group, newGames);
 
   return groupPairs;
+};
+
+const isGameAlreadyCreated = (
+  id1: string,
+  id2: string,
+  oldGames: OldGamesType[]
+) => {
+  return oldGames.some(
+    (game) =>
+      game &&
+      game.participant_team_1[0] &&
+      game.participant_team_2[0] &&
+      ((game.participant_team_1[0].id === id1 &&
+        game.participant_team_2[0].id === id2) ||
+        (game.participant_team_1[0].id === id2 &&
+          game.participant_team_2[0].id === id1))
+  );
 };
