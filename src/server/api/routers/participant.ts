@@ -1,9 +1,10 @@
 import type { Participant } from "@prisma/client";
+import createAllNewPairsInGroup from "server/api/routers/utils/createAllNewPairsInGroup";
 import createIdsArrays from "server/api/routers/utils/createIdsArrays";
 import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
 import createAllPossiblePairsInGroup from "utils/createAllPossiblePairsInGroup";
 import createGames from "utils/createGames";
-import sortParticipantsByGroup from "utils/sortParticipantsByGroup";
+import createParticipantMap from "utils/createParticipantMap";
 import { z } from "zod";
 
 export const participantRouter = createTRPCRouter({
@@ -20,13 +21,12 @@ export const participantRouter = createTRPCRouter({
         },
       });
 
-      const sorted = sortParticipantsByGroup(participants);
+      const sorted = createParticipantMap(participants);
 
       return { participants: sorted };
     }),
 
-  // TODO: Adding a participant should not delete all games and create new ones
-  addParticipant: protectedProcedure
+  addParticipantToGroup: protectedProcedure
     .input(
       z.object({
         name: z.string(),
@@ -36,7 +36,8 @@ export const participantRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const team = await ctx.prisma.participant.create({
+      // can we get all participants from the group?
+      await ctx.prisma.participant.create({
         data: {
           name: input.name,
           group: input.group,
@@ -45,10 +46,7 @@ export const participantRouter = createTRPCRouter({
         },
       });
 
-      await ctx.prisma.games.deleteMany({
-        where: { group: input.group, tournamentId: input.tournamentId },
-      });
-
+      // create new games with the new participant
       const participants = await ctx.prisma.participant.findMany({
         where: {
           group: input.group,
@@ -56,8 +54,37 @@ export const participantRouter = createTRPCRouter({
         },
       });
 
-      const participantsMap = createAllPossiblePairsInGroup(participants);
-      const gamesMap = createGames(participantsMap);
+      const oldGames = await ctx.prisma.games.findMany({
+        where: {
+          group: input.group,
+          tournamentId: input.tournamentId,
+        },
+        include: {
+          participant_team_1: true,
+          participant_team_2: true,
+        },
+      });
+
+      const newPairs = createAllNewPairsInGroup(
+        participants,
+        input.group,
+        oldGames
+      );
+
+      // get games with last order number
+      const lastOrderNumber = await ctx.prisma.games.findMany({
+        where: {
+          group: input.group,
+          tournamentId: input.tournamentId,
+        },
+        orderBy: {
+          gameOrder: "desc",
+        },
+        take: 1,
+      });
+
+      const lastGamesOrderNumber = lastOrderNumber[0]?.gameOrder || 0;
+      const gamesMap = createGames(newPairs);
 
       await createIdsArrays(
         gamesMap,
@@ -65,7 +92,7 @@ export const participantRouter = createTRPCRouter({
           await ctx.prisma.games.create({
             data: {
               group,
-              gameOrder: index + 1,
+              gameOrder: lastGamesOrderNumber + 1 + index,
               tournamentId: input.tournamentId,
               participant_team_1: {
                 connect: [...firsIds],
@@ -78,7 +105,7 @@ export const participantRouter = createTRPCRouter({
         }
       );
 
-      return { team };
+      // return { team };
     }),
 
   updatedParticipant: protectedProcedure
@@ -160,7 +187,7 @@ export const participantRouter = createTRPCRouter({
       await ctx.prisma.participant.delete({ where: { id: input.id } });
     }),
 
-  updateParticipants: protectedProcedure
+  updateParticipantsGroup: protectedProcedure
     .input(
       z.object({
         teams: z
@@ -210,8 +237,6 @@ export const participantRouter = createTRPCRouter({
         updatedGroups.add(team.newGroup);
       }
 
-      console.log("updatedGroups ---->", updatedGroups);
-
       let participants: Participant[] = [];
 
       for (const group of updatedGroups) {
@@ -241,7 +266,7 @@ export const participantRouter = createTRPCRouter({
       await createIdsArrays(
         gamesMap,
         async (group, firsIds, secondIds, index) => {
-          const t = await ctx.prisma.games.create({
+          await ctx.prisma.games.create({
             data: {
               group,
               gameOrder: index + 1,
