@@ -46,6 +46,13 @@ export const participantRouter = createTRPCRouter({
         },
       });
 
+      await ctx.prisma.games.deleteMany({
+        where: {
+          group: input.group,
+          tournamentId: input.tournamentId,
+        },
+      });
+
       // create new games with the new participant
       const participants = await ctx.prisma.participant.findMany({
         where: {
@@ -54,37 +61,8 @@ export const participantRouter = createTRPCRouter({
         },
       });
 
-      const oldGames = await ctx.prisma.games.findMany({
-        where: {
-          group: input.group,
-          tournamentId: input.tournamentId,
-        },
-        include: {
-          participant_team_1: true,
-          participant_team_2: true,
-        },
-      });
-
-      const newPairs = createAllNewPairsInGroup(
-        participants,
-        input.group,
-        oldGames
-      );
-
-      // get games with last order number
-      const lastOrderNumber = await ctx.prisma.games.findMany({
-        where: {
-          group: input.group,
-          tournamentId: input.tournamentId,
-        },
-        orderBy: {
-          gameOrder: "desc",
-        },
-        take: 1,
-      });
-
-      const lastGamesOrderNumber = lastOrderNumber[0]?.gameOrder || 0;
-      const gamesMap = createGames(newPairs);
+      const participantsMap = createAllPossiblePairsInGroup(participants);
+      const gamesMap = createGames(participantsMap);
 
       await createIdsArrays(
         gamesMap,
@@ -92,7 +70,7 @@ export const participantRouter = createTRPCRouter({
           await ctx.prisma.games.create({
             data: {
               group,
-              gameOrder: lastGamesOrderNumber + 1 + index,
+              gameOrder: index + 1,
               tournamentId: input.tournamentId,
               participant_team_1: {
                 connect: [...firsIds],
@@ -165,22 +143,6 @@ export const participantRouter = createTRPCRouter({
         where: {
           tournamentId: input.tournamentId,
           group,
-          // OR: [
-          //   {
-          //     participant_team_1: {
-          //       some: {
-          //         id: input.participant.id,
-          //       },
-          //     },
-          //   },
-          //   {
-          //     participant_team_2: {
-          //       some: {
-          //         id: input.participant.id,
-          //       },
-          //     },
-          //   },
-          // ],
         },
       });
 
