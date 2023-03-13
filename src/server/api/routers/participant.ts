@@ -1,16 +1,11 @@
-import type { Games, Participant } from "@prisma/client";
+import type { Participant } from "@prisma/client";
+import createAllNewPairsInGroup from "server/api/routers/utils/createAllNewPairsInGroup";
 import createIdsArrays from "server/api/routers/utils/createIdsArrays";
 import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
-import type { ParticipantType } from "types/team.types";
 import createAllPossiblePairsInGroup from "utils/createAllPossiblePairsInGroup";
 import createGames from "utils/createGames";
 import createParticipantMap from "utils/createParticipantMap";
 import { z } from "zod";
-
-type OldGamesType = Games & {
-  participant_team_1: Participant[];
-  participant_team_2: Participant[];
-};
 
 export const participantRouter = createTRPCRouter({
   getTournamentParticipants: protectedProcedure
@@ -70,8 +65,7 @@ export const participantRouter = createTRPCRouter({
         },
       });
 
-      const newGames = addNewGames(
-        // newParticipant,
+      const newPairs = createAllNewPairsInGroup(
         participants,
         input.group,
         oldGames
@@ -90,10 +84,7 @@ export const participantRouter = createTRPCRouter({
       });
 
       const lastGamesOrderNumber = lastOrderNumber[0]?.gameOrder || 0;
-
-      // createAllPossiblePairsInGroup(participants);
-
-      const gamesMap = createGames(newGames);
+      const gamesMap = createGames(newPairs);
 
       await createIdsArrays(
         gamesMap,
@@ -292,49 +283,3 @@ export const participantRouter = createTRPCRouter({
       );
     }),
 });
-
-// create new games with the new participant
-const addNewGames = (
-  participants: Participant[],
-  group: string,
-  oldGames: OldGamesType[]
-) => {
-  const groupPairs = new Map<string, ParticipantType[][]>([]);
-  const newGames: ParticipantType[][] = [];
-
-  for (let i = 0; i < participants.length; i++) {
-    for (let j = i + 1; j < participants.length; j++) {
-      const player1 = participants[i];
-      const player2 = participants[j];
-
-      if (
-        player1 &&
-        player2 &&
-        !isGameAlreadyCreated(player1.id, player2.id, oldGames)
-      ) {
-        newGames.push([player1, player2]);
-      }
-    }
-  }
-
-  groupPairs.set(group, newGames);
-
-  return groupPairs;
-};
-
-const isGameAlreadyCreated = (
-  id1: string,
-  id2: string,
-  oldGames: OldGamesType[]
-) => {
-  return oldGames.some(
-    (game) =>
-      game &&
-      game.participant_team_1[0] &&
-      game.participant_team_2[0] &&
-      ((game.participant_team_1[0].id === id1 &&
-        game.participant_team_2[0].id === id2) ||
-        (game.participant_team_1[0].id === id2 &&
-          game.participant_team_2[0].id === id1))
-  );
-};
