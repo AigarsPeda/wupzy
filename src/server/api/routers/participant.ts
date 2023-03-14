@@ -180,42 +180,6 @@ export const participantRouter = createTRPCRouter({
           });
         }
       );
-
-      // const games = await ctx.prisma.games.findMany({
-      //   where: {
-
-      //     OR: [
-      //       {
-      //         participant_team_1: {
-      //           some: {
-      //             id: input.id,
-      //           },
-      //         },
-      //       },
-      //       {
-      //         participant_team_2: {
-      //           some: {
-      //             id: input.id,
-      //           },
-      //         },
-      //       },
-      //     ],
-      //   },
-      // });
-
-      // await Promise.all(
-      //   games.map((game) =>
-      //     ctx.prisma.games.delete({
-      //       where: {
-      //         id: game.id,
-      //       },
-      //     })
-      //   )
-      // );
-
-      // await ctx.prisma.participant.delete({
-      //   where: { id: input.participant.id },
-      // });
     }),
 
   updateParticipantsGroup: protectedProcedure
