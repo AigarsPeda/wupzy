@@ -35,19 +35,11 @@ export const participantRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      // can we get all participants from the group?
-      await ctx.prisma.participant.create({
+      const newParticipant = await ctx.prisma.participant.create({
         data: {
           name: input.name,
           group: input.group,
           score: input.score,
-          tournamentId: input.tournamentId,
-        },
-      });
-
-      await ctx.prisma.games.deleteMany({
-        where: {
-          group: input.group,
           tournamentId: input.tournamentId,
         },
       });
@@ -60,8 +52,20 @@ export const participantRouter = createTRPCRouter({
         },
       });
 
+      const lastOrderNumber = await ctx.prisma.games.findMany({
+        where: {
+          group: input.group,
+          tournamentId: input.tournamentId,
+        },
+        orderBy: {
+          gameOrder: "desc",
+        },
+        take: 1,
+      });
+
+      const lastGamesOrderNumber = lastOrderNumber[0]?.gameOrder || 0;
       const participantsMap = createAllPossiblePairsInGroup(participants);
-      const gamesMap = createGames(participantsMap);
+      const gamesMap = createGames(participantsMap, newParticipant);
 
       await createIdsArrays(
         gamesMap,
@@ -69,7 +73,7 @@ export const participantRouter = createTRPCRouter({
           await ctx.prisma.games.create({
             data: {
               group,
-              gameOrder: index + 1,
+              gameOrder: lastGamesOrderNumber + 1 + index,
               tournamentId: input.tournamentId,
               participant_team_1: {
                 connect: [...firsIds],

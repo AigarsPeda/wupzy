@@ -6,8 +6,12 @@ type TeamObjType = {
   second: ParticipantType[];
 };
 
-const createGames = (pairs: Map<string, ParticipantType[][]>) => {
+const createGames = (
+  pairs: Map<string, ParticipantType[][]>,
+  newParticipant?: ParticipantType
+) => {
   const games = new Map<string, TeamObjType[]>([]);
+  const filteredPairs: TeamObjType[] = [];
 
   for (const group of pairs.keys()) {
     const teams = pairs.get(group);
@@ -46,9 +50,49 @@ const createGames = (pairs: Map<string, ParticipantType[][]>) => {
         }
       }
     }
+
+    if (newParticipant) {
+      const g = games.get(group);
+
+      if (!g) return games;
+
+      for (let i = 0; i < g.length; i++) {
+        const gm = g[i];
+
+        if (!gm) return games;
+
+        for (const key in gm) {
+          const k = key as keyof typeof gm;
+          const element = gm[k];
+
+          if (!element) return games;
+
+          if (isParticipantGames(newParticipant, element)) {
+            filteredPairs.push(gm);
+          }
+        }
+      }
+
+      games.set(group, filteredPairs);
+    }
   }
 
   return games;
 };
 
 export default createGames;
+
+const isParticipantGames = (
+  participant: ParticipantType,
+  games: ParticipantType[]
+) => {
+  for (let i = 0; i < games.length; i++) {
+    const game = games[i];
+
+    if (!game) return false;
+
+    if (game.id === participant.id) return true;
+  }
+
+  return false;
+};
