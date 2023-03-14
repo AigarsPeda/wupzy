@@ -1,5 +1,4 @@
 import type { Participant } from "@prisma/client";
-import createAllNewPairsInGroup from "server/api/routers/utils/createAllNewPairsInGroup";
 import createIdsArrays from "server/api/routers/utils/createIdsArrays";
 import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
 import createAllPossiblePairsInGroup from "utils/createAllPossiblePairsInGroup";
