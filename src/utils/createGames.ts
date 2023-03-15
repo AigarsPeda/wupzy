@@ -22,10 +22,14 @@ const createGames = (
 
     for (let i = 0; i < allPossiblePairs.length; i++) {
       for (let j = i + 1; j < allPossiblePairs.length; j++) {
-        const firstPair = allPossiblePairs[i] || [];
-        const secondPair = allPossiblePairs[j] || [];
+        const firstPair = allPossiblePairs[i];
+        const secondPair = allPossiblePairs[j];
 
-        if (!isDuplicatesObjInArray([...firstPair, ...secondPair], "id")) {
+        if (
+          firstPair &&
+          secondPair &&
+          !isDuplicatesObjInArray([...firstPair, ...secondPair], "id")
+        ) {
           const game: TeamObjType = {
             first: firstPair,
             second: secondPair,
@@ -46,21 +50,19 @@ const createGames = (
     if (newParticipant) {
       const g = games.get(group);
 
-      if (!g) return games;
+      if (g) {
+        for (let i = 0; i < g.length; i++) {
+          const gm = g[i];
 
-      for (let i = 0; i < g.length; i++) {
-        const gm = g[i];
+          if (gm) {
+            for (const key in gm) {
+              const k = key as keyof typeof gm;
+              const element = gm[k];
 
-        if (!gm) return games;
-
-        for (const key in gm) {
-          const k = key as keyof typeof gm;
-          const element = gm[k];
-
-          if (!element) return games;
-
-          if (isParticipantGames(newParticipant, element)) {
-            filteredPairs.push(gm);
+              if (element && isParticipantGames(newParticipant, element)) {
+                filteredPairs.push(gm);
+              }
+            }
           }
         }
       }
@@ -81,9 +83,9 @@ const isParticipantGames = (
   for (let i = 0; i < games.length; i++) {
     const game = games[i];
 
-    if (!game) return false;
+    // if (!game) return false;
 
-    if (game.id === participant.id) return true;
+    if (game && game.id === participant.id) return true;
   }
 
   return false;

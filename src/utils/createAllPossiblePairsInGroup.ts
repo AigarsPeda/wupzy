@@ -1,28 +1,32 @@
 import type { ParticipantType } from "types/team.types";
 import createParticipantMap from "utils/createParticipantMap";
 
-const createAllPossiblePairsInGroup = (participants: ParticipantType[]) => {
-  const participantsMap = createParticipantMap(participants);
+const createAllPossiblePairsInGroup = (
+  participants: ParticipantType[],
+  group: string
+) => {
+  // const participantsMap = createParticipantMap(participants);
   const groupPairs = new Map<string, ParticipantType[][]>([]);
-  for (const group of participantsMap.keys()) {
-    const participants = participantsMap.get(group);
-    const allPossiblePairs: ParticipantType[][] = [];
 
-    if (!participants) return groupPairs;
+  // for (const group of participantsMap.keys()) {
+  // const participants = participantsMap.get(group);
+  const allPossiblePairs: ParticipantType[][] = [];
 
-    for (let i = 0; i < participants.length; i++) {
-      for (let j = i + 1; j < participants.length; j++) {
-        const player1 = participants[i];
-        const player2 = participants[j];
+  // if (!participants) return groupPairs;
 
-        if (!player1 || !player2) return groupPairs;
+  for (let i = 0; i < participants.length; i++) {
+    for (let j = i + 1; j < participants.length; j++) {
+      const player1 = participants[i];
+      const player2 = participants[j];
 
-        allPossiblePairs.push([player1, player2]);
-      }
+      if (!player1 || !player2) return groupPairs;
+
+      allPossiblePairs.push([player1, player2]);
     }
-
-    groupPairs.set(group, allPossiblePairs);
   }
+
+  groupPairs.set(group, allPossiblePairs);
+  // }
 
   return groupPairs;
 };

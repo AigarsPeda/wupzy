@@ -5,6 +5,8 @@ import createAllPossiblePairsInGroup from "utils/createAllPossiblePairsInGroup";
 import createGames from "utils/createGames";
 import { z } from "zod";
 
+const START_GROUP = "A";
+
 export const tournamentsRouter = createTRPCRouter({
   getAllTournaments: protectedProcedure.query(async ({ ctx }) => {
     const tournaments = await ctx.prisma.tournament.findMany({
@@ -29,8 +31,8 @@ export const tournamentsRouter = createTRPCRouter({
       for (const attendant of input.attendants) {
         await ctx.prisma.participant.create({
           data: {
-            group: "A",
             name: attendant,
+            group: START_GROUP,
             tournamentId: tournament.id,
           },
         });
@@ -42,7 +44,10 @@ export const tournamentsRouter = createTRPCRouter({
         },
       });
 
-      const participantsMap = createAllPossiblePairsInGroup(participants);
+      const participantsMap = createAllPossiblePairsInGroup(
+        participants,
+        START_GROUP
+      );
       const gamesMap = createGames(participantsMap);
 
       await createIdsArrays(

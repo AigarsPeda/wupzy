@@ -63,7 +63,7 @@ model Games {
   id                 String        @id @default(cuid())
   participant_team_1 Participant[] @relation("participant_team_1")
   participant_team_2 Participant[] @relation("participant_team_2")
-  tournament         Tournament    @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  tournament         Tournament    @relation(fields: [tournamentId], references: [id])
 }
 
 // One user can have one password
