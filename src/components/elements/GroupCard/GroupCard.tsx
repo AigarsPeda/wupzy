@@ -77,6 +77,8 @@ const GroupCard: FC<GroupCardProps> = ({
               const isCurrentGame = gameStatus === "Current";
               const gameCount = totalGames[group] || 0;
 
+              console.log("game", game);
+
               return (
                 <div
                   key={key}
@@ -104,7 +106,7 @@ const GroupCard: FC<GroupCardProps> = ({
                           infoScore={game.team1Score}
                           teamsScore={score.firstTeam}
                           isCurrentGame={isCurrentGame}
-                          team={game.participant_team_1}
+                          team={game.team1.participants}
                           handleScoreChange={(n) => {
                             setScore((prev) => ({ ...prev, firstTeam: n }));
                           }}
@@ -114,7 +116,7 @@ const GroupCard: FC<GroupCardProps> = ({
                           infoScore={game.team2Score}
                           teamsScore={score.secondTeam}
                           isCurrentGame={isCurrentGame}
-                          team={game.participant_team_2}
+                          team={game.team2.participants}
                           handleScoreChange={(n) => {
                             setScore((prev) => ({ ...prev, secondTeam: n }));
                           }}
@@ -134,11 +136,11 @@ const GroupCard: FC<GroupCardProps> = ({
                           onClick={() => {
                             if (!game) return;
 
-                            const firstTeamIds = game.participant_team_1.map(
+                            const firstTeamIds = game.team1.map(
                               (team) => team.id
                             );
 
-                            const secondTeamsIds = game.participant_team_2.map(
+                            const secondTeamsIds = game.team2.map(
                               (team) => team.id
                             );
 

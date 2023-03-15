@@ -77,12 +77,13 @@ export const participantRouter = createTRPCRouter({
               group,
               gameOrder: lastGamesOrderNumber + 1 + index,
               tournamentId: input.tournamentId,
-              participant_team_1: {
-                connect: [...firsIds],
-              },
-              participant_team_2: {
-                connect: [...secondIds],
-              },
+              
+              // participant_team_1: {
+              //   connect: [...firsIds],
+              // },
+              // participant_team_2: {
+              //   connect: [...secondIds],
+              // },
             },
           });
         }

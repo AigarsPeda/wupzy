@@ -5,7 +5,21 @@ const ParticipantsZodSchema = z.object({
   name: z.string(),
   group: z.string(),
   score: z.number(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  tournamentId: z.string(),
 });
+
+const TeamZodSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  updatedAt: z.date(),
+  createdAt: z.date(),
+  tournamentId: z.string(),
+  participants: z.array(ParticipantsZodSchema),
+});
+
+export type TeamType = z.infer<typeof TeamZodSchema>;
 
 const ParticipantsMapZodSchema = z.map(
   z.string(),
@@ -23,13 +37,15 @@ export type TeamObjType = {
 const GamesZodSchema = z.object({
   id: z.string(),
   group: z.string(),
+  team1Id: z.string(),
+  team2Id: z.string(),
+  team1: TeamZodSchema,
+  team2: TeamZodSchema,
   gameOrder: z.number(),
   team1Score: z.number(),
   team2Score: z.number(),
   tournamentId: z.string(),
   winnerIds: z.array(z.string()).nullable(),
-  participant_team_1: z.array(ParticipantsZodSchema),
-  participant_team_2: z.array(ParticipantsZodSchema),
 });
 
 export type GamesType = z.infer<typeof GamesZodSchema>;

@@ -23,7 +23,7 @@ const DisplayTeams: FC<DisplayTeamsProps> = ({
         <p className="text-xs text-gray-400">First team</p>
       </div>
       <div className="flex w-full items-center">
-        {team.map((t) => (
+        {team?.map((t) => (
           <p key={t.id} className="mr-2">
             {t.name}
           </p>
