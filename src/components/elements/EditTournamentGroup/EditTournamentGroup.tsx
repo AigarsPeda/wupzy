@@ -15,11 +15,7 @@ import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { GrPowerReset } from "react-icons/gr";
 import { RiSaveLine } from "react-icons/ri";
-import type {
-  ChangeTeamsType,
-  ParticipantType,
-  TeamsMapType,
-} from "types/team.types";
+import type { ParticipantType, TeamsMapType } from "types/team.types";
 import { api } from "utils/api";
 import { getKeys } from "utils/teamsMapFunctions";
 
@@ -41,7 +37,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   const [teamToDelete, setTeamToDelete] = useState<ParticipantType | null>(
     null
   );
-  const { mutateAsync } = api.participant.updateParticipantsGroup.useMutation();
+
   const [teamsByGroup, setTeamsByGroup] = useState<TeamsMapType>(new Map());
   const [changedParticipantsIds, setChangedParticipantsIds] = useState<
     string[]
@@ -49,12 +45,17 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   const [addNewTeamGroup, setAddNewTeamGroup] = useState<string | null>(null);
   const { participants, refetchParticipants } = useParticipants(tournamentId);
   const [isTournamentNameChanged, setIsTournamentNameChanged] = useState(false);
-  const { refetch: refetchGames } = api.tournaments.getTournamentGames.useQuery(
-    { id: tournamentId }
-  );
   const [newTournamentName, setNewTournamentName] = useState<string | null>(
     null
   );
+
+  const { refetch: refetchGames } = api.tournaments.getTournamentGames.useQuery(
+    { id: tournamentId }
+  );
+
+  const { mutateAsync: updateParticipantsGroup } =
+    api.participant.updateParticipantsGroup.useMutation();
+
   const { mutateAsync: updateTournamentName } =
     api.tournaments.updateTournament.useMutation();
 
@@ -77,15 +78,11 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   ) => {
     if (!participants) return;
 
-    const changedTeam: ChangeTeamsType = {
-      oldGroup,
-      newGroup,
+    await updateParticipantsGroup({
       team,
-    };
-
-    await mutateAsync({
+      newGroup,
+      oldGroup,
       tournamentId,
-      teams: [changedTeam],
     });
 
     await refetchGames();

@@ -1,4 +1,3 @@
-import type { Participant } from "@prisma/client";
 import createIdsArrays from "server/api/routers/utils/createIdsArrays";
 import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
 import createAllPossiblePairsInGroup from "utils/createAllPossiblePairsInGroup";
@@ -173,78 +172,72 @@ export const participantRouter = createTRPCRouter({
   updateParticipantsGroup: protectedProcedure
     .input(
       z.object({
-        teams: z
-          .object({
-            team: z.object({
-              id: z.string(),
-              name: z.string(),
-              group: z.string(),
-              score: z.number(),
-            }),
-            oldGroup: z.string(),
-            newGroup: z.string(),
-          })
-          .array(),
+        team: z.object({
+          id: z.string(),
+          name: z.string(),
+          group: z.string(),
+          score: z.number(),
+        }),
+        oldGroup: z.string(),
+        newGroup: z.string(),
         tournamentId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const updatedGroups = new Set<string>([]);
+      const updatedParticipant = await ctx.prisma.participant.update({
+        where: {
+          id: input.team.id,
+        },
+        data: {
+          group: input.newGroup,
+          score: 0,
+        },
+      });
 
-      for (const team of input.teams) {
-        await ctx.prisma.participant.update({
-          where: {
-            id: team.team.id,
-          },
-          data: {
-            group: team.newGroup,
-            score: 0,
-          },
-        });
+      await ctx.prisma.games.deleteMany({
+        where: {
+          group: input.oldGroup,
+          tournamentId: input.tournamentId,
+          OR: [
+            {
+              participant_team_1: {
+                some: {
+                  id: input.team.id,
+                },
+              },
+            },
+            {
+              participant_team_2: {
+                some: {
+                  id: input.team.id,
+                },
+              },
+            },
+          ],
+        },
+      });
 
-        await ctx.prisma.games.deleteMany({
-          where: {
-            tournamentId: input.tournamentId,
-            group: team.oldGroup,
-          },
-        });
+      const participants = await ctx.prisma.participant.findMany({
+        where: {
+          group: input.newGroup,
+          tournamentId: input.tournamentId,
+        },
+      });
 
-        await ctx.prisma.games.deleteMany({
-          where: {
-            tournamentId: input.tournamentId,
-            group: team.newGroup,
-          },
-        });
+      const lastOrderNumber = await ctx.prisma.games.findMany({
+        where: {
+          group: input.newGroup,
+          tournamentId: input.tournamentId,
+        },
+        orderBy: {
+          gameOrder: "desc",
+        },
+        take: 1,
+      });
 
-        updatedGroups.add(team.oldGroup);
-        updatedGroups.add(team.newGroup);
-      }
-
-      let participants: Participant[] = [];
-
-      for (const group of updatedGroups) {
-        const participantsInGroup = await ctx.prisma.participant.findMany({
-          where: {
-            group,
-            tournamentId: input.tournamentId,
-          },
-        });
-
-        await ctx.prisma.participant.updateMany({
-          where: {
-            group,
-            tournamentId: input.tournamentId,
-          },
-          data: {
-            score: 0,
-          },
-        });
-
-        participants = [...participants, ...participantsInGroup];
-      }
-
+      const lastGamesOrderNumber = lastOrderNumber[0]?.gameOrder || 0;
       const participantsMap = createAllPossiblePairsInGroup(participants);
-      const gamesMap = createGames(participantsMap);
+      const gamesMap = createGames(participantsMap, updatedParticipant);
 
       await createIdsArrays(
         gamesMap,
@@ -252,7 +245,7 @@ export const participantRouter = createTRPCRouter({
           await ctx.prisma.games.create({
             data: {
               group,
-              gameOrder: index + 1,
+              gameOrder: lastGamesOrderNumber + 1 + index,
               tournamentId: input.tournamentId,
               participant_team_1: {
                 connect: [...firsIds],
