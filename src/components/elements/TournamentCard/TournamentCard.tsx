@@ -15,7 +15,7 @@ const TournamentCard: FC<TournamentCardProps> = ({ tournament }) => {
       className="rounded-lg border border-gray-100 bg-white p-4 shadow-lg transition-all duration-200 hover:bg-gray-100"
       onClick={() => {
         router.push(`/tournaments/${tournament.id}`).catch(() => {
-          console.log("error changing route");
+          console.error("error changing route");
         });
       }}
     >

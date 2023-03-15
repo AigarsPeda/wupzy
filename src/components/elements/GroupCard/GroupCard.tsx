@@ -77,8 +77,6 @@ const GroupCard: FC<GroupCardProps> = ({
               const isCurrentGame = gameStatus === "Current";
               const gameCount = totalGames[group] || 0;
 
-              console.log("game", game);
-
               return (
                 <div
                   key={key}

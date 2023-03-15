@@ -11,8 +11,6 @@ const createParticipantMap = (teams: ParticipantType[]) => {
       teamsByGroup.set(group, [team]);
     }
 
-    // teamsByGroup.get(group)?.push(team);
-
     if (g) {
       g.push(team);
     }
@@ -21,12 +19,14 @@ const createParticipantMap = (teams: ParticipantType[]) => {
   // sort map keys alphabetically
   // const sortedAsc = new Map([...teamsByGroup].sort());
 
-  // // sort teams in each group alphabetically
-  // sortedAsc.forEach((teamsInGroup) => {
-  //   teamsInGroup.sort((a, b) => {
-  //     return a.name.localeCompare(b.name);
-  //   });
-  // });
+  // return sortedAsc;
+  // const sortedEntries = Array.from(teamsByGroup.entries()).sort();
+
+  // teamsByGroup.clear();
+
+  // for (const [key, value] of sortedEntries) {
+  //   teamsByGroup.set(key, value);
+  // }
 
   return teamsByGroup;
 };

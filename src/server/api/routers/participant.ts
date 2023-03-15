@@ -17,6 +17,10 @@ export const participantRouter = createTRPCRouter({
         where: {
           tournamentId: input.id,
         },
+        orderBy: {
+          // name: "asc",
+          group: "asc",
+        },
       });
 
       const sorted = createParticipantMap(participants);

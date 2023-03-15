@@ -64,7 +64,9 @@ const AddNewTeam: FC<AddNewTeamProps> = ({
           onClick={() => {
             if (teamsName.length <= 2) return;
 
-            handleAddingTeam().catch((err) => console.log(err));
+            handleAddingTeam().catch((err) =>
+              console.error("Error adding team", err)
+            );
           }}
         />
       </div>

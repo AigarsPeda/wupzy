@@ -72,12 +72,8 @@ const GroupCardContainer: FC<GroupCardContainerProps> = ({ tournamentId }) => {
   return (
     <div>
       {console.log("games", games?.games)}
-      {console.log("participants", participants)}
       {participants &&
         [...participants.participants].map(([group, participants]) => {
-          console.log("group", group);
-          console.log("participant", participants);
-
           return (
             <GroupCard
               key={group}
