@@ -44,7 +44,7 @@ export const participantRouter = createTRPCRouter({
       });
 
       // create new games with the new participant
-      const participants = await ctx.prisma.participant.findMany({
+      const allParticipants = await ctx.prisma.participant.findMany({
         where: {
           group: input.group,
           tournamentId: input.tournamentId,
@@ -63,7 +63,7 @@ export const participantRouter = createTRPCRouter({
       });
 
       const lastGamesOrderNumber = lastOrderNumber[0]?.gameOrder || 0;
-      const participantsMap = createAllPossiblePairsInGroup(participants);
+      const participantsMap = createAllPossiblePairsInGroup(allParticipants);
       const gamesMap = createGames(participantsMap, newParticipant);
 
       await createIdsArrays(
@@ -139,7 +139,7 @@ export const participantRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const group = input.participant.group;
 
-      await ctx.prisma.games.deleteMany({
+      const games = await ctx.prisma.games.findMany({
         where: {
           group,
           tournamentId: input.tournamentId,
@@ -162,11 +162,36 @@ export const participantRouter = createTRPCRouter({
         },
       });
 
-      await ctx.prisma.participant.delete({
+      const deletedGames = await ctx.prisma.games.deleteMany({
         where: {
-          id: input.participant.id,
+          group,
+          tournamentId: input.tournamentId,
+          OR: [
+            {
+              participant_team_1: {
+                some: {
+                  id: input.participant.id,
+                },
+              },
+            },
+            {
+              participant_team_2: {
+                some: {
+                  id: input.participant.id,
+                },
+              },
+            },
+          ],
         },
       });
+
+      if (deletedGames.count === games.length) {
+        await ctx.prisma.participant.delete({
+          where: {
+            id: input.participant.id,
+          },
+        });
+      }
     }),
 
   updateParticipantsGroup: protectedProcedure
@@ -184,56 +209,107 @@ export const participantRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const updatedParticipant = await ctx.prisma.participant.update({
-        where: {
-          id: input.team.id,
-        },
-        data: {
-          group: input.newGroup,
-          score: 0,
-        },
-      });
-
-      await ctx.prisma.games.deleteMany({
-        where: {
-          group: input.oldGroup,
-          tournamentId: input.tournamentId,
-          OR: [
-            {
-              participant_team_1: {
-                some: {
-                  id: input.team.id,
-                },
-              },
+      const [updatedParticipant, allParticipants, lastOrderNumber] =
+        await ctx.prisma.$transaction([
+          ctx.prisma.participant.update({
+            where: {
+              id: input.team.id,
             },
-            {
-              participant_team_2: {
-                some: {
-                  id: input.team.id,
-                },
-              },
+            data: {
+              group: input.newGroup,
+              score: 0,
             },
-          ],
-        },
-      });
+          }),
+          ctx.prisma.participant.findMany({
+            where: {
+              group: input.newGroup,
+              tournamentId: input.tournamentId,
+            },
+          }),
+          ctx.prisma.games.findMany({
+            where: {
+              group: input.newGroup,
+              tournamentId: input.tournamentId,
+            },
+            orderBy: {
+              gameOrder: "desc",
+            },
+            take: 1,
+          }),
+          ctx.prisma.games.deleteMany({
+            where: {
+              group: input.oldGroup,
+              tournamentId: input.tournamentId,
+              OR: [
+                {
+                  participant_team_1: {
+                    some: {
+                      id: input.team.id,
+                    },
+                  },
+                },
+                {
+                  participant_team_2: {
+                    some: {
+                      id: input.team.id,
+                    },
+                  },
+                },
+              ],
+            },
+          }),
+        ]);
 
-      const allParticipants = await ctx.prisma.participant.findMany({
-        where: {
-          group: input.newGroup,
-          tournamentId: input.tournamentId,
-        },
-      });
+      // const updatedParticipant = await ctx.prisma.participant.update({
+      //   where: {
+      //     id: input.team.id,
+      //   },
+      //   data: {
+      //     group: input.newGroup,
+      //     score: 0,
+      //   },
+      // });
 
-      const lastOrderNumber = await ctx.prisma.games.findMany({
-        where: {
-          group: input.newGroup,
-          tournamentId: input.tournamentId,
-        },
-        orderBy: {
-          gameOrder: "desc",
-        },
-        take: 1,
-      });
+      // await ctx.prisma.games.deleteMany({
+      //   where: {
+      //     group: input.oldGroup,
+      //     tournamentId: input.tournamentId,
+      //     OR: [
+      //       {
+      //         participant_team_1: {
+      //           some: {
+      //             id: input.team.id,
+      //           },
+      //         },
+      //       },
+      //       {
+      //         participant_team_2: {
+      //           some: {
+      //             id: input.team.id,
+      //           },
+      //         },
+      //       },
+      //     ],
+      //   },
+      // });
+
+      // const allParticipants = await ctx.prisma.participant.findMany({
+      //   where: {
+      //     group: input.newGroup,
+      //     tournamentId: input.tournamentId,
+      //   },
+      // });
+
+      // const lastOrderNumber = await ctx.prisma.games.findMany({
+      //   where: {
+      //     group: input.newGroup,
+      //     tournamentId: input.tournamentId,
+      //   },
+      //   orderBy: {
+      //     gameOrder: "desc",
+      //   },
+      //   take: 1,
+      // });
 
       const lastGamesOrderNumber = lastOrderNumber[0]?.gameOrder || 0;
       const participantsMap = createAllPossiblePairsInGroup(allParticipants);

@@ -1,4 +1,5 @@
 import type { ParticipantType } from "types/team.types";
+import isDuplicatesObjInArray from "./isHasDuplicatesInArray";
 
 type TeamObjType = {
   first: ParticipantType[];
@@ -24,7 +25,7 @@ const createGames = (
         const firstPair = allPossiblePairs[i] || [];
         const secondPair = allPossiblePairs[j] || [];
 
-        if (!isHasDuplicates([...firstPair, ...secondPair])) {
+        if (!isDuplicatesObjInArray([...firstPair, ...secondPair], "id")) {
           const game: TeamObjType = {
             first: firstPair,
             second: secondPair,
@@ -83,22 +84,6 @@ const isParticipantGames = (
     if (!game) return false;
 
     if (game.id === participant.id) return true;
-  }
-
-  return false;
-};
-
-const isHasDuplicates = (array: ParticipantType[]) => {
-  const valuesSoFar = new Set();
-
-  for (let i = 0; i < array.length; i++) {
-    const value = array[i];
-
-    if (!value) return false;
-
-    if (valuesSoFar.has(value.id)) return true;
-
-    valuesSoFar.add(value.id);
   }
 
   return false;
