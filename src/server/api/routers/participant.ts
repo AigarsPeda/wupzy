@@ -217,7 +217,7 @@ export const participantRouter = createTRPCRouter({
         },
       });
 
-      const participants = await ctx.prisma.participant.findMany({
+      const allParticipants = await ctx.prisma.participant.findMany({
         where: {
           group: input.newGroup,
           tournamentId: input.tournamentId,
@@ -236,7 +236,7 @@ export const participantRouter = createTRPCRouter({
       });
 
       const lastGamesOrderNumber = lastOrderNumber[0]?.gameOrder || 0;
-      const participantsMap = createAllPossiblePairsInGroup(participants);
+      const participantsMap = createAllPossiblePairsInGroup(allParticipants);
       const gamesMap = createGames(participantsMap, updatedParticipant);
 
       await createIdsArrays(

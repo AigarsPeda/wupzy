@@ -1,5 +1,4 @@
 import type { ParticipantType } from "types/team.types";
-import containsParticipants from "utils/containsParticipants";
 
 type TeamObjType = {
   first: ParticipantType[];
@@ -21,19 +20,11 @@ const createGames = (
     const allPossiblePairs = teams;
 
     for (let i = 0; i < allPossiblePairs.length; i++) {
-      const firstPair = allPossiblePairs[i];
-
-      if (!firstPair) return games;
-
       for (let j = i + 1; j < allPossiblePairs.length; j++) {
-        const secondPair = allPossiblePairs[j];
+        const firstPair = allPossiblePairs[i] || [];
+        const secondPair = allPossiblePairs[j] || [];
 
-        if (!secondPair || !firstPair[0] || !firstPair[1]) return games;
-
-        if (
-          !containsParticipants(firstPair[0], secondPair) &&
-          !containsParticipants(firstPair[1], secondPair)
-        ) {
+        if (!isHasDuplicates([...firstPair, ...secondPair])) {
           const game: TeamObjType = {
             first: firstPair,
             second: secondPair,
@@ -92,6 +83,22 @@ const isParticipantGames = (
     if (!game) return false;
 
     if (game.id === participant.id) return true;
+  }
+
+  return false;
+};
+
+const isHasDuplicates = (array: ParticipantType[]) => {
+  const valuesSoFar = new Set();
+
+  for (let i = 0; i < array.length; i++) {
+    const value = array[i];
+
+    if (!value) return false;
+
+    if (valuesSoFar.has(value.id)) return true;
+
+    valuesSoFar.add(value.id);
   }
 
   return false;

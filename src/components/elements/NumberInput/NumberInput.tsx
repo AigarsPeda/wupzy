@@ -23,8 +23,11 @@ const NumberInput: FC<NumberInputProps> = ({ value, onChange }) => {
         <input
           value={value}
           type="number"
+          // pattern="[0-9]*"
           name="input-number"
-          onChange={(e) => onChange(parseInt(e.target.value))}
+          onChange={(e) => {
+            onChange(e.target.valueAsNumber);
+          }}
           className="text-md md:text-basecursor-default flex w-full items-center bg-gray-300 text-center font-semibold text-gray-700 outline-none hover:text-black focus:text-black focus:outline-none"
         ></input>
         <button
