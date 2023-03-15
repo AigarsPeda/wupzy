@@ -136,11 +136,11 @@ const GroupCard: FC<GroupCardProps> = ({
                           onClick={() => {
                             if (!game) return;
 
-                            const firstTeamIds = game.team1.map(
+                            const firstTeamIds = game.team1.participants.map(
                               (team) => team.id
                             );
 
-                            const secondTeamsIds = game.team2.map(
+                            const secondTeamsIds = game.team2.participants.map(
                               (team) => team.id
                             );
 

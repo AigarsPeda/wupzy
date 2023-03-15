@@ -133,12 +133,20 @@ export const tournamentsRouter = createTRPCRouter({
           team2Score: input.team2Score,
         },
         include: {
-          participant_team_1: true,
-          participant_team_2: true,
+          team1: {
+            include: {
+              participants: true,
+            },
+          },
+          team2: {
+            include: {
+              participants: true,
+            },
+          },
         },
       });
 
-      for (const participant of game.participant_team_1) {
+      for (const participant of game.team1.participants) {
         await ctx.prisma.participant.update({
           where: {
             id: participant.id,
@@ -149,7 +157,7 @@ export const tournamentsRouter = createTRPCRouter({
         });
       }
 
-      for (const participant of game.participant_team_2) {
+      for (const participant of game.team2.participants) {
         await ctx.prisma.participant.update({
           where: {
             id: participant.id,
