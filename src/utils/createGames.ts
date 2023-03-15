@@ -67,6 +67,7 @@ const createGames = (
         }
       }
 
+      games.clear();
       games.set(group, filteredPairs);
     }
   }

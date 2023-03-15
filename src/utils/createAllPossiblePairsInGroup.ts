@@ -1,18 +1,11 @@
 import type { ParticipantType } from "types/team.types";
-import createParticipantMap from "utils/createParticipantMap";
 
 const createAllPossiblePairsInGroup = (
   participants: ParticipantType[],
   group: string
 ) => {
-  // const participantsMap = createParticipantMap(participants);
-  const groupPairs = new Map<string, ParticipantType[][]>([]);
-
-  // for (const group of participantsMap.keys()) {
-  // const participants = participantsMap.get(group);
   const allPossiblePairs: ParticipantType[][] = [];
-
-  // if (!participants) return groupPairs;
+  const groupPairs = new Map<string, ParticipantType[][]>([]);
 
   for (let i = 0; i < participants.length; i++) {
     for (let j = i + 1; j < participants.length; j++) {
@@ -26,7 +19,6 @@ const createAllPossiblePairsInGroup = (
   }
 
   groupPairs.set(group, allPossiblePairs);
-  // }
 
   return groupPairs;
 };
