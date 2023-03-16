@@ -28,15 +28,17 @@ export const tournamentsRouter = createTRPCRouter({
         },
       });
 
-      for (const attendant of input.attendants) {
-        await ctx.prisma.participant.create({
-          data: {
-            name: attendant,
-            group: START_GROUP,
-            tournamentId: tournament.id,
-          },
-        });
-      }
+      const data = input.attendants.map((attendant) => {
+        return {
+          name: attendant,
+          group: START_GROUP,
+          tournamentId: tournament.id,
+        };
+      });
+
+      await ctx.prisma.participant.createMany({
+        data,
+      });
 
       const participants = await ctx.prisma.participant.findMany({
         where: {
