@@ -18,7 +18,6 @@ export const participantRouter = createTRPCRouter({
           tournamentId: input.id,
         },
         orderBy: {
-          // name: "asc",
           group: "asc",
         },
       });
