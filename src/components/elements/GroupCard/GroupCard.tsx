@@ -66,8 +66,8 @@ const GroupCard: FC<GroupCardProps> = ({
   };
 
   return (
-    <div className="mb-6 min-h-[20rem] min-w-[20rem] grid-cols-6 content-start gap-4 rounded-md border border-gray-50 bg-gray-50 px-8 py-3 shadow-md xl:grid">
-      <div className="col-span-3 pr-5">
+    <div className="mb-6 min-h-[20rem] min-w-[20rem] grid-cols-6 content-start gap-4 rounded-md border border-gray-50 bg-gray-50 py-3 shadow-md md:px-8 xl:grid">
+      <div className="col-span-3 md:pr-5">
         <GroupCardHeader label="games" title={group} />
         <div className="h-full">
           {Object.entries(gamesOfInterest[group] || {})
@@ -126,11 +126,12 @@ const GroupCard: FC<GroupCardProps> = ({
                   </div>
 
                   {isCurrentGame && (
-                    <div>
-                      <div className="grid h-full w-full content-end">
+                    <div className="grid content-end">
+                      <div className="mt-3 h-full w-full">
                         <Button
                           btnColor="outline"
                           btnTitle="Save score"
+                          btnClass="border-gray-400 h-[2.58rem]"
                           onClick={() => {
                             if (!game) return;
 
