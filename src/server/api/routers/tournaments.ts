@@ -5,6 +5,8 @@ import createAllPossiblePairsInGroup from "utils/createAllPossiblePairsInGroup";
 import createGames from "utils/createGames";
 import { z } from "zod";
 
+const START_GROUP = "A";
+
 export const tournamentsRouter = createTRPCRouter({
   getAllTournaments: protectedProcedure.query(async ({ ctx }) => {
     const tournaments = await ctx.prisma.tournament.findMany({
@@ -26,15 +28,17 @@ export const tournamentsRouter = createTRPCRouter({
         },
       });
 
-      for (const attendant of input.attendants) {
-        await ctx.prisma.participant.create({
-          data: {
-            group: "A",
-            name: attendant,
-            tournamentId: tournament.id,
-          },
-        });
-      }
+      const data = input.attendants.map((attendant) => {
+        return {
+          name: attendant,
+          group: START_GROUP,
+          tournamentId: tournament.id,
+        };
+      });
+
+      await ctx.prisma.participant.createMany({
+        data,
+      });
 
       const participants = await ctx.prisma.participant.findMany({
         where: {
@@ -42,23 +46,44 @@ export const tournamentsRouter = createTRPCRouter({
         },
       });
 
-      const participantsMap = createAllPossiblePairsInGroup(participants);
+      const participantsMap = createAllPossiblePairsInGroup(
+        participants,
+        START_GROUP
+      );
       const gamesMap = createGames(participantsMap);
 
       await createIdsArrays(
         gamesMap,
         async (group, firsIds, secondIds, index) => {
-          // Save games to database
+          const team1 = await ctx.prisma.team.create({
+            data: {
+              name: `Team 1`,
+              tournamentId: tournament.id,
+              participants: {
+                connect: [...firsIds],
+              },
+            },
+          });
+
+          const team2 = await ctx.prisma.team.create({
+            data: {
+              name: `Team 2`,
+              tournamentId: tournament.id,
+              participants: {
+                connect: [...secondIds],
+              },
+            },
+          });
+
           await ctx.prisma.games.create({
             data: {
               group,
               gameOrder: index + 1,
               tournamentId: tournament.id,
-              participant_team_1: {
-                connect: [...firsIds],
-              },
-              participant_team_2: {
-                connect: [...secondIds],
+              team1Id: team1.id,
+              team2Id: team2.id,
+              participants: {
+                connect: [...firsIds, ...secondIds],
               },
             },
           });
@@ -69,16 +94,24 @@ export const tournamentsRouter = createTRPCRouter({
     }),
 
   getTournamentGames: protectedProcedure
-    .input(z.object({ id: z.string(), group: z.string().nullish() }))
+    .input(z.object({ id: z.string(), group: z.string().optional() }))
     .query(async ({ ctx, input }) => {
       const games = await ctx.prisma.games.findMany({
         where: {
-          group: input.group ?? undefined,
+          group: input.group,
           tournamentId: input.id,
         },
         include: {
-          participant_team_1: true,
-          participant_team_2: true,
+          team1: {
+            include: {
+              participants: true,
+            },
+          },
+          team2: {
+            include: {
+              participants: true,
+            },
+          },
         },
       });
 
@@ -105,12 +138,20 @@ export const tournamentsRouter = createTRPCRouter({
           team2Score: input.team2Score,
         },
         include: {
-          participant_team_1: true,
-          participant_team_2: true,
+          team1: {
+            include: {
+              participants: true,
+            },
+          },
+          team2: {
+            include: {
+              participants: true,
+            },
+          },
         },
       });
 
-      for (const participant of game.participant_team_1) {
+      for (const participant of game.team1.participants) {
         await ctx.prisma.participant.update({
           where: {
             id: participant.id,
@@ -121,7 +162,7 @@ export const tournamentsRouter = createTRPCRouter({
         });
       }
 
-      for (const participant of game.participant_team_2) {
+      for (const participant of game.team2.participants) {
         await ctx.prisma.participant.update({
           where: {
             id: participant.id,

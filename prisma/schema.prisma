@@ -29,6 +29,7 @@ model User {
 
 // One user can have many Tournaments
 model Tournament {
+  Team      Team[]
   name      String
   userId    String
   winner    String?
@@ -41,29 +42,44 @@ model Tournament {
 }
 
 model Participant {
+  team         Team[]
   name         String
   tournamentId String
   group        String
+  games        Games[]
   updatedAt    DateTime   @updatedAt
   score        Int        @default(0)
   createdAt    DateTime   @default(now())
   id           String     @id @default(cuid())
-  games        Games[]    @relation("participant_team_1")
-  games2       Games[]    @relation("participant_team_2")
   tournament   Tournament @relation(fields: [tournamentId], references: [id])
 }
 
 model Games {
-  gameOrder          Int
-  group              String
-  tournamentId       String
-  winnerIds          String[]      @default([])
-  team1Score         Int           @default(0)
-  team2Score         Int           @default(0)
-  id                 String        @id @default(cuid())
-  participant_team_1 Participant[] @relation("participant_team_1")
-  participant_team_2 Participant[] @relation("participant_team_2")
-  tournament         Tournament    @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  gameOrder    Int
+  group        String
+  tournamentId String
+  team2Id      String
+  team1Id      String
+  participants Participant[]
+  team1Score   Int           @default(0)
+  team2Score   Int           @default(0)
+  winnerIds    String[]      @default([]) // should be connected to participant id
+  id           String        @id @default(cuid())
+  tournament   Tournament    @relation(fields: [tournamentId], references: [id])
+  team1        Team          @relation("participant_team_1", fields: [team1Id], references: [id], onDelete: Cascade)
+  team2        Team          @relation("participant_team_2", fields: [team2Id], references: [id], onDelete: Cascade)
+}
+
+model Team {
+  name         String
+  tournamentId String
+  participants Participant[]
+  updatedAt    DateTime      @updatedAt
+  createdAt    DateTime      @default(now())
+  id           String        @id @default(cuid())
+  games        Games[]       @relation("participant_team_1")
+  games2       Games[]       @relation("participant_team_2")
+  tournament   Tournament    @relation(fields: [tournamentId], references: [id])
 }
 
 // One user can have one password

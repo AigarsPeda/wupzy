@@ -53,6 +53,7 @@ const GroupCardContainer: FC<GroupCardContainerProps> = ({ tournamentId }) => {
   // count total games in group and pass it to GroupCard
   const getGameCountPerGroup = (games: GamesType[]) => {
     const gamesMap = createGamesMap(games);
+
     const totalGames: {
       [key: string]: number;
     } = {};
@@ -70,14 +71,14 @@ const GroupCardContainer: FC<GroupCardContainerProps> = ({ tournamentId }) => {
 
   return (
     <div>
-      {console.log("games", games)}
+      {console.log("games", games?.games)}
       {participants &&
-        [...participants.participants].map(([group, value]) => {
+        [...participants.participants].map(([group, participants]) => {
           return (
             <GroupCard
               key={group}
               group={group}
-              teams={value}
+              teams={participants}
               refetchGames={() => {
                 refetch().catch((err) => console.error(err));
                 refetchParticipants().catch((err) => console.error(err));

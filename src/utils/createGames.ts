@@ -1,13 +1,17 @@
 import type { ParticipantType } from "types/team.types";
-import containsParticipants from "utils/containsParticipants";
+import isDuplicatesObjInArray from "./isHasDuplicatesInArray";
 
 type TeamObjType = {
   first: ParticipantType[];
   second: ParticipantType[];
 };
 
-const createGames = (pairs: Map<string, ParticipantType[][]>) => {
+const createGames = (
+  pairs: Map<string, ParticipantType[][]>,
+  newParticipant?: ParticipantType
+) => {
   const games = new Map<string, TeamObjType[]>([]);
+  const filteredPairs: TeamObjType[] = [];
 
   for (const group of pairs.keys()) {
     const teams = pairs.get(group);
@@ -17,18 +21,14 @@ const createGames = (pairs: Map<string, ParticipantType[][]>) => {
     const allPossiblePairs = teams;
 
     for (let i = 0; i < allPossiblePairs.length; i++) {
-      const firstPair = allPossiblePairs[i];
-
-      if (!firstPair) return games;
-
       for (let j = i + 1; j < allPossiblePairs.length; j++) {
+        const firstPair = allPossiblePairs[i];
         const secondPair = allPossiblePairs[j];
 
-        if (!secondPair || !firstPair[0] || !firstPair[1]) return games;
-
         if (
-          !containsParticipants(firstPair[0], secondPair) &&
-          !containsParticipants(firstPair[1], secondPair)
+          firstPair &&
+          secondPair &&
+          !isDuplicatesObjInArray([...firstPair, ...secondPair], "id")
         ) {
           const game: TeamObjType = {
             first: firstPair,
@@ -46,9 +46,48 @@ const createGames = (pairs: Map<string, ParticipantType[][]>) => {
         }
       }
     }
+
+    if (newParticipant) {
+      const g = games.get(group);
+
+      if (g) {
+        for (let i = 0; i < g.length; i++) {
+          const gm = g[i];
+
+          if (gm) {
+            for (const key in gm) {
+              const k = key as keyof typeof gm;
+              const element = gm[k];
+
+              if (element && isParticipantGames(newParticipant, element)) {
+                filteredPairs.push(gm);
+              }
+            }
+          }
+        }
+      }
+
+      games.clear();
+      games.set(group, filteredPairs);
+    }
   }
 
   return games;
 };
 
 export default createGames;
+
+const isParticipantGames = (
+  participant: ParticipantType,
+  games: ParticipantType[]
+) => {
+  for (let i = 0; i < games.length; i++) {
+    const game = games[i];
+
+    // if (!game) return false;
+
+    if (game && game.id === participant.id) return true;
+  }
+
+  return false;
+};

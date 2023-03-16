@@ -1,6 +1,9 @@
-import type { TeamType } from "types/team.types";
+import type { ParticipantType } from "types/team.types";
 
-const containsParticipants = (obj: TeamType, list: TeamType[]) => {
+const containsParticipants = (
+  obj: ParticipantType,
+  list: ParticipantType[]
+) => {
   for (let i = 0; i < list.length; i++) {
     if (list[i]?.id === obj.id) {
       return true;

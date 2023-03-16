@@ -5,25 +5,35 @@ const createParticipantMap = (teams: ParticipantType[]) => {
 
   for (const team of teams) {
     const group = team.group;
+    const g = teamsByGroup.get(group);
 
-    if (!teamsByGroup.has(group)) {
-      teamsByGroup.set(group, []);
+    if (!g) {
+      teamsByGroup.set(group, [team]);
     }
 
-    teamsByGroup.get(group)?.push(team);
+    if (g) {
+      g.push(team);
+    }
+
+    g?.sort((a, b) => {
+      return a.name.localeCompare(b.name);
+      // return a.name - b.name;
+    });
   }
 
   // sort map keys alphabetically
-  const sortedAsc = new Map([...teamsByGroup].sort());
+  // const sortedAsc = new Map([...teamsByGroup].sort());
 
-  // sort teams in each group alphabetically
-  sortedAsc.forEach((teamsInGroup) => {
-    teamsInGroup.sort((a, b) => {
-      return a.name.localeCompare(b.name);
-    });
-  });
+  // return sortedAsc;
+  // const sortedEntries = Array.from(teamsByGroup.entries()).sort();
 
-  return sortedAsc;
+  // teamsByGroup.clear();
+
+  // for (const [key, value] of sortedEntries) {
+  //   teamsByGroup.set(key, value);
+  // }
+
+  return teamsByGroup;
 };
 
 export default createParticipantMap;

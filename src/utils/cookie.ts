@@ -13,7 +13,7 @@ const setCookie = (name: string, value: string, days: number) => {
   const cookie = getCookie(name);
 
   if (cookie) {
-    console.log("cookie set");
+    console.info("cookie set");
     return cookie;
   }
 };
@@ -41,7 +41,7 @@ export const eraseCookie = (name: string) => {
   const cookie = getCookie(name);
 
   if (!cookie) {
-    console.log("cookie deleted");
+    console.info("cookie deleted");
     return true;
   }
 
