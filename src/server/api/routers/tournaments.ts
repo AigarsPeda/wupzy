@@ -82,6 +82,9 @@ export const tournamentsRouter = createTRPCRouter({
               tournamentId: tournament.id,
               team1Id: team1.id,
               team2Id: team2.id,
+              participants: {
+                connect: [...firsIds, ...secondIds],
+              },
             },
           });
         }
