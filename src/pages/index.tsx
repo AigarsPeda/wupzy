@@ -6,8 +6,8 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Game Tracker</title>
-        <meta name="description" content="Game Tracker" />
+        <title>WUPZY</title>
+        <meta name="description" content="WUPZY" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="py-4 px-4 md:py-12 md:px-20">

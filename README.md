@@ -1,4 +1,4 @@
-# Game Tracker
+# WUPZY
 
 ### Requirements
 
