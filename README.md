@@ -1,4 +1,4 @@
-# WUPZY
+# wupzy
 
 ### Requirements
 
