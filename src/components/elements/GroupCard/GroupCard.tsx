@@ -1,12 +1,12 @@
 import type { ActivesGameType } from "components/containers/GroupCardContainer/GroupCardContainer";
 import Button from "components/elements/Button/Button";
+import DisplayTeams from "components/elements/DisplayTeams/DisplayTeams";
 import GroupCardHeader from "components/elements/GroupCardHeader/GroupCardHeader";
 import type { FC } from "react";
 import { useState } from "react";
 import type { ParticipantType } from "types/team.types";
 import { api } from "utils/api";
 import classNames from "utils/classNames";
-import DisplayTeams from "components/elements/DisplayTeams/DisplayTeams";
 
 const GAME_STATUS: {
   [key: string]: string;
@@ -37,14 +37,23 @@ const GroupCard: FC<GroupCardProps> = ({
     firstTeam: 0,
     secondTeam: 0,
   });
-  const { mutateAsync } = api.tournaments.updateGame.useMutation();
+  const { mutateAsync: updateGamScore } =
+    api.tournaments.updateGamScore.useMutation({
+      onSuccess: () => {
+        refetchGames();
+        setScore({
+          firstTeam: 0,
+          secondTeam: 0,
+        });
+      },
+    });
 
   const handleScoreSave = async (
     id: string,
     firstTeamIds: string[],
     secondTeamsIds: string[]
   ) => {
-    const tournament = await mutateAsync({
+    const tournament = await updateGamScore({
       id,
       team1Score: score.firstTeam,
       team2Score: score.secondTeam,
@@ -56,33 +65,31 @@ const GroupCard: FC<GroupCardProps> = ({
       console.error("error creating tournament");
       return;
     }
+  };
 
-    refetchGames();
-
-    setScore({
-      firstTeam: 0,
-      secondTeam: 0,
-    });
+  const getGames = () => {
+    const games = gamesOfInterest[group];
+    return games ? Object.entries(games).sort() : undefined;
   };
 
   return (
-    <div className="mb-6 min-h-[20rem] min-w-[20rem] grid-cols-6 content-start gap-4 rounded-md border border-gray-50 bg-gray-50 px-8 py-3 shadow-md xl:grid">
-      <div className="col-span-3 pr-5">
-        <GroupCardHeader label="games" title={group} />
-        <div className="h-full">
-          {Object.entries(gamesOfInterest[group] || {})
-            .sort() // Sort by key (-1, 0, 1,)
-            .map(([key, game]) => {
+    <div className="mb-6 min-h-[20rem] min-w-[20rem] grid-cols-6 content-start gap-4 rounded-md border border-gray-50 bg-gray-50 py-3 shadow-md md:px-8 xl:grid">
+      <div className="col-span-3 md:pr-5">
+        <GroupCardHeader label="Games" title={group} />
+        <div className="mb-5 h-full">
+          {getGames() ? (
+            getGames()?.map(([key, game]) => {
               const gameStatus = GAME_STATUS[key];
-              const isCurrentGame = gameStatus === "Current";
               const gameCount = totalGames[group] || 0;
+              const isCurrentGame = gameStatus === "Current";
 
               return (
                 <div
                   key={key}
                   className={classNames(
-                    !isCurrentGame && "bg-gray-200 py-1 md:py-3",
-                    isCurrentGame && "bg-gray-800 py-3 text-white md:py-6",
+                    isCurrentGame
+                      ? "bg-gray-800 py-3 text-white md:py-6"
+                      : "bg-gray-200 py-1 md:py-3",
                     "mb-3 rounded-md px-3 md:flex"
                   )}
                 >
@@ -126,11 +133,12 @@ const GroupCard: FC<GroupCardProps> = ({
                   </div>
 
                   {isCurrentGame && (
-                    <div>
-                      <div className="grid h-full w-full content-end">
+                    <div className="grid content-end">
+                      <div className="mt-3 h-full w-full">
                         <Button
                           btnColor="outline"
                           btnTitle="Save score"
+                          btnClass="border-gray-400 h-[2.58rem]"
                           onClick={() => {
                             if (!game) return;
 
@@ -156,11 +164,16 @@ const GroupCard: FC<GroupCardProps> = ({
                   )}
                 </div>
               );
-            })}
+            })
+          ) : (
+            <div>
+              <p className="text-2xl text-gray-800">No games</p>
+            </div>
+          )}
         </div>
       </div>
       <div className="col-span-3">
-        <GroupCardHeader label="group" title={group} />
+        <GroupCardHeader label="Participants" />
         {teams.map((team, i) => {
           const isFirstGroup = i === 0;
           return (

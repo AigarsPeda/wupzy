@@ -118,7 +118,7 @@ export const tournamentsRouter = createTRPCRouter({
       return { games };
     }),
 
-  updateGame: protectedProcedure
+  updateGamScore: protectedProcedure
     .input(
       z.object({
         id: z.string(),

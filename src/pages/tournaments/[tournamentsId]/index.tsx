@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 const Tournament: NextPage = () => {
   const { query } = useRouter();
   const { redirectToPath } = useRedirect();
-  const [tournamentId, setTournamentId] = useState<string>("");
+  const [tournamentId, setTournamentId] = useState("");
   const { tournamentError, isTournamentLoading, tournament } =
     useTournament(tournamentId);
 
