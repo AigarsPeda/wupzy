@@ -1,4 +1,4 @@
-import { Cabin, Koulen, Roboto } from "@next/font/google";
+import { Cabin, Koulen, Roboto } from "next/font/google";
 import MainLayout from "components/layouts/MainLayout/MainLayout";
 import { type AppType } from "next/app";
 import "styles/globals.css";
