@@ -1,11 +1,11 @@
-import type { TeamObjType } from "types/team.types";
+import type { ParticipantObjType } from "types/team.types";
 
 type IdsArrayType = {
   id: string;
 }[];
 
 const createIdsArrays = async (
-  gamesMap: Map<string, TeamObjType[]>,
+  gamesMap: Map<string, ParticipantObjType[]>,
   callback: (
     group: string,
     firsIds: IdsArrayType,

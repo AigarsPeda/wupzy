@@ -1,7 +1,7 @@
-import type { ParticipantType, TeamsMapType } from "types/team.types";
+import type { ParticipantType, ParticipantMapType } from "types/team.types";
 
 const changeGroup = (
-  teamsByGroup: TeamsMapType,
+  teamsByGroup: ParticipantMapType,
   oldGroup: string,
   newGroup: string,
   team: ParticipantType

@@ -4,7 +4,7 @@ import getGroupThatAreToSmall from "components/elements/EditTournamentGroup/util
 import getUpdatedParticipants from "components/elements/EditTournamentGroup/utils/getUpdatedParticipants";
 import EditTournamentName from "components/elements/EditTournamentName/EditTournamentName";
 import GroupDropdown from "components/elements/GroupDropdown/GroupDropdown";
-import ModalWrap from "components/elements/Modal/Modal";
+import ModalWrap from "components/elements/ModalWrap/ModalWrap";
 import SmallButton from "components/elements/SmallButton/SmallButton";
 import GridLayout from "components/layouts/GridLayout/GridLayout";
 import useParticipants from "hooks/useParticipants";
@@ -15,7 +15,7 @@ import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { GrPowerReset } from "react-icons/gr";
 import { RiSaveLine } from "react-icons/ri";
-import type { ParticipantType, TeamsMapType } from "types/team.types";
+import type { ParticipantMapType, ParticipantType } from "types/team.types";
 import { api } from "utils/api";
 import { getKeys } from "utils/teamsMapFunctions";
 
@@ -38,7 +38,9 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     null
   );
 
-  const [teamsByGroup, setTeamsByGroup] = useState<TeamsMapType>(new Map());
+  const [teamsByGroup, setTeamsByGroup] = useState<ParticipantMapType>(
+    new Map()
+  );
   const [changedParticipantsIds, setChangedParticipantsIds] = useState<
     string[]
   >([]);
@@ -50,7 +52,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   );
 
   const { refetch: refetchGames } = api.tournaments.getTournamentGames.useQuery(
-    { id: tournamentId }
+    { tournamentId }
   );
 
   const { mutateAsync: updateParticipantsGroup } =

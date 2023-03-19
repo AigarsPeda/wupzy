@@ -1,9 +1,12 @@
-import type { TeamsMapType } from "types/team.types";
+import type { ParticipantMapType } from "types/team.types";
 
-export const getKeys = (teamsMap: TeamsMapType) => {
+export const getKeys = (teamsMap: ParticipantMapType) => {
   return [...teamsMap.keys()];
 };
 
-export const getAvailableGroups = (group: string, teams: TeamsMapType) => {
+export const getAvailableGroups = (
+  group: string,
+  teams: ParticipantMapType
+) => {
   return getKeys(teams).filter((f) => f !== group);
 };

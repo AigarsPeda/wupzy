@@ -94,12 +94,15 @@ export const tournamentsRouter = createTRPCRouter({
     }),
 
   getTournamentGames: protectedProcedure
-    .input(z.object({ id: z.string(), group: z.string().optional() }))
+    .input(z.object({ tournamentId: z.string(), group: z.string().optional() }))
     .query(async ({ ctx, input }) => {
       const games = await ctx.prisma.games.findMany({
         where: {
           group: input.group,
-          tournamentId: input.id,
+          tournamentId: input.tournamentId,
+        },
+        orderBy: {
+          gameOrder: "asc",
         },
         include: {
           team1: {
@@ -137,6 +140,7 @@ export const tournamentsRouter = createTRPCRouter({
           team1Score: input.team1Score,
           team2Score: input.team2Score,
         },
+
         include: {
           team1: {
             include: {

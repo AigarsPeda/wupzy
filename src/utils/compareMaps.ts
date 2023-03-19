@@ -1,7 +1,7 @@
-import type { TeamsMapType } from "../types/team.types";
+import type { ParticipantMapType } from "../types/team.types";
 import { getKeys } from "./teamsMapFunctions";
 
-const compareMaps = (map1: TeamsMapType, map2: TeamsMapType) => {
+const compareMaps = (map1: ParticipantMapType, map2: ParticipantMapType) => {
   const map1Keys = getKeys(map1);
   const map2Keys = getKeys(map2);
 

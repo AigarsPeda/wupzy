@@ -1,4 +1,4 @@
-import type { GamesType } from "types/team.types";
+import type { GamesType } from "types/game.types";
 
 const createGamesMap = (games: GamesType[]) => {
   return games.reduce((acc, game) => {

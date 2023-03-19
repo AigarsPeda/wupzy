@@ -7,14 +7,14 @@ import { CgClose } from "react-icons/cg";
 import { FiEdit2 } from "react-icons/fi";
 import { GrPowerReset } from "react-icons/gr";
 import { RiSaveLine } from "react-icons/ri";
-import type { ParticipantType, TeamsMapType } from "types/team.types";
+import type { ParticipantType, ParticipantMapType } from "types/team.types";
 import classNames from "utils/classNames";
 import { getAvailableGroups } from "utils/teamsMapFunctions";
 
 interface EditParticipantProps {
   group: string;
   isChanged: boolean;
-  teamsByGroup: TeamsMapType;
+  teamsByGroup: ParticipantMapType;
   participant: ParticipantType;
   teamToDelete: ParticipantType | null;
   handleCancelDeleteTeam: () => void;

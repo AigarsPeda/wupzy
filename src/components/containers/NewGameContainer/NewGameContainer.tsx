@@ -1,6 +1,6 @@
 import Button from "components/elements/Button/Button";
 import ErrorMessage from "components/elements/ErrorMessage/ErrorMessage";
-import ModalWrap from "components/elements/Modal/Modal";
+import ModalWrap from "components/elements/ModalWrap/ModalWrap";
 import ProgressBar from "components/elements/ProgressBar/ProgressBar";
 import TournamentAttendantForm from "components/elements/TournamentAttendantForm/TournamentAttendantForm";
 import TournamentCreateMetaForm from "components/elements/TournamentCreateMetaForm/TournamentCreateMetaForm";
