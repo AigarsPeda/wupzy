@@ -41,6 +41,8 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
   handleDisplayAllClick,
 }) => {
   const getGames = () => {
+    console.log("gamesOfInterest", gamesOfInterest);
+
     const games = gamesOfInterest[group];
     return games ? Object.entries(games).sort() : undefined;
   };

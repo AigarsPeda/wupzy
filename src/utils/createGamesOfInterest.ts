@@ -14,7 +14,7 @@ const createGamesOfInterest = (games: GamesType[]): GamesOfInterestType => {
 
       if (!game) continue;
 
-      if (game.winnerIds?.length === 0 && !gamesOfInterest[group]) {
+      if (game.winners?.length === 0 && !gamesOfInterest[group]) {
         gamesOfInterest[group] = {
           "0": game,
           "1": games[i + 1] || undefined,

@@ -1,4 +1,4 @@
-import { TeamZodSchema } from "types/team.types";
+import { ParticipantsZodSchema, TeamZodSchema } from "types/team.types";
 import { z } from "zod";
 
 const GamesZodSchema = z.object({
@@ -12,7 +12,7 @@ const GamesZodSchema = z.object({
   team1Score: z.number(),
   team2Score: z.number(),
   tournamentId: z.string(),
-  winnerIds: z.array(z.string()).nullable(),
+  winners: z.array(ParticipantsZodSchema),
 });
 
 export type GamesType = z.infer<typeof GamesZodSchema>;

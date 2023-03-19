@@ -37,8 +37,9 @@ const DisplayTeams: FC<DisplayTeamsProps> = ({
           </p>
         ))}
       </div>
-      {isCurrentGame && teamsScore && handleScoreChange && (
-        <NumberInput value={teamsScore} onChange={handleScoreChange} />
+
+      {isCurrentGame && handleScoreChange && (
+        <NumberInput value={teamsScore ?? 0} onChange={handleScoreChange} />
       )}
       {!isCurrentGame && <p className="text-gray-600">{infoScore}</p>}
     </div>

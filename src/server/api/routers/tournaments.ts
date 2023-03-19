@@ -115,6 +115,7 @@ export const tournamentsRouter = createTRPCRouter({
               participants: true,
             },
           },
+          winners: true,
         },
       });
 
@@ -131,14 +132,23 @@ export const tournamentsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const winnerIds = input.winnerTeamIds?.map((id) => {
+        return {
+          id: id,
+        };
+      });
+
       const game = await ctx.prisma.games.update({
         where: {
           id: input.id,
         },
         data: {
-          winnerIds: input.winnerTeamIds ?? undefined,
+          // winnerIds: input.winnerTeamIds ?? undefined,
           team1Score: input.team1Score,
           team2Score: input.team2Score,
+          winners: {
+            connect: winnerIds,
+          },
         },
 
         include: {
