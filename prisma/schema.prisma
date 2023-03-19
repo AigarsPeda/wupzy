@@ -51,6 +51,7 @@ model Participant {
   score        Int        @default(0)
   createdAt    DateTime   @default(now())
   id           String     @id @default(cuid())
+  games2       Games[]    @relation("winners")
   tournament   Tournament @relation(fields: [tournamentId], references: [id])
 }
 
@@ -63,8 +64,8 @@ model Games {
   participants Participant[]
   team1Score   Int           @default(0)
   team2Score   Int           @default(0)
-  winnerIds    String[]      @default([]) // should be connected to participant id
   id           String        @id @default(cuid())
+  winners      Participant[] @relation("winners")
   tournament   Tournament    @relation(fields: [tournamentId], references: [id])
   team1        Team          @relation("participant_team_1", fields: [team1Id], references: [id], onDelete: Cascade)
   team2        Team          @relation("participant_team_2", fields: [team2Id], references: [id], onDelete: Cascade)

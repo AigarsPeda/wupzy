@@ -2,12 +2,12 @@ import Button from "components/elements/Button/Button";
 import EditParticipant from "components/elements/EditParticipant/EditParticipant";
 import EditTournamentHeader from "components/elements/EditTournamentHeader/EditTournamentHeader";
 import type { FC } from "react";
-import type { ParticipantType, TeamsMapType } from "types/team.types";
+import type { ParticipantType, ParticipantMapType } from "types/team.types";
 import classNames from "utils/classNames";
 import { getKeys } from "utils/teamsMapFunctions";
 
 interface EditTournamentCardProps {
-  teamsMap: TeamsMapType;
+  teamsMap: ParticipantMapType;
   groupToSmall: string[];
   changedParticipantsIds: string[];
   teamToDelete: ParticipantType | null;

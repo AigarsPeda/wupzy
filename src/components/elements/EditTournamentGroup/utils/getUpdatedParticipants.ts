@@ -1,8 +1,8 @@
-import type { ParticipantType, TeamsMapType } from "types/team.types";
+import type { ParticipantType, ParticipantMapType } from "types/team.types";
 
 const getUpdatedParticipants = (
   newName: string,
-  participants: TeamsMapType,
+  participants: ParticipantMapType,
   participant: ParticipantType
 ) => {
   const updatedParticipants: string[] = [];

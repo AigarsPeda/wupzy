@@ -1,17 +1,20 @@
+import NumberInput from "components/elements/NumberInput/NumberInput";
 import type { FC } from "react";
 import type { ParticipantType } from "types/team.types";
-import NumberInput from "../NumberInput/NumberInput";
+import classNames from "utils/classNames";
 
 interface DisplayTeamsProps {
   infoScore: number;
-  teamsScore: number;
-  isCurrentGame: boolean;
+  isWinner?: boolean;
+  teamsScore?: number;
+  isCurrentGame?: boolean;
   team: ParticipantType[];
-  handleScoreChange: (n: number) => void;
+  handleScoreChange?: (n: number) => void;
 }
 
 const DisplayTeams: FC<DisplayTeamsProps> = ({
   team,
+  isWinner,
   infoScore,
   teamsScore,
   isCurrentGame,
@@ -22,15 +25,21 @@ const DisplayTeams: FC<DisplayTeamsProps> = ({
       <div>
         <p className="text-xs text-gray-400">First team</p>
       </div>
-      <div className="flex w-full items-center">
-        {team?.map((t) => (
-          <p key={t.id} className="mr-2">
+      <div
+        className={classNames(
+          isWinner ? "text-grey-900 font-bold" : "font-normal",
+          "flex w-full items-center"
+        )}
+      >
+        {team.map((t) => (
+          <p key={t.id} className={classNames("mr-2")}>
             {t.name}
           </p>
         ))}
       </div>
-      {isCurrentGame && (
-        <NumberInput value={teamsScore} onChange={handleScoreChange} />
+
+      {isCurrentGame && handleScoreChange && (
+        <NumberInput value={teamsScore ?? 0} onChange={handleScoreChange} />
       )}
       {!isCurrentGame && <p className="text-gray-600">{infoScore}</p>}
     </div>

@@ -1,7 +1,7 @@
 import type { ParticipantType } from "types/team.types";
 import isDuplicatesObjInArray from "./isHasDuplicatesInArray";
 
-type TeamObjType = {
+type ParticipantObjType = {
   first: ParticipantType[];
   second: ParticipantType[];
 };
@@ -10,8 +10,8 @@ const createGames = (
   pairs: Map<string, ParticipantType[][]>,
   newParticipant?: ParticipantType
 ) => {
-  const games = new Map<string, TeamObjType[]>([]);
-  const filteredPairs: TeamObjType[] = [];
+  const games = new Map<string, ParticipantObjType[]>([]);
+  const filteredPairs: ParticipantObjType[] = [];
 
   for (const group of pairs.keys()) {
     const teams = pairs.get(group);
@@ -30,7 +30,7 @@ const createGames = (
           secondPair &&
           !isDuplicatesObjInArray([...firstPair, ...secondPair], "id")
         ) {
-          const game: TeamObjType = {
+          const game: ParticipantObjType = {
             first: firstPair,
             second: secondPair,
           };

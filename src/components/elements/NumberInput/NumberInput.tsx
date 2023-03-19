@@ -21,12 +21,18 @@ const NumberInput: FC<NumberInputProps> = ({ value, onChange }) => {
           <span className="m-auto text-2xl font-thin">−</span>
         </button>
         <input
-          value={value}
-          type="number"
-          // pattern="[0-9]*"
+          type="text"
+          pattern="[0-9]*"
           name="input-number"
+          value={value || "0"}
+          onFocus={(e) => {
+            if (e.target.value === "0") {
+              e.target.value = "";
+            }
+          }}
           onChange={(e) => {
-            onChange(e.target.valueAsNumber);
+            const num = parseInt(e.target.value);
+            onChange(num);
           }}
           className="text-md md:text-basecursor-default flex w-full items-center bg-gray-300 text-center font-semibold text-gray-700 outline-none hover:text-black focus:text-black focus:outline-none"
         ></input>

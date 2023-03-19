@@ -1,6 +1,6 @@
 import Button from "components/elements/Button/Button";
 import Input from "components/elements/Input/Input";
-import ModalWrap from "components/elements/Modal/Modal";
+import ModalWrap from "components/elements/ModalWrap/ModalWrap";
 import type { FC } from "react";
 import { useState } from "react";
 import { api } from "utils/api";
@@ -21,7 +21,7 @@ const AddNewTeam: FC<AddNewTeamProps> = ({
   const [teamsName, setTeamsName] = useState("");
   const { mutateAsync } = api.participant.addParticipantToGroup.useMutation();
   const { refetch: refetchGames } = api.tournaments.getTournamentGames.useQuery(
-    { id: tournamentId }
+    { tournamentId }
   );
 
   const handleAddingTeam = async () => {
