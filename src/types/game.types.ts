@@ -17,6 +17,10 @@ const GamesZodSchema = z.object({
 
 export type GamesType = z.infer<typeof GamesZodSchema>;
 
+const GamesMapSchema = z.map(z.string(), z.array(GamesZodSchema));
+
+export type GamesMapType = z.infer<typeof GamesMapSchema>;
+
 export type ActivesGame = GamesType | undefined;
 
 export type GamesOfInterestType = {

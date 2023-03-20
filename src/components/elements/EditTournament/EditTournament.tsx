@@ -5,8 +5,9 @@ import ModalWrap from "components/elements/ModalWrap/ModalWrap";
 import { useRouter } from "next/router";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
+import { IoIosArrowBack } from "react-icons/io";
 
-type ContentType = "EditTournamentGroup" | "EditGameOrder";
+// type ContentType = "EditTournamentGroup" | "EditGameOrder";
 
 interface EditTournamentProps {
   isModalOpen: boolean;
@@ -19,9 +20,7 @@ const EditTournament: FC<EditTournamentProps> = ({
 }) => {
   const { query } = useRouter();
   const [tournamentId, setTournamentId] = useState("");
-  const [contentType, setContentType] = useState<ContentType>(
-    "EditTournamentGroup"
-  );
+  const [gameEditGroup, setGameEditGroup] = useState("");
 
   useEffect(() => {
     if (!query.tournamentsId || typeof query.tournamentsId !== "string") return;
@@ -37,39 +36,27 @@ const EditTournament: FC<EditTournamentProps> = ({
       modalTitle="Edit tournament groups"
       handleCancelClick={handleCloseModal}
     >
-      <div className="my-5 flex w-full items-center justify-center">
-        <Button
-          btnColor="outline"
-          isDisabled={contentType === "EditTournamentGroup"}
-          btnTitle={<span className="px-3 text-sm">Edit tournament group</span>}
-          onClick={() => {
-            setContentType("EditTournamentGroup");
-          }}
+      {gameEditGroup !== "" ? (
+        <>
+          <EditTournamentGameOrder
+            group={gameEditGroup}
+            tournamentId={tournamentId}
+          />
+          <Button
+            btnSize="square"
+            btnColor="outline"
+            btnTitle={<IoIosArrowBack className="h-6 w-6" />}
+            onClick={() => {
+              setGameEditGroup("");
+            }}
+          />
+        </>
+      ) : (
+        <EditTournamentGroup
+          tournamentId={tournamentId}
+          handleEditGroupGame={setGameEditGroup}
         />
-
-        <Button
-          btnColor="outline"
-          btnClass="ml-4"
-          isDisabled={contentType === "EditGameOrder"}
-          btnTitle={<span className="px-3 text-sm">Change game order</span>}
-          onClick={() => {
-            setContentType("EditGameOrder");
-          }}
-        />
-      </div>
-
-      {(() => {
-        switch (contentType) {
-          case "EditTournamentGroup":
-            return <EditTournamentGroup tournamentId={tournamentId} />;
-
-          case "EditGameOrder":
-            return <EditTournamentGameOrder tournamentId={tournamentId} />;
-
-          default:
-            return <p>Error</p>;
-        }
-      })()}
+      )}
     </ModalWrap>
   );
 };

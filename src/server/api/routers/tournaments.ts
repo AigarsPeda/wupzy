@@ -127,7 +127,7 @@ export const tournamentsRouter = createTRPCRouter({
       z.object({
         id: z.string(),
         group: z.string(),
-        gameOrder: z.number(),
+        order: z.number(),
         tournamentId: z.string(),
       })
     )
@@ -138,7 +138,7 @@ export const tournamentsRouter = createTRPCRouter({
           id: input.id,
         },
         data: {
-          gameOrder: input.gameOrder,
+          gameOrder: input.order,
         },
       });
 

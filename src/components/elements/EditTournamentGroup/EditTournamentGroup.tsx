@@ -19,10 +19,12 @@ import { getKeys } from "utils/teamsMapFunctions";
 
 interface EditTournamentGroupProps {
   tournamentId: string;
+  handleEditGroupGame: (group: string) => void;
 }
 
 const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   tournamentId,
+  handleEditGroupGame,
 }) => {
   const { windowSize } = useWindowSize();
   const [groupToSmall, setGroupToSmall] = useState<string[]>([]);
@@ -210,6 +212,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
             </>
           )}
         </div>
+
         <GroupDropdown
           handleGroupClick={addGroupToTournament}
           alreadyCreatedGroups={getKeys(teamsByGroup)}
@@ -247,6 +250,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
                 console.error("error changing group", e)
               );
             }}
+            handleEditGroupGame={handleEditGroupGame}
             changedParticipantsIds={changedParticipantsIds}
             handleParticipantUpdate={handleParticipantUpdate}
             handleParticipantNameChange={handleParticipantNameChange}

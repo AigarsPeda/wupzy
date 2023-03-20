@@ -378,6 +378,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-motion@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@types/react-motion/-/react-motion-0.0.27.tgz#e15f6415bf7c3d57336e9e97965d725d04953ac2"
+  integrity sha512-IvUTegF4hUWKEqVp3/hPYNJ6cjWfK2c48oNK4KJGAyUFpNqonTCoOL0FLrE/ITPmn1D0bS4D2gMKJyB0L+MtOw==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*", "@types/react@^18.0.28":
   version "18.0.28"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.28.tgz#accaeb8b86f4908057ad629a26635fe641480065"
@@ -3379,6 +3386,14 @@ react-draggable-list@^4.1.0:
     prop-types "^15.6.0"
     react-motion "^0.5.2"
     react-multi-ref "^1.0.0"
+
+react-draggable-lists@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-draggable-lists/-/react-draggable-lists-1.0.1.tgz#e1ec730a43a6cf96d50897d5eb4443fdbd9e4dda"
+  integrity sha512-SSFNFEae9Q8D4EOYdbmeeAHzofRqmpcmXN8ulmrm2LwMb8lfFIY1BsMjsDxWZ+oAQ5bMc7tXkALq6amg1XIbZA==
+  dependencies:
+    "@types/react-motion" "^0.0.27"
+    react-motion "^0.5.2"
 
 react-icons@^4.8.0:
   version "4.8.0"
