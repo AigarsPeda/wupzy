@@ -37,20 +37,13 @@ const EditTournament: FC<EditTournamentProps> = ({
       handleCancelClick={handleCloseModal}
     >
       {gameEditGroup !== "" ? (
-        <>
-          <EditTournamentGameOrder
-            group={gameEditGroup}
-            tournamentId={tournamentId}
-          />
-          <Button
-            btnSize="square"
-            btnColor="outline"
-            btnTitle={<IoIosArrowBack className="h-6 w-6" />}
-            onClick={() => {
-              setGameEditGroup("");
-            }}
-          />
-        </>
+        <EditTournamentGameOrder
+          group={gameEditGroup}
+          tournamentId={tournamentId}
+          handleCancelClick={() => {
+            setGameEditGroup("");
+          }}
+        />
       ) : (
         <EditTournamentGroup
           tournamentId={tournamentId}

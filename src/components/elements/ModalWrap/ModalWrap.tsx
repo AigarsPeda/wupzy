@@ -67,7 +67,7 @@ const ModalWrap: FC<ModalWrapProps> = ({
               topPosition === "top" && "top-[2%] md:top-[5%]",
               topPosition === "default" && "top-[2%] md:top-[15%]",
               // h-[95%]
-              "absolute z-[69]  mx-auto w-11/12 overflow-y-auto rounded bg-white shadow-lg sm:h-auto"
+              "absolute z-[69] mx-auto w-11/12 overflow-y-auto rounded bg-white shadow-lg sm:h-auto"
             )}
             ref={modalRef}
           >
