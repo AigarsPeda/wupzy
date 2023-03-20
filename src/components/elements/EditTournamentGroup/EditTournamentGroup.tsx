@@ -1,16 +1,14 @@
 import AddNewTeam from "components/elements/AddNewTeam/AddNewTeam";
+import getGroupThatAreToSmall from "components/elements/EditTournament/utils/getGroupThatAreToSmall";
+import getUpdatedParticipants from "components/elements/EditTournament/utils/getUpdatedParticipants";
 import EditTournamentCard from "components/elements/EditTournamentCard/EditTournamentCard";
-import getGroupThatAreToSmall from "components/elements/EditTournamentGroup/utils/getGroupThatAreToSmall";
-import getUpdatedParticipants from "components/elements/EditTournamentGroup/utils/getUpdatedParticipants";
 import EditTournamentName from "components/elements/EditTournamentName/EditTournamentName";
 import GroupDropdown from "components/elements/GroupDropdown/GroupDropdown";
-import ModalWrap from "components/elements/ModalWrap/ModalWrap";
 import SmallButton from "components/elements/SmallButton/SmallButton";
 import GridLayout from "components/layouts/GridLayout/GridLayout";
 import useParticipants from "hooks/useParticipants";
 import useTournament from "hooks/useTournament";
 import useWindowSize from "hooks/useWindowSize";
-import { useRouter } from "next/router";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { GrPowerReset } from "react-icons/gr";
@@ -20,17 +18,13 @@ import { api } from "utils/api";
 import { getKeys } from "utils/teamsMapFunctions";
 
 interface EditTournamentGroupProps {
-  isModalOpen: boolean;
-  handleCloseModal: () => void;
+  tournamentId: string;
 }
 
 const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
-  isModalOpen,
-  handleCloseModal,
+  tournamentId,
 }) => {
-  const { query } = useRouter();
   const { windowSize } = useWindowSize();
-  const [tournamentId, setTournamentId] = useState("");
   const [groupToSmall, setGroupToSmall] = useState<string[]>([]);
   const deleteTeam = api.participant.deleteParticipant.useMutation();
   const { tournament, refetchTournament } = useTournament(tournamentId);
@@ -176,12 +170,6 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   };
 
   useEffect(() => {
-    if (!query.tournamentsId || typeof query.tournamentsId !== "string") return;
-
-    setTournamentId(query.tournamentsId);
-  }, [query.tournamentsId]);
-
-  useEffect(() => {
     if (!tournament) return;
 
     setNewTournamentName(tournament.tournament.name);
@@ -195,13 +183,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   }, [participants]);
 
   return (
-    <ModalWrap
-      modalWidth="7xl"
-      topPosition="top"
-      isModalVisible={isModalOpen}
-      modalTitle="Edit tournament groups"
-      handleCancelClick={handleCloseModal}
-    >
+    <>
       <div className="mt-3 mb-6 flex w-full justify-between">
         <div className="flex">
           <EditTournamentName
@@ -277,7 +259,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
           />
         </GridLayout>
       </div>
-    </ModalWrap>
+    </>
   );
 };
 
