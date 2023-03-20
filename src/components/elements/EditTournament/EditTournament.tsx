@@ -1,13 +1,9 @@
-import Button from "components/elements/Button/Button";
 import EditTournamentGameOrder from "components/elements/EditTournamentGameOrder/EditTournamentGameOrder";
 import EditTournamentGroup from "components/elements/EditTournamentGroup/EditTournamentGroup";
 import ModalWrap from "components/elements/ModalWrap/ModalWrap";
 import { useRouter } from "next/router";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
-import { IoIosArrowBack } from "react-icons/io";
-
-// type ContentType = "EditTournamentGroup" | "EditGameOrder";
 
 interface EditTournamentProps {
   isModalOpen: boolean;

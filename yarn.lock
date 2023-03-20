@@ -67,6 +67,11 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.36.0.tgz#9837f768c03a1e4a30bd304a64fb8844f0e72efe"
   integrity sha512-lxJ9R5ygVm8ZWgYdUweoq5ownDlJ4upvoWmO4eLxBYHdMo+vZ/Rx0EN6MbKWDJOSUGrqJy2Gt+Dyv/VKml0fjg==
 
+"@formkit/auto-animate@^1.0.0-beta.6":
+  version "1.0.0-beta.6"
+  resolved "https://registry.yarnpkg.com/@formkit/auto-animate/-/auto-animate-1.0.0-beta.6.tgz#ed7f8bc47d774a7764756646e9e3432e8be51cb3"
+  integrity sha512-PVDhLAlr+B4Xb7e+1wozBUWmXa6BFU8xUPR/W/E+TsQhPS1qkAdAsJ25keEnFrcePSnXHrOsh3tiFbEToOzV9w==
+
 "@humanwhocodes/config-array@^0.11.8":
   version "0.11.8"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.8.tgz#03595ac2075a4dc0f191cc2131de14fbd7d410b9"
@@ -375,13 +380,6 @@
   version "18.0.11"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-18.0.11.tgz#321351c1459bc9ca3d216aefc8a167beec334e33"
   integrity sha512-O38bPbI2CWtgw/OoQoY+BRelw7uysmXbWvw3nLWO21H1HSh+GOlqPuXshJfjmpNlKiiSDG9cc1JZAaMmVdcTlw==
-  dependencies:
-    "@types/react" "*"
-
-"@types/react-motion@^0.0.27":
-  version "0.0.27"
-  resolved "https://registry.yarnpkg.com/@types/react-motion/-/react-motion-0.0.27.tgz#e15f6415bf7c3d57336e9e97965d725d04953ac2"
-  integrity sha512-IvUTegF4hUWKEqVp3/hPYNJ6cjWfK2c48oNK4KJGAyUFpNqonTCoOL0FLrE/ITPmn1D0bS4D2gMKJyB0L+MtOw==
   dependencies:
     "@types/react" "*"
 
@@ -3386,14 +3384,6 @@ react-draggable-list@^4.1.0:
     prop-types "^15.6.0"
     react-motion "^0.5.2"
     react-multi-ref "^1.0.0"
-
-react-draggable-lists@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/react-draggable-lists/-/react-draggable-lists-1.0.1.tgz#e1ec730a43a6cf96d50897d5eb4443fdbd9e4dda"
-  integrity sha512-SSFNFEae9Q8D4EOYdbmeeAHzofRqmpcmXN8ulmrm2LwMb8lfFIY1BsMjsDxWZ+oAQ5bMc7tXkALq6amg1XIbZA==
-  dependencies:
-    "@types/react-motion" "^0.0.27"
-    react-motion "^0.5.2"
 
 react-icons@^4.8.0:
   version "4.8.0"
