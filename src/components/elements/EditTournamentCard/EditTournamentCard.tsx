@@ -1,8 +1,9 @@
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import Button from "components/elements/Button/Button";
 import EditParticipant from "components/elements/EditParticipant/EditParticipant";
 import EditTournamentHeader from "components/elements/EditTournamentHeader/EditTournamentHeader";
 import type { FC } from "react";
-import type { ParticipantType, ParticipantMapType } from "types/team.types";
+import type { ParticipantMapType, ParticipantType } from "types/team.types";
 import classNames from "utils/classNames";
 import { getKeys } from "utils/teamsMapFunctions";
 
@@ -41,6 +42,8 @@ const EditTournamentCard: FC<EditTournamentCardProps> = ({
   handleParticipantUpdate,
   handleParticipantNameChange,
 }) => {
+  const [parent] = useAutoAnimate();
+
   return (
     <>
       {[...teamsMap].map(([group, participants], i) => {
@@ -66,6 +69,7 @@ const EditTournamentCard: FC<EditTournamentCardProps> = ({
               </button>
             </div>
             <div
+              ref={parent}
               className={classNames(
                 "relative ml-2 grid max-h-[22rem] min-h-[17rem] min-w-[9.375rem] grid-cols-1 content-start overflow-y-auto"
               )}

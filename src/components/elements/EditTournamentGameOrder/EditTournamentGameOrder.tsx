@@ -23,13 +23,13 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
   tournamentId,
   handleCancelClick,
 }) => {
+  const [parent] = useAutoAnimate();
   const { windowSize } = useWindowSize();
   const [gamesState, setGamesState] = useState<GamesMapType>(new Map());
   const { data: games, refetch: refetchGames } =
     api.tournaments.getTournamentGames.useQuery({ group, tournamentId });
   const { mutateAsync: updateGameOrder } =
     api.tournaments.updateGameOrder.useMutation();
-  const [parent, enableAnimations] = useAutoAnimate(/* optional config */);
 
   const handleGameOrderChange = (id: string, order: number, group: string) => {
     // await updateGameOrder({ id, order, group, tournamentId });
