@@ -86,7 +86,7 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
           }}
         />
       </div>
-      <h2>{group}</h2>
+      {/* <h2>{group}</h2> */}
       <div
         className="overflow-y-auto"
         style={
