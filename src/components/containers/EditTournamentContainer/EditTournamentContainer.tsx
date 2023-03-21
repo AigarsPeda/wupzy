@@ -1,4 +1,4 @@
-import EditTournamentGroup from "components/elements/EditTournamentGroup/EditTournamentGroup";
+import EditTournament from "components/elements/EditTournament/EditTournament";
 import UnderLineButton from "components/elements/UnderLineButton/UnderLineButton";
 import type { FC } from "react";
 import { useState } from "react";
@@ -14,7 +14,7 @@ const EditTournamentContainer: FC = () => {
           setIsModalOpen(!isModalOpen);
         }}
       />
-      <EditTournamentGroup
+      <EditTournament
         isModalOpen={isModalOpen}
         handleCloseModal={() => {
           setIsModalOpen(false);

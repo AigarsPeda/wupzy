@@ -17,6 +17,7 @@ interface ModalWrapProps {
     | "large"
     | "medium";
   modalTitle: string;
+  header?: JSX.Element;
   titleClassName?: string;
   isModalVisible: boolean;
   maxHeight?: "none" | "md";
@@ -26,6 +27,7 @@ interface ModalWrapProps {
 }
 
 const ModalWrap: FC<ModalWrapProps> = ({
+  header,
   children,
   modalTitle,
   titleClassName,
@@ -65,7 +67,7 @@ const ModalWrap: FC<ModalWrapProps> = ({
               topPosition === "top" && "top-[2%] md:top-[5%]",
               topPosition === "default" && "top-[2%] md:top-[15%]",
               // h-[95%]
-              "absolute z-[69]  mx-auto w-11/12 overflow-y-auto rounded bg-white shadow-lg sm:h-auto"
+              "absolute z-[69] mx-auto w-11/12 overflow-y-auto rounded bg-white shadow-lg sm:h-auto"
             )}
             ref={modalRef}
           >
@@ -82,9 +84,12 @@ const ModalWrap: FC<ModalWrapProps> = ({
                   "relative flex items-center justify-between pb-2"
                 )}
               >
-                <p className="font-secondary text-2xl font-bold">
-                  {modalTitle}
-                </p>
+                <div className="flex">
+                  <p className="font-secondary text-2xl font-bold">
+                    {modalTitle}
+                  </p>
+                  {header && header}
+                </div>
                 <button className="cursor-pointer" onClick={handleCancelClick}>
                   <IoClose className="absolute top-0 -right-2 h-8 w-9 text-gray-800 hover:text-gray-500" />
                 </button>

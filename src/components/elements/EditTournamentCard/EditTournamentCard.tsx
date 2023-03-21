@@ -1,8 +1,9 @@
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import Button from "components/elements/Button/Button";
 import EditParticipant from "components/elements/EditParticipant/EditParticipant";
 import EditTournamentHeader from "components/elements/EditTournamentHeader/EditTournamentHeader";
 import type { FC } from "react";
-import type { ParticipantType, ParticipantMapType } from "types/team.types";
+import type { ParticipantMapType, ParticipantType } from "types/team.types";
 import classNames from "utils/classNames";
 import { getKeys } from "utils/teamsMapFunctions";
 
@@ -13,6 +14,7 @@ interface EditTournamentCardProps {
   teamToDelete: ParticipantType | null;
   handleCancelDeleteTeam: () => void;
   handleStartAddTeam: (str: string) => void;
+  handleEditGroupGame: (group: string) => void;
   setTeamToDelete: (team: ParticipantType) => void;
   resetNameChange: (participant: ParticipantType) => void;
   handleDeleteTeam: (team: ParticipantType) => Promise<void>;
@@ -34,11 +36,14 @@ const EditTournamentCard: FC<EditTournamentCardProps> = ({
   handleDeleteTeam,
   handleGroupChange,
   handleStartAddTeam,
+  handleEditGroupGame,
   handleCancelDeleteTeam,
   changedParticipantsIds,
   handleParticipantUpdate,
   handleParticipantNameChange,
 }) => {
+  const [parent] = useAutoAnimate();
+
   return (
     <>
       {[...teamsMap].map(([group, participants], i) => {
@@ -53,7 +58,18 @@ const EditTournamentCard: FC<EditTournamentCardProps> = ({
               "rounded-md border border-gray-50 bg-gray-50 px-8 py-3 shadow-md"
             )}
           >
+            <div className="flex justify-end">
+              <button
+                onClick={() => {
+                  handleEditGroupGame(group);
+                }}
+                className="my-3 flex items-center justify-center rounded-md text-sm transition-all duration-150 ease-in-out hover:scale-105 hover:text-blue-900"
+              >
+                Edit game order
+              </button>
+            </div>
             <div
+              ref={parent}
               className={classNames(
                 "relative ml-2 grid max-h-[22rem] min-h-[17rem] min-w-[9.375rem] grid-cols-1 content-start overflow-y-auto"
               )}

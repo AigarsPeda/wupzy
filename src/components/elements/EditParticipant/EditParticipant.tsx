@@ -72,7 +72,7 @@ const EditParticipant: FC<EditParticipantProps> = ({
         {getAvailableGroups(group, teamsByGroup).map((newGroup, i) => (
           <SmallButton
             btnTitle={newGroup}
-            btnClassNames="h-6 w-6"
+            btnClassNames="h-6 w-6 ml-2"
             key={`${newGroup}-${i}`}
             handleClick={() => {
               handleGroupChange(participant, group, newGroup);
@@ -91,7 +91,7 @@ const EditParticipant: FC<EditParticipantProps> = ({
         {isChanged && (
           <>
             <SmallButton
-              btnClassNames="h-6 px-2"
+              btnClassNames="h-6 px-2 mr-2"
               btnTitle={<RiSaveLine />}
               handleClick={() => {
                 handleParticipantUpdate(participant).catch((e) =>
@@ -112,7 +112,7 @@ const EditParticipant: FC<EditParticipantProps> = ({
           <SmallButton
             btnColor="red"
             btnTitle={<CgClose />}
-            btnClassNames="h-6 px-2"
+            btnClassNames="h-6 px-2 ml-2"
             handleClick={() => {
               setTeamToDelete(participant);
             }}

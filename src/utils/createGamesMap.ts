@@ -1,6 +1,6 @@
-import type { GamesType } from "types/game.types";
+import type { GamesMapType, GamesType } from "types/game.types";
 
-const createGamesMap = (games: GamesType[]) => {
+const createGamesMap = (games: GamesType[]): GamesMapType => {
   return games.reduce((acc, game) => {
     const group = game.group;
     const groupGames = acc.get(group) || [];
