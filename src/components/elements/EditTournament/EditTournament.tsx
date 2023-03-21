@@ -1,4 +1,4 @@
-import EditTournamentGameOrder from "components/elements/EditTournamentGameOrder/EditTournamentGameOrder";
+import EditTournamentGameOrderModal from "components/elements/EditTournamentGameOrderModal/EditTournamentGameOrderModal";
 import EditTournamentGroup from "components/elements/EditTournamentGroup/EditTournamentGroup";
 import ModalWrap from "components/elements/ModalWrap/ModalWrap";
 import { useRouter } from "next/router";
@@ -29,27 +29,21 @@ const EditTournament: FC<EditTournamentProps> = ({
       modalWidth="7xl"
       topPosition="top"
       isModalVisible={isModalOpen}
-      modalTitle={`${
-        gameEditGroup !== ""
-          ? `Edit ${gameEditGroup} group games`
-          : `Edit tournament groups`
-      }`}
+      modalTitle="Edit tournament groups"
       handleCancelClick={handleCloseModal}
     >
-      {gameEditGroup !== "" ? (
-        <EditTournamentGameOrder
-          group={gameEditGroup}
-          tournamentId={tournamentId}
-          handleCancelClick={() => {
-            setGameEditGroup("");
-          }}
-        />
-      ) : (
-        <EditTournamentGroup
-          tournamentId={tournamentId}
-          handleEditGroupGame={setGameEditGroup}
-        />
-      )}
+      <EditTournamentGameOrderModal
+        tournamentId={tournamentId}
+        gameEditGroup={gameEditGroup}
+        handleCancelClick={() => {
+          setGameEditGroup("");
+        }}
+      />
+
+      <EditTournamentGroup
+        tournamentId={tournamentId}
+        handleEditGroupGame={setGameEditGroup}
+      />
     </ModalWrap>
   );
 };

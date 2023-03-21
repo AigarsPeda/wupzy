@@ -4,6 +4,7 @@ import GroupCardHeader from "components/elements/GroupCardHeader/GroupCardHeader
 import type { FC } from "react";
 import type { GamesOfInterestType } from "types/game.types";
 import classNames from "utils/classNames";
+import UnderLineButton from "../UnderLineButton/UnderLineButton";
 
 const GAME_STATUS: {
   [key: string]: string;
@@ -51,12 +52,11 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
         label="Games"
         title={group}
         options={
-          <button
+          <UnderLineButton
+            lineClassNames="-bottom-1"
+            btnTitle={<span className="px-3 text-base">View all</span>}
             onClick={handleDisplayAllClick}
-            className="text-sm transition-all duration-200 hover:text-slate-900"
-          >
-            View all
-          </button>
+          />
         }
       />
       <div className="mb-5 h-full">

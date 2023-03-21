@@ -1,11 +1,11 @@
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import Button from "components/elements/Button/Button";
 import EditParticipant from "components/elements/EditParticipant/EditParticipant";
 import EditTournamentHeader from "components/elements/EditTournamentHeader/EditTournamentHeader";
 import type { FC } from "react";
 import type { ParticipantMapType, ParticipantType } from "types/team.types";
 import classNames from "utils/classNames";
 import { getKeys } from "utils/teamsMapFunctions";
+import EditGroupDropdown from "../EditGroupDropdown/EditGroupDropdown";
 
 interface EditTournamentCardProps {
   teamsMap: ParticipantMapType;
@@ -59,14 +59,14 @@ const EditTournamentCard: FC<EditTournamentCardProps> = ({
             )}
           >
             <div className="flex justify-end">
-              <button
-                onClick={() => {
+              <EditGroupDropdown
+                handleEditGroupGame={() => {
                   handleEditGroupGame(group);
                 }}
-                className="my-3 flex items-center justify-center rounded-md text-sm transition-all duration-150 ease-in-out hover:scale-105 hover:text-blue-900"
-              >
-                Edit game order
-              </button>
+                handleStartAddTeam={() => {
+                  handleStartAddTeam(group);
+                }}
+              />
             </div>
             <div
               ref={parent}
@@ -107,15 +107,6 @@ const EditTournamentCard: FC<EditTournamentCardProps> = ({
                   Group don&apos;t have enough teams. You need at least 4 teams.
                 </p>
               )}
-            </div>
-            <div className="mt-4">
-              <Button
-                btnClass="mr-4 w-40"
-                btnTitle="Add new team"
-                onClick={() => {
-                  handleStartAddTeam(group);
-                }}
-              />
             </div>
           </div>
         );
