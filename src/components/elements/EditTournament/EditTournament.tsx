@@ -29,7 +29,11 @@ const EditTournament: FC<EditTournamentProps> = ({
       modalWidth="7xl"
       topPosition="top"
       isModalVisible={isModalOpen}
-      modalTitle="Edit tournament groups"
+      modalTitle={`${
+        gameEditGroup !== ""
+          ? `Edit ${gameEditGroup} group games`
+          : `Edit tournament groups`
+      }`}
       handleCancelClick={handleCloseModal}
     >
       {gameEditGroup !== "" ? (

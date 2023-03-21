@@ -29,29 +29,36 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
   const { data: games, refetch: refetchGames } =
     api.tournaments.getTournamentGames.useQuery({ group, tournamentId });
   const { mutateAsync: updateGameOrder } =
-    api.tournaments.updateGameOrder.useMutation();
+    api.tournaments.updateGameOrder.useMutation({
+      onSuccess: async () => {
+        await refetchGames();
+        handleCancelClick();
+      },
+    });
 
   const handleGameOrderChange = (id: string, order: number, group: string) => {
-    // await updateGameOrder({ id, order, group, tournamentId });
-    // await refetchGames();
-
     const newGamesState = new Map(gamesState);
-
     const games = newGamesState.get(group);
 
     if (!games) return;
 
     const game = games.find((game) => game.id === id);
-
     if (!game) return;
 
+    game.gameOrder = order;
+
     const newGames = games.filter((game) => game.id !== id);
-
     newGames.splice(order - 1, 0, game);
-
     newGamesState.set(group, newGames);
-
     setGamesState(newGamesState);
+  };
+
+  const handleGameOrderSave = async () => {
+    const games = gamesState.get(group);
+
+    if (!games) return;
+
+    await updateGameOrder({ games });
   };
 
   useEffect(() => {
@@ -61,11 +68,22 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
 
   return (
     <div>
-      <div className="my-4 flex w-full justify-between">
+      <div className="my-4 flex w-full justify-end">
         <Button
+          btnClass="mr-4"
           btnTitle="Cancel"
           btnColor="outline"
           onClick={handleCancelClick}
+        />
+        <Button
+          btnTitle="Save"
+          btnColor="black"
+          // isDisabled
+          onClick={() => {
+            handleGameOrderSave().catch((err) =>
+              console.log("Error saving game order: ", err)
+            );
+          }}
         />
       </div>
       <h2>{group}</h2>

@@ -1,7 +1,7 @@
 import { ParticipantsZodSchema, TeamZodSchema } from "types/team.types";
 import { z } from "zod";
 
-const GamesZodSchema = z.object({
+export const GamesZodSchema = z.object({
   id: z.string(),
   group: z.string(),
   team1Id: z.string(),

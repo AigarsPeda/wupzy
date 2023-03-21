@@ -4,6 +4,7 @@ import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
 import createAllPossiblePairsInGroup from "utils/createAllPossiblePairsInGroup";
 import createGames from "utils/createGames";
 import { z } from "zod";
+import { GamesZodSchema } from "../../../types/game.types";
 
 const START_GROUP = "A";
 
@@ -125,56 +126,72 @@ export const tournamentsRouter = createTRPCRouter({
   updateGameOrder: protectedProcedure
     .input(
       z.object({
-        id: z.string(),
-        group: z.string(),
-        order: z.number(),
-        tournamentId: z.string(),
+        // group: z.string(),
+        // tournamentId: z.string(),
+        games: GamesZodSchema.array(),
       })
     )
     .mutation(async ({ ctx, input }) => {
+      // update games
+
+      console.log("input.games ---> ", input.games);
+
+      await ctx.prisma.$transaction(
+        input.games.map((game) => {
+          return ctx.prisma.games.update({
+            where: {
+              id: game.id,
+            },
+            data: {
+              gameOrder: game.gameOrder,
+            },
+          });
+        })
+      );
+
       // Update game
-      await ctx.prisma.games.update({
-        where: {
-          id: input.id,
-        },
-        data: {
-          gameOrder: input.order,
-        },
-      });
+      // await ctx.prisma.games.update({
+      //   where: {
+      //     id: input.id,
+      //   },
+      //   data: {
+      //     gameOrder: input.order,
+      //   },
+      // });
 
-      // Get all games
-      const games = await ctx.prisma.games.findMany({
-        where: {
-          group: input.group,
-          tournamentId: input.tournamentId,
-        },
-        orderBy: {
-          gameOrder: "asc",
-        },
-      });
+      // // Get all games
+      // const games = await ctx.prisma.games.findMany({
+      //   where: {
+      //     group: input.group,
+      //     tournamentId: input.tournamentId,
+      //   },
+      //   orderBy: {
+      //     gameOrder: "asc",
+      //   },
+      // });
 
-      // Find updated game
-      const updateGame = games.find((game) => game.id === input.id);
+      // // Find updated game
+      // const updateGame = games.find((game) => game.id === input.id);
 
-      // Update all games after updated game
-      if (updateGame) {
-        const updateGameIndex = games.indexOf(updateGame);
+      // // Update all games after updated game
+      // if (updateGame) {
+      //   const updateGameIndex = games.indexOf(updateGame);
 
-        for (let i = updateGameIndex; i < games.length; i++) {
-          const game = games[i];
+      //   for (let i = updateGameIndex; i < games.length; i++) {
+      //     const game = games[i];
 
-          if (game) {
-            await ctx.prisma.games.update({
-              where: {
-                id: game.id,
-              },
-              data: {
-                gameOrder: i + 1,
-              },
-            });
-          }
-        }
-      }
+      //     if (game) {
+      //       await ctx.prisma.games.update({
+      //         where: {
+      //           id: game.id,
+      //         },
+      //         data: {
+      //           gameOrder: i + 1,
+      //         },
+      //       });
+      //     }
+      //   }
+      // }
     }),
 
   updateGamScore: protectedProcedure
