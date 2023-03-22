@@ -63,17 +63,17 @@ const UnderLineButton = forwardRef<Ref, ButtonProps>(
       )}
       <span
         className={classNames(
-          "absolute bottom-2 h-1 w-full overflow-hidden rounded-md bg-gray-300",
-          lineClassNames && lineClassNames
+          lineClassNames ? lineClassNames : "bottom-2",
+          "absolute h-1 w-full overflow-hidden rounded-md bg-gray-300"
         )}
       />
       <span
         className={classNames(
+          lineClassNames ? lineClassNames : "bottom-2",
           !isDisabled && btnColor === "underline"
             ? "w-0 group-hover:w-full group-hover:bg-gray-800"
             : "",
-          "z-1 absolute bottom-2 h-1 rounded-md transition-all duration-300",
-          lineClassNames && lineClassNames
+          "z-1 absolute h-1 rounded-md transition-all duration-300"
         )}
       />
     </button>

@@ -7,17 +7,18 @@ import { CgClose } from "react-icons/cg";
 import { FiEdit2 } from "react-icons/fi";
 import { GrPowerReset } from "react-icons/gr";
 import { RiSaveLine } from "react-icons/ri";
-import type { ParticipantType, ParticipantMapType } from "types/team.types";
+import type { ParticipantMapType, ParticipantType } from "types/team.types";
 import classNames from "utils/classNames";
 import { getAvailableGroups } from "utils/teamsMapFunctions";
 
 interface EditParticipantProps {
   group: string;
   isChanged: boolean;
-  teamsByGroup: ParticipantMapType;
+  isLastThree: boolean;
   participant: ParticipantType;
-  teamToDelete: ParticipantType | null;
+  teamsByGroup: ParticipantMapType;
   handleCancelDeleteTeam: () => void;
+  teamToDelete: ParticipantType | null;
   setTeamToDelete: (team: ParticipantType) => void;
   resetNameChange: (participant: ParticipantType) => void;
   handleDeleteTeam: (team: ParticipantType) => Promise<void>;
@@ -33,9 +34,11 @@ interface EditParticipantProps {
 const EditParticipant: FC<EditParticipantProps> = ({
   group,
   isChanged,
+  isLastThree,
   participant,
   teamsByGroup,
   teamToDelete,
+
   resetNameChange,
   setTeamToDelete,
   handleDeleteTeam,
@@ -72,8 +75,8 @@ const EditParticipant: FC<EditParticipantProps> = ({
         {getAvailableGroups(group, teamsByGroup).map((newGroup, i) => (
           <SmallButton
             btnTitle={newGroup}
-            btnClassNames="h-6 w-6 ml-2"
             key={`${newGroup}-${i}`}
+            btnClassNames="h-6 w-6 ml-2"
             handleClick={() => {
               handleGroupChange(participant, group, newGroup);
             }}
@@ -118,11 +121,12 @@ const EditParticipant: FC<EditParticipantProps> = ({
             }}
           />
           <ConfirmTooltip
-            cancelTitle="Cancel"
-            tailPosition="right"
-            confirmTitle="Delete"
-            position="-top-2 right-10"
+            cancelBtnTitle="Cancel"
+            confirmBtnTitle="Delete"
             handleCancel={handleCancelDeleteTeam}
+            tailPosition={isLastThree ? "right-bottom" : "right"}
+            position={isLastThree ? "-top-28 right-10" : "-top-2 right-10"}
+            tooltipTitle="Are you sure you want to delete this participant?"
             isTooltip={participant.id === teamToDelete?.id}
             handleConfirm={() => {
               handleDeleteTeam(participant).catch((e) =>

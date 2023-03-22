@@ -1,8 +1,10 @@
 import Dropdown from "components/elements/Dropdown/Dropdown";
+import EditGroupDropdownItem from "components/elements/EditGroupDropdown/EditGroupDropdownItem";
 import RoundButton from "components/elements/RoundButton/RoundButton";
-import UnderLineButton from "components/elements/UnderLineButton/UnderLineButton";
 import type { FC } from "react";
 import { useState } from "react";
+import { CgArrowsExchangeAltV } from "react-icons/cg";
+import { HiPlusSm } from "react-icons/hi";
 import { IoSettingsOutline } from "react-icons/io5";
 
 interface EditGroupDropdownProps {
@@ -35,18 +37,16 @@ const EditGroupDropdown: FC<EditGroupDropdownProps> = ({
         setIsDropdownOpen(false);
       }}
     >
-      <div className="py-3 px-2">
-        <UnderLineButton
-          btnClass="mb-4 w-full"
-          lineClassNames="-bottom-2"
-          btnTitle={<span className=" text-base">Add new team</span>}
-          onClick={handleStartAddTeam}
+      <div>
+        <EditGroupDropdownItem
+          btnTitle="Add new team"
+          handelClick={handleStartAddTeam}
+          icon={<HiPlusSm className="h-6 w-6" />}
         />
-        <UnderLineButton
-          btnClass="w-full"
-          lineClassNames="-bottom-2"
-          btnTitle={<span className=" text-base">Edit game order</span>}
-          onClick={handleEditGroupGame}
+        <EditGroupDropdownItem
+          btnTitle="Edit game order"
+          handelClick={handleEditGroupGame}
+          icon={<CgArrowsExchangeAltV className="h-6 w-6" />}
         />
       </div>
     </Dropdown>

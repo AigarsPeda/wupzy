@@ -1,18 +1,18 @@
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import EditGroupDropdown from "components/elements/EditGroupDropdown/EditGroupDropdown";
 import EditParticipant from "components/elements/EditParticipant/EditParticipant";
 import EditTournamentHeader from "components/elements/EditTournamentHeader/EditTournamentHeader";
 import type { FC } from "react";
 import type { ParticipantMapType, ParticipantType } from "types/team.types";
 import classNames from "utils/classNames";
 import { getKeys } from "utils/teamsMapFunctions";
-import EditGroupDropdown from "../EditGroupDropdown/EditGroupDropdown";
 
 interface EditTournamentCardProps {
-  teamsMap: ParticipantMapType;
   groupToSmall: string[];
+  teamsMap: ParticipantMapType;
   changedParticipantsIds: string[];
-  teamToDelete: ParticipantType | null;
   handleCancelDeleteTeam: () => void;
+  teamToDelete: ParticipantType | null;
   handleStartAddTeam: (str: string) => void;
   handleEditGroupGame: (group: string) => void;
   setTeamToDelete: (team: ParticipantType) => void;
@@ -46,13 +46,13 @@ const EditTournamentCard: FC<EditTournamentCardProps> = ({
 
   return (
     <>
-      {[...teamsMap].map(([group, participants], i) => {
+      {[...teamsMap].map(([group, participants]) => {
         const isErrorMessageVisible = groupToSmall.includes(group);
         const isMoreThanOneGroup = getKeys(teamsMap).length > 1;
 
         return (
           <div
-            key={`${group}-${i}`}
+            key={`${group}`}
             className={classNames(
               isErrorMessageVisible && "border-2 border-red-500",
               "rounded-md border border-gray-50 bg-gray-50 px-8 py-3 shadow-md"
@@ -71,23 +71,27 @@ const EditTournamentCard: FC<EditTournamentCardProps> = ({
             <div
               ref={parent}
               className={classNames(
-                "relative ml-2 grid max-h-[22rem] min-h-[17rem] min-w-[9.375rem] grid-cols-1 content-start overflow-y-auto"
+                "relative ml-2 grid max-h-[30rem] min-h-[17rem] min-w-[9.375rem] grid-cols-1 content-start overflow-y-auto"
               )}
             >
               <EditTournamentHeader
                 group={group}
                 isMoreThanOneGroup={isMoreThanOneGroup}
               />
-              {participants.map((participant) => {
+              {participants.map((participant, i) => {
                 const isChanged = changedParticipantsIds.includes(
                   participant.id
                 );
+
+                const isLastThree = i >= participants.length - 3;
+
                 return (
                   <EditParticipant
                     group={group}
                     key={participant.id}
                     isChanged={isChanged}
                     teamsByGroup={teamsMap}
+                    isLastThree={isLastThree}
                     participant={participant}
                     teamToDelete={teamToDelete}
                     resetNameChange={resetNameChange}

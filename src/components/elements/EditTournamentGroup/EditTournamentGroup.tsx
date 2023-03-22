@@ -230,7 +230,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       />
 
       <div
-        className="overflow-y-auto"
+        // className="overflow-y-auto"
         style={
           windowSize.width && windowSize.width > 650
             ? { maxHeight: "calc(100vh - 17rem)" }
