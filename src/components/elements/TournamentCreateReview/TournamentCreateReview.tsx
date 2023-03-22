@@ -12,12 +12,15 @@ const TournamentCreateReview: FC<TournamentCreateReviewProps> = ({
   return (
     <div className="mt-12">
       <p className="text-xs text-gray-400">Tournament name:</p>
-      <h1 className="font-bold text-gray-800">{tournamentName}</h1>
+      <h1 className="text-2xl font-bold text-gray-800">{tournamentName}</h1>
       <div className="mt-4">
         <p className="text-xs text-gray-400">Attendants:</p>
-        <ul className="">
+        <ul className="mt-3">
           {attendants.map((attendant, i) => (
-            <li className="text-gray-800" key={`${attendant}${i}`}>
+            <li
+              className="mb-2 border-b text-gray-800"
+              key={`${attendant}${i}`}
+            >
               {attendant}
             </li>
           ))}
