@@ -1,10 +1,10 @@
 import Button from "components/elements/Button/Button";
 import DisplayTeams from "components/elements/DisplayTeams/DisplayTeams";
 import GroupCardHeader from "components/elements/GroupCardHeader/GroupCardHeader";
+import UnderLineButton from "components/elements/UnderLineButton/UnderLineButton";
 import type { FC } from "react";
 import type { GamesOfInterestType } from "types/game.types";
 import classNames from "utils/classNames";
-import UnderLineButton from "../UnderLineButton/UnderLineButton";
 
 const GAME_STATUS: {
   [key: string]: string;
@@ -53,8 +53,8 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
         title={group}
         options={
           <UnderLineButton
-            btnClass="mb-1"
-            lineClassNames="-bottom-1.5"
+            btnClass="mb-2"
+            lineClassNames="-bottom-2"
             btnTitle={<span className="px-3 text-base">View all</span>}
             onClick={handleDisplayAllClick}
           />

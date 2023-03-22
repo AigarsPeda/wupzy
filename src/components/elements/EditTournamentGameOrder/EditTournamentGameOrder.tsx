@@ -9,6 +9,7 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import type { GamesMapType } from "types/game.types";
 import { api } from "utils/api";
 import classNames from "utils/classNames";
+import compareMapsGameOrder from "utils/compareMapsGameOrder";
 import createGamesMap from "utils/createGamesMap";
 import sortMapKeys from "utils/sortMapKeys";
 
@@ -25,6 +26,7 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
 }) => {
   const [parent] = useAutoAnimate();
   const { windowSize } = useWindowSize();
+  const [isOrderEdited, setIsOrderEdited] = useState(false);
   const [gamesState, setGamesState] = useState<GamesMapType>(new Map());
   const { data: games, refetch: refetchGames } =
     api.tournaments.getTournamentGames.useQuery({ group, tournamentId });
@@ -47,8 +49,16 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
 
     game.gameOrder = order;
 
+    const newInsertIndex = order - 1;
     const newGames = games.filter((game) => game.id !== id);
-    newGames.splice(order - 1, 0, game);
+
+    newGames.splice(newInsertIndex, 0, game);
+
+    // change game order for all games after the new game
+    newGames.forEach((game, i) => {
+      game.gameOrder = i + 1;
+    });
+
     newGamesState.set(group, newGames);
     setGamesState(newGamesState);
   };
@@ -63,31 +73,18 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
 
   useEffect(() => {
     if (!games) return;
+    setIsOrderEdited(compareMapsGameOrder(group, games.games, gamesState));
+  }, [group, games, gamesState]);
+
+  useEffect(() => {
+    if (!games) return;
     setGamesState(sortMapKeys(createGamesMap(games.games)));
   }, [games]);
 
   return (
     <div>
-      <div className="my-4 flex w-full justify-end">
-        <Button
-          btnClass="mr-4"
-          btnTitle="Cancel"
-          btnColor="outline"
-          onClick={handleCancelClick}
-        />
-        <Button
-          btnTitle="Save"
-          btnColor="black"
-          // isDisabled
-          onClick={() => {
-            handleGameOrderSave().catch((err) =>
-              console.log("Error saving game order: ", err)
-            );
-          }}
-        />
-      </div>
       <div
-        className="overflow-y-auto"
+        className="overflow-y-auto py-5"
         style={
           windowSize.width && windowSize.width > 650
             ? { height: "calc(100vh - 17rem)" }
@@ -97,10 +94,10 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
         {[...gamesState].map(([group, games]) => {
           return (
             <div
-              key={group}
               id="group"
-              className="relative mx-auto w-[450px]"
+              key={group}
               ref={parent}
+              className="relative mx-auto w-[450px]"
             >
               {games.map((game, i) => {
                 const gameOrder = i + 1;
@@ -177,6 +174,24 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
             </div>
           );
         })}
+      </div>
+      <div className="flex justify-end py-2">
+        <Button
+          btnClass="mr-4"
+          btnTitle="Cancel"
+          btnColor="outline"
+          onClick={handleCancelClick}
+        />
+        <Button
+          btnTitle="Save"
+          btnColor="black"
+          isDisabled={!isOrderEdited}
+          onClick={() => {
+            handleGameOrderSave().catch((err) =>
+              console.log("Error saving game order: ", err)
+            );
+          }}
+        />
       </div>
     </div>
   );

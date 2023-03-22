@@ -38,13 +38,13 @@ const EditGroupDropdown: FC<EditGroupDropdownProps> = ({
       <div className="py-3 px-2">
         <UnderLineButton
           btnClass="mb-4 w-full"
-          lineClassNames="-bottom-1.5"
+          lineClassNames="-bottom-2"
           btnTitle={<span className=" text-base">Add new team</span>}
           onClick={handleStartAddTeam}
         />
         <UnderLineButton
           btnClass="w-full"
-          lineClassNames="-bottom-1.5"
+          lineClassNames="-bottom-2"
           btnTitle={<span className=" text-base">Edit game order</span>}
           onClick={handleEditGroupGame}
         />
