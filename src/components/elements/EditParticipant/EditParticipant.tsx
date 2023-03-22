@@ -10,6 +10,7 @@ import { RiSaveLine } from "react-icons/ri";
 import type { ParticipantMapType, ParticipantType } from "types/team.types";
 import classNames from "utils/classNames";
 import { getAvailableGroups } from "utils/teamsMapFunctions";
+import useWindowSize from "../../../hooks/useWindowSize";
 
 interface EditParticipantProps {
   group: string;
@@ -38,7 +39,6 @@ const EditParticipant: FC<EditParticipantProps> = ({
   participant,
   teamsByGroup,
   teamToDelete,
-
   resetNameChange,
   setTeamToDelete,
   handleDeleteTeam,
@@ -48,6 +48,7 @@ const EditParticipant: FC<EditParticipantProps> = ({
   handleParticipantNameChange,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const { windowSize } = useWindowSize();
 
   // focus input on click
   const handleFocusInput = () => {
@@ -123,9 +124,12 @@ const EditParticipant: FC<EditParticipantProps> = ({
           <ConfirmTooltip
             cancelBtnTitle="Cancel"
             confirmBtnTitle="Delete"
+            tooltipClassName="md:flex md:h-20"
             handleCancel={handleCancelDeleteTeam}
-            tailPosition={isLastThree ? "right-bottom" : "right"}
-            position={isLastThree ? "-top-28 right-10" : "-top-2 right-10"}
+            tailPosition="right"
+            // tailPosition={windowSize.width < 767 ? "right" : "right-center"}
+            position="right-10 md:-bottom-7 -top-3"
+            // position={isLastThree ? "-top-28 right-10" : "-top-2 right-10"}
             tooltipTitle="Are you sure you want to delete this participant?"
             isTooltip={participant.id === teamToDelete?.id}
             handleConfirm={() => {

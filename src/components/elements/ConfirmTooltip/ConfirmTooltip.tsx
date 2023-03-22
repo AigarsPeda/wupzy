@@ -10,7 +10,8 @@ interface ConfirmTooltipProps {
   tooltipTitle?: string;
   cancelBtnTitle: string;
   confirmBtnTitle: string;
-  tailPosition?: "top" | "right" | "right-bottom";
+  tooltipClassName?: string;
+  tailPosition?: "top" | "right" | "right-bottom" | "right-center";
   handleCancel: () => void;
   handleConfirm: () => void;
 }
@@ -23,6 +24,7 @@ const ConfirmTooltip: FC<ConfirmTooltipProps> = ({
   handleConfirm,
   cancelBtnTitle,
   confirmBtnTitle,
+  tooltipClassName,
   tailPosition = "top",
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -38,12 +40,13 @@ const ConfirmTooltip: FC<ConfirmTooltipProps> = ({
           ref={modalRef}
           className={classNames(
             isAnimation ? "opacity-100" : "opacity-0",
-            "absolute z-10 rounded-md bg-gray-300 px-5 py-3 shadow-md transition-all duration-300 ease-in-out",
-            position ? position : "top-10 right-1"
+            "absolute z-10 justify-between rounded-md bg-gray-300 px-5 py-3 shadow-md transition-all duration-300 ease-in-out",
+            position ? position : "top-10 right-1",
+            tooltipClassName && tooltipClassName
           )}
         >
           {tooltipTitle && (
-            <div className="mb-3">
+            <div className="mx-4 mb-3 max-w-[13rem] md:w-72">
               <p>{tooltipTitle}</p>
             </div>
           )}
@@ -65,6 +68,7 @@ const ConfirmTooltip: FC<ConfirmTooltipProps> = ({
                 tailPosition === "top" && " -top-2 right-3",
                 tailPosition === "right" && " -right-2 top-3",
                 tailPosition === "right-bottom" && " -right-2 bottom-3",
+                tailPosition === "right-center" && " -right-2 top-1/2",
                 "pointer-events-none absolute -z-[1] h-5 w-5 rotate-45 bg-gray-300"
               )}
             />

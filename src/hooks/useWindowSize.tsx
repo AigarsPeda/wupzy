@@ -1,22 +1,22 @@
 import { useState, useEffect, useCallback } from "react";
 
 type WindowSizeType = {
-  width: number | undefined;
-  height: number | undefined;
+  width: number;
+  height: number;
 };
 
 const useWindowSize = () => {
   const [windowSize, setWindowSize] = useState<WindowSizeType>({
-    width: undefined,
-    height: undefined,
+    width: 0,
+    height: 0,
   });
 
   const isClient = typeof window === "object";
 
   const getSize = useCallback(() => {
     return {
-      width: isClient ? window.innerWidth : undefined,
-      height: isClient ? window.innerHeight : undefined,
+      width: isClient ? window.innerWidth : 0,
+      height: isClient ? window.innerHeight : 0,
     };
   }, [isClient]);
 

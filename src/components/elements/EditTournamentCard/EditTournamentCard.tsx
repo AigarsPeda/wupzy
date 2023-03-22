@@ -55,7 +55,7 @@ const EditTournamentCard: FC<EditTournamentCardProps> = ({
             key={`${group}`}
             className={classNames(
               isErrorMessageVisible && "border-2 border-red-500",
-              "rounded-md border border-gray-50 bg-gray-50 px-8 py-3 shadow-md"
+              "rounded-md border border-gray-50 bg-gray-50 px-3 py-3 shadow-md md:px-8"
             )}
           >
             <div className="flex justify-end">
