@@ -53,7 +53,8 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
         title={group}
         options={
           <UnderLineButton
-            lineClassNames="-bottom-1"
+            btnClass="mb-1"
+            lineClassNames="-bottom-1.5"
             btnTitle={<span className="px-3 text-base">View all</span>}
             onClick={handleDisplayAllClick}
           />

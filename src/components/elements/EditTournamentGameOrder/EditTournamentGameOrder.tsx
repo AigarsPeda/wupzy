@@ -107,6 +107,13 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
                 const isDraw = game.team1Score === game.team2Score;
                 const isFirstTeamWinner = game.team1Score > game.team2Score;
                 const isSecondTeamWinner = game.team2Score > game.team1Score;
+                const isWinner = game.winners.length > 0;
+
+                const prevGame = games[i - 1];
+
+                const isPrevGameWinner = prevGame
+                  ? prevGame.winners.length > 0
+                  : false;
 
                 return (
                   <div
@@ -127,6 +134,7 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
                             <SmallButton
                               btnTitle={<IoIosArrowUp className="h-4 w-4" />}
                               btnClassNames="h-6 w-6 mb-2"
+                              isDisabled={isWinner || isPrevGameWinner}
                               handleClick={() => {
                                 handleGameOrderChange(
                                   game.id,
@@ -140,6 +148,7 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
                             <SmallButton
                               btnTitle={<IoIosArrowDown className="h-4 w-4" />}
                               btnClassNames="h-6 w-6"
+                              isDisabled={isWinner}
                               handleClick={() => {
                                 handleGameOrderChange(
                                   game.id,
