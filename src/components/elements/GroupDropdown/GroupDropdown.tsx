@@ -6,6 +6,8 @@ import type { FC } from "react";
 import { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import classNames from "utils/classNames";
+import useWindowSize from "hooks/useWindowSize";
+import { HiPlusSm } from "react-icons/hi";
 
 interface GroupDropdownProps {
   alreadyCreatedGroups: string[];
@@ -16,6 +18,7 @@ const GroupDropdown: FC<GroupDropdownProps> = ({
   alreadyCreatedGroups,
   handleGroupClick,
 }) => {
+  const { windowSize } = useWindowSize();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleDropdownClose = () => setIsDropdownOpen(false);
@@ -31,7 +34,13 @@ const GroupDropdown: FC<GroupDropdownProps> = ({
       handleDropdownClose={handleDropdownClose}
       dropdownBtn={
         <Button
-          btnTitle="Add new group"
+          btnTitle={
+            windowSize.width < 400 ? (
+              <HiPlusSm className="h-5 w-5" />
+            ) : (
+              "Add new group"
+            )
+          }
           onClick={updateState}
           icon={
             <IoIosArrowDown

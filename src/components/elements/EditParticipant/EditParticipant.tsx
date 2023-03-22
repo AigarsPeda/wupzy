@@ -10,12 +10,11 @@ import { RiSaveLine } from "react-icons/ri";
 import type { ParticipantMapType, ParticipantType } from "types/team.types";
 import classNames from "utils/classNames";
 import { getAvailableGroups } from "utils/teamsMapFunctions";
-import useWindowSize from "../../../hooks/useWindowSize";
 
 interface EditParticipantProps {
   group: string;
+  isLast: boolean;
   isChanged: boolean;
-  isLastThree: boolean;
   participant: ParticipantType;
   teamsByGroup: ParticipantMapType;
   handleCancelDeleteTeam: () => void;
@@ -34,8 +33,8 @@ interface EditParticipantProps {
 
 const EditParticipant: FC<EditParticipantProps> = ({
   group,
+  isLast,
   isChanged,
-  isLastThree,
   participant,
   teamsByGroup,
   teamToDelete,
@@ -48,7 +47,6 @@ const EditParticipant: FC<EditParticipantProps> = ({
   handleParticipantNameChange,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { windowSize } = useWindowSize();
 
   // focus input on click
   const handleFocusInput = () => {
@@ -122,16 +120,18 @@ const EditParticipant: FC<EditParticipantProps> = ({
             }}
           />
           <ConfirmTooltip
+            tailPosition={isLast ? "right-bottom" : "right"}
             cancelBtnTitle="Cancel"
             confirmBtnTitle="Delete"
             tooltipClassName="md:flex md:h-20"
             handleCancel={handleCancelDeleteTeam}
-            tailPosition="right"
-            // tailPosition={windowSize.width < 767 ? "right" : "right-center"}
-            position="right-10 md:-bottom-7 -top-3"
-            // position={isLastThree ? "-top-28 right-10" : "-top-2 right-10"}
-            tooltipTitle="Are you sure you want to delete this participant?"
+            position={
+              isLast
+                ? "right-10 md:-top-12 -top-28"
+                : "right-10 md:-bottom-7 -top-3"
+            }
             isTooltip={participant.id === teamToDelete?.id}
+            tooltipTitle="Are you sure you want to delete this participant?"
             handleConfirm={() => {
               handleDeleteTeam(participant).catch((e) =>
                 console.error("Error deleting team: ", e)

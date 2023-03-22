@@ -71,7 +71,7 @@ const EditTournamentCard: FC<EditTournamentCardProps> = ({
             <div
               ref={parent}
               className={classNames(
-                "relative ml-2 grid max-h-[30rem] min-h-[17rem] min-w-[9.375rem] grid-cols-1 content-start overflow-y-auto"
+                "relative grid max-h-[30rem] min-h-[17rem] min-w-[9.375rem] grid-cols-1 content-start overflow-y-auto md:ml-2"
               )}
             >
               <EditTournamentHeader
@@ -83,15 +83,15 @@ const EditTournamentCard: FC<EditTournamentCardProps> = ({
                   participant.id
                 );
 
-                const isLastThree = i >= participants.length - 3;
+                const isLast = i === participants.length - 1;
 
                 return (
                   <EditParticipant
                     group={group}
+                    isLast={isLast}
                     key={participant.id}
                     isChanged={isChanged}
                     teamsByGroup={teamsMap}
-                    isLastThree={isLastThree}
                     participant={participant}
                     teamToDelete={teamToDelete}
                     resetNameChange={resetNameChange}
