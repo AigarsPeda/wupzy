@@ -19,7 +19,7 @@ export const tournamentsRouter = createTRPCRouter({
     return { tournaments };
   }),
 
-  createTournament: protectedProcedure
+  createKingTournament: protectedProcedure
     .input(z.object({ name: z.string(), attendants: z.array(z.string()) }))
     .mutation(async ({ ctx, input }) => {
       const tournament = await ctx.prisma.tournament.create({

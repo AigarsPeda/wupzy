@@ -27,6 +27,11 @@ model User {
   id          String       @id @default(cuid())
 }
 
+enum TournamentType {
+  KING
+  TEAMS
+}
+
 // One user can have many Tournaments
 model Tournament {
   Team      Team[]
@@ -35,10 +40,11 @@ model Tournament {
   winner    String?
   Games     Games[]
   teams     Participant[]
-  updatedAt DateTime      @updatedAt
-  createdAt DateTime      @default(now())
-  id        String        @id @default(cuid())
-  user      User          @relation(fields: [userId], references: [id])
+  updatedAt DateTime       @updatedAt
+  type      TournamentType @default(KING)
+  createdAt DateTime       @default(now())
+  id        String         @id @default(cuid())
+  user      User           @relation(fields: [userId], references: [id])
 }
 
 model Participant {

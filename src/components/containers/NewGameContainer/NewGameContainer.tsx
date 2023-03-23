@@ -16,6 +16,7 @@ const FORM_STEPS = ["Create tournament", "Add tournament attendant", "Review"];
 
 const NewTournamentContainer: FC = () => {
   const router = useRouter();
+  const [isKing, setIsKing] = useState(true);
   const [formStep, setFormStep] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tournamentName, setTournamentName] = useState("");
@@ -23,7 +24,7 @@ const NewTournamentContainer: FC = () => {
     createStringArrayFromNumber(DEFAULT_ATTENDANTS_COUNT)
   );
   const { mutateAsync, isLoading, isError } =
-    api.tournaments.createTournament.useMutation();
+    api.tournaments.createKingTournament.useMutation();
 
   const isFirstStep = formStep === 0;
   const isLastStep = formStep === FORM_STEPS.length - 1;
@@ -32,6 +33,8 @@ const NewTournamentContainer: FC = () => {
   const addNewAttendant = () => {
     setAttendants((state) => [...state, ""]);
   };
+
+  // TODO: add modes king or teams FUNCTION
 
   const createTournament = async () => {
     const tournament = await mutateAsync({
@@ -88,14 +91,19 @@ const NewTournamentContainer: FC = () => {
               case 0:
                 return (
                   <TournamentCreateMetaForm
+                    isKing={isKing}
                     tournamentName={tournamentName}
                     setTournamentName={setTournamentName}
+                    handleModeSwitch={() => {
+                      setIsKing((state) => !state);
+                    }}
                   />
                 );
 
               case 1:
                 return (
                   <TournamentAttendantForm
+                    isKing={isKing}
                     attendants={attendants}
                     setAttendants={setAttendants}
                     addNewAttendant={addNewAttendant}
