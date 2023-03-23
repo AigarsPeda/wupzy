@@ -1,26 +1,42 @@
-import AttendantForm from "components/elements/AttendantForm/AttendantForm";
+import KingAttendantForm from "components/elements/KingAttendantForm/KingAttendantForm";
+import TeamsAttendantForm from "components/elements/TeamsAttendantForm/TeamsAttendantForm";
 import type { FC } from "react";
+import type {
+  TeamsAttendantMapType,
+  TeamsAttendantType,
+} from "types/team.types";
 
 interface TournamentAttendantFormProps {
   isKing: boolean;
-  attendants: string[];
+  kingAttendants: string[];
   addNewAttendant: () => void;
-  setAttendants: (value: string[]) => void;
+  teamsAttendants: TeamsAttendantMapType;
+  setKingAttendants: (value: string[]) => void;
+  createTeam: (name: string, participants: TeamsAttendantType[]) => void;
 }
 
 const TournamentAttendantForm: FC<TournamentAttendantFormProps> = ({
   isKing,
-  attendants,
-  setAttendants,
+  createTeam,
+  kingAttendants,
+  teamsAttendants,
   addNewAttendant,
+  setKingAttendants,
 }) => {
   return (
     <div className="mt-12">
-      <AttendantForm
-        attendants={attendants}
-        setAttendants={setAttendants}
-        addNewAttendant={addNewAttendant}
-      />
+      {isKing ? (
+        <KingAttendantForm
+          kingAttendants={kingAttendants}
+          addNewAttendant={addNewAttendant}
+          setKingAttendants={setKingAttendants}
+        />
+      ) : (
+        <TeamsAttendantForm
+          createTeam={createTeam}
+          teamsAttendants={teamsAttendants}
+        />
+      )}
     </div>
   );
 };

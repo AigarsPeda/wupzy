@@ -5,14 +5,14 @@ import type { FC } from "react";
 import { useState } from "react";
 import { api } from "utils/api";
 
-interface AddNewTeamProps {
+interface AddNewParticipants {
   tournamentId: string;
   isAddNewTeamOpen: boolean;
   addNewTeamGroup: string | null;
   handleCancelClick: () => void;
 }
 
-const AddNewTeam: FC<AddNewTeamProps> = ({
+const AddNewParticipants: FC<AddNewParticipants> = ({
   tournamentId,
   addNewTeamGroup,
   isAddNewTeamOpen,
@@ -45,7 +45,7 @@ const AddNewTeam: FC<AddNewTeamProps> = ({
     <ModalWrap
       modalWidth="2xl"
       isModalVisible={isAddNewTeamOpen}
-      modalTitle="Add new team"
+      modalTitle="Add new participants"
       handleCancelClick={handleCancelClick}
     >
       <Input
@@ -74,4 +74,4 @@ const AddNewTeam: FC<AddNewTeamProps> = ({
   );
 };
 
-export default AddNewTeam;
+export default AddNewParticipants;

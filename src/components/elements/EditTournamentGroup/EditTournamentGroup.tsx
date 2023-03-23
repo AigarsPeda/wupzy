@@ -1,4 +1,4 @@
-import AddNewTeam from "components/elements/AddNewTeam/AddNewTeam";
+import AddNewParticipants from "components/elements/AddNewParticipants/AddNewParticipants";
 import getGroupThatAreToSmall from "components/elements/EditTournament/utils/getGroupThatAreToSmall";
 import getUpdatedParticipants from "components/elements/EditTournament/utils/getUpdatedParticipants";
 import EditTournamentCard from "components/elements/EditTournamentCard/EditTournamentCard";
@@ -219,7 +219,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
         />
       </div>
 
-      <AddNewTeam
+      <AddNewParticipants
         tournamentId={tournamentId}
         addNewTeamGroup={addNewTeamGroup}
         isAddNewTeamOpen={Boolean(addNewTeamGroup)}

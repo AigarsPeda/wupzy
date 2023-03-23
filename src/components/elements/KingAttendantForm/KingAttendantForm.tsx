@@ -5,18 +5,20 @@ import { DEFAULT_ATTENDANTS_COUNT } from "hardcoded";
 import type { FC } from "react";
 import { useEffect, useRef } from "react";
 import { BsPlusLg } from "react-icons/bs";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
-interface AttendantFormProps {
-  attendants: string[];
+interface KingAttendantFormProps {
+  kingAttendants: string[];
   addNewAttendant: () => void;
-  setAttendants: (value: string[]) => void;
+  setKingAttendants: (value: string[]) => void;
 }
 
-const AttendantForm: FC<AttendantFormProps> = ({
-  attendants,
-  setAttendants,
+const KingAttendantForm: FC<KingAttendantFormProps> = ({
+  kingAttendants,
   addNewAttendant,
+  setKingAttendants,
 }) => {
+  const [parent] = useAutoAnimate();
   const elRefs = useRef<HTMLInputElement[]>([]);
 
   useEffect(() => {
@@ -25,19 +27,19 @@ const AttendantForm: FC<AttendantFormProps> = ({
     if (size === 0 || elRefs.current.length === 0) return;
 
     // If there are no attendants, focus the first input
-    if (attendants.length === DEFAULT_ATTENDANTS_COUNT) {
+    if (kingAttendants.length === DEFAULT_ATTENDANTS_COUNT) {
       elRefs.current[0]?.focus();
       return;
     }
 
     // If there are new attendants added, focus the last input
     elRefs.current && elRefs.current[size - 1]?.focus();
-  }, [attendants.length]);
+  }, [kingAttendants.length]);
 
   return (
     <>
-      <div className="max-h-[23rem] overflow-y-auto">
-        {attendants.map((attendant, index) => {
+      <div className="max-h-[23rem] overflow-y-auto" ref={parent}>
+        {kingAttendants.map((attendant, index) => {
           return (
             <Input
               key={index}
@@ -51,9 +53,9 @@ const AttendantForm: FC<AttendantFormProps> = ({
                 elRefs.current = [...elRefs.current, el];
               }}
               handleInputChange={(e) => {
-                const newAttendants = [...attendants];
+                const newAttendants = [...kingAttendants];
                 newAttendants[index] = e.target.value;
-                setAttendants(newAttendants);
+                setKingAttendants(newAttendants);
               }}
             />
           );
@@ -72,4 +74,4 @@ const AttendantForm: FC<AttendantFormProps> = ({
   );
 };
 
-export default AttendantForm;
+export default KingAttendantForm;

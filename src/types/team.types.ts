@@ -39,3 +39,15 @@ export type ChangeTeamsType = {
   newGroup: string;
   team: ParticipantType;
 };
+
+const TeamsAttendantZodSchema = z.object({
+  name: z.string(),
+});
+
+const TeamsAttendantMapZodSchema = z.map(
+  z.string(),
+  z.array(TeamsAttendantZodSchema)
+);
+
+export type TeamsAttendantType = z.infer<typeof TeamsAttendantZodSchema>;
+export type TeamsAttendantMapType = z.infer<typeof TeamsAttendantMapZodSchema>;

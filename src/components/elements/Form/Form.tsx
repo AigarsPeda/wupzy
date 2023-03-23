@@ -49,6 +49,7 @@ const Form: FC<FormProps> = ({
               name={key}
               value={value}
               error={error}
+              isCapitalized
               isDisabled={isDisabled}
               label={formatLabel(key)}
               type={getInputType(key)}

@@ -9,6 +9,10 @@ import { DEFAULT_ATTENDANTS_COUNT } from "hardcoded";
 import { useRouter } from "next/router";
 import type { FC } from "react";
 import { useState } from "react";
+import type {
+  TeamsAttendantMapType,
+  TeamsAttendantType,
+} from "types/team.types";
 import { api } from "utils/api";
 import createStringArrayFromNumber from "utils/createStringArrayFromNumber";
 
@@ -20,7 +24,10 @@ const NewTournamentContainer: FC = () => {
   const [formStep, setFormStep] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tournamentName, setTournamentName] = useState("");
-  const [attendants, setAttendants] = useState<string[]>(
+  const [teamsAttendants, setTeamsAttendants] = useState<TeamsAttendantMapType>(
+    new Map()
+  );
+  const [kingAttendants, setKingAttendants] = useState<string[]>(
     createStringArrayFromNumber(DEFAULT_ATTENDANTS_COUNT)
   );
   const { mutateAsync, isLoading, isError } =
@@ -31,15 +38,23 @@ const NewTournamentContainer: FC = () => {
   const progress = Math.round((formStep / (FORM_STEPS.length - 1)) * 100);
 
   const addNewAttendant = () => {
-    setAttendants((state) => [...state, ""]);
+    setKingAttendants((state) => [...state, ""]);
+  };
+
+  const createTeam = (name: string, participants: TeamsAttendantType[]) => {
+    setTeamsAttendants((state) => {
+      const newState = new Map(state);
+      newState.set(name, participants);
+      return newState;
+    });
   };
 
   // TODO: add modes king or teams FUNCTION
 
   const createTournament = async () => {
     const tournament = await mutateAsync({
-      attendants,
       name: tournamentName,
+      attendants: kingAttendants,
     });
 
     if (!tournament) {
@@ -50,7 +65,7 @@ const NewTournamentContainer: FC = () => {
     setFormStep(0);
     setIsModalOpen(false);
     setTournamentName("");
-    setAttendants(["", "", "", ""]);
+    setKingAttendants(createStringArrayFromNumber(DEFAULT_ATTENDANTS_COUNT));
     router.push(`/tournaments/${tournament.tournament.id}`).catch(() => {
       console.error("error changing route");
     });
@@ -62,7 +77,7 @@ const NewTournamentContainer: FC = () => {
     }
 
     if (formStep === 1) {
-      return attendants.some((attendant) => attendant.length === 0);
+      return kingAttendants.some((attendant) => attendant.length === 0);
     }
 
     return false;
@@ -104,16 +119,18 @@ const NewTournamentContainer: FC = () => {
                 return (
                   <TournamentAttendantForm
                     isKing={isKing}
-                    attendants={attendants}
-                    setAttendants={setAttendants}
+                    createTeam={createTeam}
+                    kingAttendants={kingAttendants}
+                    teamsAttendants={teamsAttendants}
                     addNewAttendant={addNewAttendant}
+                    setKingAttendants={setKingAttendants}
                   />
                 );
 
               case 2:
                 return (
                   <TournamentCreateReview
-                    attendants={attendants}
+                    attendants={kingAttendants}
                     tournamentName={tournamentName}
                   />
                 );
