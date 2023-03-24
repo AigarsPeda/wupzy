@@ -49,6 +49,14 @@ const NewTournamentContainer: FC = () => {
     });
   };
 
+  const deleteTeam = (name: string) => {
+    setTeamsAttendants((state) => {
+      const newState = new Map(state);
+      newState.delete(name);
+      return newState;
+    });
+  };
+
   // TODO: add modes king or teams FUNCTION
 
   const createTournament = async () => {
@@ -69,6 +77,29 @@ const NewTournamentContainer: FC = () => {
     router.push(`/tournaments/${tournament.tournament.id}`).catch(() => {
       console.error("error changing route");
     });
+  };
+
+  const handleTeamsAttendantsUpdate = (
+    oldName: string,
+    newName: string,
+    participants: TeamsAttendantType[]
+  ) => {
+    console.log("oldName", oldName);
+    console.log("newName", newName);
+    console.log("participants", participants);
+
+    setTeamsAttendants((state) => {
+      const newState = new Map(state);
+      newState.delete(oldName);
+      newState.set(newName, participants);
+      return newState;
+    });
+
+    // setTeamsAttendants((state) => {
+    //   const newState = new Map(state);
+    //   newState.set(name, participants);
+    //   return newState;
+    // });
   };
 
   const isNextStepDisabled = () => {
@@ -120,10 +151,12 @@ const NewTournamentContainer: FC = () => {
                   <TournamentAttendantForm
                     isKing={isKing}
                     createTeam={createTeam}
+                    deleteTeam={deleteTeam}
                     kingAttendants={kingAttendants}
                     teamsAttendants={teamsAttendants}
                     addNewAttendant={addNewAttendant}
                     setKingAttendants={setKingAttendants}
+                    handleTeamsAttendantsUpdate={handleTeamsAttendantsUpdate}
                   />
                 );
 
