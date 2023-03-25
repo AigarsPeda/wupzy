@@ -1,3 +1,4 @@
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import Button from "components/elements/Button/Button";
 import ErrorMessage from "components/elements/ErrorMessage/ErrorMessage";
 import ModalWrap from "components/elements/ModalWrap/ModalWrap";
@@ -15,11 +16,14 @@ import type {
 } from "types/team.types";
 import { api } from "utils/api";
 import createStringArrayFromNumber from "utils/createStringArrayFromNumber";
+import useWindowSize from "../../../hooks/useWindowSize";
 
 const FORM_STEPS = ["Create tournament", "Add tournament attendant", "Review"];
 
 const NewTournamentContainer: FC = () => {
   const router = useRouter();
+  const [parent] = useAutoAnimate();
+  const { windowSize } = useWindowSize();
   const [isKing, setIsKing] = useState(true);
   const [formStep, setFormStep] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -122,14 +126,19 @@ const NewTournamentContainer: FC = () => {
         }}
       />
       <ModalWrap
-        modalWidth="xl"
+        modalWidth="2xl"
         isModalVisible={isModalOpen}
         modalTitle="Crete new tournament"
         handleCancelClick={() => {
           setIsModalOpen(false);
         }}
       >
-        <div className="h-[30rem]">
+        <div
+          ref={parent}
+          style={{
+            height: windowSize.height - 300,
+          }}
+        >
           {(() => {
             switch (formStep) {
               case 0:

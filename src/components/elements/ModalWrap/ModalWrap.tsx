@@ -20,22 +20,18 @@ interface ModalWrapProps {
   header?: JSX.Element;
   titleClassName?: string;
   isModalVisible: boolean;
-  maxHeight?: "none" | "md";
   topPosition?: "default" | "top";
   children: JSX.Element | JSX.Element[] | ReactNode | ReactNode[];
   handleCancelClick: () => void;
 }
 
 const ModalWrap: FC<ModalWrapProps> = ({
-  header,
   children,
   modalTitle,
   titleClassName,
   isModalVisible,
   handleCancelClick,
-  maxHeight = "none",
   modalWidth = "medium",
-  topPosition = "default",
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const { shouldRender, isAnimation } = useDelayUnmount(isModalVisible, 100);
@@ -54,9 +50,10 @@ const ModalWrap: FC<ModalWrapProps> = ({
         >
           <div className="absolute h-full w-full bg-gray-900 opacity-50"></div>
           <div
+            ref={modalRef}
             className={classNames(
               modalWidth === "xl" && "md:max-w-xl",
-              modalWidth === "2xl" && "md:max-w-2xl",
+              modalWidth === "2xl" && " md:max-w-2xl",
               modalWidth === "3xl" && "md:max-w-3xl",
               modalWidth === "4xl" && "md:max-w-4xl",
               modalWidth === "5xl" && "md:max-w-5xl",
@@ -64,18 +61,10 @@ const ModalWrap: FC<ModalWrapProps> = ({
               modalWidth === "7xl" && "md:max-w-7xl",
               modalWidth === "large" && "md:max-w-lg",
               modalWidth === "medium" && "md:max-w-md",
-              topPosition === "top" && "top-[2%] md:top-[5%]",
-              topPosition === "default" && "top-[2%] md:top-[15%]",
-              "absolute z-[69] mx-auto w-11/12 rounded bg-white shadow-lg sm:h-auto"
+              "absolute z-[69] mx-auto w-full rounded bg-white shadow-lg"
             )}
-            ref={modalRef}
           >
-            <div
-              className={classNames(
-                maxHeight === "md" ? "max-h-[50rem]" : "",
-                "w-full px-6 py-4 text-left"
-              )}
-            >
+            <div className={classNames("h-full w-full px-6 py-4 text-left")}>
               {/* <!--Title--> */}
               <div
                 className={classNames(
@@ -87,7 +76,6 @@ const ModalWrap: FC<ModalWrapProps> = ({
                   <p className="font-secondary text-2xl font-bold">
                     {modalTitle}
                   </p>
-                  {header && header}
                 </div>
                 <button className="cursor-pointer" onClick={handleCancelClick}>
                   <IoClose className="absolute top-0 -right-2 h-8 w-9 text-gray-800 hover:text-gray-500" />

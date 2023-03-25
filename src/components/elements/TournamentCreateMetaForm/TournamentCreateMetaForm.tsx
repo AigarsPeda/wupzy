@@ -26,19 +26,16 @@ const TournamentCreateMetaForm: FC<TournamentCreateMetaFormProps> = ({
   }, [setFocus]);
 
   return (
-    <div className="mt-12 h-56">
-      <div className="w-full">
-        {/* <InfoParagraph text="* Give your competition a name to make it easier to find later." /> */}
-        <Input
-          ref={htmlElRef}
-          name="tournamentName"
-          value={tournamentName}
-          label="Name of tournament"
-          handleInputChange={(e) => {
-            setTournamentName(e.target.value);
-          }}
-        />
-      </div>
+    <div className="mt-12 flex h-full flex-col">
+      <Input
+        ref={htmlElRef}
+        name="tournamentName"
+        value={tournamentName}
+        label="Name of tournament"
+        handleInputChange={(e) => {
+          setTournamentName(e.target.value);
+        }}
+      />
 
       <div className="mt-8">
         <LargeSwitch

@@ -38,7 +38,7 @@ const KingAttendantForm: FC<KingAttendantFormProps> = ({
 
   return (
     <>
-      <div className="mt-12 max-h-[23rem] overflow-y-auto" ref={parent}>
+      <div className="mt-8 max-h-[23rem] overflow-y-auto" ref={parent}>
         {kingAttendants.map((attendant, index) => {
           return (
             <Input

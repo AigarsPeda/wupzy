@@ -1,11 +1,10 @@
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import Button from "components/elements/Button/Button";
 import Input from "components/elements/Input/Input";
-import RoundButton from "components/elements/RoundButton/RoundButton";
+import GridLayout from "components/layouts/GridLayout/GridLayout";
 import type { FC } from "react";
 import { useState } from "react";
 import { BiTrash } from "react-icons/bi";
-import { BsPlusLg } from "react-icons/bs";
 import type {
   TeamsAttendantMapType,
   TeamsAttendantType,
@@ -128,41 +127,8 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
   };
 
   return (
-    <>
-      <div>
-        <div>
-          <label htmlFor="teamName" className="text-sm text-gray-600">
-            Created teams
-          </label>
-          <ul
-            className="min-h-10 flex w-full flex-wrap py-2"
-            ref={createdTeamsRef}
-          >
-            {[...teamsAttendants.keys()].sort().map((teamName, i) => {
-              return (
-                <li key={`${teamName}${i}`} className="relative">
-                  <button
-                    onClick={() => {
-                      setEditTeamName(teamName);
-                      handleTeamSwitch(teamName);
-                    }}
-                    className="mr-2 rounded-md bg-gray-300 px-3 py-2 text-sm font-bold"
-                  >
-                    {teamName}
-                  </button>
-                  <div className=" absolute -top-2.5 right-0">
-                    <button
-                      onClick={() => deleteTeam(teamName)}
-                      className="ml-2 rounded-full bg-gray-200 p-1 text-sm font-bold text-red-500"
-                    >
-                      <BiTrash />
-                    </button>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+    <div className="">
+      <div className="mt-8">
         <div className="flex flex-col">
           <Input
             type="text"
@@ -174,7 +140,7 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
         </div>
         <div
           ref={parent}
-          className="mt-4 flex max-h-[19rem] min-h-[19rem] flex-col overflow-y-auto"
+          className="mt-4 flex max-h-[19rem] flex-col overflow-y-auto"
         >
           {teamAttendants.map((_attendant, index) => {
             const value = teamAttendants[index]?.name;
@@ -196,6 +162,7 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
           })}
         </div>
       </div>
+
       <div className="flex justify-end py-2">
         <Button
           btnClass=" mr-2"
@@ -209,7 +176,42 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
           isDisabled={!isFormValid()}
         />
       </div>
-    </>
+      <div>
+        <label
+          htmlFor="teamName"
+          className="text-sm font-semibold text-gray-600"
+        >
+          Created teams
+        </label>
+
+        <GridLayout isGap ref={parent}>
+          {[...teamsAttendants.keys()].sort().map((teamName, i) => {
+            return (
+              <div key={`${teamName}${i}`} className="relative">
+                <button
+                  onClick={() => {
+                    setEditTeamName(teamName);
+                    handleTeamSwitch(teamName);
+                  }}
+                  className="mr-2 w-full rounded-md bg-gray-300 px-3 py-2 text-sm font-bold"
+                >
+                  {teamName}
+                </button>
+                <div className=" absolute -top-2.5 right-0">
+                  <button
+                    onClick={() => deleteTeam(teamName)}
+                    className="ml-2 rounded-full bg-gray-200 p-1 text-sm font-bold text-red-500"
+                  >
+                    <BiTrash />
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </GridLayout>
+        {/* </ul> */}
+      </div>
+    </div>
   );
 };
 
