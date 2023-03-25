@@ -32,7 +32,7 @@ const TournamentAttendantForm: FC<TournamentAttendantFormProps> = ({
   handleTeamsAttendantsUpdate,
 }) => {
   return (
-    <div className="mt-12">
+    <div>
       {isKing ? (
         <KingAttendantForm
           kingAttendants={kingAttendants}

@@ -97,7 +97,12 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
   const handleCreateTeam = () => {
     const participants = teamAttendants.filter((attendant) => attendant.name);
 
-    createTeam(teamName, participants);
+    if (editTeamName) {
+      handleTeamsAttendantsUpdate(editTeamName, teamName, participants);
+      setEditTeamName(null);
+    } else {
+      createTeam(teamName, participants);
+    }
 
     setTeamName("");
     setTeamAttendants([
@@ -124,42 +129,39 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
 
   return (
     <>
-      <Button
-        btnClass="w-40"
-        btnTitle="Add new team"
-        onClick={handleCreateTeam}
-        isDisabled={!isFormValid()}
-      />
       <div>
         <div>
           <label htmlFor="teamName" className="text-sm text-gray-600">
             Created teams
           </label>
-          <div className="min-h-10 flex w-full flex-wrap" ref={createdTeamsRef}>
+          <ul
+            className="min-h-10 flex w-full flex-wrap py-2"
+            ref={createdTeamsRef}
+          >
             {[...teamsAttendants.keys()].sort().map((teamName, i) => {
               return (
-                <div key={`${teamName}${i}`} className="relative">
+                <li key={`${teamName}${i}`} className="relative">
                   <button
                     onClick={() => {
                       setEditTeamName(teamName);
                       handleTeamSwitch(teamName);
                     }}
-                    className="mr-2 rounded-md bg-gray-800 px-3 py-2 text-sm font-bold text-white"
+                    className="mr-2 rounded-md bg-gray-300 px-3 py-2 text-sm font-bold"
                   >
                     {teamName}
                   </button>
                   <div className=" absolute -top-2.5 right-0">
                     <button
                       onClick={() => deleteTeam(teamName)}
-                      className="ml-2 rounded-full bg-gray-100 p-1 text-sm font-bold text-red-500"
+                      className="ml-2 rounded-full bg-gray-200 p-1 text-sm font-bold text-red-500"
                     >
                       <BiTrash />
                     </button>
                   </div>
-                </div>
+                </li>
               );
             })}
-          </div>
+          </ul>
         </div>
         <div className="flex flex-col">
           <Input
@@ -172,7 +174,7 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
         </div>
         <div
           ref={parent}
-          className="mt-4 flex max-h-[23rem] flex-col overflow-y-auto"
+          className="mt-4 flex max-h-[19rem] min-h-[19rem] flex-col overflow-y-auto"
         >
           {teamAttendants.map((_attendant, index) => {
             const value = teamAttendants[index]?.name;
@@ -193,20 +195,19 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
             );
           })}
         </div>
-        <div className="flex w-full items-center justify-center">
-          <RoundButton
-            bgColor="green"
-            btnType="button"
-            handleClick={addNewAttendant}
-            btnContent={<BsPlusLg className="m-2 h-6 w-6 text-white" />}
-          />
-          {/* <Button
-          btnClass="w-40"
-          btnTitle="Add new team"
-          isDisabled={!isFormValid()}
+      </div>
+      <div className="flex justify-end py-2">
+        <Button
+          btnClass=" mr-2"
+          btnTitle="Add attendant"
+          onClick={addNewAttendant}
+        />
+        <Button
+          btnClass=""
+          btnTitle="Save team"
           onClick={handleCreateTeam}
-        /> */}
-        </div>
+          isDisabled={!isFormValid()}
+        />
       </div>
     </>
   );

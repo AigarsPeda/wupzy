@@ -84,22 +84,12 @@ const NewTournamentContainer: FC = () => {
     newName: string,
     participants: TeamsAttendantType[]
   ) => {
-    console.log("oldName", oldName);
-    console.log("newName", newName);
-    console.log("participants", participants);
-
     setTeamsAttendants((state) => {
       const newState = new Map(state);
       newState.delete(oldName);
       newState.set(newName, participants);
       return newState;
     });
-
-    // setTeamsAttendants((state) => {
-    //   const newState = new Map(state);
-    //   newState.set(name, participants);
-    //   return newState;
-    // });
   };
 
   const isNextStepDisabled = () => {
@@ -108,10 +98,18 @@ const NewTournamentContainer: FC = () => {
     }
 
     if (formStep === 1) {
-      return kingAttendants.some((attendant) => attendant.length === 0);
+      const isKingAttendantsEmpty = kingAttendants.some(
+        (attendant) => attendant.length === 0
+      );
+
+      const isTeamsLessThanFour = [...teamsAttendants.keys()].length < 4;
+
+      if (!isKingAttendantsEmpty || !isTeamsLessThanFour) {
+        return false;
+      }
     }
 
-    return false;
+    return true;
   };
 
   return (

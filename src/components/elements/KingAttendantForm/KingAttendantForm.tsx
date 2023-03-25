@@ -1,3 +1,4 @@
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import InfoParagraph from "components/elements/InfoParagraph/InfoParagraph";
 import Input from "components/elements/Input/Input";
 import RoundButton from "components/elements/RoundButton/RoundButton";
@@ -5,7 +6,6 @@ import { DEFAULT_ATTENDANTS_COUNT } from "hardcoded";
 import type { FC } from "react";
 import { useEffect, useRef } from "react";
 import { BsPlusLg } from "react-icons/bs";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 interface KingAttendantFormProps {
   kingAttendants: string[];
@@ -38,7 +38,7 @@ const KingAttendantForm: FC<KingAttendantFormProps> = ({
 
   return (
     <>
-      <div className="max-h-[23rem] overflow-y-auto" ref={parent}>
+      <div className="mt-12 max-h-[23rem] overflow-y-auto" ref={parent}>
         {kingAttendants.map((attendant, index) => {
           return (
             <Input
