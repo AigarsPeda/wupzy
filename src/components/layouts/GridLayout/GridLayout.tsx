@@ -6,7 +6,7 @@ interface GridLayoutProps {
   isGap?: boolean;
   isDivideX?: boolean;
   children: JSX.Element | JSX.Element[] | ReactNode;
-  minWith?: "150" | "175" | "200" | "250" | "320" | "350" | "700";
+  minWith?: "150" | "175" | "200" | "250" | "320" | "350" | "700" | "150-033";
 }
 
 type Ref = HTMLInputElement;
@@ -31,6 +31,8 @@ const GridLayout = forwardRef<Ref, GridLayoutProps>(
           minWith === "200" && "grid-cols-[repeat(auto-fit,minmax(200px,1fr))]",
           minWith === "175" && "grid-cols-[repeat(auto-fit,minmax(175px,1fr))]",
           minWith === "150" && "grid-cols-[repeat(auto-fit,minmax(150px,1fr))]",
+          minWith === "150-033" &&
+            "grid-cols-[repeat(auto-fit,minmax(150px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(150px,0.34fr))]",
           "mb-5 grid w-full"
         )}
       >

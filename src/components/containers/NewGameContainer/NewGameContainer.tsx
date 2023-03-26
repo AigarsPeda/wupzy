@@ -131,6 +131,13 @@ const NewTournamentContainer: FC = () => {
         modalTitle="Crete new tournament"
         handleCancelClick={() => {
           setIsModalOpen(false);
+          setFormStep(0);
+          setIsKing(true);
+          setTournamentName("");
+          setTeamsAttendants(new Map());
+          setKingAttendants(
+            createStringArrayFromNumber(DEFAULT_ATTENDANTS_COUNT)
+          );
         }}
       >
         <div

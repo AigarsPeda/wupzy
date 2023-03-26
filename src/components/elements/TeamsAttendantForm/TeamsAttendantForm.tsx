@@ -1,5 +1,7 @@
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import Button from "components/elements/Button/Button";
+import ErrorMessage from "components/elements/ErrorMessage/ErrorMessage";
+import InfoParagraph from "components/elements/InfoParagraph/InfoParagraph";
 import Input from "components/elements/Input/Input";
 import GridLayout from "components/layouts/GridLayout/GridLayout";
 import type { FC } from "react";
@@ -9,6 +11,7 @@ import type {
   TeamsAttendantMapType,
   TeamsAttendantType,
 } from "types/team.types";
+import classNames from "utils/classNames";
 
 interface TeamsAttendantFormProps {
   teamsAttendants: TeamsAttendantMapType;
@@ -32,7 +35,6 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
   handleTeamsAttendantsUpdate,
 }) => {
   const [parent] = useAutoAnimate();
-  const [createdTeamsRef] = useAutoAnimate();
   const [teamName, setTeamName] = useState("");
   const [editTeamName, setEditTeamName] = useState<string | null>(null);
   const [teamAttendants, setTeamAttendants] = useState<AttendantType[]>([
@@ -126,10 +128,28 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
     return true;
   };
 
+  const getAttendantsKeyArray = () => {
+    const keys = [...teamsAttendants.keys()];
+    const sortedKeys = keys.sort();
+
+    return sortedKeys;
+  };
+
+  const isTeamNameUnique = () => {
+    const keys = getAttendantsKeyArray();
+
+    if (!editTeamName) {
+      return !keys.includes(teamName);
+    }
+
+    return true;
+  };
+
   return (
     <div className="">
       <div className="mt-8">
-        <div className="flex flex-col">
+        <InfoParagraph text="* To create a team, please enter the names of the team and at least two participants. Keep in mind that each team must have a minimum of two participants." />
+        <div className="flex w-full flex-col md:w-1/2">
           <Input
             type="text"
             name="teamName"
@@ -146,7 +166,7 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
             const value = teamAttendants[index]?.name;
 
             return (
-              <div key={index} className="flex flex-row">
+              <div key={index} className="flex w-full flex-row md:w-1/2">
                 <Input
                   size="sm"
                   type="text"
@@ -163,53 +183,96 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
         </div>
       </div>
 
-      <div className="flex justify-end py-2">
-        <Button
-          btnClass=" mr-2"
-          btnTitle="Add attendant"
-          onClick={addNewAttendant}
-        />
-        <Button
-          btnClass=""
-          btnTitle="Save team"
-          onClick={handleCreateTeam}
-          isDisabled={!isFormValid()}
-        />
+      <div className="flex justify-between py-2">
+        <Button btnTitle="Add attendant" onClick={addNewAttendant} />
+        <div className="flex">
+          <Button
+            btnTitle="Cancel"
+            btnClass="mr-2"
+            btnColor="red"
+            onClick={() => {
+              setTeamName("");
+              setEditTeamName(null);
+              setTeamAttendants([
+                {
+                  id: "1",
+                  name: "",
+                },
+                {
+                  id: "2",
+                  name: "",
+                },
+              ]);
+            }}
+          />
+          <Button
+            btnTitle="Save team"
+            onClick={handleCreateTeam}
+            isDisabled={!isFormValid() || !isTeamNameUnique()}
+          />
+        </div>
       </div>
-      <div>
-        <label
-          htmlFor="teamName"
-          className="text-sm font-semibold text-gray-600"
-        >
-          Created teams
-        </label>
+      {!isTeamNameUnique() && (
+        <div className="flex w-full justify-end">
+          <ErrorMessage message="Team name must be unique" />
+        </div>
+      )}
 
-        <GridLayout isGap ref={parent}>
-          {[...teamsAttendants.keys()].sort().map((teamName, i) => {
-            return (
-              <div key={`${teamName}${i}`} className="relative">
-                <button
-                  onClick={() => {
-                    setEditTeamName(teamName);
-                    handleTeamSwitch(teamName);
-                  }}
-                  className="mr-2 w-full rounded-md bg-gray-300 px-3 py-2 text-sm font-bold"
-                >
-                  {teamName}
-                </button>
-                <div className=" absolute -top-2.5 right-0">
+      <div className="mt-4">
+        <div className="border-b-2">
+          <label
+            htmlFor="teamName"
+            className="text-sm font-semibold text-gray-600"
+          >
+            Created teams
+          </label>
+        </div>
+        <div className="h-[15rem] overflow-y-auto pt-4">
+          <GridLayout isGap ref={parent} minWith="150-033">
+            {getAttendantsKeyArray().map((teamName, i) => {
+              return (
+                <div key={`${teamName}${i}`} className="relative">
                   <button
-                    onClick={() => deleteTeam(teamName)}
-                    className="ml-2 rounded-full bg-gray-200 p-1 text-sm font-bold text-red-500"
+                    onClick={() => {
+                      if (editTeamName === teamName) {
+                        setTeamName("");
+                        setEditTeamName(null);
+                        setTeamAttendants([
+                          {
+                            id: "1",
+                            name: "",
+                          },
+                          {
+                            id: "2",
+                            name: "",
+                          },
+                        ]);
+                        return;
+                      }
+
+                      setEditTeamName(teamName);
+                      handleTeamSwitch(teamName);
+                    }}
+                    className={classNames(
+                      editTeamName === teamName && "border-gray-800",
+                      "w-full truncate rounded-md border-2 border-gray-300 bg-gray-300 px-3 py-2 text-sm font-bold transition-all duration-300"
+                    )}
                   >
-                    <BiTrash />
+                    {teamName}
                   </button>
+                  <div className=" absolute -top-2.5 right-0">
+                    <button
+                      onClick={() => deleteTeam(teamName)}
+                      className="ml-2 rounded-full bg-gray-200 p-1 text-sm font-bold text-red-500"
+                    >
+                      <BiTrash />
+                    </button>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </GridLayout>
-        {/* </ul> */}
+              );
+            })}
+          </GridLayout>
+        </div>
       </div>
     </div>
   );
