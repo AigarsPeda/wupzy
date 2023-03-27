@@ -17,6 +17,7 @@ import type {
 import { api } from "utils/api";
 import createStringArrayFromNumber from "utils/createStringArrayFromNumber";
 import useWindowSize from "../../../hooks/useWindowSize";
+import type { TournamentType } from "../../../types/tournament.types";
 
 const FORM_STEPS = ["Create tournament", "Add tournament attendant", "Review"];
 
@@ -34,8 +35,14 @@ const NewTournamentContainer: FC = () => {
   const [kingAttendants, setKingAttendants] = useState<string[]>(
     createStringArrayFromNumber(DEFAULT_ATTENDANTS_COUNT)
   );
-  const { mutateAsync, isLoading, isError } =
-    api.tournaments.createKingTournament.useMutation();
+  const {
+    mutateAsync: createKingTournament,
+    isLoading,
+    isError,
+  } = api.tournaments.createKingTournament.useMutation();
+
+  const { mutateAsync: createTeamsTournament } =
+    api.tournaments.createTeamsTournament.useMutation();
 
   const isFirstStep = formStep === 0;
   const isLastStep = formStep === FORM_STEPS.length - 1;
@@ -61,15 +68,28 @@ const NewTournamentContainer: FC = () => {
     });
   };
 
-  // TODO: add modes king or teams FUNCTION
-
   const createTournament = async () => {
-    const tournament = await mutateAsync({
-      name: tournamentName,
-      attendants: kingAttendants,
-    });
+    let cratedTournament: TournamentType | null = null;
 
-    if (!tournament) {
+    if (isKing) {
+      const { tournament } = await createKingTournament({
+        name: tournamentName,
+        attendants: kingAttendants,
+      });
+
+      cratedTournament = tournament;
+    }
+
+    if (!isKing) {
+      const { tournament } = await createTeamsTournament({
+        name: tournamentName,
+        teams: teamsAttendants,
+      });
+
+      cratedTournament = tournament;
+    }
+
+    if (!cratedTournament) {
       console.error("error creating tournament");
       return;
     }
@@ -78,7 +98,7 @@ const NewTournamentContainer: FC = () => {
     setIsModalOpen(false);
     setTournamentName("");
     setKingAttendants(createStringArrayFromNumber(DEFAULT_ATTENDANTS_COUNT));
-    router.push(`/tournaments/${tournament.tournament.id}`).catch(() => {
+    router.push(`/tournaments/${cratedTournament.id}`).catch(() => {
       console.error("error changing route");
     });
   };
@@ -111,9 +131,11 @@ const NewTournamentContainer: FC = () => {
       if (!isKingAttendantsEmpty || !isTeamsLessThanFour) {
         return false;
       }
+
+      return true;
     }
 
-    return true;
+    return false;
   };
 
   return (
@@ -177,8 +199,10 @@ const NewTournamentContainer: FC = () => {
               case 2:
                 return (
                   <TournamentCreateReview
+                    isKing={isKing}
                     attendants={kingAttendants}
                     tournamentName={tournamentName}
+                    teamsAttendants={teamsAttendants}
                   />
                 );
 

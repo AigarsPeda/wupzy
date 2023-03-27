@@ -19,6 +19,9 @@ const TournamentCard: FC<TournamentCardProps> = ({ tournament }) => {
         });
       }}
     >
+      <div className="flex items-center justify-end">
+        <p className="text-sm">{tournament.type}</p>
+      </div>
       <div className="flex flex-col space-y-3">
         <div className="mb-2 flex flex-col">
           <p className="text-sm text-gray-500">Name</p>

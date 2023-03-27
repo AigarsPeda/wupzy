@@ -44,7 +44,7 @@ const TeamsAttendantZodSchema = z.object({
   name: z.string(),
 });
 
-const TeamsAttendantMapZodSchema = z.map(
+export const TeamsAttendantMapZodSchema = z.map(
   z.string(),
   z.array(TeamsAttendantZodSchema)
 );

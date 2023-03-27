@@ -24,7 +24,7 @@ const TournamentsPage: NextPage = () => {
   }
 
   return (
-    <GridLayout isGap>
+    <GridLayout minWith="320" isGap>
       {res.data && res.data.tournaments.length > 0 ? (
         res.data.tournaments.map((tournament) => (
           <TournamentCard key={tournament.id} tournament={tournament} />
