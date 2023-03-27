@@ -6,6 +6,8 @@ export const emailRegex = new RegExp(
 
 export const DEFAULT_ATTENDANTS_COUNT = 4;
 
+export const DEFAULT_TEAM_COUNT = 3;
+
 export const AVAILABLE_GROUPS = [
   "A",
   "B",

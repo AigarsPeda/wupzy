@@ -6,7 +6,8 @@ import ProgressBar from "components/elements/ProgressBar/ProgressBar";
 import TournamentAttendantForm from "components/elements/TournamentAttendantForm/TournamentAttendantForm";
 import TournamentCreateMetaForm from "components/elements/TournamentCreateMetaForm/TournamentCreateMetaForm";
 import TournamentCreateReview from "components/elements/TournamentCreateReview/TournamentCreateReview";
-import { DEFAULT_ATTENDANTS_COUNT } from "hardcoded";
+import { DEFAULT_ATTENDANTS_COUNT, DEFAULT_TEAM_COUNT } from "hardcoded";
+import useWindowSize from "hooks/useWindowSize";
 import { useRouter } from "next/router";
 import type { FC } from "react";
 import { useState } from "react";
@@ -14,10 +15,9 @@ import type {
   TeamsAttendantMapType,
   TeamsAttendantType,
 } from "types/team.types";
+import type { TournamentType } from "types/tournament.types";
 import { api } from "utils/api";
 import createStringArrayFromNumber from "utils/createStringArrayFromNumber";
-import useWindowSize from "../../../hooks/useWindowSize";
-import type { TournamentType } from "../../../types/tournament.types";
 
 const FORM_STEPS = ["Create tournament", "Add tournament attendant", "Review"];
 
@@ -74,7 +74,7 @@ const NewTournamentContainer: FC = () => {
     if (isKing) {
       const { tournament } = await createKingTournament({
         name: tournamentName,
-        attendants: kingAttendants,
+        attendants: kingAttendants.filter(Boolean),
       });
 
       cratedTournament = tournament;
@@ -122,13 +122,13 @@ const NewTournamentContainer: FC = () => {
     }
 
     if (formStep === 1) {
-      const isKingAttendantsEmpty = kingAttendants.some(
-        (attendant) => attendant.length === 0
-      );
+      const isKingAttendantsLessThanFour =
+        kingAttendants.filter(Boolean).length < DEFAULT_ATTENDANTS_COUNT;
 
-      const isTeamsLessThanFour = [...teamsAttendants.keys()].length < 4;
+      const isTeamsLessThanFour =
+        [...teamsAttendants.keys()].length < DEFAULT_TEAM_COUNT;
 
-      if (!isKingAttendantsEmpty || !isTeamsLessThanFour) {
+      if (!isKingAttendantsLessThanFour || !isTeamsLessThanFour) {
         return false;
       }
 
@@ -152,9 +152,9 @@ const NewTournamentContainer: FC = () => {
         isModalVisible={isModalOpen}
         modalTitle="Crete new tournament"
         handleCancelClick={() => {
-          setIsModalOpen(false);
           setFormStep(0);
           setIsKing(true);
+          setIsModalOpen(false);
           setTournamentName("");
           setTeamsAttendants(new Map());
           setKingAttendants(
