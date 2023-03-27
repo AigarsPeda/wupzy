@@ -1,16 +1,19 @@
 import GroupCardDisplayAllGames from "components/elements/GroupCardDisplayAllGames/GroupCardDisplayAllGames";
 import GroupCardGamesOfInterest from "components/elements/GroupCardGamesOfInterest/GroupCardGamesOfInterest";
-import GroupCardTeams from "components/elements/GroupCardTeams/GroupCardTeams";
+import GroupParticipantCard from "components/elements/GroupParticipantCard/GroupParticipantCard";
+import GroupTeamsCard from "components/elements/GroupTeamsCard/GroupTeamsCard";
 import type { FC } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { GamesOfInterestType } from "types/game.types";
 import type { ParticipantType } from "types/team.types";
+import type { TournamentTypeType } from "types/tournament.types";
 import { api } from "utils/api";
 
 interface GroupCardProps {
   group: string;
   tournamentId: string;
-  teams: ParticipantType[];
+  participants: ParticipantType[];
+  tournamentKind: TournamentTypeType;
   gamesOfInterest: GamesOfInterestType;
   totalGames: {
     [key: string]: number;
@@ -19,17 +22,23 @@ interface GroupCardProps {
 }
 
 const GroupCard: FC<GroupCardProps> = ({
-  teams,
   group,
   totalGames,
   refetchGames,
   tournamentId,
+  participants,
+  tournamentKind,
   gamesOfInterest,
 }) => {
   const [isDisplayAllGames, setIsDisplayAllGames] = useState(false);
   const [score, setScore] = useState({
     firstTeam: 0,
     secondTeam: 0,
+  });
+
+  const { data } = api.tournaments.getTournamentTeams.useQuery({
+    group,
+    tournamentId,
   });
   const { mutateAsync: updateGamScore } =
     api.tournaments.updateGamScore.useMutation({
@@ -61,8 +70,15 @@ const GroupCard: FC<GroupCardProps> = ({
     }
   };
 
+  useEffect(() => {
+    if (tournamentKind === "TEAMS") {
+      console.log("tournamentKind", tournamentKind);
+    }
+  }, [tournamentKind]);
+
   return (
     <div className="mb-6 min-h-[20rem] min-w-[20rem] grid-cols-6 content-start gap-4 rounded-md border border-gray-50 bg-gray-50 py-3 shadow-md md:px-8 xl:grid">
+      {console.log("data?.teams", data?.teams)}
       <GroupCardGamesOfInterest
         group={group}
         totalGames={totalGames}
@@ -85,7 +101,11 @@ const GroupCard: FC<GroupCardProps> = ({
         }}
       />
 
-      <GroupCardTeams teams={teams} />
+      {tournamentKind ? (
+        <GroupTeamsCard teams={data?.teams || []} />
+      ) : (
+        <GroupParticipantCard participants={participants} />
+      )}
 
       <GroupCardDisplayAllGames
         group={group}

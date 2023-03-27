@@ -3,15 +3,15 @@ import type { FC } from "react";
 import type { ParticipantType } from "types/team.types";
 import classNames from "utils/classNames";
 
-interface GroupCardTeamsProps {
-  teams: ParticipantType[];
+interface GroupParticipantCard {
+  participants: ParticipantType[];
 }
 
-const GroupCardTeams: FC<GroupCardTeamsProps> = ({ teams }) => {
+const GroupParticipantCard: FC<GroupParticipantCard> = ({ participants }) => {
   return (
     <div className="col-span-3">
       <GroupCardHeader label="Participants" />
-      {teams.map((team, i) => {
+      {participants.map((team, i) => {
         const isFirstGroup = i === 0;
         return (
           <div
@@ -30,4 +30,4 @@ const GroupCardTeams: FC<GroupCardTeamsProps> = ({ teams }) => {
   );
 };
 
-export default GroupCardTeams;
+export default GroupParticipantCard;

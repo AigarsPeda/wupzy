@@ -24,14 +24,6 @@ const GroupCardDisplayAllGames: FC<GroupCardDisplayAllGamesProps> = ({
     { enabled: isDisplayAllGames }
   );
 
-  // const { mutateAsync: updateGameOrder } =
-  //   api.tournaments.updateGameOrder.useMutation();
-
-  // const handleGameOrderChange = (id: string, order: number) => {
-  //   console.log("id --->", id);
-  //   console.log("order --->", order);
-  // };
-
   return (
     <ModalWrap
       modalWidth="2xl"

@@ -79,9 +79,11 @@ model Games {
 
 model Team {
   name         String
+  group        String
   tournamentId String
   participants Participant[]
   updatedAt    DateTime      @updatedAt
+  score        Int           @default(0)
   createdAt    DateTime      @default(now())
   id           String        @id @default(cuid())
   games        Games[]       @relation("participant_team_1")

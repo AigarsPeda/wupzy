@@ -13,6 +13,7 @@ export const ParticipantsZodSchema = z.object({
 export const TeamZodSchema = z.object({
   id: z.string(),
   name: z.string(),
+  score: z.number(),
   updatedAt: z.date(),
   createdAt: z.date(),
   tournamentId: z.string(),

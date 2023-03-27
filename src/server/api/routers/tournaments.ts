@@ -60,6 +60,7 @@ export const tournamentsRouter = createTRPCRouter({
         async (group, firsIds, secondIds, index) => {
           const team1 = await ctx.prisma.team.create({
             data: {
+              group,
               name: `Team 1`,
               tournamentId: tournament.id,
               participants: {
@@ -70,6 +71,7 @@ export const tournamentsRouter = createTRPCRouter({
 
           const team2 = await ctx.prisma.team.create({
             data: {
+              group,
               name: `Team 2`,
               tournamentId: tournament.id,
               participants: {
@@ -153,6 +155,7 @@ export const tournamentsRouter = createTRPCRouter({
         await ctx.prisma.team.create({
           data: {
             name: teamName,
+            group: START_GROUP,
             tournamentId: tournament.id,
             participants: {
               connect: [...teamIds],
@@ -226,19 +229,29 @@ export const tournamentsRouter = createTRPCRouter({
       return { games };
     }),
 
+  getTournamentTeams: protectedProcedure
+    .input(z.object({ tournamentId: z.string(), group: z.string().optional() }))
+    .query(async ({ ctx, input }) => {
+      const teams = await ctx.prisma.team.findMany({
+        where: {
+          group: input.group,
+          tournamentId: input.tournamentId,
+        },
+        include: {
+          participants: true,
+        },
+      });
+
+      return { teams };
+    }),
+
   updateGameOrder: protectedProcedure
     .input(
       z.object({
-        // group: z.string(),
-        // tournamentId: z.string(),
         games: GamesZodSchema.array(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      // update games
-
-      console.log("input.games ---> ", input.games);
-
       await ctx.prisma.$transaction(
         input.games.map((game) => {
           return ctx.prisma.games.update({
@@ -251,50 +264,6 @@ export const tournamentsRouter = createTRPCRouter({
           });
         })
       );
-
-      // Update game
-      // await ctx.prisma.games.update({
-      //   where: {
-      //     id: input.id,
-      //   },
-      //   data: {
-      //     gameOrder: input.order,
-      //   },
-      // });
-
-      // // Get all games
-      // const games = await ctx.prisma.games.findMany({
-      //   where: {
-      //     group: input.group,
-      //     tournamentId: input.tournamentId,
-      //   },
-      //   orderBy: {
-      //     gameOrder: "asc",
-      //   },
-      // });
-
-      // // Find updated game
-      // const updateGame = games.find((game) => game.id === input.id);
-
-      // // Update all games after updated game
-      // if (updateGame) {
-      //   const updateGameIndex = games.indexOf(updateGame);
-
-      //   for (let i = updateGameIndex; i < games.length; i++) {
-      //     const game = games[i];
-
-      //     if (game) {
-      //       await ctx.prisma.games.update({
-      //         where: {
-      //           id: game.id,
-      //         },
-      //         data: {
-      //           gameOrder: i + 1,
-      //         },
-      //       });
-      //     }
-      //   }
-      // }
     }),
 
   updateGamScore: protectedProcedure
@@ -320,6 +289,20 @@ export const tournamentsRouter = createTRPCRouter({
         data: {
           team1Score: input.team1Score,
           team2Score: input.team2Score,
+          team1: {
+            update: {
+              score: {
+                increment: input.team1Score,
+              },
+            },
+          },
+          team2: {
+            update: {
+              score: {
+                increment: input.team2Score,
+              },
+            },
+          },
           winners: {
             connect: winnerIds,
           },
