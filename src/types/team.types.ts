@@ -13,6 +13,7 @@ export const ParticipantsZodSchema = z.object({
 export const TeamZodSchema = z.object({
   id: z.string(),
   name: z.string(),
+  group: z.string(),
   score: z.number(),
   updatedAt: z.date(),
   createdAt: z.date(),
@@ -21,6 +22,14 @@ export const TeamZodSchema = z.object({
 });
 
 export type TeamType = z.infer<typeof TeamZodSchema>;
+
+// export const TeamsZodSchema = z.array(TeamZodSchema);
+
+// export type TeamsType = z.infer<typeof TeamsZodSchema>;
+
+export const TeamsMapZodSchema = z.map(z.string(), z.array(TeamZodSchema));
+
+export type TeamsMapType = z.infer<typeof TeamsMapZodSchema>;
 
 const ParticipantsMapZodSchema = z.map(
   z.string(),

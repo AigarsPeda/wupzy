@@ -249,7 +249,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
         }
       >
         <GridLayout isGap minWith="350">
-          {tournament?.tournament.type === "KING" ? (
+          {tournament?.tournament.type === "KING" && (
             <EditParticipantTournamentCard
               groupToSmall={groupToSmall}
               resetNameChange={resetNameChange}
@@ -273,10 +273,12 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
                 );
               }}
             />
-          ) : (
-            <EditParticipantTeamsCard />
           )}
         </GridLayout>
+
+        {tournament?.tournament.type === "TEAMS" && (
+          <EditParticipantTeamsCard tournamentId={tournamentId} />
+        )}
       </div>
     </>
   );

@@ -307,6 +307,22 @@ export const tournamentsRouter = createTRPCRouter({
       return { tournament };
     }),
 
+  // getTournamentTeams: protectedProcedure
+  //   .input(z.object({ tournamentId: z.string(), group: z.string().optional() }))
+  //   .query(async ({ ctx, input }) => {
+  //     const teams = await ctx.prisma.team.findMany({
+  //       where: {
+  //         group: input.group,
+  //         tournamentId: input.tournamentId,
+  //       },
+  //       include: {
+  //         participants: true,
+  //       },
+  //     });
+
+  //     return { teams };
+  //   }),
+
   getTournamentGames: protectedProcedure
     .input(z.object({ tournamentId: z.string(), group: z.string().optional() }))
     .query(async ({ ctx, input }) => {
