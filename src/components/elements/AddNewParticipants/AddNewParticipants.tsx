@@ -7,16 +7,16 @@ import { api } from "utils/api";
 
 interface AddNewParticipants {
   tournamentId: string;
-  isAddNewTeamOpen: boolean;
-  addNewTeamGroup: string | null;
+  selectedGroup: string | null;
   handleCancelClick: () => void;
+  isAddNewParticipants: boolean;
 }
 
 const AddNewParticipants: FC<AddNewParticipants> = ({
   tournamentId,
-  addNewTeamGroup,
-  isAddNewTeamOpen,
+  selectedGroup,
   handleCancelClick,
+  isAddNewParticipants,
 }) => {
   const [teamsName, setTeamsName] = useState("");
   const { mutateAsync } = api.participant.addParticipantToGroup.useMutation();
@@ -25,7 +25,7 @@ const AddNewParticipants: FC<AddNewParticipants> = ({
   );
 
   const handleAddingTeam = async () => {
-    if (!addNewTeamGroup) {
+    if (!selectedGroup) {
       return;
     }
 
@@ -33,7 +33,7 @@ const AddNewParticipants: FC<AddNewParticipants> = ({
       score: 0,
       tournamentId,
       name: teamsName,
-      group: addNewTeamGroup,
+      group: selectedGroup,
     });
 
     await refetchGames();
@@ -44,14 +44,14 @@ const AddNewParticipants: FC<AddNewParticipants> = ({
   return (
     <ModalWrap
       modalWidth="2xl"
-      isModalVisible={isAddNewTeamOpen}
+      isModalVisible={isAddNewParticipants}
       modalTitle="Add new participants"
       handleCancelClick={handleCancelClick}
     >
       <Input
         type="text"
-        name="teamName"
-        label="Team name"
+        name="participantsName"
+        label="Participants name"
         value={teamsName}
         handleInputChange={(e) => setTeamsName(e.target.value)}
       />
@@ -59,7 +59,7 @@ const AddNewParticipants: FC<AddNewParticipants> = ({
       <div className="flex justify-end">
         <Button
           btnClass="w-40"
-          btnTitle="Add new team"
+          btnTitle="Add"
           btnColor={teamsName.length > 2 ? "black" : "outline"}
           onClick={() => {
             if (teamsName.length <= 2) return;

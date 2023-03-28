@@ -7,17 +7,17 @@ import type { ParticipantMapType, ParticipantType } from "types/team.types";
 import classNames from "utils/classNames";
 import { getKeys } from "utils/teamsMapFunctions";
 
-interface EditTournamentCardProps {
+interface EditParticipantTournamentCardProps {
   groupToSmall: string[];
-  teamsMap: ParticipantMapType;
   changedParticipantsIds: string[];
-  handleCancelDeleteTeam: () => void;
-  teamToDelete: ParticipantType | null;
+  participantsByGroup: ParticipantMapType;
   handleStartAddTeam: (str: string) => void;
+  handleCancelDeleteParticipants: () => void;
+  participantsToDelete: ParticipantType | null;
   handleEditGroupGame: (group: string) => void;
-  setTeamToDelete: (team: ParticipantType) => void;
+  setParticipantsToDelete: (team: ParticipantType) => void;
   resetNameChange: (participant: ParticipantType) => void;
-  handleDeleteTeam: (team: ParticipantType) => Promise<void>;
+  handleDeleteParticipant: (team: ParticipantType) => Promise<void>;
   handleParticipantUpdate: (participant: ParticipantType) => Promise<void>;
   handleParticipantNameChange: (team: ParticipantType, newName: string) => void;
   handleGroupChange: (
@@ -27,28 +27,28 @@ interface EditTournamentCardProps {
   ) => void;
 }
 
-const EditTournamentCard: FC<EditTournamentCardProps> = ({
-  teamsMap,
+const EditParticipantTournamentCard: FC<EditParticipantTournamentCardProps> = ({
   groupToSmall,
-  teamToDelete,
   resetNameChange,
-  setTeamToDelete,
-  handleDeleteTeam,
   handleGroupChange,
   handleStartAddTeam,
   handleEditGroupGame,
-  handleCancelDeleteTeam,
+  participantsByGroup,
+  participantsToDelete,
   changedParticipantsIds,
   handleParticipantUpdate,
+  handleDeleteParticipant,
+  setParticipantsToDelete,
   handleParticipantNameChange,
+  handleCancelDeleteParticipants,
 }) => {
   const [parent] = useAutoAnimate();
 
   return (
     <>
-      {[...teamsMap].map(([group, participants]) => {
+      {[...participantsByGroup].map(([group, participants]) => {
         const isErrorMessageVisible = groupToSmall.includes(group);
-        const isMoreThanOneGroup = getKeys(teamsMap).length > 1;
+        const isMoreThanOneGroup = getKeys(participantsByGroup).length > 1;
 
         return (
           <div
@@ -91,16 +91,18 @@ const EditTournamentCard: FC<EditTournamentCardProps> = ({
                     isLast={isLast}
                     key={participant.id}
                     isChanged={isChanged}
-                    teamsByGroup={teamsMap}
                     participant={participant}
-                    teamToDelete={teamToDelete}
                     resetNameChange={resetNameChange}
-                    setTeamToDelete={setTeamToDelete}
-                    handleDeleteTeam={handleDeleteTeam}
                     handleGroupChange={handleGroupChange}
-                    handleCancelDeleteTeam={handleCancelDeleteTeam}
+                    participantsByGroup={participantsByGroup}
+                    participantsToDelete={participantsToDelete}
+                    setParticipantsToDelete={setParticipantsToDelete}
                     handleParticipantUpdate={handleParticipantUpdate}
+                    handleDeleteParticipant={handleDeleteParticipant}
                     handleParticipantNameChange={handleParticipantNameChange}
+                    handleCancelDeleteParticipants={
+                      handleCancelDeleteParticipants
+                    }
                   />
                 );
               })}
@@ -119,4 +121,4 @@ const EditTournamentCard: FC<EditTournamentCardProps> = ({
   );
 };
 
-export default EditTournamentCard;
+export default EditParticipantTournamentCard;

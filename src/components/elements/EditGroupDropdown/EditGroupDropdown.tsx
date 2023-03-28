@@ -39,7 +39,7 @@ const EditGroupDropdown: FC<EditGroupDropdownProps> = ({
     >
       <div>
         <EditGroupDropdownItem
-          btnTitle="Add new team"
+          btnTitle="Add participants"
           handelClick={handleStartAddTeam}
           icon={<HiPlusSm className="h-6 w-6" />}
         />

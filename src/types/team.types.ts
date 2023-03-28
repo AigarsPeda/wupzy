@@ -52,3 +52,7 @@ export const TeamsAttendantMapZodSchema = z.map(
 
 export type TeamsAttendantType = z.infer<typeof TeamsAttendantZodSchema>;
 export type TeamsAttendantMapType = z.infer<typeof TeamsAttendantMapZodSchema>;
+
+export type AttendantType = TeamsAttendantType & {
+  id: string;
+};

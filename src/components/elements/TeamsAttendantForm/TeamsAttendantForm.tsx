@@ -8,6 +8,7 @@ import type { FC } from "react";
 import { useState } from "react";
 import { BiTrash } from "react-icons/bi";
 import type {
+  AttendantType,
   TeamsAttendantMapType,
   TeamsAttendantType,
 } from "types/team.types";
@@ -23,10 +24,6 @@ interface TeamsAttendantFormProps {
     participants: TeamsAttendantType[]
   ) => void;
 }
-
-type AttendantType = TeamsAttendantType & {
-  id: string;
-};
 
 const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
   createTeam,

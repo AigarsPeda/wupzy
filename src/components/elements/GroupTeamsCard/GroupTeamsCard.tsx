@@ -10,7 +10,10 @@ interface GroupTeamsCardProps {
 const GroupTeamsCard: FC<GroupTeamsCardProps> = ({ teams }) => {
   return (
     <div className="col-span-3">
-      <GroupCardHeader label="Teams" />
+      <GroupCardHeader
+        label="Teams"
+        options={<p className="text-sm">Point overall</p>}
+      />
       {teams.map((team, i) => {
         const isFirstGroup = i === 0;
         return (
@@ -21,7 +24,16 @@ const GroupTeamsCard: FC<GroupTeamsCardProps> = ({ teams }) => {
               "flex items-center justify-between py-2"
             )}
           >
-            <p>{team.name}</p>
+            <div>
+              <p>{team.name}</p>
+              <div className="flex space-x-2">
+                {team.participants.map((participant) => (
+                  <p key={participant.id} className="text-sm text-gray-400">
+                    {participant.name}
+                  </p>
+                ))}
+              </div>
+            </div>
             <p>{team.score}</p>
           </div>
         );

@@ -10,7 +10,10 @@ interface GroupParticipantCard {
 const GroupParticipantCard: FC<GroupParticipantCard> = ({ participants }) => {
   return (
     <div className="col-span-3">
-      <GroupCardHeader label="Participants" />
+      <GroupCardHeader
+        label="Participants"
+        options={<p className="text-sm">Point overall</p>}
+      />
       {participants.map((team, i) => {
         const isFirstGroup = i === 0;
         return (

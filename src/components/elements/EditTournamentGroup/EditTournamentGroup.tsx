@@ -1,7 +1,8 @@
 import AddNewParticipants from "components/elements/AddNewParticipants/AddNewParticipants";
+import AddNewTeam from "components/elements/AddNewTeam/AddNewTeam";
+import EditParticipantTournamentCard from "components/elements/EditParticipantTournamentCard/EditParticipantTournamentCard";
 import getGroupThatAreToSmall from "components/elements/EditTournament/utils/getGroupThatAreToSmall";
 import getUpdatedParticipants from "components/elements/EditTournament/utils/getUpdatedParticipants";
-import EditTournamentCard from "components/elements/EditTournamentCard/EditTournamentCard";
 import EditTournamentName from "components/elements/EditTournamentName/EditTournamentName";
 import GroupDropdown from "components/elements/GroupDropdown/GroupDropdown";
 import SmallButton from "components/elements/SmallButton/SmallButton";
@@ -16,6 +17,7 @@ import { RiSaveLine } from "react-icons/ri";
 import type { ParticipantMapType, ParticipantType } from "types/team.types";
 import { api } from "utils/api";
 import { getKeys } from "utils/teamsMapFunctions";
+import EditParticipantTeamsCard from "../EditParticipantTeamsCard/EditParticipantTeamsCard";
 
 interface EditTournamentGroupProps {
   tournamentId: string;
@@ -30,17 +32,15 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   const [groupToSmall, setGroupToSmall] = useState<string[]>([]);
   const deleteTeam = api.participant.deleteParticipant.useMutation();
   const { tournament, refetchTournament } = useTournament(tournamentId);
-  const [teamToDelete, setTeamToDelete] = useState<ParticipantType | null>(
-    null
-  );
+  const [participantsToDelete, setParticipantsToDelete] =
+    useState<ParticipantType | null>(null);
 
-  const [teamsByGroup, setTeamsByGroup] = useState<ParticipantMapType>(
-    new Map()
-  );
+  const [participantsByGroup, setParticipantsByGroup] =
+    useState<ParticipantMapType>(new Map());
   const [changedParticipantsIds, setChangedParticipantsIds] = useState<
     string[]
   >([]);
-  const [addNewTeamGroup, setAddNewTeamGroup] = useState<string | null>(null);
+  const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
   const { participants, refetchParticipants } = useParticipants(tournamentId);
   const [isTournamentNameChanged, setIsTournamentNameChanged] = useState(false);
   const [newTournamentName, setNewTournamentName] = useState<string | null>(
@@ -61,12 +61,12 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     api.participant.updatedParticipant.useMutation();
 
   const addGroupToTournament = (group: string) => {
-    const newStates = new Map(teamsByGroup);
+    const newStates = new Map(participantsByGroup);
     newStates.set(group, []);
 
     const sortedAsc = new Map([...newStates].sort());
 
-    setTeamsByGroup(sortedAsc);
+    setParticipantsByGroup(sortedAsc);
   };
 
   const handleGroupChange = async (
@@ -92,7 +92,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     participant: ParticipantType,
     newName: string
   ) => {
-    const newStates = new Map(teamsByGroup);
+    const newStates = new Map(participantsByGroup);
 
     if (!participants) return;
 
@@ -110,13 +110,13 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       }) || []),
     ]);
 
-    setTeamsByGroup(newStates);
+    setParticipantsByGroup(newStates);
   };
 
   const resetNameChange = (participant: ParticipantType) => {
     if (!participants) return;
 
-    setTeamsByGroup(participants.participants);
+    setParticipantsByGroup(participants.participants);
     setChangedParticipantsIds((state) =>
       state.filter((id) => id !== participant.id)
     );
@@ -162,7 +162,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
     setNewTournamentName(str);
   };
 
-  const handleDeleteTeam = async (participant: ParticipantType) => {
+  const handleDeleteParticipant = async (participant: ParticipantType) => {
     await deleteTeam.mutateAsync({
       participant,
       tournamentId,
@@ -180,7 +180,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   useEffect(() => {
     if (!participants) return;
 
-    setTeamsByGroup(participants.participants);
+    setParticipantsByGroup(participants.participants);
     setGroupToSmall(getGroupThatAreToSmall(participants.participants));
   }, [participants]);
 
@@ -215,22 +215,33 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
 
         <GroupDropdown
           handleGroupClick={addGroupToTournament}
-          alreadyCreatedGroups={getKeys(teamsByGroup)}
+          alreadyCreatedGroups={getKeys(participantsByGroup)}
         />
       </div>
 
-      <AddNewParticipants
-        tournamentId={tournamentId}
-        addNewTeamGroup={addNewTeamGroup}
-        isAddNewTeamOpen={Boolean(addNewTeamGroup)}
-        handleCancelClick={() => {
-          setAddNewTeamGroup(null);
-          refetchParticipants().catch((err) => console.error(err));
-        }}
-      />
+      {tournament?.tournament.type === "KING" ? (
+        <AddNewParticipants
+          tournamentId={tournamentId}
+          selectedGroup={selectedGroup}
+          isAddNewParticipants={Boolean(selectedGroup)}
+          handleCancelClick={() => {
+            setSelectedGroup(null);
+            refetchParticipants().catch((err) => console.error(err));
+          }}
+        />
+      ) : (
+        <AddNewTeam
+          tournamentId={tournamentId}
+          selectedGroup={selectedGroup}
+          isAddNewTeamOpen={Boolean(selectedGroup)}
+          handleCancelClick={() => {
+            setSelectedGroup(null);
+            refetchParticipants().catch((err) => console.error(err));
+          }}
+        />
+      )}
 
       <div
-        // className="overflow-y-auto"
         style={
           windowSize.width && windowSize.width > 650
             ? { maxHeight: "calc(100vh - 17rem)" }
@@ -238,29 +249,33 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
         }
       >
         <GridLayout isGap minWith="350">
-          <EditTournamentCard
-            teamsMap={teamsByGroup}
-            groupToSmall={groupToSmall}
-            teamToDelete={teamToDelete}
-            resetNameChange={resetNameChange}
-            setTeamToDelete={setTeamToDelete}
-            handleDeleteTeam={handleDeleteTeam}
-            handleGroupChange={(team, oldGroup, newGroup) => {
-              handleGroupChange(team, oldGroup, newGroup).catch((e) =>
-                console.error("error changing group", e)
-              );
-            }}
-            handleEditGroupGame={handleEditGroupGame}
-            changedParticipantsIds={changedParticipantsIds}
-            handleParticipantUpdate={handleParticipantUpdate}
-            handleParticipantNameChange={handleParticipantNameChange}
-            handleCancelDeleteTeam={() => {
-              setTeamToDelete(null);
-            }}
-            handleStartAddTeam={(group) => {
-              setAddNewTeamGroup((state) => (state === group ? null : group));
-            }}
-          />
+          {tournament?.tournament.type === "KING" ? (
+            <EditParticipantTournamentCard
+              groupToSmall={groupToSmall}
+              resetNameChange={resetNameChange}
+              handleEditGroupGame={handleEditGroupGame}
+              participantsByGroup={participantsByGroup}
+              participantsToDelete={participantsToDelete}
+              changedParticipantsIds={changedParticipantsIds}
+              handleParticipantUpdate={handleParticipantUpdate}
+              setParticipantsToDelete={setParticipantsToDelete}
+              handleDeleteParticipant={handleDeleteParticipant}
+              handleParticipantNameChange={handleParticipantNameChange}
+              handleCancelDeleteParticipants={() => {
+                setParticipantsToDelete(null);
+              }}
+              handleStartAddTeam={(group) => {
+                setSelectedGroup((state) => (state === group ? null : group));
+              }}
+              handleGroupChange={(team, oldGroup, newGroup) => {
+                handleGroupChange(team, oldGroup, newGroup).catch((e) =>
+                  console.error("error changing group", e)
+                );
+              }}
+            />
+          ) : (
+            <EditParticipantTeamsCard />
+          )}
         </GridLayout>
       </div>
     </>

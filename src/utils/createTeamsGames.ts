@@ -17,6 +17,8 @@ const createTeamsGames = async (
     index: number
   ) => Promise<void>
 ) => {
+  let gameOrder = 1;
+
   for (let i = 0; i < teams.length; i++) {
     for (let j = i + 1; j < teams.length; j++) {
       const team = teams[i];
@@ -41,7 +43,9 @@ const createTeamsGames = async (
         };
       });
 
-      await callback(firstTeamIds, secondTeamIds, team.id, team2.id, i);
+      await callback(firstTeamIds, secondTeamIds, team.id, team2.id, gameOrder);
+
+      gameOrder++;
     }
   }
 };

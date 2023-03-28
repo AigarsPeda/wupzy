@@ -3,7 +3,7 @@ import UnderLineButton from "components/elements/UnderLineButton/UnderLineButton
 import type { FC } from "react";
 import { useState } from "react";
 
-const EditTournamentContainer: FC = () => {
+const EditTournamentContainer: FC = ({}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (

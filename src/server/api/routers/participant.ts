@@ -76,6 +76,7 @@ export const participantRouter = createTRPCRouter({
         async (group, firsIds, secondIds, index) => {
           const team1 = await ctx.prisma.team.create({
             data: {
+              group,
               name: `Team 1`,
               tournamentId: input.tournamentId,
               participants: {
@@ -86,6 +87,7 @@ export const participantRouter = createTRPCRouter({
 
           const team2 = await ctx.prisma.team.create({
             data: {
+              group,
               name: `Team 2`,
               tournamentId: input.tournamentId,
               participants: {
@@ -249,6 +251,7 @@ export const participantRouter = createTRPCRouter({
         async (group, firsIds, secondIds, index) => {
           const team1 = await ctx.prisma.team.create({
             data: {
+              group,
               name: `Team 1`,
               tournamentId: input.tournamentId,
               participants: {
@@ -259,6 +262,7 @@ export const participantRouter = createTRPCRouter({
 
           const team2 = await ctx.prisma.team.create({
             data: {
+              group,
               name: `Team 2`,
               tournamentId: input.tournamentId,
               participants: {

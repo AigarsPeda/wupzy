@@ -16,12 +16,12 @@ interface EditParticipantProps {
   isLast: boolean;
   isChanged: boolean;
   participant: ParticipantType;
-  teamsByGroup: ParticipantMapType;
-  handleCancelDeleteTeam: () => void;
-  teamToDelete: ParticipantType | null;
-  setTeamToDelete: (team: ParticipantType) => void;
+  participantsByGroup: ParticipantMapType;
+  handleCancelDeleteParticipants: () => void;
+  participantsToDelete: ParticipantType | null;
   resetNameChange: (participant: ParticipantType) => void;
-  handleDeleteTeam: (team: ParticipantType) => Promise<void>;
+  setParticipantsToDelete: (team: ParticipantType) => void;
+  handleDeleteParticipant: (team: ParticipantType) => Promise<void>;
   handleParticipantUpdate: (participant: ParticipantType) => Promise<void>;
   handleParticipantNameChange: (team: ParticipantType, newName: string) => void;
   handleGroupChange: (
@@ -36,14 +36,14 @@ const EditParticipant: FC<EditParticipantProps> = ({
   isLast,
   isChanged,
   participant,
-  teamsByGroup,
-  teamToDelete,
   resetNameChange,
-  setTeamToDelete,
-  handleDeleteTeam,
   handleGroupChange,
-  handleCancelDeleteTeam,
+  participantsByGroup,
+  participantsToDelete,
+  handleCancelDeleteParticipants,
   handleParticipantUpdate,
+  handleDeleteParticipant,
+  setParticipantsToDelete,
   handleParticipantNameChange,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -71,7 +71,7 @@ const EditParticipant: FC<EditParticipantProps> = ({
         />
       </div>
       <div className="flex w-full items-center justify-end">
-        {getAvailableGroups(group, teamsByGroup).map((newGroup, i) => (
+        {getAvailableGroups(group, participantsByGroup).map((newGroup, i) => (
           <SmallButton
             btnTitle={newGroup}
             key={`${newGroup}-${i}`}
@@ -116,7 +116,7 @@ const EditParticipant: FC<EditParticipantProps> = ({
             btnTitle={<CgClose />}
             btnClassNames="h-6 px-2 ml-2"
             handleClick={() => {
-              setTeamToDelete(participant);
+              setParticipantsToDelete(participant);
             }}
           />
           <ConfirmTooltip
@@ -124,16 +124,16 @@ const EditParticipant: FC<EditParticipantProps> = ({
             cancelBtnTitle="Cancel"
             confirmBtnTitle="Delete"
             tooltipClassName="md:flex md:h-20"
-            handleCancel={handleCancelDeleteTeam}
+            handleCancel={handleCancelDeleteParticipants}
             position={
               isLast
                 ? "right-10 md:-top-12 -top-28"
                 : "right-10 md:-bottom-7 -top-3"
             }
-            isTooltip={participant.id === teamToDelete?.id}
+            isTooltip={participant.id === participantsToDelete?.id}
             tooltipTitle="Are you sure you want to delete this participant?"
             handleConfirm={() => {
-              handleDeleteTeam(participant).catch((e) =>
+              handleDeleteParticipant(participant).catch((e) =>
                 console.error("Error deleting team: ", e)
               );
             }}

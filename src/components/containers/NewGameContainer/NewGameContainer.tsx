@@ -95,8 +95,10 @@ const NewTournamentContainer: FC = () => {
     }
 
     setFormStep(0);
+    setIsKing(true);
     setIsModalOpen(false);
     setTournamentName("");
+    setTeamsAttendants(new Map());
     setKingAttendants(createStringArrayFromNumber(DEFAULT_ATTENDANTS_COUNT));
     router.push(`/tournaments/${cratedTournament.id}`).catch(() => {
       console.error("error changing route");
