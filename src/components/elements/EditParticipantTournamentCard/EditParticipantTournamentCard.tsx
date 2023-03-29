@@ -98,7 +98,7 @@ const EditParticipantTournamentCard: FC<EditParticipantTournamentCardProps> = ({
                     <p className="text-xs">Name</p>
                   </div>
                   <div className="flex justify-center">
-                    <p className="text-xs">Change to</p>
+                    <p className="text-xs">Move to</p>
                   </div>
                   <div className="flex justify-end">
                     <p className="text-right text-xs">Option</p>
