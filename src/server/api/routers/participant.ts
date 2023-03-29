@@ -187,25 +187,18 @@ export const participantRouter = createTRPCRouter({
   updateParticipantsGroup: protectedProcedure
     .input(
       z.object({
-        team: z.object({
-          id: z.string(),
-          name: z.string(),
-          group: z.string(),
-          score: z.number(),
-        }),
-        oldGroup: z.string(),
-        newGroup: z.string(),
+        group: z.string(),
         tournamentId: z.string(),
+        participantId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       await ctx.prisma.games.deleteMany({
         where: {
-          group: input.oldGroup,
           tournamentId: input.tournamentId,
           participants: {
             some: {
-              id: input.team.id,
+              id: input.participantId,
             },
           },
         },
@@ -213,24 +206,24 @@ export const participantRouter = createTRPCRouter({
 
       const newParticipant = await ctx.prisma.participant.update({
         where: {
-          id: input.team.id,
+          id: input.participantId,
         },
         data: {
-          group: input.newGroup,
           score: 0,
+          group: input.group,
         },
       });
 
       const allParticipants = await ctx.prisma.participant.findMany({
         where: {
+          group: input.group,
           tournamentId: input.tournamentId,
-          group: input.newGroup,
         },
       });
 
       const lastOrderNumber = await ctx.prisma.games.findMany({
         where: {
-          group: input.newGroup,
+          group: input.group,
           tournamentId: input.tournamentId,
         },
         orderBy: {

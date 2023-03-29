@@ -35,164 +35,165 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   tournamentId,
 }) => {
   const { windowSize } = useWindowSize();
-
-  const [groupToSmall, setGroupToSmall] = useState<string[]>([]);
-  const deleteTeam = api.participant.deleteParticipant.useMutation();
-  const { tournament, refetchTournament } = useTournament(tournamentId);
-  const [participantsToDelete, setParticipantsToDelete] =
-    useState<ParticipantType | null>(null);
-
-  const [participantsByGroup, setParticipantsByGroup] =
-    useState<ParticipantMapType>(new Map());
-  const [changedParticipantsIds, setChangedParticipantsIds] = useState<
-    string[]
-  >([]);
+  const { tournament } = useTournament(tournamentId);
+  const { refetchParticipants } = useParticipants(tournamentId);
   const [selectedEditGroup, setSelectedEditGroup] = useState<EditGroupType>({
     group: "",
     editType: "",
   });
-  const { participants, refetchParticipants } = useParticipants(tournamentId);
-  const [isTournamentNameChanged, setIsTournamentNameChanged] = useState(false);
-  const [newTournamentName, setNewTournamentName] = useState<string | null>(
-    null
-  );
 
-  const { refetch: refetchGames } = api.tournaments.getTournamentGames.useQuery(
-    { tournamentId }
-  );
+  // const [groupToSmall, setGroupToSmall] = useState<string[]>([]);
+  // const deleteTeam = api.participant.deleteParticipant.useMutation();
 
-  const { mutateAsync: updateParticipantsGroup } =
-    api.participant.updateParticipantsGroup.useMutation();
+  // const [participantsToDelete, setParticipantsToDelete] =
+  //   useState<ParticipantType | null>(null);
 
-  const { mutateAsync: updateTournamentName } =
-    api.tournaments.updateTournament.useMutation();
+  // const [participantsByGroup, setParticipantsByGroup] =
+  //   useState<ParticipantMapType>(new Map());
+  // const [changedParticipantsIds, setChangedParticipantsIds] = useState<
+  //   string[]
+  // >([]);
 
-  const { mutateAsync: updateParticipant } =
-    api.participant.updatedParticipant.useMutation();
+  // const [isTournamentNameChanged, setIsTournamentNameChanged] = useState(false);
+  // const [newTournamentName, setNewTournamentName] = useState<string | null>(
+  //   null
+  // );
 
-  const addGroupToTournament = (group: string) => {
-    const newStates = new Map(participantsByGroup);
-    newStates.set(group, []);
+  // const { refetch: refetchGames } = api.tournaments.getTournamentGames.useQuery(
+  //   { tournamentId }
+  // );
 
-    const sortedAsc = new Map([...newStates].sort());
+  // const { mutateAsync: updateParticipantsGroup } =
+  //   api.participant.updateParticipantsGroup.useMutation();
 
-    setParticipantsByGroup(sortedAsc);
-  };
+  // const { mutateAsync: updateTournamentName } =
+  //   api.tournaments.updateTournament.useMutation();
 
-  const handleGroupChange = async (
-    team: ParticipantType,
-    oldGroup: string,
-    newGroup: string
-  ) => {
-    if (!participants) return;
+  // const { mutateAsync: updateParticipant } =
+  //   api.participant.updatedParticipant.useMutation();
 
-    await updateParticipantsGroup({
-      team,
-      newGroup,
-      oldGroup,
-      tournamentId,
-    });
+  // const addGroupToTournament = (group: string) => {
+  //   const newStates = new Map(participantsByGroup);
+  //   newStates.set(group, []);
 
-    await refetchGames();
-    await refetchTournament();
-    await refetchParticipants();
-  };
+  //   const sortedAsc = new Map([...newStates].sort());
 
-  const handleParticipantNameChange = (
-    participant: ParticipantType,
-    newName: string
-  ) => {
-    const newStates = new Map(participantsByGroup);
+  //   setParticipantsByGroup(sortedAsc);
+  // };
 
-    if (!participants) return;
+  // const handleGroupChange = async (
+  //   participantId: string,
+  //   group: string
+  //   // oldGroup: string,
+  // ) => {
+  //   if (!participants) return;
 
-    setChangedParticipantsIds(
-      getUpdatedParticipants(newName, participants.participants, participant)
-    );
+  //   await updateParticipantsGroup({
+  //     participantId,
+  //     group,
+  //     tournamentId,
+  //   });
 
-    // find participant in group and change name
-    newStates.set(participant.group, [
-      ...(newStates.get(participant.group)?.map((t) => {
-        if (t.id === participant.id) {
-          return { ...t, name: newName };
-        }
-        return t;
-      }) || []),
-    ]);
+  //   await refetchGames();
+  //   await refetchTournament();
+  //   await refetchParticipants();
+  // };
 
-    setParticipantsByGroup(newStates);
-  };
+  // const handleParticipantNameChange = (
+  //   participant: ParticipantType,
+  //   newName: string
+  // ) => {
+  //   const newStates = new Map(participantsByGroup);
 
-  const resetNameChange = (participant: ParticipantType) => {
-    if (!participants) return;
+  //   if (!participants) return;
 
-    setParticipantsByGroup(participants.participants);
-    setChangedParticipantsIds((state) =>
-      state.filter((id) => id !== participant.id)
-    );
-  };
+  //   setChangedParticipantsIds(
+  //     getUpdatedParticipants(newName, participants.participants, participant)
+  //   );
 
-  // after update teams, update tournament name
-  const handleParticipantUpdate = async (participant: ParticipantType) => {
-    await updateParticipant({
-      id: participant.id,
-      name: participant.name,
-    });
+  //   // find participant in group and change name
+  //   newStates.set(participant.group, [
+  //     ...(newStates.get(participant.group)?.map((t) => {
+  //       if (t.id === participant.id) {
+  //         return { ...t, name: newName };
+  //       }
+  //       return t;
+  //     }) || []),
+  //   ]);
 
-    setChangedParticipantsIds((state) =>
-      state.filter((id) => id !== participant.id)
-    );
+  //   setParticipantsByGroup(newStates);
+  // };
 
-    await refetchGames();
-    await refetchParticipants();
-  };
+  // const resetNameChange = (participant: ParticipantType) => {
+  //   if (!participants) return;
 
-  const handleTournamentName = async () => {
-    if (newTournamentName) {
-      await updateTournamentName({
-        id: tournamentId,
-        name: newTournamentName,
-      });
+  //   setParticipantsByGroup(participants.participants);
+  //   setChangedParticipantsIds((state) =>
+  //     state.filter((id) => id !== participant.id)
+  //   );
+  // };
 
-      setIsTournamentNameChanged(false);
+  // // after update teams, update tournament name
+  // const handleParticipantUpdate = async (participant: ParticipantType) => {
+  //   await updateParticipant({
+  //     id: participant.id,
+  //     name: participant.name,
+  //   });
 
-      await refetchTournament();
-    }
-  };
+  //   setChangedParticipantsIds((state) =>
+  //     state.filter((id) => id !== participant.id)
+  //   );
 
-  const handleTournamentNameChange = (str: string) => {
-    if (str === tournament?.tournament.name) {
-      setIsTournamentNameChanged(false);
-    }
+  //   await refetchGames();
+  //   await refetchParticipants();
+  // };
 
-    if (str !== tournament?.tournament.name) {
-      setIsTournamentNameChanged(true);
-    }
+  // const handleTournamentName = async () => {
+  //   if (newTournamentName) {
+  //     await updateTournamentName({
+  //       id: tournamentId,
+  //       name: newTournamentName,
+  //     });
 
-    setNewTournamentName(str);
-  };
+  //     setIsTournamentNameChanged(false);
 
-  const handleDeleteParticipant = async (participant: ParticipantType) => {
-    await deleteTeam.mutateAsync({
-      participant,
-      tournamentId,
-    });
-    await refetchGames();
-    await refetchParticipants();
-  };
+  //     await refetchTournament();
+  //   }
+  // };
 
-  useEffect(() => {
-    if (!tournament) return;
+  // const handleTournamentNameChange = (str: string) => {
+  //   if (str === tournament?.tournament.name) {
+  //     setIsTournamentNameChanged(false);
+  //   }
 
-    setNewTournamentName(tournament.tournament.name);
-  }, [tournament]);
+  //   if (str !== tournament?.tournament.name) {
+  //     setIsTournamentNameChanged(true);
+  //   }
 
-  useEffect(() => {
-    if (!participants) return;
+  //   setNewTournamentName(str);
+  // };
 
-    setParticipantsByGroup(participants.participants);
-    setGroupToSmall(getGroupThatAreToSmall(participants.participants));
-  }, [participants]);
+  // const handleDeleteParticipant = async (participant: ParticipantType) => {
+  //   await deleteTeam.mutateAsync({
+  //     participant,
+  //     tournamentId,
+  //   });
+  //   await refetchGames();
+  //   await refetchParticipants();
+  // };
+
+  // useEffect(() => {
+  //   if (!tournament) return;
+
+  //   setNewTournamentName(tournament.tournament.name);
+  // }, [tournament]);
+
+  // useEffect(() => {
+  //   if (!participants) return;
+
+  //   setParticipantsByGroup(participants.participants);
+  //   setGroupToSmall(getGroupThatAreToSmall(participants.participants));
+  // }, [participants]);
 
   return (
     <>
@@ -264,8 +265,22 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
             : { maxHeight: "calc(100vh - 14rem)" }
         }
       >
-        <GridLayout isGap minWith="350">
-          {tournament?.tournament.type === "KING" && (
+        {tournament?.tournament.type === "KING" && (
+          <EditParticipantTournamentCard
+            tournamentId={tournamentId}
+            handleStartEditGroup={(group, type) => {
+              setSelectedEditGroup((state) => {
+                if (state.group === group) {
+                  return { group: "", editType: "editGame" };
+                }
+                return { group, editType: type };
+              });
+            }}
+          />
+        )}
+
+        {/* <GridLayout isGap minWith="350">
+          {/* {tournament?.tournament.type === "KING" && (
             <EditParticipantTournamentCard
               groupToSmall={groupToSmall}
               resetNameChange={resetNameChange}
@@ -293,8 +308,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
                 );
               }}
             />
-          )}
-        </GridLayout>
+          )} */}
 
         {tournament?.tournament.type === "TEAMS" && (
           <EditParticipantTeamsCard

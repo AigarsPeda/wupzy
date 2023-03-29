@@ -27,7 +27,7 @@ const EditParticipantTeamsCard: FC<EditParticipantTeamsCardProps> = ({
   const { mutateAsync: changeTeamsGroup } =
     api.tournaments.changeTeamsGroup.useMutation();
 
-  const handleAddingTeam = async (teamId: string, newGroup: string) => {
+  const handleTeamsGroupChange = async (teamId: string, newGroup: string) => {
     await changeTeamsGroup({
       teamId,
       tournamentId,
@@ -97,7 +97,7 @@ const EditParticipantTeamsCard: FC<EditParticipantTeamsCardProps> = ({
                         key={`${g}-${i}`}
                         btnClassNames="h-6 w-6 ml-2"
                         handleClick={() => {
-                          handleAddingTeam(team.id, g).catch(() =>
+                          handleTeamsGroupChange(team.id, g).catch(() =>
                             setIsError(true)
                           );
                         }}
