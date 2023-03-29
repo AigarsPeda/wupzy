@@ -99,6 +99,53 @@ export const tournamentsRouter = createTRPCRouter({
       return { tournament };
     }),
 
+  updateTeam: protectedProcedure
+    .input(
+      z.object({
+        teamId: z.string(),
+        teamName: z.string(),
+        tournamentId: z.string(),
+        participants: z
+          .object({
+            id: z.string(),
+            name: z.string(),
+          })
+          .array(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      for (let i = 0; i < input.participants.length; i++) {
+        const participant = input.participants[i];
+
+        if (!participant) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Team member not found",
+          });
+        }
+
+        await ctx.prisma.participant.update({
+          where: {
+            id: participant.id,
+          },
+          data: {
+            name: participant.name,
+          },
+        });
+      }
+
+      const team = await ctx.prisma.team.update({
+        where: {
+          id: input.teamId,
+        },
+        data: {
+          name: input.teamName,
+        },
+      });
+
+      return { team };
+    }),
+
   addTeamToTournament: protectedProcedure
     .input(
       z.object({
@@ -364,8 +411,6 @@ export const tournamentsRouter = createTRPCRouter({
       // delete all games for this team
       await ctx.prisma.games.deleteMany({
         where: {
-          group: input.group,
-          tournamentId: input.tournamentId,
           OR: [{ team1Id: input.teamId }, { team2Id: input.teamId }],
         },
       });

@@ -42,10 +42,12 @@ const Tournament: NextPage = () => {
           <EditTournamentContainer />
         </div>
       </div>
-      <GroupCardContainer
-        tournamentId={tournamentId}
-        tournamentKind={tournament?.tournament.type || "KING"}
-      />
+      {tournament && (
+        <GroupCardContainer
+          tournamentId={tournamentId}
+          tournamentKind={tournament.tournament.type}
+        />
+      )}
     </>
   );
 };

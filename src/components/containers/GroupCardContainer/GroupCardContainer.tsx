@@ -26,7 +26,6 @@ const GroupCardContainer: FC<GroupCardContainerProps> = ({
     <div>
       {participants &&
         [...participants.participants].map(([group, participants]) => {
-          console.log("participants", participants);
           return (
             <GroupCard
               key={group}

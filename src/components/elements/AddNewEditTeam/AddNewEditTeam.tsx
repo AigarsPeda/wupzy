@@ -3,24 +3,27 @@ import Button from "components/elements/Button/Button";
 import Input from "components/elements/Input/Input";
 import ModalWrap from "components/elements/ModalWrap/ModalWrap";
 import type { FC } from "react";
-import { useState } from "react";
-import type { AttendantType } from "types/team.types";
+import { useEffect, useState } from "react";
+import type { AttendantType, TeamType } from "types/team.types";
 import { api } from "utils/api";
 
-interface AddNewTeamProps {
+interface AddNewEditTeamProps {
   tournamentId: string;
   isAddNewTeamOpen: boolean;
   selectedGroup: string | null;
+  editTeam: TeamType | undefined;
   handleCancelClick: () => void;
 }
 
-const AddNewTeam: FC<AddNewTeamProps> = ({
+const AddNewEditTeam: FC<AddNewEditTeamProps> = ({
+  editTeam,
   tournamentId,
   selectedGroup,
   isAddNewTeamOpen,
   handleCancelClick,
 }) => {
   const [parent] = useAutoAnimate();
+  const [isEdit, setIsEdit] = useState(false);
   const [teamsName, setTeamsName] = useState("");
   const [teamAttendants, setTeamAttendants] = useState<AttendantType[]>([
     {
@@ -33,15 +36,13 @@ const AddNewTeam: FC<AddNewTeamProps> = ({
     },
   ]);
   const { mutateAsync } = api.tournaments.addTeamToTournament.useMutation();
+  const { mutateAsync: updateTeam } = api.tournaments.updateTeam.useMutation();
   const { refetch: refetchGames } = api.tournaments.getTournamentGames.useQuery(
-    { tournamentId },
-    {
-      refetchOnWindowFocus: false,
-    }
+    { tournamentId }
   );
 
   const handleAddingTeam = async () => {
-    if (!selectedGroup) {
+    if (!selectedGroup || isEdit) {
       return;
     }
 
@@ -53,8 +54,47 @@ const AddNewTeam: FC<AddNewTeamProps> = ({
     });
 
     setTeamsName("");
-    handleCancelClick();
+    setTeamAttendants([
+      {
+        id: "1",
+        name: "",
+      },
+      {
+        id: "2",
+        name: "",
+      },
+    ]);
+
     await refetchGames();
+    handleCancelClick();
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editTeam || !isEdit) {
+      return;
+    }
+
+    await updateTeam({
+      tournamentId,
+      teamId: editTeam.id,
+      teamName: teamsName,
+      participants: teamAttendants,
+    });
+
+    setTeamsName("");
+    setTeamAttendants([
+      {
+        id: "1",
+        name: "",
+      },
+      {
+        id: "2",
+        name: "",
+      },
+    ]);
+
+    await refetchGames();
+    handleCancelClick();
   };
 
   const handleInputChange = (index: number, str: string) => {
@@ -84,12 +124,43 @@ const AddNewTeam: FC<AddNewTeamProps> = ({
     setTeamAttendants(newAttendants);
   };
 
+  useEffect(() => {
+    if (editTeam) {
+      console.log("editTeam", editTeam);
+
+      setIsEdit(true);
+      setTeamsName(editTeam.name);
+      setTeamAttendants(
+        editTeam.participants.map((participant) => {
+          return {
+            id: participant.id,
+            name: participant.name,
+          };
+        })
+      );
+    }
+  }, [editTeam]);
+
   return (
     <ModalWrap
       modalWidth="2xl"
       modalTitle="Add new team"
       isModalVisible={isAddNewTeamOpen}
-      handleCancelClick={handleCancelClick}
+      handleCancelClick={() => {
+        setIsEdit(false);
+        setTeamsName("");
+        handleCancelClick();
+        setTeamAttendants([
+          {
+            id: "1",
+            name: "",
+          },
+          {
+            id: "2",
+            name: "",
+          },
+        ]);
+      }}
     >
       <div className="w-full md:w-1/2">
         <Input
@@ -147,6 +218,12 @@ const AddNewTeam: FC<AddNewTeamProps> = ({
           <Button
             btnTitle="Save team"
             onClick={() => {
+              if (isEdit) {
+                handleSaveEdit().catch((err) =>
+                  console.error("Error updating team", err)
+                );
+              }
+
               handleAddingTeam().catch((err) =>
                 console.error("Error adding team", err)
               );
@@ -158,4 +235,4 @@ const AddNewTeam: FC<AddNewTeamProps> = ({
   );
 };
 
-export default AddNewTeam;
+export default AddNewEditTeam;

@@ -1,45 +1,51 @@
-import AddNewParticipants from "components/elements/AddNewParticipants/AddNewParticipants";
-import AddNewTeam from "components/elements/AddNewTeam/AddNewTeam";
+import AddNewEditParticipants from "components/elements/AddNewEditParticipants/AddNewEditParticipants";
+import AddNewEditTeam from "components/elements/AddNewEditTeam/AddNewEditTeam";
 import EditTournamentGameOrderModal from "components/elements/EditTournamentGameOrderModal/EditTournamentGameOrderModal";
-import type { EditType } from "components/elements/EditTournamentGroup/EditTournamentGroup";
+import type { EditGroupType } from "components/elements/EditTournamentGroup/EditTournamentGroup";
 import type { FC } from "react";
 
 interface EditModalContainerProps {
-  group: string;
-  editType: EditType;
   tournamentId: string;
+  selectedEdit: EditGroupType;
   handleCancelClick: () => void;
 }
 
 const EditModalContainer: FC<EditModalContainerProps> = ({
-  group,
-  editType,
   tournamentId,
+  selectedEdit,
   handleCancelClick,
 }) => {
   return (
-    <div className="h-full w-full bg-red-500">
-      <AddNewTeam
-        selectedGroup={group}
+    <>
+      <AddNewEditTeam
         tournamentId={tournamentId}
+        editTeam={selectedEdit.team}
+        selectedGroup={selectedEdit.group}
         handleCancelClick={handleCancelClick}
-        isAddNewTeamOpen={editType === "addTeam"}
+        isAddNewTeamOpen={
+          selectedEdit.editType === "addTeam" ||
+          selectedEdit.editType === "editTeam"
+        }
       />
 
-      <AddNewParticipants
-        selectedGroup={group}
+      <AddNewEditParticipants
         tournamentId={tournamentId}
+        selectedGroup={selectedEdit.group}
         handleCancelClick={handleCancelClick}
-        isAddNewParticipants={editType === "addParticipant"}
+        editParticipants={selectedEdit.participant}
+        isAddNewParticipants={
+          selectedEdit.editType === "addParticipant" ||
+          selectedEdit.editType === "editParticipant"
+        }
       />
 
       <EditTournamentGameOrderModal
-        gameEditGroup={group}
         tournamentId={tournamentId}
+        gameEditGroup={selectedEdit.group}
         handleCancelClick={handleCancelClick}
-        isGameOrderModalOpen={editType === "editGame"}
+        isGameOrderModalOpen={selectedEdit.editType === "editGameOrder"}
       />
-    </div>
+    </>
   );
 };
 

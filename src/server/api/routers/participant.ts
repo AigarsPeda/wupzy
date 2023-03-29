@@ -115,7 +115,7 @@ export const participantRouter = createTRPCRouter({
   updatedParticipant: protectedProcedure
     .input(
       z.object({
-        id: z.string(),
+        participantId: z.string(),
         name: z.string().optional(),
         score: z.number().optional(),
       })
@@ -123,7 +123,7 @@ export const participantRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const participant = await ctx.prisma.participant.update({
         where: {
-          id: input.id,
+          id: input.participantId,
         },
         data: {
           name: input.name,

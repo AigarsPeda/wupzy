@@ -7,20 +7,24 @@ import GridLayout from "components/layouts/GridLayout/GridLayout";
 import useParticipants from "hooks/useParticipants";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
-import type { ParticipantMapType } from "types/team.types";
+import { FiEdit2 } from "react-icons/fi";
+import type { ParticipantMapType, ParticipantType } from "types/team.types";
 import { api } from "utils/api";
 import classNames from "utils/classNames";
 import { getKeys } from "utils/teamsMapFunctions";
-import { FiEdit2 } from "react-icons/fi";
 
 interface EditParticipantTournamentCardProps {
   tournamentId: string;
-  handleStartEditGroup: (group: string, editKind: EditType) => void;
+  setSelectedEdit: (
+    group: string,
+    editKind: EditType,
+    participant?: ParticipantType
+  ) => void;
 }
 
 const EditParticipantTournamentCard: FC<EditParticipantTournamentCardProps> = ({
   tournamentId,
-  handleStartEditGroup,
+  setSelectedEdit,
 }) => {
   const [parent] = useAutoAnimate();
   const [isError, setIsError] = useState(false);
@@ -37,9 +41,9 @@ const EditParticipantTournamentCard: FC<EditParticipantTournamentCardProps> = ({
     if (!participants) return;
 
     await updateParticipantsGroup({
-      participantId,
       group,
       tournamentId,
+      participantId,
     });
 
     await refetchParticipants();
@@ -80,49 +84,63 @@ const EditParticipantTournamentCard: FC<EditParticipantTournamentCardProps> = ({
                 <h2 className="text-3xl">{group}</h2>
                 <EditGroupDropdown
                   handleEditGroupGame={() => {
-                    handleStartEditGroup(group, "editGame");
+                    setSelectedEdit(group, "editGameOrder");
                   }}
                   handleStartAddTeam={() => {
-                    handleStartEditGroup(group, "addParticipant");
+                    setSelectedEdit(group, "addParticipant");
                   }}
                 />
               </div>
 
               <ul ref={parent}>
-                <div className="my-3 grid grid-cols-3 gap-4">
-                  <p className="text-xs">Name</p>
-                  <p className="text-xs">Change to</p>
-                  <p className="text-right text-xs">Option</p>
-                </div>
+                <li className="my-3 grid grid-cols-3 gap-4">
+                  <div className="flex justify-start">
+                    <p className="text-xs">Name</p>
+                  </div>
+                  <div className="flex justify-center">
+                    <p className="text-xs">Change to</p>
+                  </div>
+                  <div className="flex justify-end">
+                    <p className="text-right text-xs">Option</p>
+                  </div>
+                </li>
                 {participants.map((participant) => (
                   <li
                     key={participant.id}
-                    className="grid grid-cols-3 gap-4 border-b-2 py-1"
+                    className="grid grid-cols-3 gap-4 py-2"
                   >
-                    <p> {participant.name}</p>
-                    {getKeys(participantsByGroup).map((g, i) => {
-                      if (g === group) return null;
+                    <div className="flex justify-start">
+                      <p> {participant.name}</p>
+                    </div>
+                    <div className="flex justify-center">
+                      {getKeys(participantsByGroup).map((g, i) => {
+                        if (g === group) return null;
 
-                      return (
-                        <SmallButton
-                          btnTitle={g}
-                          key={`${g}-${i}`}
-                          btnClassNames="h-6 w-6 ml-2"
-                          handleClick={() => {
-                            handleTeamsGroupChange(participant.id, g).catch(
-                              () => setIsError(true)
-                            );
-                          }}
-                        />
-                      );
-                    })}
+                        return (
+                          <SmallButton
+                            btnTitle={g}
+                            key={`${g}-${i}`}
+                            btnClassNames="h-6 w-6 ml-2"
+                            handleClick={() => {
+                              handleTeamsGroupChange(participant.id, g).catch(
+                                () => setIsError(true)
+                              );
+                            }}
+                          />
+                        );
+                      })}
+                    </div>
 
                     <div className="flex justify-end">
                       <SmallButton
                         btnTitle={<FiEdit2 />}
                         btnClassNames="h-6 w-6 ml-2"
                         handleClick={() => {
-                          console.log("edit");
+                          setSelectedEdit(
+                            participant.id,
+                            "editParticipant",
+                            participant
+                          );
                         }}
                       />
                     </div>
@@ -133,77 +151,6 @@ const EditParticipantTournamentCard: FC<EditParticipantTournamentCardProps> = ({
           ))}
         </GridLayout>
       </>
-      {/* {[...participantsByGroup].map(([group, participants]) => {
-        const isErrorMessageVisible = groupToSmall.includes(group);
-        const isMoreThanOneGroup = getKeys(participantsByGroup).length > 1;
-
-        return (
-          <div
-            key={`${group}`}
-            className={classNames(
-              isErrorMessageVisible && "border-2 border-red-500",
-              "rounded-md border border-gray-50 bg-gray-50 px-3 py-3 shadow-md md:px-8"
-            )}
-          >
-            <div className="flex justify-end">
-              <EditGroupDropdown
-                handleEditGroupGame={() => {
-                  handleStartEditGroup(group, "editGame");
-                }}
-                handleStartAddTeam={() => {
-                  handleStartEditGroup(group, "addTeam");
-                }}
-              />
-            </div>
-            <div
-              ref={parent}
-              className={classNames(
-                "relative grid max-h-[30rem] min-h-[17rem] min-w-[9.375rem] grid-cols-1 content-start overflow-y-auto md:ml-2"
-              )}
-            >
-              <EditTournamentHeader
-                group={group}
-                isMoreThanOneGroup={isMoreThanOneGroup}
-              />
-              {participants.map((participant, i) => {
-                const isChanged = changedParticipantsIds.includes(
-                  participant.id
-                );
-
-                const isLast = i === participants.length - 1;
-
-                return (
-                  <EditParticipant
-                    group={group}
-                    isLast={isLast}
-                    key={participant.id}
-                    isChanged={isChanged}
-                    participant={participant}
-                    resetNameChange={resetNameChange}
-                    handleGroupChange={handleGroupChange}
-                    participantsByGroup={participantsByGroup}
-                    participantsToDelete={participantsToDelete}
-                    setParticipantsToDelete={setParticipantsToDelete}
-                    handleParticipantUpdate={handleParticipantUpdate}
-                    handleDeleteParticipant={handleDeleteParticipant}
-                    handleParticipantNameChange={handleParticipantNameChange}
-                    handleCancelDeleteParticipants={
-                      handleCancelDeleteParticipants
-                    }
-                  />
-                );
-              })}
-            </div>
-            <div className="flex items-center justify-between">
-              {isErrorMessageVisible && (
-                <p className="text-xs text-red-500">
-                  Group don&apos;t have enough teams. You need at least 4 teams.
-                </p>
-              )}
-            </div>
-          </div>
-        );
-      })} */}
     </>
   );
 };
