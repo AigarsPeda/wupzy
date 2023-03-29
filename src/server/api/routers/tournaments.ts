@@ -5,9 +5,9 @@ import { GamesZodSchema } from "types/game.types";
 import { TeamsAttendantMapZodSchema } from "types/team.types";
 import createAllPossiblePairsInGroup from "utils/createAllPossiblePairsInGroup";
 import createGames from "utils/createGames";
+import createGamesForOneTeam from "utils/createGamesForOneTeam";
 import createTeamsGames from "utils/createTeamsGames";
 import { z } from "zod";
-import createGamesForOneTeam from "../../../utils/createGamesForOneTeam";
 
 const START_GROUP = "A";
 
@@ -140,6 +140,24 @@ export const tournamentsRouter = createTRPCRouter({
         },
         data: {
           name: input.teamName,
+        },
+      });
+
+      return { team };
+    }),
+
+  deleteTeam: protectedProcedure
+    .input(z.object({ teamId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.prisma.games.deleteMany({
+        where: {
+          OR: [{ team1Id: input.teamId }, { team2Id: input.teamId }],
+        },
+      });
+
+      const team = await ctx.prisma.team.delete({
+        where: {
+          id: input.teamId,
         },
       });
 
@@ -499,6 +517,8 @@ export const tournamentsRouter = createTRPCRouter({
           });
         },
       });
+
+      return { team };
     }),
 
   updateGameOrder: protectedProcedure

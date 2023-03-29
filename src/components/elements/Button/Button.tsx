@@ -48,7 +48,8 @@ const Button = forwardRef<Ref, ButtonProps>(
         btnSize === "large" && "h-11 w-48",
         btnSize === "full" && "h-10 w-full",
         btnSize === "square" && "h-11 w-11",
-        btnSize === "default" && "h-11 min-w-[4rem] md:min-w-[7.7rem]",
+        btnSize === "default" &&
+          "h-11 min-w-[4rem] px-4 text-xs md:min-w-[7.7rem] md:text-sm",
         isDisabled && "cursor-not-allowed bg-gray-300",
         icon ? "justify-between px-4 py-2" : "justify-center",
         !isDisabled &&
@@ -63,7 +64,7 @@ const Button = forwardRef<Ref, ButtonProps>(
         !isDisabled &&
           btnColor === "outline" &&
           "border-2 border-gray-800 bg-white text-gray-800 hover:scale-105 hover:shadow-gray-400",
-        "flex items-center rounded-md text-center text-sm font-semibold shadow transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-gray-100",
+        "flex items-center rounded-md text-center font-semibold shadow transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-gray-100",
         btnClass && btnClass
       )}
     >

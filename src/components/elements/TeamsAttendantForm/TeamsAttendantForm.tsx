@@ -181,7 +181,7 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
       </div>
 
       <div className="flex justify-between py-2">
-        <Button btnTitle="Add attendant" onClick={addNewAttendant} />
+        <Button btnTitle="Add teammate" onClick={addNewAttendant} />
         <div className="flex">
           <Button
             btnTitle="Cancel"

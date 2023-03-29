@@ -22,13 +22,15 @@ const EditParticipantTeamsCard: FC<EditParticipantTeamsCardProps> = ({
   setSelectedEdit,
 }) => {
   const [isError, setIsError] = useState(false);
+  // const { data: teams, refetch: refetchTeams } =
+  // api.tournaments.getTournamentTeams.useQuery({ tournamentId });
   const [teamsMap, setTeamsMap] = useState<TeamsMapType>(new Map());
-  const { data: teams, refetch: refetchGames } =
+  const { data: teams, refetch: refetchTeams } =
     api.tournaments.getTournamentTeams.useQuery({ tournamentId });
   const { mutateAsync: changeTeamsGroup } =
     api.tournaments.changeTeamsGroup.useMutation({
       onSuccess: async () => {
-        await refetchGames();
+        await refetchTeams();
       },
     });
 

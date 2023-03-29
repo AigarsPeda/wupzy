@@ -32,7 +32,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
 }) => {
   const { windowSize } = useWindowSize();
   const { tournament } = useTournament(tournamentId);
-  const { refetchParticipants } = useParticipants(tournamentId);
+  // const { refetchParticipants } = useParticipants(tournamentId);
   const [selectedEdit, setSelectedEdit] = useState<EditGroupType>({
     group: "",
     editType: "",
@@ -80,9 +80,9 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
           selectedEdit={selectedEdit}
           handleCancelClick={() => {
             setSelectedEdit({ group: "", editType: "" });
-            refetchParticipants().catch((err) => {
-              console.error("Error refetching participants: ", err);
-            });
+            // refetchParticipants().catch((err) => {
+            //   console.error("Error refetching participants: ", err);
+            // });
           }}
         />
       </div>

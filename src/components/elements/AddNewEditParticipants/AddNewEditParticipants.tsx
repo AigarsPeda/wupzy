@@ -23,44 +23,60 @@ const AddNewEditParticipants: FC<AddNewEditParticipantsProps> = ({
 }) => {
   const [name, setName] = useState("");
   const [isEdit, setIsEdit] = useState(false);
-  const { mutateAsync: updatedParticipant } =
-    api.participant.updatedParticipant.useMutation();
-  const { mutateAsync } = api.participant.addParticipantToGroup.useMutation();
+
   const { refetch: refetchGames } = api.tournaments.getTournamentGames.useQuery(
     { tournamentId }
   );
 
-  const handleAddingTeam = async () => {
-    if (!selectedGroup) {
-      return;
-    }
-
-    await mutateAsync({
-      score: 0,
-      name: name,
-      tournamentId,
-      group: selectedGroup,
+  const { mutate: updatedParticipant } =
+    api.participant.updatedParticipant.useMutation({
+      onSuccess: async () => {
+        setName("");
+        handleCancelClick();
+        await refetchGames();
+      },
     });
 
-    await refetchGames();
-    setName("");
-    handleCancelClick();
-  };
-
-  const handleUpdateParticipant = async () => {
-    if (!editParticipants || !isEdit) {
-      return;
-    }
-
-    await updatedParticipant({
-      name,
-      participantId: editParticipants.id,
+  const { mutate: addParticipantToGroup } =
+    api.participant.addParticipantToGroup.useMutation({
+      onSuccess: async () => {
+        setName("");
+        handleCancelClick();
+        await refetchGames();
+      },
     });
 
-    await refetchGames();
-    setName("");
-    handleCancelClick();
-  };
+  // const handleAddingTeam = async () => {
+  //   if (!selectedGroup) {
+  //     return;
+  //   }
+
+  //   await mutateAsync({
+  // score: 0,
+  // name: name,
+  // tournamentId,
+  // group: selectedGroup,
+  //   });
+
+  //   await refetchGames();
+  //   setName("");
+  //   handleCancelClick();
+  // };
+
+  // const handleUpdateParticipant = async () => {
+  //   if (!editParticipants || !isEdit) {
+  //     return;
+  //   }
+
+  //   await updatedParticipant({
+  //     name,
+  //     participantId: editParticipants.id,
+  //   });
+
+  //   await refetchGames();
+  //   setName("");
+  //   handleCancelClick();
+  // };
 
   useEffect(() => {
     if (editParticipants) {
@@ -72,8 +88,8 @@ const AddNewEditParticipants: FC<AddNewEditParticipantsProps> = ({
   return (
     <ModalWrap
       modalWidth="2xl"
-      modalTitle="Add new participants"
       isModalVisible={isAddNewParticipants}
+      modalTitle={isEdit ? "Edit participant" : "Add new participant"}
       handleCancelClick={() => {
         setName("");
         setIsEdit(false);
@@ -96,16 +112,26 @@ const AddNewEditParticipants: FC<AddNewEditParticipantsProps> = ({
           onClick={() => {
             if (name.length <= 2) return;
 
-            if (isEdit) {
-              handleUpdateParticipant().catch((err) =>
-                console.error("Error updating participant", err)
-              );
+            if (isEdit && editParticipants) {
+              // handleUpdateParticipant().catch((err) =>
+              //   console.error("Error updating participant", err)
+              // );
+              updatedParticipant({
+                name,
+                participantId: editParticipants.id,
+              });
               return;
             }
 
-            handleAddingTeam().catch((err) =>
-              console.error("Error adding team", err)
-            );
+            // handleAddingTeam().catch((err) =>
+            //   console.error("Error adding team", err)
+            // );
+            addParticipantToGroup({
+              score: 0,
+              name: name,
+              tournamentId,
+              group: selectedGroup || "A",
+            });
           }}
         />
       </div>

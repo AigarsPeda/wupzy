@@ -15,6 +15,17 @@ interface AddNewEditTeamProps {
   handleCancelClick: () => void;
 }
 
+const DEFAULT_ATTENDANTS: AttendantType[] = [
+  {
+    id: "1",
+    name: "",
+  },
+  {
+    id: "2",
+    name: "",
+  },
+];
+
 const AddNewEditTeam: FC<AddNewEditTeamProps> = ({
   editTeam,
   tournamentId,
@@ -25,77 +36,49 @@ const AddNewEditTeam: FC<AddNewEditTeamProps> = ({
   const [parent] = useAutoAnimate();
   const [isEdit, setIsEdit] = useState(false);
   const [teamsName, setTeamsName] = useState("");
-  const [teamAttendants, setTeamAttendants] = useState<AttendantType[]>([
-    {
-      id: "1",
-      name: "",
-    },
-    {
-      id: "2",
-      name: "",
-    },
-  ]);
-  const { mutateAsync } = api.tournaments.addTeamToTournament.useMutation();
-  const { mutateAsync: updateTeam } = api.tournaments.updateTeam.useMutation();
-  const { refetch: refetchGames } = api.tournaments.getTournamentGames.useQuery(
+  const [teamAttendants, setTeamAttendants] =
+    useState<AttendantType[]>(DEFAULT_ATTENDANTS);
+
+  const { refetch: refetchTeams } = api.tournaments.getTournamentTeams.useQuery(
     { tournamentId }
   );
 
-  const handleAddingTeam = async () => {
-    if (!selectedGroup || isEdit) {
-      return;
-    }
-
-    await mutateAsync({
-      tournamentId,
-      teamName: teamsName,
-      group: selectedGroup,
-      participants: teamAttendants.map((attendant) => attendant.name),
+  const { mutate: addTeamToTournament } =
+    api.tournaments.addTeamToTournament.useMutation({
+      onSuccess: async () => {
+        setTeamsName("");
+        handleCancelClick();
+        setTeamAttendants(DEFAULT_ATTENDANTS);
+        await refetchTeams();
+      },
     });
 
-    setTeamsName("");
-    setTeamAttendants([
-      {
-        id: "1",
-        name: "",
-      },
-      {
-        id: "2",
-        name: "",
-      },
-    ]);
+  const { mutate: deleteTeam } = api.tournaments.deleteTeam.useMutation({
+    onSuccess: async () => {
+      setTeamsName("");
+      handleCancelClick();
+      setTeamAttendants(DEFAULT_ATTENDANTS);
+      await refetchTeams();
+    },
+  });
 
-    await refetchGames();
-    handleCancelClick();
-  };
-
-  const handleSaveEdit = async () => {
-    if (!editTeam || !isEdit) {
-      return;
-    }
-
-    await updateTeam({
-      tournamentId,
-      teamId: editTeam.id,
-      teamName: teamsName,
-      participants: teamAttendants,
-    });
-
-    setTeamsName("");
-    setTeamAttendants([
-      {
-        id: "1",
-        name: "",
-      },
-      {
-        id: "2",
-        name: "",
-      },
-    ]);
-
-    await refetchGames();
-    handleCancelClick();
-  };
+  const { mutate: updateTeam } = api.tournaments.updateTeam.useMutation({
+    onSuccess: async () => {
+      setTeamsName("");
+      handleCancelClick();
+      setTeamAttendants([
+        {
+          id: "1",
+          name: "",
+        },
+        {
+          id: "2",
+          name: "",
+        },
+      ]);
+      await refetchTeams();
+    },
+  });
 
   const handleInputChange = (index: number, str: string) => {
     const newAttendants = [...teamAttendants];
@@ -126,8 +109,6 @@ const AddNewEditTeam: FC<AddNewEditTeamProps> = ({
 
   useEffect(() => {
     if (editTeam) {
-      console.log("editTeam", editTeam);
-
       setIsEdit(true);
       setTeamsName(editTeam.name);
       setTeamAttendants(
@@ -144,22 +125,13 @@ const AddNewEditTeam: FC<AddNewEditTeamProps> = ({
   return (
     <ModalWrap
       modalWidth="2xl"
-      modalTitle="Add new team"
       isModalVisible={isAddNewTeamOpen}
+      modalTitle={isEdit ? "Edit team" : "Add new team"}
       handleCancelClick={() => {
         setIsEdit(false);
         setTeamsName("");
         handleCancelClick();
-        setTeamAttendants([
-          {
-            id: "1",
-            name: "",
-          },
-          {
-            id: "2",
-            name: "",
-          },
-        ]);
+        setTeamAttendants(DEFAULT_ATTENDANTS);
       }}
     >
       <div className="w-full md:w-1/2">
@@ -194,39 +166,54 @@ const AddNewEditTeam: FC<AddNewEditTeamProps> = ({
           );
         })}
       </div>
-      <div className="flex justify-between py-2">
-        <Button btnTitle="Add attendant" onClick={addNewAttendant} />
-        <div className="flex">
+      <div className="justify-between py-2 md:flex">
+        <Button
+          btnTitle="Add teammate"
+          onClick={addNewAttendant}
+          btnClass="mb-2 md:mb-0"
+        />
+        <div className="flex justify-end md:justify-start">
+          {isEdit && editTeam && (
+            <Button
+              btnColor="red"
+              btnClass="mr-2"
+              btnTitle="Delete"
+              onClick={() => {
+                deleteTeam({
+                  teamId: editTeam.id,
+                });
+              }}
+            />
+          )}
+
           <Button
-            btnColor="red"
             btnClass="mr-2"
             btnTitle="Cancel"
+            btnColor="outline"
             onClick={() => {
               handleCancelClick();
-              setTeamAttendants([
-                {
-                  id: "1",
-                  name: "",
-                },
-                {
-                  id: "2",
-                  name: "",
-                },
-              ]);
+              setTeamAttendants(DEFAULT_ATTENDANTS);
             }}
           />
           <Button
             btnTitle="Save team"
             onClick={() => {
-              if (isEdit) {
-                handleSaveEdit().catch((err) =>
-                  console.error("Error updating team", err)
-                );
+              if (isEdit && editTeam) {
+                updateTeam({
+                  tournamentId,
+                  teamId: editTeam.id,
+                  teamName: teamsName,
+                  participants: teamAttendants,
+                });
+                return;
               }
 
-              handleAddingTeam().catch((err) =>
-                console.error("Error adding team", err)
-              );
+              addTeamToTournament({
+                tournamentId,
+                teamName: teamsName,
+                group: selectedGroup || "A",
+                participants: teamAttendants.map((attendant) => attendant.name),
+              });
             }}
           />
         </div>
