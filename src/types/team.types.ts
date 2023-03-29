@@ -23,10 +23,6 @@ export const TeamZodSchema = z.object({
 
 export type TeamType = z.infer<typeof TeamZodSchema>;
 
-// export const TeamsZodSchema = z.array(TeamZodSchema);
-
-// export type TeamsType = z.infer<typeof TeamsZodSchema>;
-
 export const TeamsMapZodSchema = z.map(z.string(), z.array(TeamZodSchema));
 
 export type TeamsMapType = z.infer<typeof TeamsMapZodSchema>;

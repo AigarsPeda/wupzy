@@ -307,22 +307,6 @@ export const tournamentsRouter = createTRPCRouter({
       return { tournament };
     }),
 
-  // getTournamentTeams: protectedProcedure
-  //   .input(z.object({ tournamentId: z.string(), group: z.string().optional() }))
-  //   .query(async ({ ctx, input }) => {
-  //     const teams = await ctx.prisma.team.findMany({
-  //       where: {
-  //         group: input.group,
-  //         tournamentId: input.tournamentId,
-  //       },
-  //       include: {
-  //         participants: true,
-  //       },
-  //     });
-
-  //     return { teams };
-  //   }),
-
   getTournamentGames: protectedProcedure
     .input(z.object({ tournamentId: z.string(), group: z.string().optional() }))
     .query(async ({ ctx, input }) => {
@@ -366,6 +350,110 @@ export const tournamentsRouter = createTRPCRouter({
       });
 
       return { teams };
+    }),
+
+  changeTeamsGroup: protectedProcedure
+    .input(
+      z.object({
+        group: z.string(),
+        teamId: z.string(),
+        tournamentId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // delete all games for this team
+      await ctx.prisma.games.deleteMany({
+        where: {
+          group: input.group,
+          tournamentId: input.tournamentId,
+          OR: [{ team1Id: input.teamId }, { team2Id: input.teamId }],
+        },
+      });
+
+      // get all teams for this tournament
+      const oldTeams = await ctx.prisma.team.findMany({
+        where: {
+          group: input.group,
+          tournamentId: input.tournamentId,
+        },
+        include: {
+          participants: true,
+        },
+      });
+
+      // update team group
+      const team = await ctx.prisma.team.update({
+        where: {
+          id: input.teamId,
+        },
+
+        data: {
+          group: input.group,
+        },
+        include: {
+          participants: true,
+        },
+      });
+
+      // How to update participants group ???
+      for (let i = 0; i < team.participants.length; i++) {
+        const participant = team.participants[i];
+
+        if (!participant) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Participant not found",
+          });
+        }
+
+        await ctx.prisma.participant.update({
+          where: {
+            id: participant.id,
+          },
+          data: {
+            group: input.group,
+          },
+        });
+      }
+
+      const lastOrderNumber = await ctx.prisma.games.findMany({
+        where: {
+          group: input.group,
+          tournamentId: input.tournamentId,
+        },
+        orderBy: {
+          gameOrder: "desc",
+        },
+        take: 1,
+      });
+
+      const gameOrder = lastOrderNumber[0]?.gameOrder || 0;
+
+      await createGamesForOneTeam({
+        team,
+        teams: oldTeams,
+        gameOrder: gameOrder + 1,
+        callback: async (
+          firstTeamIds,
+          secondTeamIds,
+          firstTeamId,
+          secondTeamId,
+          gameOrder
+        ) => {
+          await ctx.prisma.games.create({
+            data: {
+              gameOrder,
+              group: input.group,
+              team1Id: firstTeamId,
+              team2Id: secondTeamId,
+              tournamentId: input.tournamentId,
+              participants: {
+                connect: [...firstTeamIds, ...secondTeamIds],
+              },
+            },
+          });
+        },
+      });
     }),
 
   updateGameOrder: protectedProcedure

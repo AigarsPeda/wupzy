@@ -6,15 +6,15 @@ import type { FC } from "react";
 import type { ParticipantMapType, ParticipantType } from "types/team.types";
 import classNames from "utils/classNames";
 import { getKeys } from "utils/teamsMapFunctions";
+import type { EditType } from "../EditTournamentGroup/EditTournamentGroup";
 
 interface EditParticipantTournamentCardProps {
   groupToSmall: string[];
   changedParticipantsIds: string[];
   participantsByGroup: ParticipantMapType;
-  handleStartAddTeam: (str: string) => void;
   handleCancelDeleteParticipants: () => void;
   participantsToDelete: ParticipantType | null;
-  handleEditGroupGame: (group: string) => void;
+  handleStartEditGroup: (group: string, editKind: EditType) => void;
   setParticipantsToDelete: (team: ParticipantType) => void;
   resetNameChange: (participant: ParticipantType) => void;
   handleDeleteParticipant: (team: ParticipantType) => Promise<void>;
@@ -31,8 +31,7 @@ const EditParticipantTournamentCard: FC<EditParticipantTournamentCardProps> = ({
   groupToSmall,
   resetNameChange,
   handleGroupChange,
-  handleStartAddTeam,
-  handleEditGroupGame,
+  handleStartEditGroup,
   participantsByGroup,
   participantsToDelete,
   changedParticipantsIds,
@@ -61,10 +60,10 @@ const EditParticipantTournamentCard: FC<EditParticipantTournamentCardProps> = ({
             <div className="flex justify-end">
               <EditGroupDropdown
                 handleEditGroupGame={() => {
-                  handleEditGroupGame(group);
+                  handleStartEditGroup(group, "editGame");
                 }}
                 handleStartAddTeam={() => {
-                  handleStartAddTeam(group);
+                  handleStartEditGroup(group, "addTeam");
                 }}
               />
             </div>
