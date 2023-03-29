@@ -44,15 +44,15 @@ const AddNewParticipants: FC<AddNewParticipants> = ({
   return (
     <ModalWrap
       modalWidth="2xl"
-      isModalVisible={isAddNewParticipants}
       modalTitle="Add new participants"
+      isModalVisible={isAddNewParticipants}
       handleCancelClick={handleCancelClick}
     >
       <Input
         type="text"
+        value={teamsName}
         name="participantsName"
         label="Participants name"
-        value={teamsName}
         handleInputChange={(e) => setTeamsName(e.target.value)}
       />
 

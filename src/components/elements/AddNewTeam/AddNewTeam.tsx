@@ -34,7 +34,10 @@ const AddNewTeam: FC<AddNewTeamProps> = ({
   ]);
   const { mutateAsync } = api.tournaments.addTeamToTournament.useMutation();
   const { refetch: refetchGames } = api.tournaments.getTournamentGames.useQuery(
-    { tournamentId }
+    { tournamentId },
+    {
+      refetchOnWindowFocus: false,
+    }
   );
 
   const handleAddingTeam = async () => {
@@ -84,8 +87,8 @@ const AddNewTeam: FC<AddNewTeamProps> = ({
   return (
     <ModalWrap
       modalWidth="2xl"
-      isModalVisible={isAddNewTeamOpen}
       modalTitle="Add new team"
+      isModalVisible={isAddNewTeamOpen}
       handleCancelClick={handleCancelClick}
     >
       <div className="w-full md:w-1/2">

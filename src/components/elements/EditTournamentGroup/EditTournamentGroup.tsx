@@ -1,26 +1,17 @@
-import AddNewParticipants from "components/elements/AddNewParticipants/AddNewParticipants";
-import AddNewTeam from "components/elements/AddNewTeam/AddNewTeam";
+import EditModalContainer from "components/containers/EditModalContainer/EditModalContainer";
 import EditParticipantTeamsCard from "components/elements/EditParticipantTeamsCard/EditParticipantTeamsCard";
 import EditParticipantTournamentCard from "components/elements/EditParticipantTournamentCard/EditParticipantTournamentCard";
-import getGroupThatAreToSmall from "components/elements/EditTournament/utils/getGroupThatAreToSmall";
-import getUpdatedParticipants from "components/elements/EditTournament/utils/getUpdatedParticipants";
-import EditTournamentGameOrderModal from "components/elements/EditTournamentGameOrderModal/EditTournamentGameOrderModal";
-import EditTournamentName from "components/elements/EditTournamentName/EditTournamentName";
-import GroupDropdown from "components/elements/GroupDropdown/GroupDropdown";
-import SmallButton from "components/elements/SmallButton/SmallButton";
-import GridLayout from "components/layouts/GridLayout/GridLayout";
-import useParticipants from "hooks/useParticipants";
 import useTournament from "hooks/useTournament";
 import useWindowSize from "hooks/useWindowSize";
 import type { FC } from "react";
-import { useEffect, useState } from "react";
-import { GrPowerReset } from "react-icons/gr";
-import { RiSaveLine } from "react-icons/ri";
-import type { ParticipantMapType, ParticipantType } from "types/team.types";
-import { api } from "utils/api";
-import { getKeys } from "utils/teamsMapFunctions";
+import { useState } from "react";
 
-export type EditType = "addTeam" | "editGame" | "";
+export type EditType =
+  | "addTeam"
+  | "editGame"
+  | "addParticipant"
+  | "editParticipant"
+  | "";
 
 type EditGroupType = {
   group: string;
@@ -36,7 +27,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
 }) => {
   const { windowSize } = useWindowSize();
   const { tournament } = useTournament(tournamentId);
-  const { refetchParticipants } = useParticipants(tournamentId);
+  // const { refetchParticipants } = useParticipants(tournamentId);
   const [selectedEditGroup, setSelectedEditGroup] = useState<EditGroupType>({
     group: "",
     editType: "",
@@ -197,67 +188,6 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
 
   return (
     <>
-      {/* <div className="mt-3 mb-6 flex w-full justify-between">
-        <div className="flex">
-          <EditTournamentName
-            newTournamentName={newTournamentName}
-            setNewTournamentName={handleTournamentNameChange}
-          />
-          {isTournamentNameChanged && (
-            <>
-              <SmallButton
-                btnTitle={<RiSaveLine className="h-6 w-6" />}
-                btnClassNames="h-11 w-11 flex items-center justify-center"
-                handleClick={() => {
-                  handleTournamentName().catch((e) => console.error(e));
-                }}
-              />
-              <SmallButton
-                btnTitle={<GrPowerReset className="h-6 w-6" />}
-                btnClassNames="h-11 w-11 flex items-center justify-center"
-                handleClick={() => {
-                  setIsTournamentNameChanged(false);
-                  setNewTournamentName(tournament?.tournament.name || "");
-                }}
-              />
-            </>
-          )}
-        </div>
-
-        <GroupDropdown
-          handleGroupClick={addGroupToTournament}
-          alreadyCreatedGroups={getKeys(participantsByGroup)}
-        />
-      </div> */}
-
-      {tournament?.tournament.type === "KING" ? (
-        <AddNewParticipants
-          tournamentId={tournamentId}
-          selectedGroup={selectedEditGroup.group}
-          isAddNewParticipants={selectedEditGroup.editType === "addTeam"}
-          handleCancelClick={() => {
-            setSelectedEditGroup({
-              group: "",
-              editType: "",
-            });
-            refetchParticipants().catch((err) => console.error(err));
-          }}
-        />
-      ) : (
-        <AddNewTeam
-          tournamentId={tournamentId}
-          selectedGroup={selectedEditGroup.group}
-          isAddNewTeamOpen={selectedEditGroup.editType === "addTeam"}
-          handleCancelClick={() => {
-            setSelectedEditGroup({
-              group: "",
-              editType: "",
-            });
-            refetchParticipants().catch((err) => console.error(err));
-          }}
-        />
-      )}
-
       <div
         style={
           windowSize.width && windowSize.width > 650
@@ -271,44 +201,13 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
             handleStartEditGroup={(group, type) => {
               setSelectedEditGroup((state) => {
                 if (state.group === group) {
-                  return { group: "", editType: "editGame" };
+                  return { group: "", editType: "" };
                 }
                 return { group, editType: type };
               });
             }}
           />
         )}
-
-        {/* <GridLayout isGap minWith="350">
-          {/* {tournament?.tournament.type === "KING" && (
-            <EditParticipantTournamentCard
-              groupToSmall={groupToSmall}
-              resetNameChange={resetNameChange}
-              handleStartEditGroup={(group, type) => {
-                setSelectedEditGroup((state) => {
-                  if (state.group === group) {
-                    return { group: "", editType: "editGame" };
-                  }
-                  return { group, editType: type };
-                });
-              }}
-              participantsByGroup={participantsByGroup}
-              participantsToDelete={participantsToDelete}
-              changedParticipantsIds={changedParticipantsIds}
-              handleParticipantUpdate={handleParticipantUpdate}
-              setParticipantsToDelete={setParticipantsToDelete}
-              handleDeleteParticipant={handleDeleteParticipant}
-              handleParticipantNameChange={handleParticipantNameChange}
-              handleCancelDeleteParticipants={() => {
-                setParticipantsToDelete(null);
-              }}
-              handleGroupChange={(team, oldGroup, newGroup) => {
-                handleGroupChange(team, oldGroup, newGroup).catch((e) =>
-                  console.error("error changing group", e)
-                );
-              }}
-            />
-          )} */}
 
         {tournament?.tournament.type === "TEAMS" && (
           <EditParticipantTeamsCard
@@ -324,10 +223,10 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
           />
         )}
 
-        <EditTournamentGameOrderModal
+        <EditModalContainer
           tournamentId={tournamentId}
-          gameEditGroup={selectedEditGroup.group}
-          isGameOrderModalOpen={selectedEditGroup.editType === "editGame"}
+          group={selectedEditGroup.group}
+          editType={selectedEditGroup.editType}
           handleCancelClick={() => {
             setSelectedEditGroup({ group: "", editType: "" });
           }}

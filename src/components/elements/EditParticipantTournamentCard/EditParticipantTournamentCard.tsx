@@ -11,6 +11,7 @@ import type { ParticipantMapType } from "types/team.types";
 import { api } from "utils/api";
 import classNames from "utils/classNames";
 import { getKeys } from "utils/teamsMapFunctions";
+import { FiEdit2 } from "react-icons/fi";
 
 interface EditParticipantTournamentCardProps {
   tournamentId: string;
@@ -82,7 +83,7 @@ const EditParticipantTournamentCard: FC<EditParticipantTournamentCardProps> = ({
                     handleStartEditGroup(group, "editGame");
                   }}
                   handleStartAddTeam={() => {
-                    handleStartEditGroup(group, "addTeam");
+                    handleStartEditGroup(group, "addParticipant");
                   }}
                 />
               </div>
@@ -91,6 +92,7 @@ const EditParticipantTournamentCard: FC<EditParticipantTournamentCardProps> = ({
                 <div className="my-3 grid grid-cols-3 gap-4">
                   <p className="text-xs">Name</p>
                   <p className="text-xs">Change to</p>
+                  <p className="text-right text-xs">Option</p>
                 </div>
                 {participants.map((participant) => (
                   <li
@@ -114,6 +116,16 @@ const EditParticipantTournamentCard: FC<EditParticipantTournamentCardProps> = ({
                         />
                       );
                     })}
+
+                    <div className="flex justify-end">
+                      <SmallButton
+                        btnTitle={<FiEdit2 />}
+                        btnClassNames="h-6 w-6 ml-2"
+                        handleClick={() => {
+                          console.log("edit");
+                        }}
+                      />
+                    </div>
                   </li>
                 ))}
               </ul>
