@@ -5,6 +5,7 @@ import UnderLineButton from "components/elements/UnderLineButton/UnderLineButton
 import type { FC } from "react";
 import type { GamesOfInterestType } from "types/game.types";
 import classNames from "utils/classNames";
+import type { TournamentTypeType } from "../../../types/tournament.types";
 
 const GAME_STATUS: {
   [key: string]: string;
@@ -19,6 +20,7 @@ interface GroupCardGamesOfInterestProps {
   firstTeamScore: number;
   secondTeamScore: number;
   gamesOfInterest: GamesOfInterestType;
+  tournamentKind: TournamentTypeType;
   totalGames: {
     [key: string]: number;
   };
@@ -34,6 +36,7 @@ interface GroupCardGamesOfInterestProps {
 const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
   group,
   totalGames,
+  tournamentKind,
   firstTeamScore,
   secondTeamScore,
   gamesOfInterest,
@@ -91,26 +94,39 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
                     </p>
                   </div>
                   {game ? (
-                    <div className="flex space-x-4">
-                      <DisplayTeams
-                        infoScore={game.team1Score}
-                        teamsScore={firstTeamScore}
-                        isCurrentGame={isCurrentGame}
-                        team={game.team1.participants}
-                        handleScoreChange={(n) => {
-                          handleScoreChange("firstTeam", n);
-                        }}
-                      />
-
-                      <DisplayTeams
-                        infoScore={game.team2Score}
-                        teamsScore={secondTeamScore}
-                        isCurrentGame={isCurrentGame}
-                        team={game.team2.participants}
-                        handleScoreChange={(n) => {
-                          handleScoreChange("secondTeam", n);
-                        }}
-                      />
+                    <div className="flex w-full">
+                      <div className="w-[50%]">
+                        <DisplayTeams
+                          infoScore={game.team1Score}
+                          teamsScore={firstTeamScore}
+                          isCurrentGame={isCurrentGame}
+                          team={game.team1.participants}
+                          teamName={
+                            tournamentKind === "TEAMS"
+                              ? game.team1.name
+                              : undefined
+                          }
+                          handleScoreChange={(n) => {
+                            handleScoreChange("firstTeam", n);
+                          }}
+                        />
+                      </div>
+                      <div className="w-[50%]">
+                        <DisplayTeams
+                          infoScore={game.team2Score}
+                          teamsScore={secondTeamScore}
+                          isCurrentGame={isCurrentGame}
+                          team={game.team2.participants}
+                          teamName={
+                            tournamentKind === "TEAMS"
+                              ? game.team2.name
+                              : undefined
+                          }
+                          handleScoreChange={(n) => {
+                            handleScoreChange("secondTeam", n);
+                          }}
+                        />
+                      </div>
                     </div>
                   ) : (
                     <p className="text-gray-400">no game</p>

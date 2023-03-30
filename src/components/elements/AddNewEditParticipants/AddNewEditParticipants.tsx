@@ -1,6 +1,7 @@
 import Button from "components/elements/Button/Button";
 import Input from "components/elements/Input/Input";
 import ModalWrap from "components/elements/ModalWrap/ModalWrap";
+import useParticipants from "hooks/useParticipants";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import type { ParticipantType } from "types/team.types";
@@ -23,17 +24,14 @@ const AddNewEditParticipants: FC<AddNewEditParticipantsProps> = ({
 }) => {
   const [name, setName] = useState("");
   const [isEdit, setIsEdit] = useState(false);
-
-  const { refetch: refetchGames } = api.tournaments.getTournamentGames.useQuery(
-    { tournamentId }
-  );
+  const { refetchParticipants } = useParticipants(tournamentId);
 
   const { mutate: updatedParticipant } =
     api.participant.updatedParticipant.useMutation({
       onSuccess: async () => {
         setName("");
         handleCancelClick();
-        await refetchGames();
+        await refetchParticipants();
       },
     });
 
@@ -42,41 +40,9 @@ const AddNewEditParticipants: FC<AddNewEditParticipantsProps> = ({
       onSuccess: async () => {
         setName("");
         handleCancelClick();
-        await refetchGames();
+        await refetchParticipants();
       },
     });
-
-  // const handleAddingTeam = async () => {
-  //   if (!selectedGroup) {
-  //     return;
-  //   }
-
-  //   await mutateAsync({
-  // score: 0,
-  // name: name,
-  // tournamentId,
-  // group: selectedGroup,
-  //   });
-
-  //   await refetchGames();
-  //   setName("");
-  //   handleCancelClick();
-  // };
-
-  // const handleUpdateParticipant = async () => {
-  //   if (!editParticipants || !isEdit) {
-  //     return;
-  //   }
-
-  //   await updatedParticipant({
-  //     name,
-  //     participantId: editParticipants.id,
-  //   });
-
-  //   await refetchGames();
-  //   setName("");
-  //   handleCancelClick();
-  // };
 
   useEffect(() => {
     if (editParticipants) {
@@ -113,9 +79,6 @@ const AddNewEditParticipants: FC<AddNewEditParticipantsProps> = ({
             if (name.length <= 2) return;
 
             if (isEdit && editParticipants) {
-              // handleUpdateParticipant().catch((err) =>
-              //   console.error("Error updating participant", err)
-              // );
               updatedParticipant({
                 name,
                 participantId: editParticipants.id,
@@ -123,9 +86,6 @@ const AddNewEditParticipants: FC<AddNewEditParticipantsProps> = ({
               return;
             }
 
-            // handleAddingTeam().catch((err) =>
-            //   console.error("Error adding team", err)
-            // );
             addParticipantToGroup({
               score: 0,
               name: name,

@@ -2,6 +2,7 @@ import DisplayTeams from "components/elements/DisplayTeams/DisplayTeams";
 import ModalWrap from "components/elements/ModalWrap/ModalWrap";
 import useWindowSize from "hooks/useWindowSize";
 import type { FC } from "react";
+import type { TournamentTypeType } from "types/tournament.types";
 import { api } from "utils/api";
 import classNames from "utils/classNames";
 
@@ -10,11 +11,13 @@ interface GroupCardDisplayAllGamesProps {
   tournamentId: string;
   isDisplayAllGames: boolean;
   handleCancelClick: () => void;
+  tournamentKind: TournamentTypeType;
 }
 
 const GroupCardDisplayAllGames: FC<GroupCardDisplayAllGamesProps> = ({
   group,
   tournamentId,
+  tournamentKind,
   isDisplayAllGames,
   handleCancelClick,
 }) => {
@@ -54,21 +57,33 @@ const GroupCardDisplayAllGames: FC<GroupCardDisplayAllGamesProps> = ({
             >
               <div
                 className={classNames(
-                  "mb-3 w-20 border-b-2  md:mr-3 md:mb-0 md:border-b-0 md:border-r-2 md:px-2"
+                  "mb-3 w-20 border-b-2 md:mr-3 md:mb-0 md:border-b-0 md:border-r-2 md:px-2"
                 )}
               >
                 <p className="pb-1 text-xs">{`${gameOrder} of ${gameCount}`}</p>
               </div>
-              <DisplayTeams
-                infoScore={game.team1Score}
-                team={game.team1.participants}
-                isWinner={isFirstTeamWinner && !isDraw}
-              />
-              <DisplayTeams
-                infoScore={game.team2Score}
-                team={game.team2.participants}
-                isWinner={isSecondTeamWinner && !isDraw}
-              />
+              <div className="flex w-full">
+                <div className="mr-2 w-[50%] truncate">
+                  <DisplayTeams
+                    infoScore={game.team1Score}
+                    team={game.team1.participants}
+                    isWinner={isFirstTeamWinner && !isDraw}
+                    teamName={
+                      tournamentKind === "TEAMS" ? game.team1.name : undefined
+                    }
+                  />
+                </div>
+                <div className="w-[50%] truncate">
+                  <DisplayTeams
+                    infoScore={game.team2Score}
+                    team={game.team2.participants}
+                    isWinner={isSecondTeamWinner && !isDraw}
+                    teamName={
+                      tournamentKind === "TEAMS" ? game.team2.name : undefined
+                    }
+                  />
+                </div>
+              </div>
             </li>
           );
         })}

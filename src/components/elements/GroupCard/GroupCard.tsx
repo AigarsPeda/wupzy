@@ -82,6 +82,7 @@ const GroupCard: FC<GroupCardProps> = ({
         firstTeamScore={score.firstTeam}
         gamesOfInterest={gamesOfInterest}
         secondTeamScore={score.secondTeam}
+        tournamentKind={tournamentKind}
         handleDisplayAllClick={() => {
           setIsDisplayAllGames((state) => !state);
         }}
@@ -107,6 +108,7 @@ const GroupCard: FC<GroupCardProps> = ({
       <GroupCardDisplayAllGames
         group={group}
         tournamentId={tournamentId}
+        tournamentKind={tournamentKind}
         isDisplayAllGames={isDisplayAllGames}
         handleCancelClick={() => {
           setIsDisplayAllGames(false);

@@ -1,7 +1,6 @@
 import EditModalContainer from "components/containers/EditModalContainer/EditModalContainer";
 import EditParticipantTeamsCard from "components/elements/EditParticipantTeamsCard/EditParticipantTeamsCard";
 import EditParticipantTournamentCard from "components/elements/EditParticipantTournamentCard/EditParticipantTournamentCard";
-import useParticipants from "hooks/useParticipants";
 import useTournament from "hooks/useTournament";
 import useWindowSize from "hooks/useWindowSize";
 import type { FC } from "react";
@@ -32,7 +31,6 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
 }) => {
   const { windowSize } = useWindowSize();
   const { tournament } = useTournament(tournamentId);
-  // const { refetchParticipants } = useParticipants(tournamentId);
   const [selectedEdit, setSelectedEdit] = useState<EditGroupType>({
     group: "",
     editType: "",
@@ -80,9 +78,6 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
           selectedEdit={selectedEdit}
           handleCancelClick={() => {
             setSelectedEdit({ group: "", editType: "" });
-            // refetchParticipants().catch((err) => {
-            //   console.error("Error refetching participants: ", err);
-            // });
           }}
         />
       </div>
