@@ -15,17 +15,6 @@ interface AddNewEditTeamProps {
   handleCancelClick: () => void;
 }
 
-const DEFAULT_ATTENDANTS: AttendantType[] = [
-  {
-    id: "1",
-    name: "",
-  },
-  {
-    id: "2",
-    name: "",
-  },
-];
-
 const AddNewEditTeam: FC<AddNewEditTeamProps> = ({
   editTeam,
   tournamentId,
@@ -36,8 +25,16 @@ const AddNewEditTeam: FC<AddNewEditTeamProps> = ({
   const [parent] = useAutoAnimate();
   const [isEdit, setIsEdit] = useState(false);
   const [teamsName, setTeamsName] = useState("");
-  const [teamAttendants, setTeamAttendants] =
-    useState<AttendantType[]>(DEFAULT_ATTENDANTS);
+  const [teamAttendants, setTeamAttendants] = useState<AttendantType[]>([
+    {
+      id: "1",
+      name: "",
+    },
+    {
+      id: "2",
+      name: "",
+    },
+  ]);
 
   const { refetch: refetchTeams } = api.tournaments.getTournamentTeams.useQuery(
     { tournamentId }
@@ -48,8 +45,17 @@ const AddNewEditTeam: FC<AddNewEditTeamProps> = ({
       onSuccess: async () => {
         setTeamsName("");
         handleCancelClick();
-        setTeamAttendants(DEFAULT_ATTENDANTS);
         await refetchTeams();
+        setTeamAttendants([
+          {
+            id: "1",
+            name: "",
+          },
+          {
+            id: "2",
+            name: "",
+          },
+        ]);
       },
     });
 
@@ -57,15 +63,7 @@ const AddNewEditTeam: FC<AddNewEditTeamProps> = ({
     onSuccess: async () => {
       setTeamsName("");
       handleCancelClick();
-      setTeamAttendants(DEFAULT_ATTENDANTS);
       await refetchTeams();
-    },
-  });
-
-  const { mutate: updateTeam } = api.tournaments.updateTeam.useMutation({
-    onSuccess: async () => {
-      setTeamsName("");
-      handleCancelClick();
       setTeamAttendants([
         {
           id: "1",
@@ -76,7 +74,24 @@ const AddNewEditTeam: FC<AddNewEditTeamProps> = ({
           name: "",
         },
       ]);
+    },
+  });
+
+  const { mutate: updateTeam } = api.tournaments.updateTeam.useMutation({
+    onSuccess: async () => {
+      setTeamsName("");
+      handleCancelClick();
       await refetchTeams();
+      setTeamAttendants([
+        {
+          id: "1",
+          name: "",
+        },
+        {
+          id: "2",
+          name: "",
+        },
+      ]);
     },
   });
 
@@ -131,7 +146,16 @@ const AddNewEditTeam: FC<AddNewEditTeamProps> = ({
         setIsEdit(false);
         setTeamsName("");
         handleCancelClick();
-        setTeamAttendants(DEFAULT_ATTENDANTS);
+        setTeamAttendants([
+          {
+            id: "1",
+            name: "",
+          },
+          {
+            id: "2",
+            name: "",
+          },
+        ]);
       }}
     >
       <div className="w-full md:w-1/2">
@@ -191,8 +215,19 @@ const AddNewEditTeam: FC<AddNewEditTeamProps> = ({
             btnTitle="Cancel"
             btnColor="outline"
             onClick={() => {
+              setIsEdit(false);
+              setTeamsName("");
               handleCancelClick();
-              setTeamAttendants(DEFAULT_ATTENDANTS);
+              setTeamAttendants([
+                {
+                  id: "1",
+                  name: "",
+                },
+                {
+                  id: "2",
+                  name: "",
+                },
+              ]);
             }}
           />
           <Button

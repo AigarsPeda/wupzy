@@ -1,3 +1,4 @@
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import EditGroupDropdown from "components/elements/EditGroupDropdown/EditGroupDropdown";
 import type { EditType } from "components/elements/EditTournamentGroup/EditTournamentGroup";
 import GroupDropdown from "components/elements/GroupDropdown/GroupDropdown";
@@ -21,9 +22,8 @@ const EditParticipantTeamsCard: FC<EditParticipantTeamsCardProps> = ({
   tournamentId,
   setSelectedEdit,
 }) => {
+  const [parent] = useAutoAnimate();
   const [isError, setIsError] = useState(false);
-  // const { data: teams, refetch: refetchTeams } =
-  // api.tournaments.getTournamentTeams.useQuery({ tournamentId });
   const [teamsMap, setTeamsMap] = useState<TeamsMapType>(new Map());
   const { data: teams, refetch: refetchTeams } =
     api.tournaments.getTournamentTeams.useQuery({ tournamentId });
@@ -85,7 +85,7 @@ const EditParticipantTeamsCard: FC<EditParticipantTeamsCardProps> = ({
               />
             </div>
 
-            <ul>
+            <ul ref={parent}>
               <li className="my-3 grid grid-cols-3 gap-4">
                 <div className="flex justify-start">
                   <p className="text-xs">Name</p>
