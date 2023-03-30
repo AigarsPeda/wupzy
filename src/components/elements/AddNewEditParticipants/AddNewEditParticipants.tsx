@@ -44,6 +44,15 @@ const AddNewEditParticipants: FC<AddNewEditParticipantsProps> = ({
       },
     });
 
+  const { mutate: deleteParticipant } =
+    api.participant.deleteParticipant.useMutation({
+      onSuccess: async () => {
+        setName("");
+        handleCancelClick();
+        await refetchParticipants();
+      },
+    });
+
   useEffect(() => {
     if (editParticipants) {
       setIsEdit(true);
@@ -70,7 +79,20 @@ const AddNewEditParticipants: FC<AddNewEditParticipantsProps> = ({
         handleInputChange={(e) => setName(e.target.value)}
       />
 
-      <div className="flex justify-end">
+      <div className="flex justify-between">
+        {isEdit && editParticipants && (
+          <Button
+            btnColor="red"
+            btnClass="mr-2"
+            btnTitle="Delete"
+            onClick={() => {
+              deleteParticipant({
+                tournamentId,
+                participant: editParticipants,
+              });
+            }}
+          />
+        )}
         <Button
           btnClass="w-40"
           btnTitle={isEdit ? "Update" : "Add"}
