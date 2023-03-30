@@ -1,8 +1,7 @@
-import createIdsArrays from "server/api/routers/utils/createIdsArrays";
 import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
-import createAllPossiblePairsInGroup from "utils/createAllPossiblePairsInGroup";
-import createGames from "utils/createGames";
+import createAllPossibleKingGames from "utils/createAllPossibleKingGames";
 import createParticipantMap from "utils/createParticipantMap";
+import filterAllPossibleKingGames from "utils/filterAllPossibleKingGames";
 import { z } from "zod";
 
 export const participantRouter = createTRPCRouter({
@@ -53,6 +52,9 @@ export const participantRouter = createTRPCRouter({
         },
       });
 
+      const games = createAllPossibleKingGames(allParticipants);
+      const filteredGames = filterAllPossibleKingGames(newParticipant, games);
+
       const lastOrderNumber = await ctx.prisma.games.findMany({
         where: {
           group: input.group,
@@ -64,52 +66,85 @@ export const participantRouter = createTRPCRouter({
         take: 1,
       });
 
-      const participantsMap = createAllPossiblePairsInGroup(
-        allParticipants,
-        newParticipant.group
-      );
-      const gamesMap = createGames(participantsMap, newParticipant);
       const lastGamesOrderNumber = lastOrderNumber[0]?.gameOrder || 0;
 
-      await createIdsArrays(
-        gamesMap,
-        async (group, firsIds, secondIds, index) => {
-          const team1 = await ctx.prisma.team.create({
-            data: {
-              group,
-              name: `Team 1`,
-              tournamentId: input.tournamentId,
-              participants: {
-                connect: [...firsIds],
-              },
-            },
-          });
+      for (const game of filteredGames) {
+        let order = lastGamesOrderNumber + 1;
 
-          const team2 = await ctx.prisma.team.create({
-            data: {
-              group,
-              name: `Team 2`,
-              tournamentId: input.tournamentId,
-              participants: {
-                connect: [...secondIds],
-              },
+        const team1 = await ctx.prisma.team.create({
+          data: {
+            name: "Team 1",
+            group: input.group,
+            tournamentId: input.tournamentId,
+            participants: {
+              connect: game?.first,
             },
-          });
+          },
+        });
 
-          await ctx.prisma.games.create({
-            data: {
-              group,
-              gameOrder: lastGamesOrderNumber + 1 + index,
-              tournamentId: input.tournamentId,
-              team1Id: team1.id,
-              team2Id: team2.id,
-              participants: {
-                connect: [...firsIds, ...secondIds],
-              },
+        const team2 = await ctx.prisma.team.create({
+          data: {
+            name: "Team 2",
+            group: input.group,
+            tournamentId: input.tournamentId,
+            participants: {
+              connect: game?.second,
             },
-          });
-        }
-      );
+          },
+        });
+
+        await ctx.prisma.games.create({
+          data: {
+            gameOrder: order,
+            team1Id: team1.id,
+            team2Id: team2.id,
+            group: input.group,
+            tournamentId: input.tournamentId,
+            participants: {
+              connect: [...game?.first, ...game?.second],
+            },
+          },
+        });
+
+        order++;
+      }
+
+      // for (const game of games) {
+      //   const team1 = await ctx.prisma.team.create({
+      //     data: {
+      //       name: "Team 1",
+      //       group: input.group,
+      //       tournamentId: input.tournamentId,
+      //       participants: {
+      //         connect: game?.first,
+      //       },
+      //     },
+      //   });
+
+      //   const team2 = await ctx.prisma.team.create({
+      //     data: {
+      //       name: "Team 2",
+      //       group: input.group,
+      //       tournamentId: input.tournamentId,
+      //       participants: {
+      //         connect: game?.second,
+      //       },
+      //     },
+      //   });
+
+      //   await ctx.prisma.games.create({
+      //     data: {
+      //       gameOrder: 1,
+      //       team1Id: team1.id,
+      //       team2Id: team2.id,
+      //       group: input.group,
+      //       tournamentId: input.tournamentId,
+      //       participants: {
+      //         connect: [...game?.first, ...game?.second],
+      //       },
+      //     },
+      //   });
+      // }
     }),
 
   updatedParticipant: protectedProcedure
@@ -221,6 +256,9 @@ export const participantRouter = createTRPCRouter({
         },
       });
 
+      const games = createAllPossibleKingGames(allParticipants);
+      const filteredGames = filterAllPossibleKingGames(newParticipant, games);
+
       const lastOrderNumber = await ctx.prisma.games.findMany({
         where: {
           group: input.group,
@@ -232,51 +270,47 @@ export const participantRouter = createTRPCRouter({
         take: 1,
       });
 
-      const participantsMap = createAllPossiblePairsInGroup(
-        allParticipants,
-        newParticipant.group
-      );
-      const gamesMap = createGames(participantsMap, newParticipant);
       const lastGamesOrderNumber = lastOrderNumber[0]?.gameOrder || 0;
 
-      await createIdsArrays(
-        gamesMap,
-        async (group, firsIds, secondIds, index) => {
-          const team1 = await ctx.prisma.team.create({
-            data: {
-              group,
-              name: `Team 1`,
-              tournamentId: input.tournamentId,
-              participants: {
-                connect: [...firsIds],
-              },
-            },
-          });
+      for (const game of filteredGames) {
+        let order = lastGamesOrderNumber + 1;
 
-          const team2 = await ctx.prisma.team.create({
-            data: {
-              group,
-              name: `Team 2`,
-              tournamentId: input.tournamentId,
-              participants: {
-                connect: [...secondIds],
-              },
+        const team1 = await ctx.prisma.team.create({
+          data: {
+            name: "Team 1",
+            group: input.group,
+            tournamentId: input.tournamentId,
+            participants: {
+              connect: game?.first,
             },
-          });
+          },
+        });
 
-          await ctx.prisma.games.create({
-            data: {
-              group,
-              gameOrder: lastGamesOrderNumber + 1 + index,
-              tournamentId: input.tournamentId,
-              team1Id: team1.id,
-              team2Id: team2.id,
-              participants: {
-                connect: [...firsIds, ...secondIds],
-              },
+        const team2 = await ctx.prisma.team.create({
+          data: {
+            name: "Team 2",
+            group: input.group,
+            tournamentId: input.tournamentId,
+            participants: {
+              connect: game?.second,
             },
-          });
-        }
-      );
+          },
+        });
+
+        await ctx.prisma.games.create({
+          data: {
+            gameOrder: order,
+            team1Id: team1.id,
+            team2Id: team2.id,
+            group: input.group,
+            tournamentId: input.tournamentId,
+            participants: {
+              connect: [...game?.first, ...game?.second],
+            },
+          },
+        });
+
+        order++;
+      }
     }),
 });
