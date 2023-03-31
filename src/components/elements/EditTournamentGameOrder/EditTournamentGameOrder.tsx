@@ -29,7 +29,7 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
   const [isOrderEdited, setIsOrderEdited] = useState(false);
   const [gamesState, setGamesState] = useState<GamesMapType>(new Map());
   const { data: games, refetch: refetchGames } =
-    api.tournaments.getTournamentGames.useQuery({ group, tournamentId });
+    api.tournaments.getAllTournamentGames.useQuery({ group, tournamentId });
   const { mutateAsync: updateGameOrder } =
     api.tournaments.updateGameOrder.useMutation({
       onSuccess: async () => {

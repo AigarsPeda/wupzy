@@ -1,4 +1,4 @@
-import type { ParticipantType } from "../types/team.types";
+import type { ParticipantType } from "types/team.types";
 
 type ParticipantObjType = {
   first: {

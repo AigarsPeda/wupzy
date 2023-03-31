@@ -12,12 +12,13 @@ const EditTournamentContainer: FC<EditTournamentContainerProps> = ({
   tournamentId,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { refetch: refetchGames } = api.tournaments.getTournamentGames.useQuery(
-    { tournamentId },
-    {
-      refetchOnWindowFocus: !isModalOpen,
-    }
-  );
+  const { refetch: refetchGames } =
+    api.tournaments.getAllTournamentGames.useQuery(
+      { tournamentId },
+      {
+        refetchOnWindowFocus: !isModalOpen,
+      }
+    );
 
   return (
     <>

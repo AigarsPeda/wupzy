@@ -1,14 +1,8 @@
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
 import { GamesZodSchema } from "types/game.types";
-import { TeamsAttendantMapZodSchema } from "types/team.types";
-import createAllPossibleKingGames from "utils/createAllPossibleKingGames";
-import createTeamsGames from "utils/createTeamsGames";
-import filterAllPossibleTeamsGames from "utils/filterAllPossibleTeamsGames";
-import shuffleArray from "utils/shuffleArray";
 import { z } from "zod";
-
-const START_GROUP = "A";
+import createParticipantMap from "server/api/routers/utils/createParticipantMap";
 
 export const tournamentsRouter = createTRPCRouter({
   getAllTournaments: protectedProcedure.query(async ({ ctx }) => {
@@ -21,359 +15,28 @@ export const tournamentsRouter = createTRPCRouter({
     return { tournaments };
   }),
 
-  createKingTournament: protectedProcedure
-    .input(z.object({ name: z.string(), attendants: z.array(z.string()) }))
-    .mutation(async ({ ctx, input }) => {
-      const tournament = await ctx.prisma.tournament.create({
-        data: {
-          name: input.name,
-          userId: ctx.user.id,
-        },
-      });
-
-      const data = input.attendants.map((attendant) => {
-        return {
-          name: attendant,
-          group: START_GROUP,
-          tournamentId: tournament.id,
-        };
-      });
-
-      await ctx.prisma.participant.createMany({
-        data,
-      });
-
-      const allParticipants = await ctx.prisma.participant.findMany({
-        where: {
-          tournamentId: tournament.id,
-        },
-      });
-
-      const games = createAllPossibleKingGames(allParticipants);
-      const shuffledGames = shuffleArray(games);
-
-      for (const game of shuffledGames) {
-        let order = 1;
-
-        const team1 = await ctx.prisma.team.create({
-          data: {
-            name: "Team 1",
-            group: START_GROUP,
-            tournamentId: tournament.id,
-            participants: {
-              connect: game?.first,
-            },
-          },
-        });
-
-        const team2 = await ctx.prisma.team.create({
-          data: {
-            name: "Team 2",
-            group: START_GROUP,
-            tournamentId: tournament.id,
-            participants: {
-              connect: game?.second,
-            },
-          },
-        });
-
-        await ctx.prisma.games.create({
-          data: {
-            gameOrder: order,
-            team1Id: team1.id,
-            team2Id: team2.id,
-            group: START_GROUP,
-            tournamentId: tournament.id,
-            participants: {
-              connect: [...game?.first, ...game?.second],
-            },
-          },
-        });
-
-        order++;
-      }
-
-      return { tournament };
-    }),
-
-  updateTeam: protectedProcedure
+  getAllTournamentParticipants: protectedProcedure
     .input(
       z.object({
-        teamId: z.string(),
-        teamName: z.string(),
-        tournamentId: z.string(),
-        participants: z
-          .object({
-            id: z.string(),
-            name: z.string(),
-          })
-          .array(),
+        id: z.string(),
       })
     )
-    .mutation(async ({ ctx, input }) => {
-      for (let i = 0; i < input.participants.length; i++) {
-        const participant = input.participants[i];
-
-        if (!participant) {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Team member not found",
-          });
-        }
-
-        await ctx.prisma.participant.update({
-          where: {
-            id: participant.id,
-          },
-          data: {
-            name: participant.name,
-          },
-        });
-      }
-
-      const team = await ctx.prisma.team.update({
+    .query(async ({ ctx, input }) => {
+      const participants = await ctx.prisma.participant.findMany({
         where: {
-          id: input.teamId,
+          tournamentId: input.id,
         },
-        data: {
-          name: input.teamName,
+        orderBy: {
+          group: "asc",
         },
       });
 
-      return { team };
+      const sorted = createParticipantMap(participants);
+
+      return { participants: sorted };
     }),
 
-  deleteTeam: protectedProcedure
-    .input(z.object({ teamId: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      await ctx.prisma.games.deleteMany({
-        where: {
-          OR: [{ team1Id: input.teamId }, { team2Id: input.teamId }],
-        },
-      });
-
-      const team = await ctx.prisma.team.delete({
-        where: {
-          id: input.teamId,
-        },
-      });
-
-      return { team };
-    }),
-
-  addTeamToTournament: protectedProcedure
-    .input(
-      z.object({
-        group: z.string(),
-        teamName: z.string(),
-        tournamentId: z.string(),
-        participants: z.string().array(),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const teamIds: {
-        id: string;
-      }[] = [];
-
-      for (let i = 0; i < input.participants.length; i++) {
-        const participants = input.participants[i];
-
-        if (!participants) {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Team member not found",
-          });
-        }
-
-        const createdParticipant = await ctx.prisma.participant.create({
-          data: {
-            name: participants,
-            group: input.group,
-            tournamentId: input.tournamentId,
-          },
-          select: {
-            id: true,
-          },
-        });
-
-        teamIds.push(createdParticipant);
-      }
-
-      // create team
-      const team = await ctx.prisma.team.create({
-        data: {
-          name: input.teamName,
-          group: input.group,
-          tournamentId: input.tournamentId,
-          participants: {
-            connect: teamIds,
-          },
-        },
-        include: {
-          participants: true,
-        },
-      });
-
-      const teams = await ctx.prisma.team.findMany({
-        where: {
-          group: input.group,
-          tournamentId: input.tournamentId,
-        },
-        include: {
-          participants: true,
-        },
-      });
-
-      const gameCount = await ctx.prisma.games.count({
-        where: {
-          group: input.group,
-          tournamentId: input.tournamentId,
-        },
-      });
-
-      const games = createTeamsGames(teams);
-      const filteredGames = filterAllPossibleTeamsGames(team.id, games);
-      // const shuffledGames = shuffleArray(filteredGames); // TODO: shuffle games
-
-      for (let i = 0; i < filteredGames.length; i++) {
-        const game = filteredGames[i];
-
-        if (!game) {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Team member not found",
-          });
-        }
-
-        await ctx.prisma.games.create({
-          data: {
-            group: team.group,
-            gameOrder: gameCount + i,
-            team1Id: game.first.teamId,
-            team2Id: game.second.teamId,
-            tournamentId: input.tournamentId,
-            participants: {
-              connect: [
-                ...game.first.participants,
-                ...game.second.participants,
-              ],
-            },
-          },
-        });
-      }
-
-      return { team };
-    }),
-
-  createTeamsTournament: protectedProcedure
-    .input(
-      z.object({
-        name: z.string(),
-        teams: TeamsAttendantMapZodSchema,
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const tournament = await ctx.prisma.tournament.create({
-        data: {
-          type: "TEAMS",
-          name: input.name,
-          userId: ctx.user.id,
-        },
-      });
-
-      for (const teamName of input.teams.keys()) {
-        const teamMembers = input.teams.get(teamName);
-
-        const teamIds: {
-          id: string;
-        }[] = [];
-
-        if (!teamMembers) {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Team members not found",
-          });
-        }
-
-        for (let j = 0; j < teamMembers.length; j++) {
-          const teamMember = teamMembers[j];
-
-          if (!teamMember) {
-            throw new TRPCError({
-              code: "INTERNAL_SERVER_ERROR",
-              message: "Team member not found",
-            });
-          }
-
-          const createdParticipant = await ctx.prisma.participant.create({
-            data: {
-              group: START_GROUP,
-              name: teamMember?.name,
-              tournamentId: tournament.id,
-            },
-            select: {
-              id: true,
-            },
-          });
-
-          teamIds.push(createdParticipant);
-        }
-
-        await ctx.prisma.team.create({
-          data: {
-            name: teamName,
-            group: START_GROUP,
-            tournamentId: tournament.id,
-            participants: {
-              connect: [...teamIds],
-            },
-          },
-        });
-      }
-
-      const teams = await ctx.prisma.team.findMany({
-        where: {
-          tournamentId: tournament.id,
-        },
-        include: {
-          participants: true,
-        },
-      });
-
-      const games = createTeamsGames(teams);
-      const shuffledGames = shuffleArray(games);
-
-      for (let i = 0; i < shuffledGames.length; i++) {
-        const game = shuffledGames[i];
-
-        if (!game) {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Game not found",
-          });
-        }
-
-        await ctx.prisma.games.create({
-          data: {
-            gameOrder: i + 1,
-            group: START_GROUP,
-            team1Id: game.first.teamId,
-            team2Id: game.second.teamId,
-            tournamentId: tournament.id,
-            participants: {
-              connect: [
-                ...game.first.participants,
-                ...game.second.participants,
-              ],
-            },
-          },
-        });
-      }
-
-      return { tournament };
-    }),
-
-  getTournamentGames: protectedProcedure
+  getAllTournamentGames: protectedProcedure
     .input(z.object({ tournamentId: z.string(), group: z.string().optional() }))
     .query(async ({ ctx, input }) => {
       const games = await ctx.prisma.games.findMany({
@@ -402,7 +65,7 @@ export const tournamentsRouter = createTRPCRouter({
       return { games };
     }),
 
-  getTournamentTeams: protectedProcedure
+  getAllTournamentTeams: protectedProcedure
     .input(z.object({ tournamentId: z.string(), group: z.string().optional() }))
     .query(async ({ ctx, input }) => {
       const teams = await ctx.prisma.team.findMany({
@@ -416,109 +79,6 @@ export const tournamentsRouter = createTRPCRouter({
       });
 
       return { teams };
-    }),
-
-  changeTeamsGroup: protectedProcedure
-    .input(
-      z.object({
-        group: z.string(),
-        teamId: z.string(),
-        tournamentId: z.string(),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      // delete all games for this team
-      await ctx.prisma.games.deleteMany({
-        where: {
-          OR: [
-            { tournamentId: input.tournamentId, team1Id: input.teamId },
-            { tournamentId: input.tournamentId, team2Id: input.teamId },
-          ],
-        },
-      });
-
-      // update team group
-      const team = await ctx.prisma.team.update({
-        where: {
-          id: input.teamId,
-        },
-        data: {
-          group: input.group,
-        },
-        include: {
-          participants: true,
-        },
-      });
-
-      for (let i = 0; i < team.participants.length; i++) {
-        const participant = team.participants[i];
-
-        if (!participant) {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Participant not found",
-          });
-        }
-
-        await ctx.prisma.participant.update({
-          where: {
-            id: participant.id,
-          },
-          data: {
-            group: input.group,
-          },
-        });
-      }
-
-      const teams = await ctx.prisma.team.findMany({
-        where: {
-          group: input.group,
-          tournamentId: input.tournamentId,
-        },
-        include: {
-          participants: true,
-        },
-      });
-
-      const gameCount = await ctx.prisma.games.count({
-        where: {
-          group: input.group,
-          tournamentId: input.tournamentId,
-        },
-      });
-
-      const games = createTeamsGames(teams);
-      const filteredGames = filterAllPossibleTeamsGames(team.id, games);
-      // const shuffledGames = shuffleArray(filteredGames);
-
-      for (let i = 0; i < filteredGames.length; i++) {
-        const game = filteredGames[i];
-
-        if (!game) {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Game not found",
-          });
-        }
-
-        await ctx.prisma.games.create({
-          data: {
-            group: input.group,
-            gameOrder: gameCount + i,
-            team1Id: game.first.teamId,
-            team2Id: game.second.teamId,
-            tournamentId: input.tournamentId,
-            participants: {
-              connect: [
-                ...game.first.participants,
-                ...game.second.participants,
-              ],
-            },
-          },
-        });
-      }
-
-      return { team };
     }),
 
   updateGameOrder: protectedProcedure
@@ -542,7 +102,7 @@ export const tournamentsRouter = createTRPCRouter({
       );
     }),
 
-  updateGamScore: protectedProcedure
+  updateGameScore: protectedProcedure
     .input(
       z.object({
         id: z.string(),

@@ -36,12 +36,11 @@ const AddNewEditTeam: FC<AddNewEditTeamProps> = ({
     },
   ]);
 
-  const { refetch: refetchTeams } = api.tournaments.getTournamentTeams.useQuery(
-    { tournamentId }
-  );
+  const { refetch: refetchTeams } =
+    api.tournaments.getAllTournamentTeams.useQuery({ tournamentId });
 
   const { mutate: addTeamToTournament } =
-    api.tournaments.addTeamToTournament.useMutation({
+    api.teamsTournaments.addTeamToTournament.useMutation({
       onSuccess: async () => {
         setTeamsName("");
         handleCancelClick();
@@ -59,7 +58,7 @@ const AddNewEditTeam: FC<AddNewEditTeamProps> = ({
       },
     });
 
-  const { mutate: deleteTeam } = api.tournaments.deleteTeam.useMutation({
+  const { mutate: deleteTeam } = api.teamsTournaments.deleteTeam.useMutation({
     onSuccess: async () => {
       setTeamsName("");
       handleCancelClick();
@@ -77,7 +76,7 @@ const AddNewEditTeam: FC<AddNewEditTeamProps> = ({
     },
   });
 
-  const { mutate: updateTeam } = api.tournaments.updateTeam.useMutation({
+  const { mutate: updateTeam } = api.teamsTournaments.updateTeam.useMutation({
     onSuccess: async () => {
       setTeamsName("");
       handleCancelClick();

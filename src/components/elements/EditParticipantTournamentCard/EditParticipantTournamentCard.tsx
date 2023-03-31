@@ -31,8 +31,8 @@ const EditParticipantTournamentCard: FC<EditParticipantTournamentCardProps> = ({
   const { participants, refetchParticipants } = useParticipants(tournamentId);
   const [participantsByGroup, setParticipantsByGroup] =
     useState<ParticipantMapType>(new Map());
-  const { mutateAsync: updateParticipantsGroup } =
-    api.participant.updateParticipantsGroup.useMutation();
+  const { mutateAsync: changeParticipantsGroup } =
+    api.kingTournaments.changeParticipantsGroup.useMutation();
 
   const handleTeamsGroupChange = async (
     participantId: string,
@@ -40,7 +40,7 @@ const EditParticipantTournamentCard: FC<EditParticipantTournamentCardProps> = ({
   ) => {
     if (!participants) return;
 
-    await updateParticipantsGroup({
+    await changeParticipantsGroup({
       group,
       tournamentId,
       participantId,

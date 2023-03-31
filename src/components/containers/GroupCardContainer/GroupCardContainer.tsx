@@ -18,7 +18,7 @@ const GroupCardContainer: FC<GroupCardContainerProps> = ({
   const { participants, refetchParticipants, isParticipantsLoading } =
     useParticipants(tournamentId);
   const { data: games, refetch: refetchGames } =
-    api.tournaments.getTournamentGames.useQuery({ tournamentId });
+    api.tournaments.getAllTournamentGames.useQuery({ tournamentId });
 
   if (isParticipantsLoading) return <p>Loading...</p>;
 

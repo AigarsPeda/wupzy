@@ -36,7 +36,7 @@ const AddNewEditParticipants: FC<AddNewEditParticipantsProps> = ({
     });
 
   const { mutate: addParticipantToGroup } =
-    api.participant.addParticipantToGroup.useMutation({
+    api.kingTournaments.addParticipantToGroup.useMutation({
       onSuccess: async () => {
         setName("");
         handleCancelClick();

@@ -6,7 +6,7 @@ const useParticipants = (id: string) => {
     error: participantsError,
     refetch: refetchParticipants,
     isLoading: isParticipantsLoading,
-  } = api.participant.getTournamentParticipants.useQuery({
+  } = api.tournaments.getAllTournamentParticipants.useQuery({
     id,
   });
 

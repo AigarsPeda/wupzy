@@ -22,7 +22,7 @@ const GroupCardDisplayAllGames: FC<GroupCardDisplayAllGamesProps> = ({
   handleCancelClick,
 }) => {
   const { windowSize } = useWindowSize();
-  const { data: games } = api.tournaments.getTournamentGames.useQuery(
+  const { data: games } = api.tournaments.getAllTournamentGames.useQuery(
     { group, tournamentId },
     { enabled: isDisplayAllGames }
   );

@@ -37,13 +37,13 @@ const GroupCard: FC<GroupCardProps> = ({
   });
 
   const { data, refetch: refetchTeams } =
-    api.tournaments.getTournamentTeams.useQuery({
+    api.tournaments.getAllTournamentTeams.useQuery({
       group,
       tournamentId,
     });
 
-  const { mutateAsync: updateGamScore } =
-    api.tournaments.updateGamScore.useMutation({
+  const { mutateAsync: updateGameScore } =
+    api.tournaments.updateGameScore.useMutation({
       onSuccess: async () => {
         await refetchTeams();
         refetchGames();
@@ -60,7 +60,7 @@ const GroupCard: FC<GroupCardProps> = ({
     firstTeamIds: string[],
     secondTeamsIds: string[]
   ) => {
-    const tournament = await updateGamScore({
+    const tournament = await updateGameScore({
       id,
       team1Score: score.firstTeam,
       team2Score: score.secondTeam,

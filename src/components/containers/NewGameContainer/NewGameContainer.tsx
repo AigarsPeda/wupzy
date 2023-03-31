@@ -39,10 +39,10 @@ const NewTournamentContainer: FC = () => {
     mutateAsync: createKingTournament,
     isLoading,
     isError,
-  } = api.tournaments.createKingTournament.useMutation();
+  } = api.kingTournaments.createKingTournament.useMutation();
 
   const { mutateAsync: createTeamsTournament } =
-    api.tournaments.createTeamsTournament.useMutation();
+    api.teamsTournaments.createTeamsTournament.useMutation();
 
   const isFirstStep = formStep === 0;
   const isLastStep = formStep === FORM_STEPS.length - 1;
