@@ -354,8 +354,8 @@ export const tournamentsRouter = createTRPCRouter({
 
           const createdParticipant = await ctx.prisma.participant.create({
             data: {
-              name: teamMember?.name,
               group: START_GROUP,
+              name: teamMember?.name,
               tournamentId: tournament.id,
             },
             select: {
