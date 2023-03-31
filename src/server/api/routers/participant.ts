@@ -2,8 +2,8 @@ import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
 import createAllPossibleKingGames from "utils/createAllPossibleKingGames";
 import createParticipantMap from "utils/createParticipantMap";
 import filterAllPossibleKingGames from "utils/filterAllPossibleKingGames";
+import shuffleArray from "utils/shuffleArray";
 import { z } from "zod";
-import shuffleArray from "../../../utils/shuffleArray";
 
 export const participantRouter = createTRPCRouter({
   getTournamentParticipants: protectedProcedure
