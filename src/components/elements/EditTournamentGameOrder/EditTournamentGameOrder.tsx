@@ -188,7 +188,7 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
           isDisabled={!isOrderEdited}
           onClick={() => {
             handleGameOrderSave().catch((err) =>
-              console.log("Error saving game order: ", err)
+              console.error("Error saving game order: ", err)
             );
           }}
         />

@@ -5,6 +5,7 @@ import { TeamsAttendantMapZodSchema } from "types/team.types";
 import createAllPossibleKingGames from "utils/createAllPossibleKingGames";
 import createGamesForOneTeam from "utils/createGamesForOneTeam";
 import createTeamsGames from "utils/createTeamsGames";
+import shuffleArray from "utils/shuffleArray";
 import { z } from "zod";
 
 const START_GROUP = "A";
@@ -49,22 +50,9 @@ export const tournamentsRouter = createTRPCRouter({
       });
 
       const games = createAllPossibleKingGames(allParticipants);
-      // const filteredGames = filterAllPossibleKingGames(newParticipant, games);
+      const shuffledGames = shuffleArray(games);
 
-      // const lastOrderNumber = await ctx.prisma.games.findMany({
-      //   where: {
-      //     group: input.group,
-      //     tournamentId: input.tournamentId,
-      //   },
-      //   orderBy: {
-      //     gameOrder: "desc",
-      //   },
-      //   take: 1,
-      // });
-
-      // const lastGamesOrderNumber = lastOrderNumber[0]?.gameOrder || 0;
-
-      for (const game of games) {
+      for (const game of shuffledGames) {
         let order = 1;
 
         const team1 = await ctx.prisma.team.create({

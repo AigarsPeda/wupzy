@@ -2,9 +2,22 @@ import EditTournament from "components/elements/EditTournament/EditTournament";
 import UnderLineButton from "components/elements/UnderLineButton/UnderLineButton";
 import type { FC } from "react";
 import { useState } from "react";
+import { api } from "utils/api";
 
-const EditTournamentContainer: FC = ({}) => {
+interface EditTournamentContainerProps {
+  tournamentId: string;
+}
+
+const EditTournamentContainer: FC<EditTournamentContainerProps> = ({
+  tournamentId,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { refetch: refetchGames } = api.tournaments.getTournamentGames.useQuery(
+    { tournamentId },
+    {
+      refetchOnWindowFocus: !isModalOpen,
+    }
+  );
 
   return (
     <>
@@ -18,6 +31,7 @@ const EditTournamentContainer: FC = ({}) => {
         isModalOpen={isModalOpen}
         handleCloseModal={() => {
           setIsModalOpen(false);
+          refetchGames().catch((err) => console.error(err));
         }}
       />
     </>

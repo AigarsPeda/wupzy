@@ -57,7 +57,6 @@ const EditParticipantTeamsCard: FC<EditParticipantTeamsCardProps> = ({
 
   return (
     <>
-      {console.log("teamsMap", teamsMap)}
       <div className="mb-5 flex justify-end">
         <GroupDropdown
           handleGroupClick={addGroupToTournament}

@@ -39,7 +39,7 @@ const Tournament: NextPage = () => {
       <div className="mb-4 flex justify-between">
         <TournamentHeader tournament={tournament?.tournament} />
         <div className="flex w-full justify-end">
-          <EditTournamentContainer />
+          <EditTournamentContainer tournamentId={tournamentId} />
         </div>
       </div>
       {tournament && (
