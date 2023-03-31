@@ -14,11 +14,12 @@ type GameType = {
 };
 
 const filterAllPossibleTeamsGames = (teamId: string, games: GameType[]) => {
+  // get all games where teamId is in first or second
   const filteredGames = games.filter((game) => {
-    const firstTeamId = game.first.teamId;
-    const secondTeamId = game.second.teamId;
+    const isInFirst = game.first.teamId === teamId;
+    const isInSecond = game.second.teamId === teamId;
 
-    return firstTeamId === teamId || secondTeamId === teamId;
+    return isInFirst || isInSecond;
   });
 
   return filteredGames;

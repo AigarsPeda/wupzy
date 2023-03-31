@@ -199,17 +199,6 @@ export const tournamentsRouter = createTRPCRouter({
         teamIds.push(createdParticipant);
       }
 
-      // old teams
-      // const oldTeams = await ctx.prisma.team.findMany({
-      //   where: {
-      //     group: input.group,
-      //     tournamentId: input.tournamentId,
-      //   },
-      //   include: {
-      //     participants: true,
-      //   },
-      // });
-
       // create team
       const team = await ctx.prisma.team.create({
         data: {
@@ -235,37 +224,31 @@ export const tournamentsRouter = createTRPCRouter({
         },
       });
 
-      const lastOrderNumber = await ctx.prisma.games.findMany({
+      const gameCount = await ctx.prisma.games.count({
         where: {
           group: input.group,
           tournamentId: input.tournamentId,
         },
-        orderBy: {
-          gameOrder: "desc",
-        },
-        take: 1,
       });
-
-      const gameOrder = lastOrderNumber[0]?.gameOrder || 0;
 
       const games = createTeamsGames(teams);
       const filteredGames = filterAllPossibleTeamsGames(team.id, games);
-      const shuffledGames = shuffleArray(filteredGames);
+      // const shuffledGames = shuffleArray(filteredGames); // TODO: shuffle games
 
-      // const order = await ctx.prisma.games.count({
-      //   where: {
-      //     group: START_GROUP,
-      //     tournamentId: tournament.id,
-      //   },
-      // });
+      for (let i = 0; i < filteredGames.length; i++) {
+        const game = filteredGames[i];
 
-      for (const game of shuffledGames) {
-        let order = gameOrder;
+        if (!game) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Team member not found",
+          });
+        }
 
         await ctx.prisma.games.create({
           data: {
             group: team.group,
-            gameOrder: order + 1,
+            gameOrder: gameCount + i,
             team1Id: game.first.teamId,
             team2Id: game.second.teamId,
             tournamentId: input.tournamentId,
@@ -277,37 +260,7 @@ export const tournamentsRouter = createTRPCRouter({
             },
           },
         });
-
-        order++;
       }
-
-      // const gameOrder = lastOrderNumber[0]?.gameOrder || 0;
-
-      // await createGamesForOneTeam qwqw({
-      //   team,
-      //   teams: oldTeams,
-      //   gameOrder: gameOrder + 1,
-      //   callback: async (
-      //     firstTeamIds,
-      //     secondTeamIds,
-      //     firstTeamId,
-      //     secondTeamId,
-      //     gameOrder
-      //   ) => {
-      //     await ctx.prisma.games.create({
-      //       data: {
-      //         gameOrder,
-      //         group: input.group,
-      //         team1Id: firstTeamId,
-      //         team2Id: secondTeamId,
-      //         tournamentId: input.tournamentId,
-      //         participants: {
-      //           connect: [...firstTeamIds, ...secondTeamIds],
-      //         },
-      //       },
-      //     });
-      //   },
-      // });
 
       return { team };
     }),
@@ -390,19 +343,19 @@ export const tournamentsRouter = createTRPCRouter({
       const games = createTeamsGames(teams);
       const shuffledGames = shuffleArray(games);
 
-      // const order = await ctx.prisma.games.count({
-      //   where: {
-      //     group: START_GROUP,
-      //     tournamentId: tournament.id,
-      //   },
-      // });
+      for (let i = 0; i < shuffledGames.length; i++) {
+        const game = shuffledGames[i];
 
-      for (const game of shuffledGames) {
-        let order = 1;
+        if (!game) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Game not found",
+          });
+        }
 
         await ctx.prisma.games.create({
           data: {
-            gameOrder: order + 1,
+            gameOrder: i + 1,
             group: START_GROUP,
             team1Id: game.first.teamId,
             team2Id: game.second.teamId,
@@ -415,8 +368,6 @@ export const tournamentsRouter = createTRPCRouter({
             },
           },
         });
-
-        order++;
       }
 
       return { tournament };
@@ -479,7 +430,10 @@ export const tournamentsRouter = createTRPCRouter({
       // delete all games for this team
       await ctx.prisma.games.deleteMany({
         where: {
-          OR: [{ team1Id: input.teamId }, { team2Id: input.teamId }],
+          OR: [
+            { tournamentId: input.tournamentId, team1Id: input.teamId },
+            { tournamentId: input.tournamentId, team2Id: input.teamId },
+          ],
         },
       });
 
@@ -488,7 +442,6 @@ export const tournamentsRouter = createTRPCRouter({
         where: {
           id: input.teamId,
         },
-
         data: {
           group: input.group,
         },
@@ -497,7 +450,6 @@ export const tournamentsRouter = createTRPCRouter({
         },
       });
 
-      // How to update participants group ???
       for (let i = 0; i < team.participants.length; i++) {
         const participant = team.participants[i];
 
@@ -528,37 +480,31 @@ export const tournamentsRouter = createTRPCRouter({
         },
       });
 
-      const lastOrderNumber = await ctx.prisma.games.findMany({
+      const gameCount = await ctx.prisma.games.count({
         where: {
           group: input.group,
           tournamentId: input.tournamentId,
         },
-        orderBy: {
-          gameOrder: "desc",
-        },
-        take: 1,
       });
-
-      const gameOrder = lastOrderNumber[0]?.gameOrder || 0;
 
       const games = createTeamsGames(teams);
       const filteredGames = filterAllPossibleTeamsGames(team.id, games);
-      const shuffledGames = shuffleArray(filteredGames);
+      // const shuffledGames = shuffleArray(filteredGames);
 
-      // const order = await ctx.prisma.games.count({
-      //   where: {
-      //     group: START_GROUP,
-      //     tournamentId: tournament.id,
-      //   },
-      // });
+      for (let i = 0; i < filteredGames.length; i++) {
+        const game = filteredGames[i];
 
-      for (const game of shuffledGames) {
-        let order = gameOrder;
+        if (!game) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Game not found",
+          });
+        }
 
         await ctx.prisma.games.create({
           data: {
-            gameOrder: order + 1,
-            group: START_GROUP,
+            group: input.group,
+            gameOrder: gameCount + i,
             team1Id: game.first.teamId,
             team2Id: game.second.teamId,
             tournamentId: input.tournamentId,
@@ -570,8 +516,6 @@ export const tournamentsRouter = createTRPCRouter({
             },
           },
         });
-
-        order++;
       }
 
       return { team };
