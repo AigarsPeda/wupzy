@@ -107,7 +107,7 @@ export const kingTournamentsRouter = createTRPCRouter({
           id: input.participantId,
         },
         data: {
-          score: 0,
+          smallPoints: 0,
           group: input.group,
         },
       });
@@ -192,7 +192,7 @@ export const kingTournamentsRouter = createTRPCRouter({
         data: {
           name: input.name,
           group: input.group,
-          score: input.score,
+          smallPoints: input.score,
           tournamentId: input.tournamentId,
         },
       });

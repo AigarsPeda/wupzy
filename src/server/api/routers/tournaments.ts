@@ -1,8 +1,9 @@
 import { TRPCError } from "@trpc/server";
+import createParticipantMap from "server/api/routers/utils/createParticipantMap";
+import getPoints from "server/api/routers/utils/getPoints";
 import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
 import { GamesZodSchema } from "types/game.types";
 import { z } from "zod";
-import createParticipantMap from "server/api/routers/utils/createParticipantMap";
 
 export const tournamentsRouter = createTRPCRouter({
   getAllTournaments: protectedProcedure.query(async ({ ctx }) => {
@@ -118,6 +119,11 @@ export const tournamentsRouter = createTRPCRouter({
         };
       });
 
+      const { team1Points, team2Points } = getPoints(
+        input.team1Score,
+        input.team2Score
+      );
+
       const game = await ctx.prisma.games.update({
         where: {
           id: input.id,
@@ -127,14 +133,20 @@ export const tournamentsRouter = createTRPCRouter({
           team2Score: input.team2Score,
           team1: {
             update: {
-              score: {
+              points: {
+                increment: team1Points,
+              },
+              smallPoints: {
                 increment: input.team1Score,
               },
             },
           },
           team2: {
             update: {
-              score: {
+              points: {
+                increment: team2Points,
+              },
+              smallPoints: {
                 increment: input.team2Score,
               },
             },
@@ -164,7 +176,8 @@ export const tournamentsRouter = createTRPCRouter({
             id: participant.id,
           },
           data: {
-            score: participant.score + input.team1Score,
+            points: participant.points + team1Points,
+            smallPoints: participant.smallPoints + input.team1Score,
           },
         });
       }
@@ -175,7 +188,8 @@ export const tournamentsRouter = createTRPCRouter({
             id: participant.id,
           },
           data: {
-            score: participant.score + input.team2Score,
+            points: participant.points + team2Points,
+            smallPoints: participant.smallPoints + input.team2Score,
           },
         });
       }

@@ -4,9 +4,10 @@ export const ParticipantsZodSchema = z.object({
   id: z.string(),
   name: z.string(),
   group: z.string(),
-  score: z.number(),
+  points: z.number(),
   createdAt: z.date(),
   updatedAt: z.date(),
+  smallPoints: z.number(),
   tournamentId: z.string(),
 });
 
@@ -14,9 +15,10 @@ export const TeamZodSchema = z.object({
   id: z.string(),
   name: z.string(),
   group: z.string(),
-  score: z.number(),
+  points: z.number(),
   updatedAt: z.date(),
   createdAt: z.date(),
+  smallPoints: z.number(),
   tournamentId: z.string(),
   participants: z.array(ParticipantsZodSchema),
 });

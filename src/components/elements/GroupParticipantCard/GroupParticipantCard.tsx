@@ -1,4 +1,3 @@
-import GroupCardHeader from "components/elements/GroupCardHeader/GroupCardHeader";
 import type { FC } from "react";
 import type { ParticipantType } from "types/team.types";
 import classNames from "utils/classNames";
@@ -9,11 +8,18 @@ interface GroupParticipantCard {
 
 const GroupParticipantCard: FC<GroupParticipantCard> = ({ participants }) => {
   return (
-    <div className="col-span-3">
-      <GroupCardHeader
-        label="Participants"
-        options={<p className="text-sm">Point overall</p>}
-      />
+    <div>
+      <div className="grid grid-cols-3 gap-4 border-b pb-2">
+        <div className="flex justify-start">
+          <p className="text-sm">Teams</p>
+        </div>
+        <div className="flex justify-center">
+          <p className="text-sm">Small points</p>
+        </div>
+        <div className="flex justify-end">
+          <p className="text-sm">Points</p>
+        </div>
+      </div>
       {participants.map((team, i) => {
         const isFirstGroup = i === 0;
         return (
@@ -21,11 +27,18 @@ const GroupParticipantCard: FC<GroupParticipantCard> = ({ participants }) => {
             key={`${i}${team.id}`}
             className={classNames(
               !isFirstGroup && "border-t-2",
-              "flex items-center justify-between py-2"
+              "grid grid-cols-3 gap-4 py-2"
             )}
           >
-            <p>{team.name}</p>
-            <p>{team.score}</p>
+            <div className="flex justify-start">
+              <p>{team.name}</p>
+            </div>
+            <div className="flex justify-center">
+              <p>{team.smallPoints}</p>
+            </div>
+            <div className="flex justify-end">
+              <p>{team.points}</p>
+            </div>
           </div>
         );
       })}
