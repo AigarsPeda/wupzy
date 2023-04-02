@@ -1,19 +1,9 @@
-type GameType = {
-  first: {
-    teamId: string;
-    participants: {
-      id: string;
-    }[];
-  };
-  second: {
-    teamId: string;
-    participants: {
-      id: string;
-    }[];
-  };
-};
+import type { CreateGameType } from "types/game.types";
 
-const filterAllPossibleTeamsGames = (teamId: string, games: GameType[]) => {
+const filterAllPossibleTeamsGames = (
+  teamId: string,
+  games: CreateGameType[]
+) => {
   // get all games where teamId is in first or second
   const filteredGames = games.filter((game) => {
     const isInFirst = game.first.teamId === teamId;

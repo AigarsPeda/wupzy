@@ -30,3 +30,18 @@ export type GamesOfInterestType = {
     "-1": ActivesGame;
   };
 };
+
+export type CreateGameType = {
+  first: {
+    teamId: string;
+    participants: {
+      id: string;
+    }[];
+  };
+  second: {
+    teamId: string;
+    participants: {
+      id: string;
+    }[];
+  };
+};

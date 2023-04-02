@@ -1,26 +1,12 @@
 import type { Participant, Team } from "@prisma/client";
-
-type GameType = {
-  first: {
-    teamId: string;
-    participants: {
-      id: string;
-    }[];
-  };
-  second: {
-    teamId: string;
-    participants: {
-      id: string;
-    }[];
-  };
-};
+import type { CreateGameType } from "types/game.types";
 
 const createTeamsGames = (
   teams: (Team & {
     participants: Participant[];
   })[]
 ) => {
-  const games: GameType[] = [];
+  const games: CreateGameType[] = [];
 
   for (let i = 0; i < teams.length; i++) {
     for (let j = i + 1; j < teams.length; j++) {

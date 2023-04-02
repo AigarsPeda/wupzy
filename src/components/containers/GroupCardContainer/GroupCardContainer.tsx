@@ -1,3 +1,4 @@
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import GroupCard from "components/elements/GroupCard/GroupCard";
 import useParticipants from "hooks/useParticipants";
 import type { FC } from "react";
@@ -15,6 +16,7 @@ const GroupCardContainer: FC<GroupCardContainerProps> = ({
   tournamentId,
   tournamentKind,
 }) => {
+  const [parent] = useAutoAnimate();
   const { participants, refetchParticipants, isParticipantsLoading } =
     useParticipants(tournamentId);
   const { data: games, refetch: refetchGames } =
@@ -23,7 +25,7 @@ const GroupCardContainer: FC<GroupCardContainerProps> = ({
   if (isParticipantsLoading) return <p>Loading...</p>;
 
   return (
-    <div>
+    <div ref={parent}>
       {participants &&
         [...participants.participants].map(([group, participants]) => {
           return (

@@ -3,7 +3,7 @@ import GroupCardGamesOfInterest from "components/elements/GroupCardGamesOfIntere
 import GroupParticipantCard from "components/elements/GroupParticipantCard/GroupParticipantCard";
 import GroupTeamsCard from "components/elements/GroupTeamsCard/GroupTeamsCard";
 import type { FC } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { GamesOfInterestType } from "types/game.types";
 import type { ParticipantType } from "types/team.types";
 import type { TournamentTypeType } from "types/tournament.types";
@@ -36,7 +36,7 @@ const GroupCard: FC<GroupCardProps> = ({
     secondTeam: 0,
   });
 
-  const { data, refetch: refetchTeams } =
+  const { data: teams, refetch: refetchTeams } =
     api.tournaments.getAllTournamentTeams.useQuery({
       group,
       tournamentId,
@@ -74,6 +74,16 @@ const GroupCard: FC<GroupCardProps> = ({
     }
   };
 
+  useEffect(() => {
+    const fetchTeams = async () => {
+      await refetchTeams();
+    };
+
+    if (participants) {
+      fetchTeams().catch(console.error);
+    }
+  }, [participants, refetchTeams]);
+
   return (
     <div className="mb-6 min-h-[20rem] min-w-[20rem] grid-cols-6 content-start gap-4 rounded-md border border-gray-50 bg-gray-50 py-3 shadow-md md:px-8 xl:grid">
       <GroupCardGamesOfInterest
@@ -100,7 +110,7 @@ const GroupCard: FC<GroupCardProps> = ({
       />
 
       {tournamentKind === "TEAMS" ? (
-        <GroupTeamsCard teams={data?.teams || []} />
+        <GroupTeamsCard teams={teams?.teams || []} />
       ) : (
         <GroupParticipantCard participants={participants} />
       )}
