@@ -71,7 +71,7 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
     >
       <InfoParagraph text="* Once playoffs are created, all other games will be finalized, and you will not be able to change or edit their scores." />
       <p>Create playoffs</p>
-      {console.log("cratePlayOffMap", cratePlayOffMap(8))}
+      {/* {console.log("cratePlayOffMap", cratePlayOffMap(8))} */}
       {teams?.teams &&
         [...createMap(teams?.teams)].map(([group, teams]) => {
           console.log("group --->", group);

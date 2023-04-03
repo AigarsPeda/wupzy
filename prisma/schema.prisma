@@ -34,35 +34,35 @@ enum TournamentType {
 
 // One user can have many Tournaments
 model Tournament {
-  Team         Team[]
+  team         Team[]
   name         String
   userId       String
   winner       String?
-  Games        Games[]
+  games        Games[]
   teams        Participant[]
+  playoffgames PlayoffGames[]
   updatedAt    DateTime       @updatedAt
   type         TournamentType @default(KING)
   createdAt    DateTime       @default(now())
   id           String         @id @default(cuid())
   user         User           @relation(fields: [userId], references: [id])
-  PlayOffGames PlayOffGames[]
 }
 
 model Participant {
-  team          Team[]
-  name          String
-  tournamentId  String
-  group         String
-  games         Games[]
-  playoffgames  PlayOffGames[]
-  updatedAt     DateTime       @updatedAt
-  points        Int            @default(0)
-  smallPoints   Int            @default(0)
-  createdAt     DateTime       @default(now())
-  id            String         @id @default(cuid())
-  games2        Games[]        @relation("winners")
-  playoffgames2 PlayOffGames[] @relation("playoffwinners")
-  tournament    Tournament     @relation(fields: [tournamentId], references: [id])
+  team           Team[]
+  name           String
+  tournamentId   String
+  group          String
+  games          Games[]
+  playoffgames   PlayoffGames[]
+  updatedAt      DateTime       @updatedAt
+  points         Int            @default(0)
+  smallPoints    Int            @default(0)
+  createdAt      DateTime       @default(now())
+  id             String         @id @default(cuid())
+  gameswinners   Games[]        @relation("winners")
+  playoffwinners PlayoffGames[] @relation("playoffwinners")
+  tournament     Tournament     @relation(fields: [tournamentId], references: [id])
 }
 
 model Games {
@@ -81,21 +81,21 @@ model Games {
   team2        Team          @relation("participant_team_2", fields: [team2Id], references: [id], onDelete: Cascade)
 }
 
-model PlayOffGames {
+model PlayoffGames {
   // gameOrder    Int
   // group        String
-  tournamentId String
-  team2Id      String
-  team1Id      String
-  stage        String // <- 1/8, 1/4, 1/2, final
-  participants Participant[]
-  team1Score   Int           @default(0)
-  team2Score   Int           @default(0)
-  id           String        @id @default(cuid())
-  winners      Participant[] @relation("playoffwinners")
-  tournament   Tournament    @relation(fields: [tournamentId], references: [id])
-  team1        Team          @relation("playoff_team_1", fields: [team1Id], references: [id], onDelete: Cascade)
-  team2        Team          @relation("playoff_team_2", fields: [team2Id], references: [id], onDelete: Cascade)
+  tournamentId   String
+  team2Id        String
+  team1Id        String
+  stage          String // <- 1/8, 1/4, 1/2, final
+  participants   Participant[]
+  team1Score     Int           @default(0)
+  team2Score     Int           @default(0)
+  id             String        @id @default(cuid())
+  playoffwinners Participant[] @relation("playoffwinners")
+  tournament     Tournament    @relation(fields: [tournamentId], references: [id])
+  team1          Team          @relation("playoff_team_1", fields: [team1Id], references: [id], onDelete: Cascade)
+  team2          Team          @relation("playoff_team_2", fields: [team2Id], references: [id], onDelete: Cascade)
   // teamId       String?
 }
 
@@ -109,8 +109,8 @@ model Team {
   smallPoints  Int            @default(0)
   createdAt    DateTime       @default(now())
   id           String         @id @default(cuid())
-  playoff      PlayOffGames[] @relation("playoff_team_1")
-  playoff2     PlayOffGames[] @relation("playoff_team_2")
+  playoff      PlayoffGames[] @relation("playoff_team_1")
+  playoff2     PlayoffGames[] @relation("playoff_team_2")
   games        Games[]        @relation("participant_team_1")
   games2       Games[]        @relation("participant_team_2")
   tournament   Tournament     @relation(fields: [tournamentId], references: [id])
