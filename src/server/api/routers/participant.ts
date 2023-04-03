@@ -47,7 +47,7 @@ export const participantRouter = createTRPCRouter({
           id: z.string(),
           name: z.string(),
           group: z.string(),
-          score: z.number(),
+          smallPoints: z.number(),
         }),
         tournamentId: z.string(),
       })
