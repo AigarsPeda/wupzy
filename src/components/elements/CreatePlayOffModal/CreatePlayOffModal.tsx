@@ -1,6 +1,7 @@
 import InfoParagraph from "components/elements/InfoParagraph/InfoParagraph";
 import ModalWrap from "components/elements/ModalWrap/ModalWrap";
 import type { FC } from "react";
+import { useCallback } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { api } from "utils/api";
@@ -9,8 +10,8 @@ import createMap from "utils/createMap";
 import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 
 type CoordinatesType = {
-  end: string;
-  start: string;
+  end: number[];
+  start: number[];
 };
 
 interface CreatePlayOffModalProps {
@@ -81,7 +82,7 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
   //   return playOffMap;
   // };
 
-  const cratePlayOffMap = (num: number) => {
+  const cratePlayOffMap = useCallback((num: number) => {
     const originalNum = num;
     const playOffMap = new Map<string, Game[]>();
 
@@ -106,7 +107,13 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
     }
 
     return playOffMap;
-  };
+  }, []);
+
+  const [arrows, setArrows] = useState<[string, Game[]][]>([]);
+
+  useEffect(() => {
+    setArrows([...cratePlayOffMap(8)]);
+  }, [cratePlayOffMap]);
 
   return (
     <ModalWrap
@@ -132,61 +139,66 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
       </GridLayout> */}
 
       <div className="flex">
-        {[...cratePlayOffMap(8)].map(([stage, teams], i) => {
-          console.log("i", i);
-          return (
-            <div key={stage} className={classNames(i !== 0 && "ml-20", "")}>
-              <div className="grid h-full place-content-center">
-                {teams.map((p, index) => {
-                  const c: CoordinatesType = {
-                    start: `elem${i}${index}`,
-                    end: `elem${i + 1}${Math.floor(index / 2)}`,
-                  };
+        <Xwrapper>
+          {arrows.map((games, i) => {
+            const [stage, teams] = games;
+            const isLast = i === arrows.length - 1;
+            const hasNext = i < arrows.length - 1;
+            const nextArrow = hasNext ? arrows[i + 1] : [];
+            const nextTeams =
+              nextArrow && nextArrow.length > 1 ? nextArrow[1] : [];
+            return (
+              <div key={stage} className={classNames(i !== 0 && "ml-28", "")}>
+                <div className="grid h-full place-content-center">
+                  {teams.map((p, index) => {
+                    const group = i + 1 > arrows.length ? arrows.length : i + 1;
+                    const position =
+                      Math.floor(index / 2) > nextTeams.length - 1
+                        ? 0
+                        : Math.floor(index / 2);
 
-                  const isLast = index === teams.length - 1;
-                  const isMiddle = index === Math.floor(teams.length / 2);
+                    const c: CoordinatesType = {
+                      start: [i, index],
+                      end: [group, position],
+                    };
 
-                  const isValidLine =
-                    Math.floor(index / 2) < teams.length - 1 ||
-                    index < teams.length - 1;
+                    const marginBottom = `${Math.floor(i * 2 + 2)}rem`;
 
-                  const marginBottom = `${Math.floor(i * 2 + 1)}rem`;
-                  // : `${Math.floor(i + 1)}rem`;
+                    return (
+                      <>
+                        <div
+                          id={`elem${c.start.join("")}`}
+                          key={`${i}${c.start.join("")}`}
+                          className="mb-5 min-w-[10rem] border-2 px-4 py-2"
+                          style={{
+                            marginBottom: isLast ? "1rem" : marginBottom,
+                          }}
+                        >
+                          <p>1: {p.team1}</p>
+                          <p>2: {p.team2}</p>
+                        </div>
 
-                  console.log("marginBottom", marginBottom);
-
-                  return (
-                    <>
-                      <div
-                        id={c.start}
-                        key={`${i}${stage}`}
-                        className="mb-5 min-w-[10rem] border-2 px-4 py-2"
-                        style={{
-                          marginBottom: isLast ? "0" : marginBottom,
-                        }}
-                      >
-                        <p>1: {p.team1}</p>
-                        <p>2: {p.team2}</p>
-                      </div>
-
-                      {isValidLine && (
-                        <Xarrow
-                          end={c.end}
-                          headSize={0}
-                          start={c.start}
-                          curveness={0.6}
-                          path="grid"
-                          strokeWidth={2}
-                          color="#d1d5db"
-                        />
-                      )}
-                    </>
-                  );
-                })}
+                        {!isLast && (
+                          <Xarrow
+                            path="grid"
+                            headSize={0}
+                            curveness={0.6}
+                            strokeWidth={2}
+                            color="#d1d5db"
+                            endAnchor="left"
+                            startAnchor="right"
+                            end={`elem${c.end.join("")}`}
+                            start={`elem${c.start.join("")}`}
+                          />
+                        )}
+                      </>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </Xwrapper>
       </div>
     </ModalWrap>
   );
