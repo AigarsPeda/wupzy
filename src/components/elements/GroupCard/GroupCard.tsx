@@ -18,13 +18,13 @@ interface GroupCardProps {
   totalGames: {
     [key: string]: number;
   };
-  refetchGames: () => void;
+  refetchData: () => void;
 }
 
 const GroupCard: FC<GroupCardProps> = ({
   group,
   totalGames,
-  refetchGames,
+  refetchData,
   tournamentId,
   participants,
   tournamentKind,
@@ -46,7 +46,7 @@ const GroupCard: FC<GroupCardProps> = ({
     api.tournaments.updateGameScore.useMutation({
       onSuccess: async () => {
         await refetchTeams();
-        refetchGames();
+        refetchData();
 
         setScore({
           firstTeam: 0,
@@ -85,7 +85,7 @@ const GroupCard: FC<GroupCardProps> = ({
   }, [participants, refetchTeams]);
 
   return (
-    <div className="mb-6 min-h-[20rem] min-w-[20rem] grid-cols-6 content-start gap-4 rounded-md border border-gray-50 bg-gray-50 py-3 shadow-md md:px-8 xl:grid">
+    <div className="mb-6 min-h-[20rem] min-w-[20rem] rounded-md border border-gray-50 bg-gray-50 py-3 shadow-md md:px-8 xl:flex">
       <GroupCardGamesOfInterest
         group={group}
         totalGames={totalGames}
@@ -109,11 +109,13 @@ const GroupCard: FC<GroupCardProps> = ({
         }}
       />
 
-      {tournamentKind === "TEAMS" ? (
-        <GroupTeamsCard teams={teams?.teams || []} />
-      ) : (
-        <GroupParticipantCard participants={participants} />
-      )}
+      <div className="mt-5 w-full xl:mt-10">
+        {tournamentKind === "TEAMS" ? (
+          <GroupTeamsCard teams={teams?.teams || []} />
+        ) : (
+          <GroupParticipantCard participants={participants} />
+        )}
+      </div>
 
       <GroupCardDisplayAllGames
         group={group}

@@ -17,22 +17,22 @@ const NavBar: FC = () => {
   if (ROUTES_WITHOUT_NAVBAR.includes(router.pathname)) return null;
 
   return (
-    <nav className="mb-0.5 flex h-20 items-center justify-between bg-white py-4 px-4 shadow-[0_2px_5px_rgba(0,0,0,0.07)] md:py-12 md:px-20">
+    <nav className="py-4 px-4 shadow-[0_2px_5px_rgba(0,0,0,0.07)] md:py-12 md:px-20">
       {isIndexPage() ? (
-        <>
+        <div className="mb-0.5 flex items-center justify-between">
           <Logo />
           {data?.user ? (
             <RoundLinkButton href="/tournaments" linkTitle="Tournaments" />
           ) : (
             <RoundLinkButton href="/login" linkTitle="Login" />
           )}
-        </>
+        </div>
       ) : (
-        <>
+        <div className="mb-0.5 flex items-center justify-between">
           <MenuContainer />
           <Logo />
           <NewTournamentContainer />
-        </>
+        </div>
       )}
     </nav>
   );

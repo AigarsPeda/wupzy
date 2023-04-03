@@ -134,31 +134,25 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
                 </div>
 
                 {isCurrentGame && (
-                  <div className="grid content-end">
-                    <div className="mt-3 h-full w-full">
-                      <Button
-                        btnColor="outline"
-                        btnTitle="Save score"
-                        btnClass="border-gray-400 h-[2.58rem]"
-                        onClick={() => {
-                          if (!game) return;
+                  <div className="mt-4 flex w-full flex-col justify-end md:mt-0">
+                    <Button
+                      btnColor="outline"
+                      btnTitle="Save score"
+                      btnClass="border-gray-400 h-[2.5rem] w-32"
+                      onClick={() => {
+                        if (!game) return;
 
-                          const firstTeamIds = game.team1.participants.map(
-                            (team) => team.id
-                          );
+                        const firstTeamIds = game.team1.participants.map(
+                          (team) => team.id
+                        );
 
-                          const secondTeamsIds = game.team2.participants.map(
-                            (team) => team.id
-                          );
+                        const secondTeamsIds = game.team2.participants.map(
+                          (team) => team.id
+                        );
 
-                          handleScoreSave(
-                            game.id,
-                            firstTeamIds,
-                            secondTeamsIds
-                          );
-                        }}
-                      />
-                    </div>
+                        handleScoreSave(game.id, firstTeamIds, secondTeamsIds);
+                      }}
+                    />
                   </div>
                 )}
               </div>

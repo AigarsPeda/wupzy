@@ -1,8 +1,10 @@
 import EditTournament from "components/elements/EditTournament/EditTournament";
-import UnderLineButton from "components/elements/UnderLineButton/UnderLineButton";
+import RoundButton from "components/elements/RoundButton/RoundButton";
 import useParticipants from "hooks/useParticipants";
+import useWindowSize from "hooks/useWindowSize";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
+import { IoSettingsOutline } from "react-icons/io5";
 import { api } from "utils/api";
 
 interface EditTournamentContainerProps {
@@ -12,18 +14,21 @@ interface EditTournamentContainerProps {
 const EditTournamentContainer: FC<EditTournamentContainerProps> = ({
   tournamentId,
 }) => {
+  const { windowSize } = useWindowSize();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAllGamesEnded, setIsAllGamesEnded] = useState(false);
   const { refetchParticipants } = useParticipants(tournamentId);
-  const { data: games } = api.tournaments.getAllTournamentGames.useQuery(
-    { tournamentId },
-    { refetchOnWindowFocus: !isModalOpen }
-  );
+  const { data: games, refetch: refetchGames } =
+    api.tournaments.getAllTournamentGames.useQuery(
+      { tournamentId },
+      { refetchOnWindowFocus: !isModalOpen }
+    );
 
-  // const { data } = api.teamsTournaments.getBestTeams.useQuery({
-  //   tournamentId,
-  //   teamsPerGroup: 3,
-  // });
+  useEffect(() => {
+    if (!isModalOpen) {
+      refetchGames().catch((err) => console.error("Error fetching games", err));
+    }
+  }, [isModalOpen, refetchGames]);
 
   useEffect(() => {
     if (games) {
@@ -33,12 +38,17 @@ const EditTournamentContainer: FC<EditTournamentContainerProps> = ({
   }, [games]);
 
   return (
-    <>
+    <div>
       {!isAllGamesEnded && (
-        <UnderLineButton
-          btnTitle={<span className="px-3 text-base">Edit tournament</span>}
-          onClick={() => {
-            setIsModalOpen(!isModalOpen);
+        <RoundButton
+          textSize="sm"
+          bgColor="gray"
+          btnType="button"
+          btnContentClassNames="mr-2"
+          btnContent={windowSize.width >= 400 && "Edit"}
+          icon={<IoSettingsOutline className="h-5 w-5" />}
+          handleClick={() => {
+            setIsModalOpen((state) => !state);
           }}
         />
       )}
@@ -49,7 +59,7 @@ const EditTournamentContainer: FC<EditTournamentContainerProps> = ({
           refetchParticipants().catch((err) => console.error(err));
         }}
       />
-    </>
+    </div>
   );
 };
 

@@ -23,17 +23,13 @@ const DisplayTeams: FC<DisplayTeamsProps> = ({
   handleScoreChange,
 }) => {
   return (
-    <div>
+    <>
       {teamName && (
-        <div>
-          <p
-            className={classNames(
-              isCurrentGame ? "text-white" : "text-gray-800"
-            )}
-          >
-            {teamName}
-          </p>
-        </div>
+        <p
+          className={classNames(isCurrentGame ? "text-white" : "text-gray-800")}
+        >
+          {teamName}
+        </p>
       )}
       <div
         className={classNames(
@@ -52,7 +48,7 @@ const DisplayTeams: FC<DisplayTeamsProps> = ({
         <NumberInput value={teamsScore ?? 0} onChange={handleScoreChange} />
       )}
       {!isCurrentGame && <p className="text-gray-800">{infoScore}</p>}
-    </div>
+    </>
   );
 };
 

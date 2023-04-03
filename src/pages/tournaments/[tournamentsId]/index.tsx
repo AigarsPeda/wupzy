@@ -1,3 +1,4 @@
+import CreatePlayOff from "components/containers/CreatePlayOff/CreatePlayOff";
 import EditTournamentContainer from "components/containers/EditTournamentContainer/EditTournamentContainer";
 import GroupCardContainer from "components/containers/GroupCardContainer/GroupCardContainer";
 import Spinner from "components/elements/Spinner/Spinner";
@@ -38,7 +39,8 @@ const Tournament: NextPage = () => {
     <>
       <div className="mb-4 flex justify-between">
         <TournamentHeader tournament={tournament?.tournament} />
-        <div className="flex w-full justify-end">
+        <div className="flex">
+          <CreatePlayOff />
           <EditTournamentContainer tournamentId={tournamentId} />
         </div>
       </div>

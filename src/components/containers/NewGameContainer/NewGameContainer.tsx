@@ -144,7 +144,13 @@ const NewTournamentContainer: FC = () => {
     <>
       <Button
         btnColor="outline"
-        btnTitle={<span className="px-3 text-sm">New tournament</span>}
+        btnTitle={
+          windowSize.width >= 500 ? (
+            <span className="px-3 text-sm">New tournament</span>
+          ) : (
+            <span className="px-3 text-sm">New</span>
+          )
+        }
         onClick={() => {
           setIsModalOpen((state) => !state);
         }}

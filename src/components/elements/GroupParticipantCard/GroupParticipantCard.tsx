@@ -11,8 +11,8 @@ const GroupParticipantCard: FC<GroupParticipantCard> = ({ participants }) => {
   const [parent] = useAutoAnimate();
 
   return (
-    <div>
-      <div className="grid grid-cols-3 gap-4 border-b pb-2">
+    <div className="w-full">
+      <div className="grid grid-cols-3 gap-4 border-b px-2 pb-2">
         <div className="flex justify-start">
           <p className="text-sm">Teams</p>
         </div>
@@ -23,7 +23,7 @@ const GroupParticipantCard: FC<GroupParticipantCard> = ({ participants }) => {
           <p className="text-sm">Points</p>
         </div>
       </div>
-      <ul ref={parent}>
+      <ul ref={parent} className="w-full">
         {participants.map((team, i) => {
           const isFirstGroup = i === 0;
           return (
@@ -31,7 +31,7 @@ const GroupParticipantCard: FC<GroupParticipantCard> = ({ participants }) => {
               key={`${i}${team.id}`}
               className={classNames(
                 !isFirstGroup && "border-t-2",
-                "grid grid-cols-3 gap-4 py-2"
+                "grid grid-cols-3 gap-4 py-2 px-2"
               )}
             >
               <div className="flex justify-start">
