@@ -2,6 +2,7 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import type { FC } from "react";
 import type { TeamType } from "types/team.types";
 import classNames from "utils/classNames";
+import sortTeams from "utils/sortTeams";
 
 interface GroupTeamsCardProps {
   teams: TeamType[];
@@ -25,7 +26,7 @@ const GroupTeamsCard: FC<GroupTeamsCardProps> = ({ teams }) => {
       </div>
 
       <ul ref={parent} className="w-full">
-        {teams.map((team, i) => {
+        {sortTeams(teams, "points").map((team, i) => {
           const isFirstGroup = i === 0;
           return (
             <li

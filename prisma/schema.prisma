@@ -87,7 +87,7 @@ model PlayoffGames {
   tournamentId   String
   team2Id        String
   team1Id        String
-  stage          String // <- 1/8, 1/4, 1/2, final
+  stage          String[] // <- 1/8, 1/4, 1/2, final
   participants   Participant[]
   team1Score     Int           @default(0)
   team2Score     Int           @default(0)
