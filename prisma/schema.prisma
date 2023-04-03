@@ -82,8 +82,8 @@ model Games {
 }
 
 model PlayOffGames {
-  gameOrder    Int
-  group        String
+  // gameOrder    Int
+  // group        String
   tournamentId String
   team2Id      String
   team1Id      String
@@ -96,8 +96,7 @@ model PlayOffGames {
   tournament   Tournament    @relation(fields: [tournamentId], references: [id])
   team1        Team          @relation("playoff_team_1", fields: [team1Id], references: [id], onDelete: Cascade)
   team2        Team          @relation("playoff_team_2", fields: [team2Id], references: [id], onDelete: Cascade)
-
-  teamId String?
+  // teamId       String?
 }
 
 model Team {
