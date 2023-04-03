@@ -53,7 +53,7 @@ const ModalWrap: FC<ModalWrapProps> = ({
             ref={modalRef}
             className={classNames(
               modalWidth === "xl" && "md:max-w-xl",
-              modalWidth === "2xl" && " md:max-w-2xl",
+              modalWidth === "2xl" && "md:max-w-2xl",
               modalWidth === "3xl" && "md:max-w-3xl",
               modalWidth === "4xl" && "md:max-w-4xl",
               modalWidth === "5xl" && "md:max-w-5xl",
@@ -61,7 +61,7 @@ const ModalWrap: FC<ModalWrapProps> = ({
               modalWidth === "7xl" && "md:max-w-7xl",
               modalWidth === "large" && "md:max-w-lg",
               modalWidth === "medium" && "md:max-w-md",
-              "absolute z-[69] mx-auto w-full rounded bg-white shadow-lg"
+              "absolute z-[69] mx-2 rounded bg-white shadow-lg sm:mx-5"
             )}
           >
             <div className={classNames("h-full w-full px-6 py-4 text-left")}>
