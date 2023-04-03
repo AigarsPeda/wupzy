@@ -150,9 +150,8 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
                     Math.floor(index / 2) < teams.length - 1 ||
                     index < teams.length - 1;
 
-                  const marginBottom = isMiddle
-                    ? `${Math.floor(i * 2 + 1)}rem`
-                    : `${Math.floor(i + 1)}rem`;
+                  const marginBottom = `${Math.floor(i * 2 + 1)}rem`;
+                  // : `${Math.floor(i + 1)}rem`;
 
                   console.log("marginBottom", marginBottom);
 
