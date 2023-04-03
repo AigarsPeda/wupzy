@@ -1,8 +1,8 @@
 import type { GamesType } from "types/game.types";
-import createGamesMap from "utils/createGamesMap";
+import createMap from "utils/createMap";
 
 const getGameCountPerGroup = (games: GamesType[]) => {
-  const gamesMap = createGamesMap(games);
+  const gamesMap = createMap(games);
 
   const totalGames: {
     [key: string]: number;

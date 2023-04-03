@@ -1,8 +1,8 @@
-import createGamesMap from "utils/createGamesMap";
+import createMap from "utils/createMap";
 import type { GamesOfInterestType, GamesType } from "types/game.types";
 
 const createGamesOfInterest = (games: GamesType[]): GamesOfInterestType => {
-  const gamesMap = createGamesMap(games);
+  const gamesMap = createMap(games);
 
   const gamesOfInterest: GamesOfInterestType = {};
 

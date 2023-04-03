@@ -34,32 +34,35 @@ enum TournamentType {
 
 // One user can have many Tournaments
 model Tournament {
-  Team      Team[]
-  name      String
-  userId    String
-  winner    String?
-  Games     Games[]
-  teams     Participant[]
-  updatedAt DateTime       @updatedAt
-  type      TournamentType @default(KING)
-  createdAt DateTime       @default(now())
-  id        String         @id @default(cuid())
-  user      User           @relation(fields: [userId], references: [id])
+  Team         Team[]
+  name         String
+  userId       String
+  winner       String?
+  Games        Games[]
+  teams        Participant[]
+  updatedAt    DateTime       @updatedAt
+  type         TournamentType @default(KING)
+  createdAt    DateTime       @default(now())
+  id           String         @id @default(cuid())
+  user         User           @relation(fields: [userId], references: [id])
+  PlayOffGames PlayOffGames[]
 }
 
 model Participant {
-  team         Team[]
-  name         String
-  tournamentId String
-  group        String
-  games        Games[]
-  updatedAt    DateTime   @updatedAt
-  points       Int        @default(0)
-  smallPoints  Int        @default(0)
-  createdAt    DateTime   @default(now())
-  id           String     @id @default(cuid())
-  games2       Games[]    @relation("winners")
-  tournament   Tournament @relation(fields: [tournamentId], references: [id])
+  team          Team[]
+  name          String
+  tournamentId  String
+  group         String
+  games         Games[]
+  playoffgames  PlayOffGames[]
+  updatedAt     DateTime       @updatedAt
+  points        Int            @default(0)
+  smallPoints   Int            @default(0)
+  createdAt     DateTime       @default(now())
+  id            String         @id @default(cuid())
+  games2        Games[]        @relation("winners")
+  playoffgames2 PlayOffGames[] @relation("playoffwinners")
+  tournament    Tournament     @relation(fields: [tournamentId], references: [id])
 }
 
 model Games {
@@ -78,19 +81,40 @@ model Games {
   team2        Team          @relation("participant_team_2", fields: [team2Id], references: [id], onDelete: Cascade)
 }
 
+model PlayOffGames {
+  gameOrder    Int
+  group        String
+  tournamentId String
+  team2Id      String
+  team1Id      String
+  stage        String // <- 1/8, 1/4, 1/2, final
+  participants Participant[]
+  team1Score   Int           @default(0)
+  team2Score   Int           @default(0)
+  id           String        @id @default(cuid())
+  winners      Participant[] @relation("playoffwinners")
+  tournament   Tournament    @relation(fields: [tournamentId], references: [id])
+  team1        Team          @relation("playoff_team_1", fields: [team1Id], references: [id], onDelete: Cascade)
+  team2        Team          @relation("playoff_team_2", fields: [team2Id], references: [id], onDelete: Cascade)
+
+  teamId String?
+}
+
 model Team {
   name         String
   group        String
   tournamentId String
   participants Participant[]
-  points       Int           @default(0)
-  updatedAt    DateTime      @updatedAt
-  smallPoints  Int           @default(0)
-  createdAt    DateTime      @default(now())
-  id           String        @id @default(cuid())
-  games        Games[]       @relation("participant_team_1")
-  games2       Games[]       @relation("participant_team_2")
-  tournament   Tournament    @relation(fields: [tournamentId], references: [id])
+  updatedAt    DateTime       @updatedAt
+  points       Int            @default(0)
+  smallPoints  Int            @default(0)
+  createdAt    DateTime       @default(now())
+  id           String         @id @default(cuid())
+  playoff      PlayOffGames[] @relation("playoff_team_1")
+  playoff2     PlayOffGames[] @relation("playoff_team_2")
+  games        Games[]        @relation("participant_team_1")
+  games2       Games[]        @relation("participant_team_2")
+  tournament   Tournament     @relation(fields: [tournamentId], references: [id])
 }
 
 // One user can have one password

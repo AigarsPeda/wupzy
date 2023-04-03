@@ -3,7 +3,11 @@ import RoundButton from "components/elements/RoundButton/RoundButton";
 import type { FC } from "react";
 import { useState } from "react";
 
-const CreatePlayOff: FC = () => {
+interface CreatePlayOffProps {
+  tournamentId: string;
+}
+
+const CreatePlayOff: FC<CreatePlayOffProps> = ({ tournamentId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -22,6 +26,7 @@ const CreatePlayOff: FC = () => {
 
       <CreatePlayOffModal
         isModalOpen={isModalOpen}
+        tournamentId={tournamentId}
         handleCancelClick={() => {
           setIsModalOpen(false);
         }}

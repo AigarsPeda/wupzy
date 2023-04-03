@@ -10,7 +10,7 @@ import type { GamesMapType } from "types/game.types";
 import { api } from "utils/api";
 import classNames from "utils/classNames";
 import compareMapsGameOrder from "utils/compareMapsGameOrder";
-import createGamesMap from "utils/createGamesMap";
+import createMap from "utils/createMap";
 import sortMapKeys from "utils/sortMapKeys";
 
 interface EditTournamentGameOrderProps {
@@ -78,7 +78,7 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
 
   useEffect(() => {
     if (!games) return;
-    setGamesState(sortMapKeys(createGamesMap(games.games)));
+    setGamesState(sortMapKeys(createMap(games.games)));
   }, [games]);
 
   return (
