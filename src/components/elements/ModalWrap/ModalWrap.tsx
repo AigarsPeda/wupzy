@@ -67,7 +67,11 @@ const ModalWrap: FC<ModalWrapProps> = ({
               "absolute z-[69] mx-2 rounded bg-white shadow-lg sm:mx-5"
             )}
           >
-            <div className={classNames("h-full w-full px-6 py-4 text-left")}>
+            <div
+              className={classNames(
+                "h-full w-full px-3 py-2 text-left md:px-6 md:py-4"
+              )}
+            >
               {/* <!--Title--> */}
               <div
                 className={classNames(
