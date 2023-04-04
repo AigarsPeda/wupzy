@@ -1,13 +1,17 @@
 import InfoParagraph from "components/elements/InfoParagraph/InfoParagraph";
 import ModalWrap from "components/elements/ModalWrap/ModalWrap";
+import PlayoffDropdown from "components/elements/PlayoffDropdown/PlayoffDropdown";
 import type { FC } from "react";
-import { useCallback } from "react";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
+import Xarrow, { Xwrapper, useXarrow } from "react-xarrows";
 import { api } from "utils/api";
 import classNames from "utils/classNames";
 import createMap from "utils/createMap";
-import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
+
+type GameType = {
+  team1: string | JSX.Element;
+  team2: string | JSX.Element;
+};
 
 type CoordinatesType = {
   end: number[];
@@ -25,70 +29,26 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
   tournamentId,
   handleCancelClick,
 }) => {
+  const updateXarrow = useXarrow();
+  const [teamCount, setTeamCount] = useState<number | null>(null);
   // const { data: games, refetch: refetchGames } =
   //   api.tournaments.getAllTournamentGames.useQuery({ tournamentId });
-
-  const [coordinates, setCoordinates] = useState<CoordinatesType[]>([]);
+  const [brackets, setBrackets] = useState<[string, GameType[]][]>([]);
   const { data: teams, refetch: refetchTeams } =
     api.tournaments.getAllTournamentTeams.useQuery({
       // group,
       tournamentId,
     });
 
-  useEffect(() => {
-    if (!teams) return;
+  const cratePlayOffMap = useCallback((num: number | null) => {
+    if (!num) return new Map<string, GameType[]>();
 
-    console.log("games --->", createMap(teams?.teams));
-  }, [teams]);
-
-  // [[1, 2, 3, 4],[5,6],[7]]
-  // const createArray = (num: number): number[][] => {
-  //   const result: number[][] = [];
-
-  //   while (num > 0) {
-  //     const arr = Array.from(Array(num).keys()).map((el) => el + 1);
-
-  //     result.push(arr);
-
-  //     num = Math.floor(num / 2);
-  //   }
-
-  //   return result;
-  // };
-
-  type Game = {
-    team1: string;
-    team2: string;
-  };
-
-  // const cratePlayOffMap = (num: number) => {
-  //   const playOffMap = new Map<string, Game[]>();
-
-  //   while (num > 0) {
-  //     const arr = Array.from(Array(num).keys()).map((n) => {
-  //       const games: Game = {
-  //         team1: `${n} Aigars`,
-  //         team2: `${n} Jon`,
-  //       };
-
-  //       return games;
-  //     });
-
-  //     playOffMap.set(`${num}`, arr);
-
-  //     num = Math.floor(num / 2);
-  //   }
-
-  //   return playOffMap;
-  // };
-
-  const cratePlayOffMap = useCallback((num: number) => {
     const originalNum = num;
-    const playOffMap = new Map<string, Game[]>();
+    const playOffMap = new Map<string, GameType[]>();
 
     while (num > 0) {
       const arr = Array.from(Array(num).keys()).map((n) => {
-        const games: Game = {
+        const games: GameType = {
           team1: ``,
           team2: ``,
         };
@@ -109,24 +69,33 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
     return playOffMap;
   }, []);
 
-  const [arrows, setArrows] = useState<[string, Game[]][]>([]);
+  // useEffect(() => {
+  //   if (!teams) return;
+
+  //   console.log("games --->", createMap(teams?.teams));
+  // }, [teams]);
 
   useEffect(() => {
-    setArrows([...cratePlayOffMap(8)]);
-  }, [cratePlayOffMap]);
+    setBrackets([...cratePlayOffMap(teamCount)]);
+  }, [cratePlayOffMap, teamCount]);
 
   return (
     <ModalWrap
+      isFullScreen
       modalWidth="7xl"
       topPosition="top"
       isModalVisible={isModalOpen}
       modalTitle="Create playoffs"
       handleCancelClick={handleCancelClick}
     >
-      <InfoParagraph text="* Once playoffs are created, all other games will be finalized, and you will not be able to change or edit their scores." />
-      <p>Create playoffs</p>
-      {/* {console.log("cratePlayOffMap", cratePlayOffMap(6))} */}
-      {/* <GridLayout isGap minWith="175">
+      <div className="">
+        <InfoParagraph text="* Once playoffs are created, all other games will be finalized, and you will not be able to change or edit their scores." />
+        <div className="mb-4">
+          <PlayoffDropdown count={teamCount} handleCountClick={setTeamCount} />
+        </div>
+
+        {/* {console.log("cratePlayOffMap", cratePlayOffMap(6))} */}
+        {/* <GridLayout isGap minWith="175">
         {teams?.teams &&
           [...createMap(teams?.teams)].map(([group, teams]) => {
             return (
@@ -138,67 +107,73 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
           })}
       </GridLayout> */}
 
-      <div className="flex">
-        <Xwrapper>
-          {arrows.map((games, i) => {
-            const [stage, teams] = games;
-            const isLast = i === arrows.length - 1;
-            const hasNext = i < arrows.length - 1;
-            const nextArrow = hasNext ? arrows[i + 1] : [];
-            const nextTeams =
-              nextArrow && nextArrow.length > 1 ? nextArrow[1] : [];
-            return (
-              <div key={stage} className={classNames(i !== 0 && "ml-28", "")}>
-                <div className="grid h-full place-content-center">
-                  {teams.map((p, index) => {
-                    const group = i + 1 > arrows.length ? arrows.length : i + 1;
-                    const position =
-                      Math.floor(index / 2) > nextTeams.length - 1
-                        ? 0
-                        : Math.floor(index / 2);
+        <div className="flex justify-center overflow-x-auto">
+          <Xwrapper>
+            {brackets.map((games, i) => {
+              const [stage, teams] = games;
+              const isLast = i === brackets.length - 1;
+              const hasNext = i < brackets.length - 1;
+              const nextArrow = hasNext ? brackets[i + 1] : [];
+              const nextTeams =
+                nextArrow && nextArrow.length > 1 ? nextArrow[1] : [];
+              return (
+                <div
+                  key={`${stage}${i}`}
+                  className={classNames(i !== 0 && "ml-5 md:ml-28", "")}
+                >
+                  <div className="grid h-full place-content-center">
+                    {teams.map((p, index) => {
+                      const group =
+                        i + 1 > brackets.length ? brackets.length : i + 1;
+                      const position =
+                        Math.floor(index / 2) > nextTeams.length - 1
+                          ? 0
+                          : Math.floor(index / 2);
 
-                    const c: CoordinatesType = {
-                      start: [i, index],
-                      end: [group, position],
-                    };
+                      const c: CoordinatesType = {
+                        start: [i, index],
+                        end: [group, position],
+                      };
 
-                    const marginBottom = `${Math.floor(i * 2 + 2)}rem`;
+                      const marginBottom = `${Math.floor(i * 2 + 2)}rem`;
 
-                    return (
-                      <>
-                        <div
-                          id={`elem${c.start.join("")}`}
-                          key={`${i}${c.start.join("")}`}
-                          className="mb-5 min-w-[10rem] border-2 px-4 py-2"
-                          style={{
-                            marginBottom: isLast ? "1rem" : marginBottom,
-                          }}
-                        >
-                          <p>1: {p.team1}</p>
-                          <p>2: {p.team2}</p>
+                      return (
+                        <div key={`${index}${c.start.join("")}`}>
+                          <div
+                            id={`elem${c.start.join("")}`}
+                            className="mb-5 min-w-[10rem] border-2 px-4 py-2"
+                            style={{
+                              marginBottom: isLast
+                                ? `${i + 1}rem`
+                                : marginBottom,
+                            }}
+                          >
+                            <p>1: {p.team1}</p>
+                            <p>2: {p.team2}</p>
+                          </div>
+
+                          {!isLast && (
+                            <Xarrow
+                              path="grid"
+                              headSize={0}
+                              curveness={0.6}
+                              strokeWidth={2}
+                              color="#d1d5db"
+                              endAnchor="left"
+                              startAnchor="right"
+                              end={`elem${c.end.join("")}`}
+                              start={`elem${c.start.join("")}`}
+                            />
+                          )}
                         </div>
-
-                        {!isLast && (
-                          <Xarrow
-                            path="grid"
-                            headSize={0}
-                            curveness={0.6}
-                            strokeWidth={2}
-                            color="#d1d5db"
-                            endAnchor="left"
-                            startAnchor="right"
-                            end={`elem${c.end.join("")}`}
-                            start={`elem${c.start.join("")}`}
-                          />
-                        )}
-                      </>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </Xwrapper>
+              );
+            })}
+          </Xwrapper>
+        </div>
       </div>
     </ModalWrap>
   );

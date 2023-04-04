@@ -2,7 +2,7 @@ import type { FC } from "react";
 import classNames from "utils/classNames";
 
 interface TournamentProps {
-  btnTitle: string;
+  btnTitle: string | number;
   handleClick: () => void;
 }
 
