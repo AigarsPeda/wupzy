@@ -1,15 +1,29 @@
 import Button from "components/elements/Button/Button";
 import Dropdown from "components/elements/Dropdown/Dropdown";
+import useWindowSize from "hooks/useWindowSize";
 import type { FC } from "react";
 import { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import classNames from "utils/classNames";
 
-const BracketsDropdown: FC = () => {
+interface BracketsDropdownProps {
+  selectedTeams: string | undefined;
+}
+
+const BracketsDropdown: FC<BracketsDropdownProps> = ({ selectedTeams }) => {
+  const { windowSize } = useWindowSize();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleDropdownClose = () => setIsDropdownOpen(false);
   const updateState = () => setIsDropdownOpen((state) => !state);
+
+  const getBtnTitle = () => {
+    if (selectedTeams) {
+      return selectedTeams;
+    }
+
+    return windowSize.width <= 400 ? "Add" : "Add Teams";
+  };
 
   return (
     <Dropdown
@@ -19,10 +33,11 @@ const BracketsDropdown: FC = () => {
       dropdownBtn={
         <Button
           btnSize="full"
+          fontSize="sm"
           onClick={updateState}
           btnTitle={
             <span className="flex w-full justify-center font-normal">
-              Add Teams
+              {getBtnTitle()}
             </span>
           }
           icon={

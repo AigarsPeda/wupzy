@@ -10,6 +10,7 @@ interface ButtonProps {
   onClick: () => void;
   isLoading?: boolean;
   isDisabled?: boolean;
+  fontSize?: "sm" | "md" | "lg";
   btnTitle: string | ReactNode;
   iconPosition?: "left" | "right";
   type?: "button" | "submit" | "reset";
@@ -28,6 +29,7 @@ const Button = forwardRef<Ref, ButtonProps>(
       textClass,
       isLoading,
       isDisabled,
+      fontSize = "md",
       type = "button",
       btnColor = "black",
       btnSize = "default",
@@ -50,8 +52,7 @@ const Button = forwardRef<Ref, ButtonProps>(
         btnSize === "large" && "h-11 w-48",
         btnSize === "full" && "h-10 w-full",
         btnSize === "square" && "h-11 w-11",
-        btnSize === "default" &&
-          "h-11 min-w-[4rem] px-4 text-xs md:min-w-[7.7rem] md:text-sm",
+        btnSize === "default" && "h-11 min-w-[4rem] px-4 md:min-w-[7.7rem]",
         isDisabled && "cursor-not-allowed bg-gray-300",
         icon ? "justify-between px-4 py-2" : "justify-center",
         !isDisabled &&
@@ -67,7 +68,10 @@ const Button = forwardRef<Ref, ButtonProps>(
           btnColor === "outline" &&
           "border-2 border-gray-800 bg-white text-gray-800 hover:scale-105 hover:shadow-gray-400",
         "flex items-center justify-center rounded-md text-center shadow transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-gray-100",
-        btnClass && btnClass
+        btnClass && btnClass,
+        fontSize === "sm" && "text-sm",
+        fontSize === "md" && "text-xs md:text-sm",
+        fontSize === "lg" && "text-lg"
       )}
     >
       {iconPosition === "left" && icon && (

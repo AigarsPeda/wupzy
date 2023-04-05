@@ -1,9 +1,4 @@
-type GroupedObjectType = {
-  group: string;
-  gameOrder?: number;
-};
-
-type GroupedMapType<T extends GroupedObjectType> = Map<string, T[]>;
+import type { GroupedObjectType, GroupedMapType } from "types/util.types";
 
 const createMap = <T extends GroupedObjectType>(
   items: T[]
@@ -15,7 +10,6 @@ const createMap = <T extends GroupedObjectType>(
     groupItems.push(item);
     acc.set(group, groupItems);
 
-    // groupItems.sort((a, b) => a.gameOrder - b.gameOrder);
     groupItems.sort((a, b) => (a.gameOrder ?? 0) - (b.gameOrder ?? 0));
 
     return acc;

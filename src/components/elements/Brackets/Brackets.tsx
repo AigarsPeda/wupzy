@@ -58,8 +58,8 @@ const Brackets: FC<BracketsProps> = ({ brackets }) => {
                             : marginBottom,
                         }}
                       >
-                        <p className="px-2 py-1">{team.team1}</p>
-                        <p className="px-2 py-1">{team.team2}</p>
+                        <div className="px-2 py-1">{team.team1}</div>
+                        <div className="px-2 py-1">{team.team2}</div>
 
                         {!isLast && (
                           <Xarrow

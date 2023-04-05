@@ -5,6 +5,7 @@ import type { FC } from "react";
 import { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import classNames from "utils/classNames";
+import createAllPossibleOddNumberArray from "utils/createAllPossibleOddNumberArray";
 
 interface PlayoffDropdownProps {
   count: number | null;
@@ -21,16 +22,6 @@ const PlayoffDropdown: FC<PlayoffDropdownProps> = ({
 
   const handleDropdownClose = () => setIsDropdownOpen(false);
   const updateState = () => setIsDropdownOpen((state) => !state);
-
-  const createAllPossibleOddNumberArray = (count: number) => {
-    const arr = [];
-    for (let i = 0; i <= count; i += 2) {
-      if (i === 0) continue;
-
-      arr.push(i);
-    }
-    return arr;
-  };
 
   return (
     <Dropdown
