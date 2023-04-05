@@ -6,6 +6,7 @@ import classNames from "utils/classNames";
 interface ButtonProps {
   icon?: ReactNode;
   btnClass?: string;
+  textClass?: string;
   onClick: () => void;
   isLoading?: boolean;
   isDisabled?: boolean;
@@ -24,6 +25,7 @@ const Button = forwardRef<Ref, ButtonProps>(
       onClick,
       btnTitle,
       btnClass,
+      textClass,
       isLoading,
       isDisabled,
       type = "button",
@@ -64,14 +66,18 @@ const Button = forwardRef<Ref, ButtonProps>(
         !isDisabled &&
           btnColor === "outline" &&
           "border-2 border-gray-800 bg-white text-gray-800 hover:scale-105 hover:shadow-gray-400",
-        "flex items-center rounded-md text-center font-semibold shadow transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-gray-100",
+        "flex items-center justify-center rounded-md text-center shadow transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-gray-100",
         btnClass && btnClass
       )}
     >
       {iconPosition === "left" && icon && (
         <span className="pointer-events-none text-gray-600">{icon}</span>
       )}
-      {isLoading ? <Spinner size="small" /> : btnTitle}
+      {isLoading ? (
+        <Spinner size="small" />
+      ) : (
+        <span className={textClass}>{btnTitle}</span>
+      )}
       {iconPosition === "right" && icon && (
         <span className="pointer-events-none text-gray-600">{icon}</span>
       )}

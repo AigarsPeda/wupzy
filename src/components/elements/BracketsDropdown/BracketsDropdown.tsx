@@ -1,47 +1,28 @@
 import Button from "components/elements/Button/Button";
 import Dropdown from "components/elements/Dropdown/Dropdown";
-import ListButton from "components/elements/ListButton/ListButton";
 import type { FC } from "react";
 import { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import classNames from "utils/classNames";
 
-interface PlayoffDropdownProps {
-  count: number | null;
-  availableLength: number;
-  handleCountClick: (count: number | null) => void;
-}
-
-const PlayoffDropdown: FC<PlayoffDropdownProps> = ({
-  count,
-  availableLength,
-  handleCountClick,
-}) => {
+const BracketsDropdown: FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleDropdownClose = () => setIsDropdownOpen(false);
   const updateState = () => setIsDropdownOpen((state) => !state);
 
-  const createAllPossibleOddNumberArray = (count: number) => {
-    const arr = [];
-    for (let i = 0; i <= count; i += 2) {
-      if (i === 0) continue;
-
-      arr.push(i);
-    }
-    return arr;
-  };
-
   return (
     <Dropdown
+      isFullWidth
       isDropdownOpen={isDropdownOpen}
       handleDropdownClose={handleDropdownClose}
       dropdownBtn={
         <Button
+          btnSize="full"
           onClick={updateState}
           btnTitle={
-            <span className="flex w-full justify-center">
-              {count || "Team count"}
+            <span className="flex w-full justify-center font-normal">
+              Add Teams
             </span>
           }
           icon={
@@ -55,8 +36,9 @@ const PlayoffDropdown: FC<PlayoffDropdownProps> = ({
         />
       }
     >
-      <ul>
-        {count && (
+      <ul className="w-full">
+        <li className="border-b-2 border-gray-100">Hei</li>
+        {/* {count && (
           <li className="border-b-2 border-gray-100">
             <ListButton
               btnTitle="Remove"
@@ -85,10 +67,10 @@ const PlayoffDropdown: FC<PlayoffDropdownProps> = ({
               </li>
             );
           }
-        )}
+        )} */}
       </ul>
     </Dropdown>
   );
 };
 
-export default PlayoffDropdown;
+export default BracketsDropdown;
