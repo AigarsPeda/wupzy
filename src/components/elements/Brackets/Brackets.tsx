@@ -2,6 +2,8 @@ import type { GameType } from "components/elements/CreatePlayOffModal/CreatePlay
 import type { FC } from "react";
 import Xarrow, { Xwrapper } from "react-xarrows";
 import classNames from "utils/classNames";
+import BracketsDropdown from "../BracketsDropdown/BracketsDropdown";
+import type { TeamsMapType } from "../../../types/team.types";
 
 type CoordinatesType = {
   end: number[];
@@ -9,10 +11,11 @@ type CoordinatesType = {
 };
 
 interface BracketsProps {
+  teamsMap: TeamsMapType;
   brackets: [string, GameType[]][];
 }
 
-const Brackets: FC<BracketsProps> = ({ brackets }) => {
+const Brackets: FC<BracketsProps> = ({ brackets, teamsMap }) => {
   return (
     <div className="relative flex items-center justify-center">
       {brackets.map((games, i) => {
@@ -58,8 +61,19 @@ const Brackets: FC<BracketsProps> = ({ brackets }) => {
                             : marginBottom,
                         }}
                       >
-                        <div className="px-2 py-1">{team.team1}</div>
-                        <div className="px-2 py-1">{team.team2}</div>
+                        <div className="px-2 py-1">
+                          <BracketsDropdown
+                            selectedTeam={team.team1}
+                            teamsMap={teamsMap}
+                          />
+                        </div>
+                        <div className="px-2 py-1">
+                          {" "}
+                          <BracketsDropdown
+                            selectedTeam={team.team2}
+                            teamsMap={teamsMap}
+                          />
+                        </div>
 
                         {!isLast && (
                           <Xarrow

@@ -14,8 +14,8 @@ import getShortestGroup from "utils/getShortestGroup";
 import sortMap from "utils/sortMap";
 
 export type GameType = {
-  team1: string | JSX.Element;
-  team2: string | JSX.Element;
+  team1: TeamType | undefined;
+  team2: TeamType | undefined;
 };
 
 interface CreatePlayOffModalProps {
@@ -38,7 +38,7 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
 }) => {
   const [teamCount, setTeamCount] = useState<number | null>(null);
   const [teamsMap, setTeamsMap] = useState<TeamsMapType>(new Map());
-  const [brackets, setBrackets] = useState<[string, GameType[]][]>([]);
+  const [brackets, setBrackets] = useState<Map<string, GameType[]>>(new Map());
   const [selectedTeams, setSelectedTeams] = useState<SelectedTeamsType[]>([]);
   const { data: teams } = api.tournaments.getAllTournamentTeams.useQuery({
     tournamentId,
@@ -80,8 +80,8 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
           }
 
           const games: GameType = {
-            team1: ``,
-            team2: ``,
+            team1: undefined,
+            team2: undefined,
           };
 
           if (num === originalNum && firstGroupTeams && secondGroupTeams) {
@@ -89,38 +89,79 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
             const secondTeam =
               secondGroupTeams[secondGroupTeams.length - (n + 1)];
 
-            games.team1 = (
-              <BracketsDropdown
-                teamsMap={map}
-                selectedTeam={firstTeam}
-                handleRemoveSelected={(t) => {
-                  console.log("t", t);
-                  console.log("brackets", brackets);
-                }}
-              />
-            );
+            // games.team1 = (
+            //   <BracketsDropdown
+            //     teamsMap={map}
+            //     teamMeta={{
+            //       group: num,
+            //       name: "team1",
+            //       position: n,
+            //     }}
+            //     selectedTeam={firstTeam}
+            //     handleRemoveSelected={(meta) => {
+            //       // meta.
+            //       setBrackets((prev) => {
+            //         const newMap = new Map(prev);
+            //         const arr = newMap.get(meta.group.toString()) || [];
 
-            games.team2 = (
-              <BracketsDropdown
-                teamsMap={map}
-                handleRemoveSelected={(t) => {
-                  console.log("t", t);
-                }}
-                selectedTeam={
-                  Boolean(firstTeam?.id !== secondTeam?.id)
-                    ? secondTeam
-                    : undefined
-                }
-              />
-            );
+            //         console.log("arr", arr);
 
-            selected.push({
-              [n]: {
-                team1: firstTeam,
-                team2:
-                  secondTeam?.id === firstTeam?.id ? undefined : secondTeam,
-              },
-            });
+            //         // const newArr = arr.map((g) => {
+            //         //   if (g.team1 === meta.team) {
+            //         //     return {
+            //         //       ...g,
+            //         //       team1: ``,
+            //         //     };
+            //         //   }
+
+            //         //   if (g.team2 === meta.team) {
+            //         //     return {
+            //         //       ...g,
+            //         //       team2: ``,
+            //         //     };
+
+            //         //     return g;
+            //         //   }
+            //         // });
+
+            //         return newMap;
+            //       });
+            //       // console.log("meta", meta);
+            //       // console.log("brackets", brackets);
+            //     }}
+            //   />
+            // );
+
+            // games.team2 = (
+            //   <BracketsDropdown
+            //     teamMeta={{
+            //       group: num,
+            //       name: "team2",
+            //       position: n,
+            //     }}
+            //     teamsMap={map}
+            //     handleRemoveSelected={(t) => {
+            //       console.log("t", t);
+            //     }}
+            //     selectedTeam={
+            //       Boolean(firstTeam?.id !== secondTeam?.id)
+            //         ? secondTeam
+            //         : undefined
+            //     }
+            //   />
+            // );
+
+            // selected.push({
+            //   [n]: {
+            //     team1: firstTeam,
+            //     team2:
+            //       secondTeam?.id === firstTeam?.id ? undefined : secondTeam,
+            //   },
+            // });
+
+            games.team1 = firstTeam;
+            games.team2 =
+              secondTeam?.id === firstTeam?.id ? undefined : secondTeam;
           }
 
           return games;
@@ -150,7 +191,11 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
   }, [teams]);
 
   useEffect(() => {
-    setBrackets([...cratePlayOffMap(teamCount, teamsMap)]);
+    const test = cratePlayOffMap(teamCount, teamsMap);
+    setBrackets(test);
+
+    // console.log("test", test);
+    // // setBrackets([...cratePlayOffMap(teamCount, teamsMap)]);
   }, [cratePlayOffMap, teamCount, teamsMap]);
 
   return (
@@ -174,7 +219,7 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
         </div>
 
         <div className="ml-2 min-w-[25rem]">
-          <Brackets brackets={brackets} />
+          <Brackets brackets={[...brackets]} teamsMap={teamsMap} />
         </div>
       </div>
     </ModalWrap>

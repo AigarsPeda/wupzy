@@ -11,13 +11,11 @@ import ListButton from "../ListButton/ListButton";
 interface BracketsDropdownProps {
   teamsMap: TeamsMapType;
   selectedTeam: TeamType | undefined;
-  handleRemoveSelected: (selectedTeam: TeamType) => void;
 }
 
 const BracketsDropdown: FC<BracketsDropdownProps> = ({
   teamsMap,
   selectedTeam,
-  handleRemoveSelected,
 }) => {
   const { windowSize } = useWindowSize();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -65,7 +63,7 @@ const BracketsDropdown: FC<BracketsDropdownProps> = ({
             <ListButton
               btnTitle={<span className="text-red-500">Remove</span>}
               handleClick={() => {
-                handleRemoveSelected(selectedTeam);
+                // handleRemoveSelected(teamMeta);
                 handleDropdownClose();
               }}
             />
