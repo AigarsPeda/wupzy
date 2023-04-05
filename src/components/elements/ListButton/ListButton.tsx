@@ -2,8 +2,8 @@ import type { FC } from "react";
 import classNames from "utils/classNames";
 
 interface TournamentProps {
-  btnTitle: string | number;
   handleClick: () => void;
+  btnTitle: string | number | JSX.Element;
 }
 
 const ListButton: FC<TournamentProps> = ({ btnTitle, handleClick }) => {

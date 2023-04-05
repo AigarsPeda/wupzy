@@ -5,12 +5,20 @@ import type { FC } from "react";
 import { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import classNames from "utils/classNames";
+import type { TeamType, TeamsMapType } from "../../../types/team.types";
+import ListButton from "../ListButton/ListButton";
 
 interface BracketsDropdownProps {
-  selectedTeams: string | undefined;
+  teamsMap: TeamsMapType;
+  selectedTeam: TeamType | undefined;
+  handleRemoveSelected: (selectedTeam: TeamType) => void;
 }
 
-const BracketsDropdown: FC<BracketsDropdownProps> = ({ selectedTeams }) => {
+const BracketsDropdown: FC<BracketsDropdownProps> = ({
+  teamsMap,
+  selectedTeam,
+  handleRemoveSelected,
+}) => {
   const { windowSize } = useWindowSize();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -18,8 +26,8 @@ const BracketsDropdown: FC<BracketsDropdownProps> = ({ selectedTeams }) => {
   const updateState = () => setIsDropdownOpen((state) => !state);
 
   const getBtnTitle = () => {
-    if (selectedTeams) {
-      return selectedTeams;
+    if (selectedTeam) {
+      return selectedTeam.name;
     }
 
     return windowSize.width <= 400 ? "Add" : "Add Teams";
@@ -52,37 +60,57 @@ const BracketsDropdown: FC<BracketsDropdownProps> = ({ selectedTeams }) => {
       }
     >
       <ul className="w-full">
-        <li className="border-b-2 border-gray-100">Hei</li>
-        {/* {count && (
+        {selectedTeam && (
           <li className="border-b-2 border-gray-100">
             <ListButton
-              btnTitle="Remove"
+              btnTitle={<span className="text-red-500">Remove</span>}
               handleClick={() => {
+                handleRemoveSelected(selectedTeam);
                 handleDropdownClose();
-                handleCountClick(null);
               }}
             />
           </li>
         )}
-
-        {createAllPossibleOddNumberArray(availableLength).map(
-          (teamCount, i) => {
-            return (
-              <li
-                key={`${teamCount}${i}`}
-                className="border-b-2 border-gray-100"
-              >
-                <ListButton
-                  btnTitle={teamCount}
-                  handleClick={() => {
-                    handleDropdownClose();
-                    handleCountClick(teamCount);
-                  }}
-                />
-              </li>
-            );
-          }
-        )} */}
+        {[...teamsMap].map(([key, value], i) => {
+          return (
+            <div key={`${key}${i}`} className="border-b-2 border-gray-100">
+              <p className="w-full bg-gray-800 px-3 text-2xl text-white">
+                {key}
+              </p>
+              {value.map((team, i) => {
+                return (
+                  <li
+                    key={`${team.id}${i}`}
+                    className="border-b-2 border-gray-100"
+                  >
+                    <ListButton
+                      btnTitle={
+                        <span className="grid w-full grid-cols-3">
+                          <span className="flex flex-col text-left">
+                            <span className="text-xs text-gray-300">name</span>
+                            <span>{team.name}</span>
+                          </span>
+                          <span className="flex flex-col text-center">
+                            <span className="text-xs text-gray-300">sm</span>
+                            <span>{team.smallPoints}</span>
+                          </span>
+                          <span className="flex flex-col text-right">
+                            <span className="text-xs text-gray-300">lg</span>
+                            <span>{team.points}</span>
+                          </span>
+                        </span>
+                      }
+                      handleClick={() => {
+                        handleDropdownClose();
+                        // handleCountClick(key);
+                      }}
+                    />
+                  </li>
+                );
+              })}
+            </div>
+          );
+        })}
       </ul>
     </Dropdown>
   );
