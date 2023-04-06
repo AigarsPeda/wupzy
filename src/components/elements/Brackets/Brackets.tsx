@@ -1,9 +1,9 @@
+import BracketsDropdown from "components/elements/BracketsDropdown/BracketsDropdown";
 import type { GameType } from "components/elements/CreatePlayOffModal/CreatePlayOffModal";
 import type { FC } from "react";
 import Xarrow, { Xwrapper } from "react-xarrows";
+import type { TeamType, TeamsMapType } from "types/team.types";
 import classNames from "utils/classNames";
-import BracketsDropdown from "../BracketsDropdown/BracketsDropdown";
-import type { TeamsMapType } from "../../../types/team.types";
 
 type CoordinatesType = {
   end: number[];
@@ -12,13 +12,21 @@ type CoordinatesType = {
 
 interface BracketsProps {
   teamsMap: TeamsMapType;
+  selectedTeams: TeamType[];
   brackets: [string, GameType[]][];
+  handleTeamsRemove: (selectedTeam: TeamType) => void;
 }
 
-const Brackets: FC<BracketsProps> = ({ brackets, teamsMap }) => {
+const Brackets: FC<BracketsProps> = ({
+  brackets,
+  teamsMap,
+  selectedTeams,
+  handleTeamsRemove,
+}) => {
   return (
     <div className="relative flex items-center justify-center">
       {brackets.map((games, i) => {
+        const isDropdown = i === 0;
         const [stage, teams] = games;
         const isLast = i === brackets.length - 1;
         const hasNext = i < brackets.length - 1;
@@ -33,66 +41,70 @@ const Brackets: FC<BracketsProps> = ({ brackets, teamsMap }) => {
               "flex w-full flex-col items-center justify-center transition-all"
             )}
           >
-            <>
-              {/* <p>{stage}</p> */}
-              {teams.map((team, index) => {
-                const group = i + 1 > brackets.length ? brackets.length : i + 1;
-                const position =
-                  Math.floor(index / 2) > nextTeams.length - 1
-                    ? 0
-                    : Math.floor(index / 2);
+            {teams.map((team, index) => {
+              const group = i + 1 > brackets.length ? brackets.length : i + 1;
+              const position =
+                Math.floor(index / 2) > nextTeams.length - 1
+                  ? 0
+                  : Math.floor(index / 2);
 
-                const c: CoordinatesType = {
-                  start: [i, index],
-                  end: [group, position],
-                };
+              const c: CoordinatesType = {
+                start: [i, index],
+                end: [group, position],
+              };
 
-                const marginBottom = `${Math.floor(i * 2 + 2)}rem`;
+              const marginBottom = `${Math.floor(i * 2 + 2)}rem`;
 
-                return (
-                  <div key={`${index}`} className="w-full">
-                    <Xwrapper>
-                      <div
-                        id={`elem${c.start.join("")}`}
-                        className="min-h-[4rem] w-full rounded bg-gray-300"
-                        style={{
-                          marginBottom: isLast
-                            ? `${i + 1}.${i * 3}rem`
-                            : marginBottom,
-                        }}
-                      >
-                        <div className="px-2 py-1">
+              return (
+                <div key={`${index}`} className="w-full">
+                  <Xwrapper>
+                    <div
+                      id={`elem${c.start.join("")}`}
+                      className="min-h-[4rem] w-full rounded bg-gray-300"
+                      style={{
+                        marginBottom: isLast
+                          ? `${i + 1}.${i * 3}rem`
+                          : marginBottom,
+                      }}
+                    >
+                      <div className="px-2 py-1">
+                        {isDropdown && (
                           <BracketsDropdown
+                            teamsMap={teamsMap}
                             selectedTeam={team.team1}
-                            teamsMap={teamsMap}
-                          />
-                        </div>
-                        <div className="px-2 py-1">
-                          {" "}
-                          <BracketsDropdown
-                            selectedTeam={team.team2}
-                            teamsMap={teamsMap}
-                          />
-                        </div>
-
-                        {!isLast && (
-                          <Xarrow
-                            path="grid"
-                            headSize={0}
-                            strokeWidth={2}
-                            color="#d1d5db"
-                            endAnchor="left"
-                            startAnchor="right"
-                            end={`elem${c.end.join("")}`}
-                            start={`elem${c.start.join("")}`}
+                            selectedTeams={selectedTeams}
+                            handleTeamsRemove={handleTeamsRemove}
                           />
                         )}
                       </div>
-                    </Xwrapper>
-                  </div>
-                );
-              })}
-            </>
+                      <div className="px-2 py-1">
+                        {isDropdown && (
+                          <BracketsDropdown
+                            teamsMap={teamsMap}
+                            selectedTeam={team.team2}
+                            selectedTeams={selectedTeams}
+                            handleTeamsRemove={handleTeamsRemove}
+                          />
+                        )}
+                      </div>
+
+                      {!isLast && (
+                        <Xarrow
+                          path="grid"
+                          headSize={0}
+                          strokeWidth={2}
+                          color="#d1d5db"
+                          endAnchor="left"
+                          startAnchor="right"
+                          end={`elem${c.end.join("")}`}
+                          start={`elem${c.start.join("")}`}
+                        />
+                      )}
+                    </div>
+                  </Xwrapper>
+                </div>
+              );
+            })}
           </div>
         );
       })}

@@ -10,7 +10,7 @@ const ListButton: FC<TournamentProps> = ({ btnTitle, handleClick }) => {
   return (
     <button
       className={classNames(
-        "h-full w-full py-2 px-3 transition-all duration-200 hover:bg-gray-200 "
+        "h-full w-full px-3 py-2 transition-all duration-200 hover:bg-gray-200 "
       )}
       onClick={handleClick}
     >

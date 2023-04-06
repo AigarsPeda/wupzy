@@ -1,5 +1,4 @@
 import Brackets from "components/elements/Brackets/Brackets";
-import BracketsDropdown from "components/elements/BracketsDropdown/BracketsDropdown";
 import InfoParagraph from "components/elements/InfoParagraph/InfoParagraph";
 import ModalWrap from "components/elements/ModalWrap/ModalWrap";
 import PlayoffDropdown from "components/elements/PlayoffDropdown/PlayoffDropdown";
@@ -12,6 +11,7 @@ import createMap from "utils/createMap";
 import getRandomValues from "utils/getRandomValues";
 import getShortestGroup from "utils/getShortestGroup";
 import sortMap from "utils/sortMap";
+import removePlayoffTeam from "./utils/removePlayoffTeam";
 
 export type GameType = {
   team1: TeamType | undefined;
@@ -24,12 +24,12 @@ interface CreatePlayOffModalProps {
   handleCancelClick: () => void;
 }
 
-type SelectedTeamsType = {
-  [key: string]: {
-    team1: TeamType | undefined;
-    team2: TeamType | undefined;
-  };
-};
+// type SelectedTeamsType = {
+//   [key: string]: {
+//     team1: TeamType | undefined;
+//     team2: TeamType | undefined;
+//   };
+// };
 
 const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
   isModalOpen,
@@ -39,18 +39,18 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
   const [teamCount, setTeamCount] = useState<number | null>(null);
   const [teamsMap, setTeamsMap] = useState<TeamsMapType>(new Map());
   const [brackets, setBrackets] = useState<Map<string, GameType[]>>(new Map());
-  const [selectedTeams, setSelectedTeams] = useState<SelectedTeamsType[]>([]);
+  const [selectedTeams, setSelectedTeams] = useState<TeamType[]>([]);
   const { data: teams } = api.tournaments.getAllTournamentTeams.useQuery({
     tournamentId,
   });
 
-  const cratePlayOffMap = useCallback(
+  const cratePlayoffMap = useCallback(
     (num: number | null, map: TeamsMapType) => {
       if (!num) return new Map<string, GameType[]>();
 
       const originalNum = num;
       const keys = Array.from(map.keys());
-      const selected: SelectedTeamsType[] = [];
+      const selected: TeamType[] = [];
       const playOffMap = new Map<string, GameType[]>();
       const isSlice = keys.length > 1;
 
@@ -89,79 +89,12 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
             const secondTeam =
               secondGroupTeams[secondGroupTeams.length - (n + 1)];
 
-            // games.team1 = (
-            //   <BracketsDropdown
-            //     teamsMap={map}
-            //     teamMeta={{
-            //       group: num,
-            //       name: "team1",
-            //       position: n,
-            //     }}
-            //     selectedTeam={firstTeam}
-            //     handleRemoveSelected={(meta) => {
-            //       // meta.
-            //       setBrackets((prev) => {
-            //         const newMap = new Map(prev);
-            //         const arr = newMap.get(meta.group.toString()) || [];
-
-            //         console.log("arr", arr);
-
-            //         // const newArr = arr.map((g) => {
-            //         //   if (g.team1 === meta.team) {
-            //         //     return {
-            //         //       ...g,
-            //         //       team1: ``,
-            //         //     };
-            //         //   }
-
-            //         //   if (g.team2 === meta.team) {
-            //         //     return {
-            //         //       ...g,
-            //         //       team2: ``,
-            //         //     };
-
-            //         //     return g;
-            //         //   }
-            //         // });
-
-            //         return newMap;
-            //       });
-            //       // console.log("meta", meta);
-            //       // console.log("brackets", brackets);
-            //     }}
-            //   />
-            // );
-
-            // games.team2 = (
-            //   <BracketsDropdown
-            //     teamMeta={{
-            //       group: num,
-            //       name: "team2",
-            //       position: n,
-            //     }}
-            //     teamsMap={map}
-            //     handleRemoveSelected={(t) => {
-            //       console.log("t", t);
-            //     }}
-            //     selectedTeam={
-            //       Boolean(firstTeam?.id !== secondTeam?.id)
-            //         ? secondTeam
-            //         : undefined
-            //     }
-            //   />
-            // );
-
-            // selected.push({
-            //   [n]: {
-            //     team1: firstTeam,
-            //     team2:
-            //       secondTeam?.id === firstTeam?.id ? undefined : secondTeam,
-            //   },
-            // });
-
             games.team1 = firstTeam;
             games.team2 =
               secondTeam?.id === firstTeam?.id ? undefined : secondTeam;
+
+            firstTeam && selected.push(firstTeam);
+            secondTeam && selected.push(secondTeam);
           }
 
           return games;
@@ -191,12 +124,9 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
   }, [teams]);
 
   useEffect(() => {
-    const test = cratePlayOffMap(teamCount, teamsMap);
-    setBrackets(test);
-
-    // console.log("test", test);
-    // // setBrackets([...cratePlayOffMap(teamCount, teamsMap)]);
-  }, [cratePlayOffMap, teamCount, teamsMap]);
+    const playoffMap = cratePlayoffMap(teamCount, teamsMap);
+    setBrackets(playoffMap);
+  }, [cratePlayoffMap, teamCount, teamsMap]);
 
   return (
     <ModalWrap
@@ -207,7 +137,6 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
       modalTitle="Create playoffs"
       handleCancelClick={handleCancelClick}
     >
-      {console.log("selectedTeams", selectedTeams)}
       <div className="h-full w-full overflow-x-auto overflow-y-auto pb-10">
         <InfoParagraph text="* Once playoffs are created, all other games will be finalized, and you will not be able to change or edit their scores." />
         <div className="mb-4 mr-3 flex justify-end">
@@ -219,7 +148,19 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
         </div>
 
         <div className="ml-2 min-w-[25rem]">
-          <Brackets brackets={[...brackets]} teamsMap={teamsMap} />
+          <Brackets
+            teamsMap={teamsMap}
+            brackets={[...brackets]}
+            selectedTeams={selectedTeams}
+            handleTeamsRemove={(team) => {
+              const newBrackets = removePlayoffTeam(team, brackets);
+              setBrackets(newBrackets);
+              setSelectedTeams((prev) => {
+                const newTeams = prev.filter((t) => t.id !== team.id);
+                return newTeams;
+              });
+            }}
+          />
         </div>
       </div>
     </ModalWrap>
