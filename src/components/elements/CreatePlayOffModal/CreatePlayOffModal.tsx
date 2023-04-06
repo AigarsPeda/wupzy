@@ -156,9 +156,13 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
                 return newTeams;
               });
             }}
-            handleTeamSelect={(team, stage, position, name) => {
+            handleTeamSelect={(team, oldTeams, stage, position, name) => {
               setSelectedTeams((prev) => {
-                const newTeams = [...prev, team];
+                let newTeams = [...prev, team];
+                if (oldTeams) {
+                  newTeams = newTeams.filter((t) => t.id !== oldTeams.id);
+                }
+
                 return newTeams;
               });
               const newBrackets = addPlayoffTeam(

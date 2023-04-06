@@ -20,6 +20,7 @@ interface BracketsProps {
   handleTeamsRemove: (selectedTeam: TeamType) => void;
   handleTeamSelect: (
     selectedTeam: TeamType,
+    oldTeams: TeamType | undefined,
     stage: string,
     position: number,
     name: GameKeyTypes
@@ -84,8 +85,14 @@ const Brackets: FC<BracketsProps> = ({
                             selectedTeam={team.team1}
                             selectedTeams={selectedTeams}
                             handleTeamsRemove={handleTeamsRemove}
-                            handleTeamSelect={(team) => {
-                              handleTeamSelect(team, stage, index, "team1");
+                            handleTeamSelect={(team, oldTeams) => {
+                              handleTeamSelect(
+                                team,
+                                oldTeams,
+                                stage,
+                                index,
+                                "team1"
+                              );
                             }}
                           />
                         )}
@@ -97,8 +104,14 @@ const Brackets: FC<BracketsProps> = ({
                             selectedTeam={team.team2}
                             selectedTeams={selectedTeams}
                             handleTeamsRemove={handleTeamsRemove}
-                            handleTeamSelect={(team) => {
-                              handleTeamSelect(team, stage, index, "team2");
+                            handleTeamSelect={(team, oldTeams) => {
+                              handleTeamSelect(
+                                team,
+                                oldTeams,
+                                stage,
+                                index,
+                                "team2"
+                              );
                             }}
                           />
                         )}

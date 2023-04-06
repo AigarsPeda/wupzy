@@ -12,8 +12,11 @@ interface BracketsDropdownProps {
   teamsMap: TeamsMapType;
   selectedTeams: TeamType[];
   selectedTeam: TeamType | undefined;
-  handleTeamSelect: (selectedTeam: TeamType) => void;
   handleTeamsRemove: (selectedTeam: TeamType) => void;
+  handleTeamSelect: (
+    selectedTeam: TeamType,
+    oldTeam: TeamType | undefined
+  ) => void;
 }
 
 const BracketsDropdown: FC<BracketsDropdownProps> = ({
@@ -113,7 +116,7 @@ const BracketsDropdown: FC<BracketsDropdownProps> = ({
                         }
                         handleClick={() => {
                           handleDropdownClose();
-                          handleTeamSelect(team);
+                          handleTeamSelect(team, selectedTeam);
                         }}
                       />
                     </li>
