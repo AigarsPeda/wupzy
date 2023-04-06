@@ -79,50 +79,67 @@ const BracketsDropdown: FC<BracketsDropdownProps> = ({
           </li>
         )}
         {[...teamsMap].map(([key, value], i) => {
+          const ids: string[] = [];
+
           return (
             <div key={`${key}${i}`} className="border-b-2 border-gray-100">
               <p className="w-full bg-gray-800 px-3 text-2xl text-white">
                 {key}
               </p>
-              {value.map((team, i) => {
-                const isTeamSelected = selectedTeams.some(
-                  (selectedTeam) => selectedTeam.id === team.id
-                );
-
-                if (!isTeamSelected) {
-                  return (
-                    <li
-                      key={`${team.id}${i}`}
-                      className="border-b-2 border-gray-100"
-                    >
-                      <ListButton
-                        btnTitle={
-                          <span className="grid w-full grid-cols-3">
-                            <span className="flex flex-col text-left">
-                              <span className="text-xs text-gray-300">
-                                name
-                              </span>
-                              <span>{team.name}</span>
-                            </span>
-                            <span className="flex flex-col text-center">
-                              <span className="text-xs text-gray-300">sm</span>
-                              <span>{team.smallPoints}</span>
-                            </span>
-                            <span className="flex flex-col text-right">
-                              <span className="text-xs text-gray-300">lg</span>
-                              <span>{team.points}</span>
-                            </span>
-                          </span>
-                        }
-                        handleClick={() => {
-                          handleDropdownClose();
-                          handleTeamSelect(team, selectedTeam);
-                        }}
-                      />
-                    </li>
+              {value.length > 0 ? (
+                value.map((team, i) => {
+                  const isTeamSelected = selectedTeams.some(
+                    (selectedTeam) => selectedTeam.id === team?.id
                   );
-                }
-              })}
+
+                  const isAlreadyShown = ids.some((id) => id === team?.id);
+
+                  ids.push(team?.id);
+
+                  if (!isAlreadyShown) {
+                    return (
+                      <li
+                        key={`${team.id}${i}`}
+                        className="border-b-2 border-gray-100"
+                      >
+                        <ListButton
+                          isDisabled={isTeamSelected}
+                          btnTitle={
+                            <span className="grid w-full grid-cols-3">
+                              <span className="flex flex-col text-left">
+                                <span className="text-xs text-gray-300">
+                                  name
+                                </span>
+                                <span>{team.name}</span>
+                              </span>
+                              <span className="flex flex-col text-center">
+                                <span className="text-xs text-gray-300">
+                                  sm
+                                </span>
+                                <span>{team.smallPoints}</span>
+                              </span>
+                              <span className="flex flex-col text-right">
+                                <span className="text-xs text-gray-300">
+                                  lg
+                                </span>
+                                <span>{team.points}</span>
+                              </span>
+                            </span>
+                          }
+                          handleClick={() => {
+                            handleDropdownClose();
+                            handleTeamSelect(team, selectedTeam);
+                          }}
+                        />
+                      </li>
+                    );
+                  }
+                })
+              ) : (
+                <li className="border-b-2 border-gray-100">
+                  No teams available
+                </li>
+              )}
             </div>
           );
         })}
