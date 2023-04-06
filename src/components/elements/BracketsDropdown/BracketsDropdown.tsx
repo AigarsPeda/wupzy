@@ -12,6 +12,7 @@ interface BracketsDropdownProps {
   teamsMap: TeamsMapType;
   selectedTeams: TeamType[];
   selectedTeam: TeamType | undefined;
+  handleTeamSelect: (selectedTeam: TeamType) => void;
   handleTeamsRemove: (selectedTeam: TeamType) => void;
 }
 
@@ -19,6 +20,7 @@ const BracketsDropdown: FC<BracketsDropdownProps> = ({
   teamsMap,
   selectedTeam,
   selectedTeams,
+  handleTeamSelect,
   handleTeamsRemove,
 }) => {
   const { windowSize } = useWindowSize();
@@ -67,9 +69,8 @@ const BracketsDropdown: FC<BracketsDropdownProps> = ({
             <ListButton
               btnTitle={<span className="text-red-500">Remove</span>}
               handleClick={() => {
-                // handleRemoveSelected(teamMeta);
-                handleTeamsRemove(selectedTeam);
                 handleDropdownClose();
+                handleTeamsRemove(selectedTeam);
               }}
             />
           </li>
@@ -112,7 +113,7 @@ const BracketsDropdown: FC<BracketsDropdownProps> = ({
                         }
                         handleClick={() => {
                           handleDropdownClose();
-                          // handleCountClick(key);
+                          handleTeamSelect(team);
                         }}
                       />
                     </li>

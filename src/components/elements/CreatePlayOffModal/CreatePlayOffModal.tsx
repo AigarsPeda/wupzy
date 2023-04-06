@@ -1,4 +1,6 @@
 import Brackets from "components/elements/Brackets/Brackets";
+import addPlayoffTeam from "components/elements/CreatePlayOffModal/utils/addPlayoffTeam";
+import removePlayoffTeam from "components/elements/CreatePlayOffModal/utils/removePlayoffTeam";
 import InfoParagraph from "components/elements/InfoParagraph/InfoParagraph";
 import ModalWrap from "components/elements/ModalWrap/ModalWrap";
 import PlayoffDropdown from "components/elements/PlayoffDropdown/PlayoffDropdown";
@@ -11,25 +13,19 @@ import createMap from "utils/createMap";
 import getRandomValues from "utils/getRandomValues";
 import getShortestGroup from "utils/getShortestGroup";
 import sortMap from "utils/sortMap";
-import removePlayoffTeam from "./utils/removePlayoffTeam";
 
 export type GameType = {
   team1: TeamType | undefined;
   team2: TeamType | undefined;
 };
 
+export type GameKeyTypes = "team1" | "team2";
+
 interface CreatePlayOffModalProps {
   isModalOpen: boolean;
   tournamentId: string;
   handleCancelClick: () => void;
 }
-
-// type SelectedTeamsType = {
-//   [key: string]: {
-//     team1: TeamType | undefined;
-//     team2: TeamType | undefined;
-//   };
-// };
 
 const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
   isModalOpen,
@@ -159,6 +155,20 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
                 const newTeams = prev.filter((t) => t.id !== team.id);
                 return newTeams;
               });
+            }}
+            handleTeamSelect={(team, stage, position, name) => {
+              setSelectedTeams((prev) => {
+                const newTeams = [...prev, team];
+                return newTeams;
+              });
+              const newBrackets = addPlayoffTeam(
+                team,
+                stage,
+                position,
+                name,
+                brackets
+              );
+              setBrackets(newBrackets);
             }}
           />
         </div>

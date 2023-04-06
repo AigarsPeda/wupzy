@@ -1,5 +1,8 @@
 import BracketsDropdown from "components/elements/BracketsDropdown/BracketsDropdown";
-import type { GameType } from "components/elements/CreatePlayOffModal/CreatePlayOffModal";
+import type {
+  GameKeyTypes,
+  GameType,
+} from "components/elements/CreatePlayOffModal/CreatePlayOffModal";
 import type { FC } from "react";
 import Xarrow, { Xwrapper } from "react-xarrows";
 import type { TeamType, TeamsMapType } from "types/team.types";
@@ -15,12 +18,19 @@ interface BracketsProps {
   selectedTeams: TeamType[];
   brackets: [string, GameType[]][];
   handleTeamsRemove: (selectedTeam: TeamType) => void;
+  handleTeamSelect: (
+    selectedTeam: TeamType,
+    stage: string,
+    position: number,
+    name: GameKeyTypes
+  ) => void;
 }
 
 const Brackets: FC<BracketsProps> = ({
   brackets,
   teamsMap,
   selectedTeams,
+  handleTeamSelect,
   handleTeamsRemove,
 }) => {
   return (
@@ -74,6 +84,9 @@ const Brackets: FC<BracketsProps> = ({
                             selectedTeam={team.team1}
                             selectedTeams={selectedTeams}
                             handleTeamsRemove={handleTeamsRemove}
+                            handleTeamSelect={(team) => {
+                              handleTeamSelect(team, stage, index, "team1");
+                            }}
                           />
                         )}
                       </div>
@@ -84,6 +97,9 @@ const Brackets: FC<BracketsProps> = ({
                             selectedTeam={team.team2}
                             selectedTeams={selectedTeams}
                             handleTeamsRemove={handleTeamsRemove}
+                            handleTeamSelect={(team) => {
+                              handleTeamSelect(team, stage, index, "team2");
+                            }}
                           />
                         )}
                       </div>
