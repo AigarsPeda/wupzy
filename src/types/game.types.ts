@@ -9,8 +9,8 @@ export const GamesZodSchema = z.object({
   team1: TeamZodSchema,
   team2: TeamZodSchema,
   gameOrder: z.number(),
-  team1Score: z.number(),
-  team2Score: z.number(),
+  team1Score: z.number().nullish(),
+  team2Score: z.number().nullish(),
   tournamentId: z.string(),
   winners: z.array(ParticipantsZodSchema),
 });

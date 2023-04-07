@@ -11,9 +11,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-generator erd {
-  provider = "prisma-erd-generator"
-}
+// generator erd {
+//   provider = "prisma-erd-generator"
+// }
 
 model User {
   firstName   String
@@ -44,6 +44,7 @@ model Tournament {
   updatedAt    DateTime       @updatedAt
   type         TournamentType @default(KING)
   createdAt    DateTime       @default(now())
+  isPlayoff    Boolean        @default(false)
   id           String         @id @default(cuid())
   user         User           @relation(fields: [userId], references: [id])
 }
@@ -72,8 +73,8 @@ model Games {
   team2Id      String
   team1Id      String
   participants Participant[]
-  team1Score   Int           @default(0)
-  team2Score   Int           @default(0)
+  team1Score   Int?
+  team2Score   Int?
   id           String        @id @default(cuid())
   winners      Participant[] @relation("winners")
   tournament   Tournament    @relation(fields: [tournamentId], references: [id])
@@ -82,11 +83,9 @@ model Games {
 }
 
 model PlayoffGames {
-  // gameOrder    Int
-  // group        String
   tournamentId   String
-  team2Id        String
-  team1Id        String
+  team2Id        String?
+  team1Id        String?
   stage          String[] // <- 1/8, 1/4, 1/2, final
   participants   Participant[]
   team1Score     Int           @default(0)
@@ -94,9 +93,8 @@ model PlayoffGames {
   id             String        @id @default(cuid())
   playoffwinners Participant[] @relation("playoffwinners")
   tournament     Tournament    @relation(fields: [tournamentId], references: [id])
-  team1          Team          @relation("playoff_team_1", fields: [team1Id], references: [id], onDelete: Cascade)
-  team2          Team          @relation("playoff_team_2", fields: [team2Id], references: [id], onDelete: Cascade)
-  // teamId       String?
+  team1          Team?         @relation("playoff_team_1", fields: [team1Id], references: [id], onDelete: Cascade)
+  team2          Team?         @relation("playoff_team_2", fields: [team2Id], references: [id], onDelete: Cascade)
 }
 
 model Team {

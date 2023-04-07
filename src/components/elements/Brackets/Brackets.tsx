@@ -2,7 +2,7 @@ import BracketsDropdown from "components/elements/BracketsDropdown/BracketsDropd
 import type {
   GameKeyTypes,
   GameType,
-} from "components/elements/CreatePlayOffModal/CreatePlayOffModal";
+} from "components/elements/CreatePlayOffModal/utils/util.types";
 import type { FC } from "react";
 import Xarrow, { Xwrapper } from "react-xarrows";
 import type { TeamType, TeamsMapType } from "types/team.types";

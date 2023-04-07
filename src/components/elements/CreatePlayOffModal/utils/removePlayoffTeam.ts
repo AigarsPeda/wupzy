@@ -1,4 +1,4 @@
-import type { GameType } from "components/elements/CreatePlayOffModal/CreatePlayOffModal";
+import type { GameType } from "components/elements/CreatePlayOffModal/utils/util.types";
 import type { TeamType } from "types/team.types";
 
 const removePlayoffTeam = (

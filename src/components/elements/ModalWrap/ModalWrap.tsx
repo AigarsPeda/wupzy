@@ -16,9 +16,11 @@ interface ModalWrapProps {
     | "7xl"
     | "large"
     | "medium";
-  isFullScreen?: boolean;
+
   modalTitle: string;
   header?: JSX.Element;
+  modalsWidth?: string;
+  isFullScreen?: boolean;
   titleClassName?: string;
   isModalVisible: boolean;
   topPosition?: "default" | "top";
@@ -29,6 +31,7 @@ interface ModalWrapProps {
 const ModalWrap: FC<ModalWrapProps> = ({
   children,
   modalTitle,
+  modalsWidth,
   isFullScreen,
   titleClassName,
   isModalVisible,
@@ -47,7 +50,7 @@ const ModalWrap: FC<ModalWrapProps> = ({
         <div
           className={classNames(
             isAnimation ? "opacity-100" : "opacity-0",
-            "fixed top-0 left-0 z-[69] flex h-full w-full items-center justify-center transition-all duration-300 ease-in-out"
+            "fixed left-0 top-0 z-[69] flex h-full w-full items-center justify-center transition-all duration-300 ease-in-out"
           )}
         >
           <div className="absolute h-full w-full bg-gray-900 opacity-50"></div>
@@ -64,6 +67,7 @@ const ModalWrap: FC<ModalWrapProps> = ({
               modalWidth === "large" && "md:max-w-lg",
               modalWidth === "medium" && "md:max-w-md",
               isFullScreen && "h-full w-full",
+              modalsWidth && modalsWidth,
               "absolute z-[69] mx-2 rounded bg-white shadow-lg sm:mx-5"
             )}
           >
@@ -85,7 +89,7 @@ const ModalWrap: FC<ModalWrapProps> = ({
                   </p>
                 </div>
                 <button className="cursor-pointer" onClick={handleCancelClick}>
-                  <IoClose className="absolute top-0 -right-2 h-8 w-9 text-gray-800 hover:text-gray-500" />
+                  <IoClose className="absolute -right-2 top-0 h-8 w-9 text-gray-800 hover:text-gray-500" />
                 </button>
               </div>
 

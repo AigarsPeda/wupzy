@@ -10,13 +10,10 @@ import classNames from "utils/classNames";
 
 interface BracketsDropdownProps {
   teamsMap: TeamsMapType;
+  selectedTeam?: TeamType;
   selectedTeams: TeamType[];
-  selectedTeam: TeamType | undefined;
   handleTeamsRemove: (selectedTeam: TeamType) => void;
-  handleTeamSelect: (
-    selectedTeam: TeamType,
-    oldTeam: TeamType | undefined
-  ) => void;
+  handleTeamSelect: (selectedTeam: TeamType, oldTeam?: TeamType) => void;
 }
 
 const BracketsDropdown: FC<BracketsDropdownProps> = ({

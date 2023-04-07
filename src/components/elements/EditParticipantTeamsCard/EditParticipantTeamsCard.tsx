@@ -12,6 +12,7 @@ import { api } from "utils/api";
 import classNames from "utils/classNames";
 import createTeamsMap from "utils/createTeamsMap";
 import { getKeys } from "utils/teamsMapFunctions";
+import sortMapKeysAlphabetically from "utils/sortMapKeysAlphabetically";
 
 interface EditParticipantTeamsCardProps {
   tournamentId: string;
@@ -52,18 +53,20 @@ const EditParticipantTeamsCard: FC<EditParticipantTeamsCardProps> = ({
 
   useEffect(() => {
     if (!teams) return;
-    setTeamsMap(createTeamsMap(teams.teams).teamsMap);
+    setTeamsMap(
+      sortMapKeysAlphabetically(createTeamsMap(teams.teams).teamsMap)
+    );
   }, [teams]);
 
   return (
-    <>
+    <div className="w-full">
       <div className="mb-5 flex justify-end">
         <GroupDropdown
           handleGroupClick={addGroupToTournament}
           alreadyCreatedGroups={getKeys(teamsMap)}
         />
       </div>
-      <GridLayout isGap minWith="350">
+      <GridLayout isGap minWith="250">
         {[...teamsMap].map(([group, teams]) => (
           <div
             key={`${group}`}
@@ -135,7 +138,7 @@ const EditParticipantTeamsCard: FC<EditParticipantTeamsCardProps> = ({
           </div>
         ))}
       </GridLayout>
-    </>
+    </div>
   );
 };
 

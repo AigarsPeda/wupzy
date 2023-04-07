@@ -1,25 +1,23 @@
 import Brackets from "components/elements/Brackets/Brackets";
+import Button from "components/elements/Button/Button";
 import addPlayoffTeam from "components/elements/CreatePlayOffModal/utils/addPlayoffTeam";
+import cratePlayoffMap from "components/elements/CreatePlayOffModal/utils/cratePlayoffMap";
 import removePlayoffTeam from "components/elements/CreatePlayOffModal/utils/removePlayoffTeam";
+import type { GameType } from "components/elements/CreatePlayOffModal/utils/util.types";
 import InfoParagraph from "components/elements/InfoParagraph/InfoParagraph";
 import ModalWrap from "components/elements/ModalWrap/ModalWrap";
 import PlayoffDropdown from "components/elements/PlayoffDropdown/PlayoffDropdown";
+import { ALL } from "hardcoded";
 import type { FC } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { TeamType, TeamsMapType } from "types/team.types";
 import { api } from "utils/api";
 import createAllPossibleOddNumberArray from "utils/createAllPossibleOddNumberArray";
 import createMap from "utils/createMap";
-import getRandomValues from "utils/getRandomValues";
+import getFirstOddNumber from "utils/getFirstOddNumber";
 import getShortestGroup from "utils/getShortestGroup";
+import isOdd from "utils/isOdd";
 import sortMap from "utils/sortMap";
-
-export type GameType = {
-  team1: TeamType | undefined;
-  team2: TeamType | undefined;
-};
-
-export type GameKeyTypes = "team1" | "team2";
 
 interface CreatePlayOffModalProps {
   isModalOpen: boolean;
@@ -36,93 +34,65 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
   const [teamsMap, setTeamsMap] = useState<TeamsMapType>(new Map());
   const [brackets, setBrackets] = useState<Map<string, GameType[]>>(new Map());
   const [selectedTeams, setSelectedTeams] = useState<TeamType[]>([]);
+  const { mutate } = api.teamsTournaments.createPlayoffGames.useMutation();
   const { data: teams } = api.tournaments.getAllTournamentTeams.useQuery({
     tournamentId,
   });
 
-  const cratePlayoffMap = useCallback(
-    (num: number | null, map: TeamsMapType) => {
-      if (!num) return new Map<string, GameType[]>();
+  const putAllTeamsInOneGroup = (map: TeamsMapType) => {
+    const allTeams = Array.from(map.values()).flat();
 
-      const originalNum = num;
-      const keys = Array.from(map.keys());
-      const selected: TeamType[] = [];
-      const playOffMap = new Map<string, GameType[]>();
-      const isSlice = keys.length > 1;
+    const newMap = new Map<string, TeamType[]>();
+    newMap.set(ALL, allTeams);
 
-      while (num > 0) {
-        const arr = Array.from(Array(num).keys()).map((n) => {
-          const randomGroup = getRandomValues(num || 0, keys);
-          const firstGroup = randomGroup[0] || "";
-          const secondGroup = randomGroup[1] || "";
+    return newMap;
+  };
 
-          const firstGroupTeams = isSlice
-            ? map.get(firstGroup)?.slice(0, originalNum)
-            : map.get(firstGroup) || [];
-          const secondGroupTeams = isSlice
-            ? map.get(secondGroup)?.slice(0, originalNum)
-            : map.get(secondGroup) || [];
+  const handleSaveGames = () => {
+    if (!teamCount) return;
 
-          const firstGroupTeamsLength = firstGroupTeams?.length || 0;
+    const games = brackets.get(`${teamCount}`) || [];
 
-          const isOdd = firstGroupTeamsLength % 2 !== 0;
-          if (!isSlice && isOdd && firstGroupTeams) {
-            const firstTeam = firstGroupTeams[0];
+    mutate({
+      tournamentId,
+      games,
+    });
 
-            if (firstTeam) {
-              firstTeam.points = 0;
-              firstGroupTeams.push(firstTeam);
-            }
-          }
+    console.log("games to save --->", games);
+  };
 
-          const games: GameType = {
-            team1: undefined,
-            team2: undefined,
-          };
-
-          if (num === originalNum && firstGroupTeams && secondGroupTeams) {
-            const firstTeam = firstGroupTeams[n];
-            const secondTeam =
-              secondGroupTeams[secondGroupTeams.length - (n + 1)];
-
-            games.team1 = firstTeam;
-            games.team2 =
-              secondTeam?.id === firstTeam?.id ? undefined : secondTeam;
-
-            firstTeam && selected.push(firstTeam);
-            secondTeam && selected.push(secondTeam);
-          }
-
-          return games;
-        });
-
-        playOffMap.set(`${num}`, arr);
-
-        num = Math.floor(num / 2);
-      }
-
-      setSelectedTeams(selected);
-
-      return playOffMap;
-    },
-    []
-  );
+  // if 12 how many teams can be in a group
 
   useEffect(() => {
     if (!teams) return;
 
-    const tMap = sortMap(createMap(teams?.teams));
-    const numArray = createAllPossibleOddNumberArray(getShortestGroup(tMap));
-    const lastNum = numArray.pop();
+    let tMap = sortMap(createMap(teams?.teams));
+
+    const shortestLength = getShortestGroup(tMap);
+    const keys = Array.from(tMap.keys());
+
+    if (!isOdd([...keys].length) || !isOdd(shortestLength)) {
+      // If there is an odd number of keys, we add all teams to one group
+      // and create a new map with the new group
+      tMap = sortMap(putAllTeamsInOneGroup(tMap));
+    }
+
+    const num = getFirstOddNumber(Math.round(getShortestGroup(tMap) / 2));
+    const numArray = createAllPossibleOddNumberArray(num);
+    const lastNum = numArray[numArray.length - 1];
 
     setTeamsMap(tMap);
     setTeamCount(lastNum || null);
   }, [teams]);
 
   useEffect(() => {
-    const playoffMap = cratePlayoffMap(teamCount, teamsMap);
+    if (!teamCount) return;
+
+    const { playoffMap, selected } = cratePlayoffMap(teamCount, teamsMap);
+
     setBrackets(playoffMap);
-  }, [cratePlayoffMap, teamCount, teamsMap]);
+    setSelectedTeams(selected);
+  }, [teamCount, teamsMap]);
 
   return (
     <ModalWrap
@@ -173,6 +143,16 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
                 brackets
               );
               setBrackets(newBrackets);
+            }}
+          />
+        </div>
+        <div className="flex justify-end">
+          <Button
+            btnColor="outline"
+            btnClass="mr-3"
+            btnTitle="Create playoffs"
+            onClick={() => {
+              handleSaveGames();
             }}
           />
         </div>

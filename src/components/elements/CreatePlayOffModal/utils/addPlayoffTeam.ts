@@ -1,7 +1,7 @@
 import type {
   GameKeyTypes,
   GameType,
-} from "components/elements/CreatePlayOffModal/CreatePlayOffModal";
+} from "components/elements/CreatePlayOffModal/utils/util.types";
 import type { TeamType } from "types/team.types";
 
 const addPlayoffTeam = (

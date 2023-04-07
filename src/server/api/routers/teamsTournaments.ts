@@ -1,11 +1,8 @@
-import type { Participant, Team } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import createTeamsGames from "server/api/routers/utils/createTeamsGames";
 import filterAllPossibleTeamsGames from "server/api/routers/utils/filterAllPossibleTeamsGames";
 import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
-import type { TeamType } from "types/team.types";
-import { TeamsAttendantMapZodSchema } from "types/team.types";
-import createTeamsMap from "utils/createTeamsMap";
+import { TeamZodSchema, TeamsAttendantMapZodSchema } from "types/team.types";
 import shuffleArray from "utils/shuffleArray";
 import { z } from "zod";
 
@@ -392,224 +389,127 @@ export const teamsTournamentsRouter = createTRPCRouter({
       return { team };
     }),
 
-  getBestTeams: protectedProcedure
+  createPlayoffGames: protectedProcedure
     .input(
       z.object({
         tournamentId: z.string(),
-        teamsPerGroup: z.number(),
+        games: z
+          .object({
+            team1: TeamZodSchema.nullish(),
+            team2: TeamZodSchema.nullish(),
+          })
+          .array(),
       })
     )
-    .query(async ({ ctx, input }) => {
-      const teams = await ctx.prisma.team.findMany({
+    .mutation(async ({ ctx, input }) => {
+      const games = input.games;
+      const count = input.games.length;
+
+      for (let i = 0; i < games.length; i++) {
+        const game = games[i];
+
+        if (!game) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Game not found",
+          });
+        }
+
+        const team1Ids =
+          game.team1?.participants.map((p) => ({ id: p.id })) || [];
+        const team2Ids =
+          game.team2?.participants.map((p) => ({ id: p.id })) || [];
+
+        await ctx.prisma.playoffGames.create({
+          data: {
+            stage: count.toString(),
+            team1Id: game.team1?.id,
+            team2Id: game.team2?.id,
+            tournamentId: input.tournamentId,
+            participants: {
+              connect: [...team1Ids, ...team2Ids],
+            },
+          },
+        });
+      }
+
+      await ctx.prisma.tournament.update({
         where: {
-          tournamentId: input.tournamentId,
+          id: input.tournamentId,
         },
-        include: {
-          participants: true,
+        data: {
+          isPlayoff: true,
         },
       });
 
-      const bestTeams = getBestTeams(teams, input.teamsPerGroup);
-      // const playOffGames = createPlayOffGames(bestTeams);
+      // find all games for this tournament without score and add 0-0
+      const gamesWithoutScore = await ctx.prisma.games.findMany({
+        where: {
+          tournamentId: input.tournamentId,
+          team1Score: null,
+          team2Score: null,
+        },
+      });
 
-      console.log("bestTeams --->", bestTeams);
+      for (let i = 0; i < gamesWithoutScore.length; i++) {
+        const game = gamesWithoutScore[i];
+        const team1Score = 0;
+        const team2Score = 0;
+        const team1Points = 0;
+        const team2Points = 0;
 
-      return { bestTeams };
+        if (!game) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Game not found",
+          });
+        }
+
+        await ctx.prisma.games.update({
+          where: {
+            id: game.id,
+          },
+          data: {
+            team1Score: team1Score,
+            team2Score: team2Score,
+            team1: {
+              update: {
+                points: {
+                  increment: team1Points,
+                },
+                smallPoints: {
+                  increment: team1Score,
+                },
+              },
+            },
+            team2: {
+              update: {
+                points: {
+                  increment: team2Points,
+                },
+                smallPoints: {
+                  increment: team2Score,
+                },
+              },
+            },
+            // winners: {
+            //   connect: winnerIds,
+            // },
+          },
+
+          include: {
+            team1: {
+              include: {
+                participants: true,
+              },
+            },
+            team2: {
+              include: {
+                participants: true,
+              },
+            },
+          },
+        });
+      }
     }),
 });
-
-const getBestTeams = (
-  teams: (Team & {
-    participants: Participant[];
-  })[],
-  teamsPerGroup: number
-) => {
-  const { teamsMap } = createTeamsMap(teams);
-  const bestTeams = new Map<string, TeamType[]>();
-
-  for (const [key, value] of teamsMap) {
-    const sortedTeams = value.sort((a, b) => {
-      if (a.points > b.points) {
-        return -1;
-      }
-      if (a.points < b.points) {
-        return 1;
-      }
-      return 0;
-    });
-
-    bestTeams.set(key, sortedTeams.slice(0, teamsPerGroup));
-  }
-
-  return bestTeams;
-};
-
-// const createPlayOffGames = (bestTeams: Map<string, TeamType[]>) => {
-//   const games: CreateGameType[] = [];
-//   const groups = Array.from(bestTeams.keys());
-
-//   // If there is only one group
-//   if (groups.length < 2) {
-//     for (let i = 0; i < groups.length; i++) {
-//       const teams = groups[i];
-
-//       if (!teams) {
-//         throw new TRPCError({
-//           code: "INTERNAL_SERVER_ERROR",
-//           message: "Teams not found",
-//         });
-//       }
-
-//       const teams1 = bestTeams.get(teams);
-
-//       if (!teams1) {
-//         throw new TRPCError({
-//           code: "INTERNAL_SERVER_ERROR",
-//           message: "Teams not found",
-//         });
-//       }
-
-//       return createPlayOffGamsOneGroup(teams1);
-//       // return createTeamsGames(teams1);
-//     }
-//   }
-
-//   // check if there is an odd number of groups
-//   if (groups.length % 2 === 0) {
-//     for (let i = 0; i < groups.length; i++) {
-//       for (let j = i + 1; j < groups.length; j++) {
-//         const group1 = groups[i];
-//         const group2 = groups[j];
-
-//         if (!group1 || !group2) {
-//           throw new TRPCError({
-//             code: "INTERNAL_SERVER_ERROR",
-//             message: "Group not found",
-//           });
-//         }
-
-//         const teams1 = bestTeams.get(group1);
-//         const teams2 = bestTeams.get(group2);
-
-//         if (!teams1 || !teams2) {
-//           throw new TRPCError({
-//             code: "INTERNAL_SERVER_ERROR",
-//             message: "Teams not found",
-//           });
-//         }
-
-//         for (let k = 0; k < teams1.length; k++) {
-//           for (let l = teams2.length - 1; l >= 0; l--) {
-//             const teams1k = teams1[k];
-//             const teams2l = teams2[l];
-
-//             if (!teams1k || !teams2l) {
-//               throw new TRPCError({
-//                 code: "INTERNAL_SERVER_ERROR",
-//                 message: "Team not found",
-//               });
-//             }
-
-//             const game = {
-//               first: {
-//                 teamId: teams1k.id,
-//                 participants: teams1k?.participants.map((participant) => {
-//                   return {
-//                     id: participant.id,
-//                   };
-//                 }),
-//               },
-//               second: {
-//                 teamId: teams2l.id,
-//                 participants: teams2l.participants.map((participant) => {
-//                   return {
-//                     id: participant.id,
-//                   };
-//                 }),
-//               },
-//             };
-
-//             games.push(game);
-//           }
-//         }
-//       }
-//     }
-//   }
-
-//   // if there is not odd number of groups
-//   if (groups.length % 2 !== 0) {
-//     const allTeams: TeamType[] = [];
-
-//     for (let i = 0; i < groups.length; i++) {
-//       const group = groups[i];
-
-//       if (!group) {
-//         throw new TRPCError({
-//           code: "INTERNAL_SERVER_ERROR",
-//           message: "Group not found",
-//         });
-//       }
-
-//       const teams = bestTeams.get(group);
-
-//       if (!teams) {
-//         throw new TRPCError({
-//           code: "INTERNAL_SERVER_ERROR",
-//           message: "Teams not found",
-//         });
-//       }
-
-//       allTeams.push(...teams);
-//     }
-
-//     const sortedTeams = allTeams.sort((a, b) => {
-//       if (a.points > b.points) {
-//         return -1;
-//       }
-//       if (a.points < b.points) {
-//         return 1;
-//       }
-//       return 0;
-//     });
-
-//     const teams1 = sortedTeams.slice(0, sortedTeams.length / 2);
-//     const teams2 = sortedTeams.slice(sortedTeams.length / 2);
-
-//     for (let i = 0; i < teams1.length; i++) {
-//       for (let j = teams2.length - 1; j >= 0; j--) {
-//         const teams1i = teams1[i];
-//         const teams2j = teams2[j];
-
-//         if (!teams1i || !teams2j) {
-//           throw new TRPCError({
-//             code: "INTERNAL_SERVER_ERROR",
-//             message: "Team not found",
-//           });
-//         }
-
-//         const game = {
-//           first: {
-//             teamId: teams1i.id,
-//             participants: teams1i.participants.map((participant) => {
-//               return {
-//                 id: participant.id,
-//               };
-//             }),
-//           },
-//           second: {
-//             teamId: teams2j.id,
-//             participants: teams2j.participants.map((participant) => {
-//               return {
-//                 id: participant.id,
-//               };
-//             }),
-//           },
-//         };
-
-//         games.push(game);
-//       }
-//     }
-//   }
-
-//   return games;
-// };

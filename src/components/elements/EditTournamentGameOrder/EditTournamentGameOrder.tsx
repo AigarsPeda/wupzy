@@ -102,8 +102,10 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
               {games.map((game, i) => {
                 const gameOrder = i + 1;
                 const isDraw = game.team1Score === game.team2Score;
-                const isFirstTeamWinner = game.team1Score > game.team2Score;
-                const isSecondTeamWinner = game.team2Score > game.team1Score;
+                const isFirstTeamWinner =
+                  (game.team1Score || 0) > (game.team2Score || 0);
+                const isSecondTeamWinner =
+                  (game.team2Score || 0) > (game.team1Score || 0);
                 const isWinner = game.winners.length > 0;
 
                 const prevGame = games[i - 1];
@@ -115,11 +117,11 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
                 return (
                   <div
                     key={game.id}
-                    className="mx-auto mb-2 flex rounded-md bg-gray-100 py-2 px-2"
+                    className="mx-auto mb-2 flex rounded-md bg-gray-100 px-2 py-2"
                   >
                     <div
                       className={classNames(
-                        "g mb-3 grid w-20 place-content-center border-b-2 md:mr-3 md:mb-0 md:border-b-0 md:border-r-2 md:px-2"
+                        "g mb-3 grid w-20 place-content-center border-b-2 md:mb-0 md:mr-3 md:border-b-0 md:border-r-2 md:px-2"
                       )}
                     >
                       <div className="flex w-full items-center justify-center">
@@ -159,12 +161,12 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
                       </div>
                     </div>
                     <DisplayTeams
-                      infoScore={game.team1Score}
+                      infoScore={game.team1Score || 0}
                       team={game.team1.participants}
                       isWinner={isFirstTeamWinner && !isDraw}
                     />
                     <DisplayTeams
-                      infoScore={game.team2Score}
+                      infoScore={game.team2Score || 0}
                       team={game.team2.participants}
                       isWinner={isSecondTeamWinner && !isDraw}
                     />

@@ -26,6 +26,7 @@ const EditTournament: FC<EditTournamentProps> = ({
     <ModalWrap
       modalWidth="7xl"
       topPosition="top"
+      modalsWidth="md:w-1/2 w-3/4"
       isModalVisible={isModalOpen}
       modalTitle="Edit tournament groups"
       handleCancelClick={handleCloseModal}

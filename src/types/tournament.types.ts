@@ -10,6 +10,7 @@ const TournamentZodSchema = z.object({
   userId: z.string(),
   updatedAt: z.date(),
   createdAt: z.date(),
+  isPlayoff: z.boolean(),
   winner: z.string().nullable(),
   type: TournamentTypeZodSchema,
 });

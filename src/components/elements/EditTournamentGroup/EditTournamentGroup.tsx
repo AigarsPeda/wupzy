@@ -37,51 +37,50 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
   });
 
   return (
-    <>
-      <div
-        style={
-          windowSize.width && windowSize.width > 650
-            ? { maxHeight: "calc(100vh - 17rem)" }
-            : { maxHeight: "calc(100vh - 14rem)" }
-        }
-      >
-        {tournament?.tournament.type === "KING" && (
-          <EditParticipantTournamentCard
-            tournamentId={tournamentId}
-            setSelectedEdit={(group, type, participant) => {
-              setSelectedEdit((state) => {
-                if (state.group === group) {
-                  return { participant, group: "", editType: "" };
-                }
-                return { group, participant, editType: type };
-              });
-            }}
-          />
-        )}
-
-        {tournament?.tournament.type === "TEAMS" && (
-          <EditParticipantTeamsCard
-            tournamentId={tournamentId}
-            setSelectedEdit={(group, type, team) => {
-              setSelectedEdit((state) => {
-                if (state.group === group) {
-                  return { group: "", editType: "" };
-                }
-                return { team, group, editType: type };
-              });
-            }}
-          />
-        )}
-
-        <EditModalContainer
+    <div
+      className="overflow-y-auto"
+      style={
+        windowSize.width && windowSize.width > 650
+          ? { maxHeight: "calc(100vh - 17rem)" }
+          : { maxHeight: "calc(100vh - 14rem)" }
+      }
+    >
+      {tournament?.tournament.type === "KING" && (
+        <EditParticipantTournamentCard
           tournamentId={tournamentId}
-          selectedEdit={selectedEdit}
-          handleCancelClick={() => {
-            setSelectedEdit({ group: "", editType: "" });
+          setSelectedEdit={(group, type, participant) => {
+            setSelectedEdit((state) => {
+              if (state.group === group) {
+                return { participant, group: "", editType: "" };
+              }
+              return { group, participant, editType: type };
+            });
           }}
         />
-      </div>
-    </>
+      )}
+
+      {tournament?.tournament.type === "TEAMS" && (
+        <EditParticipantTeamsCard
+          tournamentId={tournamentId}
+          setSelectedEdit={(group, type, team) => {
+            setSelectedEdit((state) => {
+              if (state.group === group) {
+                return { group: "", editType: "" };
+              }
+              return { team, group, editType: type };
+            });
+          }}
+        />
+      )}
+
+      <EditModalContainer
+        tournamentId={tournamentId}
+        selectedEdit={selectedEdit}
+        handleCancelClick={() => {
+          setSelectedEdit({ group: "", editType: "" });
+        }}
+      />
+    </div>
   );
 };
 

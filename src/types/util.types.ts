@@ -1,4 +1,6 @@
 export type GroupedObjectType = {
+  id: string;
+  name?: string;
   group: string;
   points?: number;
   gameOrder?: number;
