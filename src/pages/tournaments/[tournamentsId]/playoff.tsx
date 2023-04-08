@@ -1,30 +1,57 @@
+import BracketsInput from "components/elements/BracketsInput/BracketsInput";
+import cratePlayoffInputMap from "components/elements/BracketsInput/utils/cratePlayoffInputMap";
+import type { GameType } from "components/elements/CreatePlayOffModal/utils/util.types";
 import Spinner from "components/elements/Spinner/Spinner";
 import GridLayout from "components/layouts/GridLayout/GridLayout";
 import useRedirect from "hooks/useRedirect";
 import type { NextPage } from "next";
-import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { api } from "utils/api";
+import createPlayoffMap from "utils/createPlayoffMap";
 
 const PlayOffPage: NextPage = () => {
+  const { query } = useRouter();
   const { redirectToPath } = useRedirect();
-  const res = api.tournaments.getAllTournaments.useQuery(undefined, {
-    suspense: false,
-    retry: 2,
-  });
+  const [tournamentId, setTournamentId] = useState("");
+  const [brackets, setBrackets] = useState<Map<string, GameType[]>>(new Map());
+  const { data, error, isFetching, isLoading } =
+    api.teamsTournaments.getPlayoffGames.useQuery(
+      { tournamentId },
+      {
+        suspense: false,
+        retry: 2,
+      }
+    );
 
   useEffect(() => {
-    if (!res.isLoading && res.error?.data?.code === "UNAUTHORIZED") {
+    if (!query.tournamentsId || typeof query.tournamentsId !== "string") return;
+    setTournamentId(query.tournamentsId);
+  }, [query.tournamentsId]);
+
+  useEffect(() => {
+    if (!isLoading && error?.data?.code === "UNAUTHORIZED") {
       redirectToPath("/login", window.location.pathname);
     }
-  }, [redirectToPath, res.error?.data?.code, res.isLoading]);
+  }, [redirectToPath, error?.data?.code, isLoading]);
 
-  if (res.isFetching) {
+  useEffect(() => {
+    if (!data?.games) return;
+
+    const gameMap = createPlayoffMap(data.games);
+    console.log(gameMap);
+    const { playoffMap } = cratePlayoffInputMap(gameMap);
+
+    setBrackets(playoffMap);
+  }, [isLoading, data]);
+
+  if (isFetching) {
     return <Spinner size="small" />;
   }
 
   return (
     <GridLayout minWith="320" isGap>
-      <p> PlayOffPage </p>
+      <BracketsInput brackets={[...brackets]} />
     </GridLayout>
   );
 };

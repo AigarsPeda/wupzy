@@ -422,6 +422,7 @@ export const teamsTournamentsRouter = createTRPCRouter({
 
         await ctx.prisma.playoffGames.create({
           data: {
+            gameOrder: i,
             stage: count.toString(),
             team1Id: game.team1?.id,
             team2Id: game.team2?.id,
@@ -511,5 +512,29 @@ export const teamsTournamentsRouter = createTRPCRouter({
           },
         });
       }
+    }),
+
+  getPlayoffGames: protectedProcedure
+    .input(z.object({ tournamentId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const games = await ctx.prisma.playoffGames.findMany({
+        where: {
+          tournamentId: input.tournamentId,
+        },
+        include: {
+          team1: {
+            include: {
+              participants: true,
+            },
+          },
+          team2: {
+            include: {
+              participants: true,
+            },
+          },
+        },
+      });
+
+      return { games };
     }),
 });

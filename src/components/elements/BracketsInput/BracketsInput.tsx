@@ -1,21 +1,18 @@
-import type { GameType } from "components/elements/CreatePlayOffModal/CreatePlayOffModal";
+import type { GameType } from "components/elements/CreatePlayOffModal/utils/util.types";
 import type { FC } from "react";
 import Xarrow, { Xwrapper } from "react-xarrows";
 import classNames from "utils/classNames";
-import BracketsDropdown from "../BracketsDropdown/BracketsDropdown";
-import type { TeamsMapType } from "../../../types/team.types";
 
 type CoordinatesType = {
   end: number[];
   start: number[];
 };
 
-interface BracketsProps {
-  teamsMap: TeamsMapType;
+interface BracketsInputProps {
   brackets: [string, GameType[]][];
 }
 
-const Brackets: FC<BracketsProps> = ({ brackets, teamsMap }) => {
+const BracketsInput: FC<BracketsInputProps> = ({ brackets }) => {
   return (
     <div className="relative flex items-center justify-center">
       {brackets.map((games, i) => {
@@ -63,17 +60,19 @@ const Brackets: FC<BracketsProps> = ({ brackets, teamsMap }) => {
                       >
                         <div className="px-2 py-1">
                           {/* TODO: Replace with input */}
-                          <BracketsDropdown
+                          {/* <BracketsDropdown
                             selectedTeam={team.team1}
                             teamsMap={teamsMap}
-                          />
+                          /> */}
+                          <h2>{team.team1?.name}</h2>
                         </div>
                         <div className="px-2 py-1">
                           {/* TODO: Replace with input */}
-                          <BracketsDropdown
+                          {/* <BracketsDropdown
                             selectedTeam={team.team2}
                             teamsMap={teamsMap}
-                          />
+                          /> */}
+                          <h2>{team.team2?.name}</h2>
                         </div>
 
                         {!isLast && (
@@ -101,4 +100,4 @@ const Brackets: FC<BracketsProps> = ({ brackets, teamsMap }) => {
   );
 };
 
-export default Brackets;
+export default BracketsInput;

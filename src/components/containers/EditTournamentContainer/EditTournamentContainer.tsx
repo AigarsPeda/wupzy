@@ -32,10 +32,6 @@ const EditTournamentContainer: FC<EditTournamentContainerProps> = ({
 
   useEffect(() => {
     if (games) {
-      // const allGamesEnded = games.games.every(
-      //   (game) => game?.team1Score || game?.team2Score
-      // );
-
       // checks if all games have scores
       const allGamesEnded = games.games.every((game) => {
         if (game.team1Score !== null || game.team2Score !== null) {

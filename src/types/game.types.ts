@@ -45,3 +45,26 @@ export type CreateGameType = {
     }[];
   };
 };
+
+const zodTeamId = z.union([z.string(), z.null()]);
+const zodScore = z.union([z.number(), z.null()]);
+const zodTeam = z.union([TeamZodSchema, z.null()]);
+
+export const PlayoffGamesZodSchema = z.object({
+  id: z.string(),
+  team1: zodTeam,
+  team2: zodTeam,
+  stage: z.string(),
+  team1Id: zodTeamId,
+  team2Id: zodTeamId,
+  team1Score: zodScore,
+  team2Score: zodScore,
+  gameOrder: z.number(),
+  tournamentId: z.string(),
+});
+
+export type PlayoffGamesType = z.infer<typeof PlayoffGamesZodSchema>;
+
+const PlayoffGamesMapSchema = z.map(z.string(), z.array(PlayoffGamesZodSchema));
+
+export type PlayoffGamesMapType = z.infer<typeof PlayoffGamesMapSchema>;

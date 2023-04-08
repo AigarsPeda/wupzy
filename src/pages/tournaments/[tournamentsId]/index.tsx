@@ -1,6 +1,7 @@
 import CreatePlayOff from "components/containers/CreatePlayOff/CreatePlayOff";
 import EditTournamentContainer from "components/containers/EditTournamentContainer/EditTournamentContainer";
 import GroupCardContainer from "components/containers/GroupCardContainer/GroupCardContainer";
+import Button from "components/elements/Button/Button";
 import Spinner from "components/elements/Spinner/Spinner";
 import TournamentHeader from "components/elements/TournamentHeader/TournamentHeader";
 import useRedirect from "hooks/useRedirect";
@@ -40,7 +41,17 @@ const Tournament: NextPage = () => {
       <div className="mb-4 flex justify-between">
         <TournamentHeader tournament={tournament?.tournament} />
         <div className="flex">
-          <CreatePlayOff tournamentId={tournamentId} />
+          {tournament && tournament.tournament.isPlayoff ? (
+            <Button
+              btnClass="mr-2"
+              btnTitle="Playoff"
+              onClick={() => {
+                redirectToPath(`${tournamentId}/playoff/`);
+              }}
+            />
+          ) : (
+            <CreatePlayOff tournamentId={tournamentId} />
+          )}
           <EditTournamentContainer tournamentId={tournamentId} />
         </div>
       </div>

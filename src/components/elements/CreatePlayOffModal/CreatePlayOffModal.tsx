@@ -8,6 +8,7 @@ import InfoParagraph from "components/elements/InfoParagraph/InfoParagraph";
 import ModalWrap from "components/elements/ModalWrap/ModalWrap";
 import PlayoffDropdown from "components/elements/PlayoffDropdown/PlayoffDropdown";
 import { ALL } from "hardcoded";
+import useRedirect from "hooks/useRedirect";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import type { TeamType, TeamsMapType } from "types/team.types";
@@ -30,11 +31,16 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
   tournamentId,
   handleCancelClick,
 }) => {
+  const { redirectToPath } = useRedirect();
   const [teamCount, setTeamCount] = useState<number | null>(null);
   const [teamsMap, setTeamsMap] = useState<TeamsMapType>(new Map());
   const [brackets, setBrackets] = useState<Map<string, GameType[]>>(new Map());
   const [selectedTeams, setSelectedTeams] = useState<TeamType[]>([]);
-  const { mutate } = api.teamsTournaments.createPlayoffGames.useMutation();
+  const { mutate } = api.teamsTournaments.createPlayoffGames.useMutation({
+    onSuccess: () => {
+      redirectToPath(`${tournamentId}/playoff/`);
+    },
+  });
   const { data: teams } = api.tournaments.getAllTournamentTeams.useQuery({
     tournamentId,
   });
@@ -57,11 +63,7 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
       tournamentId,
       games,
     });
-
-    console.log("games to save --->", games);
   };
-
-  // if 12 how many teams can be in a group
 
   useEffect(() => {
     if (!teams) return;
@@ -151,9 +153,7 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
             btnColor="outline"
             btnClass="mr-3"
             btnTitle="Create playoffs"
-            onClick={() => {
-              handleSaveGames();
-            }}
+            onClick={handleSaveGames}
           />
         </div>
       </div>
