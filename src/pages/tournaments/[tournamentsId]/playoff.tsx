@@ -42,6 +42,8 @@ const PlayOffPage: NextPage = () => {
     console.log(gameMap);
     const { playoffMap } = cratePlayoffInputMap(gameMap);
 
+    console.log("playoffMap -->", playoffMap);
+
     setBrackets(playoffMap);
   }, [isLoading, data]);
 

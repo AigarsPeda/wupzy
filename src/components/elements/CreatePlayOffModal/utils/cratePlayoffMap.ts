@@ -26,17 +26,17 @@ const cratePlayoffMap = (num: number, map: TeamsMapType) => {
         : map.get(secondGroup) || [];
 
       const firstGroupTeamsLength = firstGroupTeams?.length || 0;
-      const middleIdx = Math.floor(firstGroupTeamsLength / 2);
+      const middleIdx = Math.round(firstGroupTeamsLength / 2);
 
-      const isOdd = firstGroupTeamsLength % 2 !== 0;
-      if (!isSlice && isOdd && firstGroupTeams) {
-        const firstTeam = firstGroupTeams[0];
+      // const isOdd = firstGroupTeamsLength % 2 !== 0;
+      // if (!isSlice && isOdd && firstGroupTeams) {
+      //   const firstTeam = firstGroupTeams[0];
 
-        if (firstTeam) {
-          firstTeam.points = 0;
-          firstGroupTeams.push(firstTeam);
-        }
-      }
+      //   if (firstTeam) {
+      //     firstTeam.points = 0;
+      //     firstGroupTeams.push(firstTeam);
+      //   }
+      // }
 
       const games: GameType = {
         team1: undefined,

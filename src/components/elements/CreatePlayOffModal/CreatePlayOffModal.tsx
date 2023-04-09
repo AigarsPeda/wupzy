@@ -79,6 +79,8 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
       tMap = sortMap(putAllTeamsInOneGroup(tMap));
     }
 
+    console.log("tMap", tMap);
+
     const num = getFirstOddNumber(Math.round(getShortestGroup(tMap) / 2));
     const numArray = createAllPossibleOddNumberArray(num);
     const lastNum = numArray[numArray.length - 1];
