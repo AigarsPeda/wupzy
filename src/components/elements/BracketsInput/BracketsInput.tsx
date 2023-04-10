@@ -1,4 +1,5 @@
 import type { GameType } from "components/elements/CreatePlayOffModal/utils/util.types";
+import DisplayPlayoffTeams from "components/elements/DisplayPlayoffTeams/DisplayPlayoffTeams";
 import type { FC } from "react";
 import Xarrow, { Xwrapper } from "react-xarrows";
 import classNames from "utils/classNames";
@@ -17,8 +18,8 @@ const BracketsInput: FC<BracketsInputProps> = ({ brackets }) => {
     <div className="relative flex items-center justify-center">
       {brackets.map((games, i) => {
         const [stage, teams] = games;
-        const isLast = i === brackets.length - 1;
         const hasNext = i < brackets.length - 1;
+        const isLast = i === brackets.length - 1;
         const nextArrow = hasNext ? brackets[i + 1] : [];
         const nextTeams = nextArrow && nextArrow.length > 1 ? nextArrow[1] : [];
 
@@ -31,7 +32,6 @@ const BracketsInput: FC<BracketsInputProps> = ({ brackets }) => {
             )}
           >
             <>
-              {/* <p>{stage}</p> */}
               {teams.map((team, index) => {
                 const group = i + 1 > brackets.length ? brackets.length : i + 1;
                 const position =
@@ -58,21 +58,17 @@ const BracketsInput: FC<BracketsInputProps> = ({ brackets }) => {
                             : marginBottom,
                         }}
                       >
-                        <div className="px-2 py-1">
-                          {/* TODO: Replace with input */}
-                          {/* <BracketsDropdown
-                            selectedTeam={team.team1}
-                            teamsMap={teamsMap}
-                          /> */}
-                          <h2>{team.team1?.name}</h2>
-                        </div>
-                        <div className="px-2 py-1">
-                          {/* TODO: Replace with input */}
-                          {/* <BracketsDropdown
-                            selectedTeam={team.team2}
-                            teamsMap={teamsMap}
-                          /> */}
-                          <h2>{team.team2?.name}</h2>
+                        <div className="flex space-x-2 truncate rounded bg-gray-800 px-2 py-1 text-white">
+                          <DisplayPlayoffTeams
+                            teamName={team.team1?.name || ""}
+                            smallPoints={team.team1?.smallPoints ?? 0}
+                            participants={team.team1?.participants || []}
+                          />
+                          <DisplayPlayoffTeams
+                            teamName={team.team2?.name || ""}
+                            smallPoints={team.team2?.smallPoints ?? 0}
+                            participants={team.team2?.participants || []}
+                          />
                         </div>
 
                         {!isLast && (

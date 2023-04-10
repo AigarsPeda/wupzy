@@ -3,8 +3,6 @@ import type { TeamsMapType, TeamType } from "types/team.types";
 import getRandomValues from "utils/getRandomValues";
 
 const cratePlayoffMap = (num: number, map: TeamsMapType) => {
-  // if (!num) return new Map<string, GameType[]>();
-
   const originalNum = num;
   const keys = Array.from(map.keys());
 
