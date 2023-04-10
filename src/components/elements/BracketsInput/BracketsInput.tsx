@@ -1,7 +1,9 @@
-import type { GameType } from "components/elements/CreatePlayOffModal/utils/util.types";
+import type { GamePlayoffType } from "components/elements/BracketsInput/utils/cratePlayoffInputMap";
+import Button from "components/elements/Button/Button";
 import DisplayPlayoffTeams from "components/elements/DisplayPlayoffTeams/DisplayPlayoffTeams";
 import type { FC } from "react";
 import Xarrow, { Xwrapper } from "react-xarrows";
+import type { TeamType } from "types/team.types";
 import classNames from "utils/classNames";
 
 type CoordinatesType = {
@@ -10,14 +12,21 @@ type CoordinatesType = {
 };
 
 interface BracketsInputProps {
-  brackets: [string, GameType[]][];
+  brackets: [string, GamePlayoffType[]][];
+  handleScoreSave: (game: GamePlayoffType) => void;
+  handleScoreChange: (n: number, team: TeamType, stage: string) => void;
 }
 
-const BracketsInput: FC<BracketsInputProps> = ({ brackets }) => {
+const BracketsInput: FC<BracketsInputProps> = ({
+  brackets,
+  handleScoreSave,
+  handleScoreChange,
+}) => {
   return (
     <div className="relative flex items-center justify-center">
       {brackets.map((games, i) => {
         const [stage, teams] = games;
+
         const hasNext = i < brackets.length - 1;
         const isLast = i === brackets.length - 1;
         const nextArrow = hasNext ? brackets[i + 1] : [];
@@ -32,7 +41,7 @@ const BracketsInput: FC<BracketsInputProps> = ({ brackets }) => {
             )}
           >
             <>
-              {teams.map((team, index) => {
+              {teams.map((game, index) => {
                 const group = i + 1 > brackets.length ? brackets.length : i + 1;
                 const position =
                   Math.floor(index / 2) > nextTeams.length - 1
@@ -44,6 +53,8 @@ const BracketsInput: FC<BracketsInputProps> = ({ brackets }) => {
                   end: [group, position],
                 };
 
+                const firstTeam = game.team1;
+                const secondTeam = game.team2;
                 const marginBottom = `${Math.floor(i * 2 + 2)}rem`;
 
                 return (
@@ -58,17 +69,40 @@ const BracketsInput: FC<BracketsInputProps> = ({ brackets }) => {
                             : marginBottom,
                         }}
                       >
-                        <div className="flex space-x-2 truncate rounded bg-gray-800 px-2 py-1 text-white">
-                          <DisplayPlayoffTeams
-                            teamName={team.team1?.name || ""}
-                            smallPoints={team.team1?.smallPoints ?? 0}
-                            participants={team.team1?.participants || []}
-                          />
-                          <DisplayPlayoffTeams
-                            teamName={team.team2?.name || ""}
-                            smallPoints={team.team2?.smallPoints ?? 0}
-                            participants={team.team2?.participants || []}
-                          />
+                        <div className="flex min-h-[3.9rem] items-end space-x-2 truncate rounded bg-gray-800 px-2 py-1 text-white">
+                          {firstTeam && (
+                            <DisplayPlayoffTeams
+                              teamName={firstTeam.team1.name || ""}
+                              isScoreDisplay={Boolean(secondTeam)}
+                              smallPoints={firstTeam.team1Score || 0}
+                              participants={firstTeam.team1.participants || []}
+                              handleScoreChange={(n) => {
+                                handleScoreChange(n, firstTeam.team1, stage);
+                              }}
+                            />
+                          )}
+                          {secondTeam && (
+                            <DisplayPlayoffTeams
+                              teamName={secondTeam.team2.name || ""}
+                              isScoreDisplay={Boolean(firstTeam)}
+                              smallPoints={secondTeam.team2Score || 0}
+                              participants={secondTeam.team2.participants || []}
+                              handleScoreChange={(n) => {
+                                handleScoreChange(n, secondTeam.team2, stage);
+                              }}
+                            />
+                          )}
+                          {firstTeam && secondTeam && (
+                            <Button
+                              btnClass="h-[2.5rem]"
+                              btnTitle="Save"
+                              btnColor="outline"
+                              onClick={() => {
+                                handleScoreSave(game);
+                                console.log("save");
+                              }}
+                            />
+                          )}
                         </div>
 
                         {!isLast && (

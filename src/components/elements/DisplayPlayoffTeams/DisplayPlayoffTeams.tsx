@@ -5,13 +5,17 @@ import type { ParticipantType } from "types/team.types";
 interface DisplayPlayoffTeamsProps {
   teamName: string;
   smallPoints: number;
+  isScoreDisplay: boolean;
   participants: ParticipantType[];
+  handleScoreChange: (n: number) => void;
 }
 
 const DisplayPlayoffTeams: FC<DisplayPlayoffTeamsProps> = ({
   teamName,
   smallPoints,
   participants,
+  isScoreDisplay,
+  handleScoreChange,
 }) => {
   return (
     <div>
@@ -23,12 +27,11 @@ const DisplayPlayoffTeams: FC<DisplayPlayoffTeamsProps> = ({
           ))}
         </div>
       </div>
-      <NumberInput
-        value={smallPoints}
-        onChange={(n) => {
-          console.log(n);
-        }}
-      />
+      <div className="flex h-10">
+        {isScoreDisplay && (
+          <NumberInput value={smallPoints} onChange={handleScoreChange} />
+        )}
+      </div>
     </div>
   );
 };

@@ -82,7 +82,7 @@ const Brackets: FC<BracketsProps> = ({
                         {isDropdown && (
                           <BracketsDropdown
                             teamsMap={teamsMap}
-                            selectedTeam={team.team1}
+                            selectedTeam={team.team1.team1}
                             selectedTeams={selectedTeams}
                             handleTeamsRemove={handleTeamsRemove}
                             handleTeamSelect={(team, oldTeams) => {
@@ -101,7 +101,7 @@ const Brackets: FC<BracketsProps> = ({
                         {isDropdown && (
                           <BracketsDropdown
                             teamsMap={teamsMap}
-                            selectedTeam={team.team2}
+                            selectedTeam={team.team2.team2}
                             selectedTeams={selectedTeams}
                             handleTeamsRemove={handleTeamsRemove}
                             handleTeamSelect={(team, oldTeams) => {

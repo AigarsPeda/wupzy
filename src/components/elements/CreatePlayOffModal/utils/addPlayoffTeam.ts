@@ -20,7 +20,13 @@ const addPlayoffTeam = (
 
   if (!teamToUpdate) return newBrackets;
 
-  teamToUpdate[name] = team;
+  if (name === "team1") {
+    teamToUpdate.team1.team1 = team;
+  }
+
+  if (name === "team2") {
+    teamToUpdate.team2.team2 = team;
+  }
 
   return newBrackets;
 };

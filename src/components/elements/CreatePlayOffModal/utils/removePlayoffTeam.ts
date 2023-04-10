@@ -9,17 +9,21 @@ const removePlayoffTeam = (
 
   newMap.forEach((games, key) => {
     const newGameArray = games.map((game) => {
-      if (game.team1?.id === team.id) {
+      if (game.team1?.team1?.id === team.id) {
         return {
           ...game,
-          team1: undefined,
+          team1: {
+            team1: undefined,
+          },
         };
       }
 
-      if (game.team2?.id === team.id) {
+      if (game.team2?.team2?.id === team.id) {
         return {
           ...game,
-          team2: undefined,
+          team2: {
+            team2: undefined,
+          },
         };
       }
 

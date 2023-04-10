@@ -5,11 +5,10 @@ import type { FC } from "react";
 import { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import classNames from "utils/classNames";
-import createAllPossibleOddNumberArray from "utils/createAllPossibleOddNumberArray";
 
 interface PlayoffDropdownProps {
   count: number | null;
-  availableLength: number;
+  availableLength: number[];
   handleCountClick: (count: number | null) => void;
 }
 
@@ -59,24 +58,19 @@ const PlayoffDropdown: FC<PlayoffDropdownProps> = ({
           </li>
         )}
 
-        {createAllPossibleOddNumberArray(availableLength).map(
-          (teamCount, i) => {
-            return (
-              <li
-                key={`${teamCount}${i}`}
-                className="border-b-2 border-gray-100"
-              >
-                <ListButton
-                  btnTitle={teamCount}
-                  handleClick={() => {
-                    handleDropdownClose();
-                    handleCountClick(teamCount);
-                  }}
-                />
-              </li>
-            );
-          }
-        )}
+        {availableLength.map((teamCount, i) => {
+          return (
+            <li key={`${teamCount}${i}`} className="border-b-2 border-gray-100">
+              <ListButton
+                btnTitle={teamCount}
+                handleClick={() => {
+                  handleDropdownClose();
+                  handleCountClick(teamCount);
+                }}
+              />
+            </li>
+          );
+        })}
       </ul>
     </Dropdown>
   );

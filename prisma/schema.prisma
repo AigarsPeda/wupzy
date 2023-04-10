@@ -86,6 +86,7 @@ model PlayoffGames {
   tournamentId   String
   team2Id        String?
   team1Id        String?
+  bracketNum     Int
   gameOrder      Int
   stage          String // <- 1/8, 1/4, 1/2, final
   participants   Participant[]

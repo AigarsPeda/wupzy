@@ -1,13 +1,20 @@
 import type { FC } from "react";
+import classNames from "../../../utils/classNames";
 
 interface NumberInputProps {
   value: number;
+  height?: string;
   onChange: (value: number) => void;
 }
 
-const NumberInput: FC<NumberInputProps> = ({ value, onChange }) => {
+const NumberInput: FC<NumberInputProps> = ({ value, height, onChange }) => {
   return (
-    <div className="relative flex h-10 w-32 flex-row rounded-lg border-2 border-transparent bg-transparent">
+    <div
+      className={classNames(
+        height ? height : "h-10",
+        "relative flex w-32 flex-row rounded-lg border-2 border-transparent bg-transparent"
+      )}
+    >
       <button
         data-action="decrement"
         className="h-full w-20 cursor-pointer rounded-l bg-gray-300 text-gray-600 outline-none transition-all hover:bg-gray-400 hover:text-gray-700"

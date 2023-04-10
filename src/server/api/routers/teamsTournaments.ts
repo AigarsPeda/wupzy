@@ -5,6 +5,7 @@ import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
 import { TeamZodSchema, TeamsAttendantMapZodSchema } from "types/team.types";
 import shuffleArray from "utils/shuffleArray";
 import { z } from "zod";
+import getPoints from "./utils/getPoints";
 
 const START_GROUP = "A";
 
@@ -395,15 +396,22 @@ export const teamsTournamentsRouter = createTRPCRouter({
         tournamentId: z.string(),
         games: z
           .object({
-            team1: TeamZodSchema.nullish(),
-            team2: TeamZodSchema.nullish(),
+            stage: z.string(),
+            bracketNum: z.number(),
+            team1: z.object({
+              team1: TeamZodSchema.nullish(),
+            }),
+            team2: z.object({
+              team2: TeamZodSchema.nullish(),
+            }),
           })
           .array(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       const games = input.games;
-      const count = input.games.length;
+
+      // const nextStage = parseInt(input.games[0]?.stage || "0") / 2;
 
       for (let i = 0; i < games.length; i++) {
         const game = games[i];
@@ -416,16 +424,17 @@ export const teamsTournamentsRouter = createTRPCRouter({
         }
 
         const team1Ids =
-          game.team1?.participants.map((p) => ({ id: p.id })) || [];
+          game.team1?.team1?.participants.map((p) => ({ id: p.id })) || [];
         const team2Ids =
-          game.team2?.participants.map((p) => ({ id: p.id })) || [];
+          game.team2?.team2?.participants.map((p) => ({ id: p.id })) || [];
 
         await ctx.prisma.playoffGames.create({
           data: {
             gameOrder: i,
-            stage: count.toString(),
-            team1Id: game.team1?.id,
-            team2Id: game.team2?.id,
+            stage: game.stage,
+            bracketNum: game.bracketNum,
+            team1Id: game.team1?.team1?.id,
+            team2Id: game.team2?.team2?.id,
             tournamentId: input.tournamentId,
             participants: {
               connect: [...team1Ids, ...team2Ids],
@@ -493,9 +502,6 @@ export const teamsTournamentsRouter = createTRPCRouter({
                 },
               },
             },
-            // winners: {
-            //   connect: winnerIds,
-            // },
           },
 
           include: {
@@ -521,6 +527,9 @@ export const teamsTournamentsRouter = createTRPCRouter({
         where: {
           tournamentId: input.tournamentId,
         },
+        orderBy: {
+          bracketNum: "asc",
+        },
         include: {
           team1: {
             include: {
@@ -536,5 +545,200 @@ export const teamsTournamentsRouter = createTRPCRouter({
       });
 
       return { games };
+    }),
+
+  updatePlayoffGame: protectedProcedure
+    .input(
+      z.object({
+        gameId: z.string(),
+        nextStage: z.string(),
+        team1Score: z.number(),
+        team2Score: z.number(),
+        nextBracket: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const nextStage = input.nextStage;
+      const team1Score = input.team1Score;
+      const team2Score = input.team2Score;
+      const { team1Points, team2Points } = getPoints(
+        input.team1Score,
+        input.team2Score
+      );
+
+      const game = await ctx.prisma.playoffGames.findUnique({
+        where: {
+          id: input.gameId,
+        },
+        include: {
+          team1: {
+            include: {
+              participants: true,
+            },
+          },
+          team2: {
+            include: {
+              participants: true,
+            },
+          },
+        },
+      });
+
+      if (!game) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Game not found",
+        });
+      }
+
+      const winnerTeamId =
+        team1Points > team2Points ? game.team1Id : game.team2Id;
+      const winnerIds: {
+        id: string;
+      }[] = [];
+
+      if (team1Points > team2Points) {
+        game.team1?.participants.forEach((p) => {
+          winnerIds.push({ id: p.id });
+        });
+      }
+      if (team2Points > team1Points) {
+        game.team2?.participants.forEach((p) => {
+          winnerIds.push({ id: p.id });
+        });
+      }
+      if (team2Points === team1Points) {
+        game.team1?.participants.forEach((p) => {
+          winnerIds.push({ id: p.id });
+        });
+        game.team2?.participants.forEach((p) => {
+          winnerIds.push({ id: p.id });
+        });
+      }
+
+      await ctx.prisma.playoffGames.update({
+        where: {
+          id: input.gameId,
+        },
+        data: {
+          team1Score: team1Score,
+          team2Score: team2Score,
+          team1: {
+            update: {
+              points: {
+                increment: team1Points,
+              },
+              smallPoints: {
+                increment: team1Score,
+              },
+            },
+          },
+          team2: {
+            update: {
+              points: {
+                increment: team2Points,
+              },
+              smallPoints: {
+                increment: team2Score,
+              },
+            },
+          },
+          playoffwinners: {
+            connect: winnerIds,
+          },
+        },
+        include: {
+          team1: {
+            include: {
+              participants: true,
+            },
+          },
+          team2: {
+            include: {
+              participants: true,
+            },
+          },
+        },
+      });
+
+      const games = await ctx.prisma.playoffGames.findMany({
+        where: {
+          tournamentId: game.tournamentId,
+          bracketNum: input.nextBracket,
+          stage: nextStage,
+        },
+      });
+
+      // Create new game
+      if (games.length === 0) {
+        await ctx.prisma.playoffGames.create({
+          data: {
+            gameOrder: 0,
+            stage: nextStage,
+            team1Id: winnerTeamId,
+            bracketNum: input.nextBracket,
+            tournamentId: game.tournamentId,
+            participants: {
+              connect: winnerIds,
+            },
+          },
+        });
+      }
+
+      // Update existing game
+      if (games.length === 1) {
+        await ctx.prisma.playoffGames.update({
+          where: {
+            id: games[0]?.id,
+          },
+          data: {
+            team2Id: winnerTeamId,
+            participants: {
+              connect: winnerIds,
+            },
+          },
+        });
+      }
+
+      return { game };
+    }),
+
+  createPlayoffGame: protectedProcedure
+    .input(
+      z.object({
+        tournamentId: z.string(),
+        games: z
+          .object({
+            stage: z.string(),
+            gameId: z.string(),
+            team: TeamZodSchema,
+            bracketNum: z.number(),
+          })
+          .array(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const games = input.games;
+
+      for (let i = 0; i < games.length; i++) {
+        const game = games[i];
+
+        const ids = game?.team?.participants.map((p) => {
+          return { id: p.id };
+        });
+
+        await ctx.prisma.playoffGames.create({
+          data: {
+            gameOrder: i,
+            stage: game?.stage || "",
+            team1Id: game?.team?.id,
+            bracketNum: game?.bracketNum || 0,
+            tournamentId: input.tournamentId,
+            participants: {
+              connect: ids,
+            },
+          },
+        });
+      }
     }),
 });

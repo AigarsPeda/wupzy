@@ -37,8 +37,14 @@ const cratePlayoffMap = (num: number, map: TeamsMapType) => {
       // }
 
       const games: GameType = {
-        team1: undefined,
-        team2: undefined,
+        bracketNum: n,
+        stage: num.toString(),
+        team1: {
+          team1: undefined,
+        },
+        team2: {
+          team2: undefined,
+        },
       };
 
       if (num === originalNum && firstGroupTeams && secondGroupTeams) {
@@ -48,8 +54,9 @@ const cratePlayoffMap = (num: number, map: TeamsMapType) => {
         const firstTeam = firstGroupTeams[middleIdx - num];
         const secondTeam = secondGroupTeams[middleIdx + n];
 
-        games.team1 = firstTeam;
-        games.team2 = firstTeam?.id === secondTeam?.id ? undefined : secondTeam;
+        games.team1.team1 = firstTeam;
+        games.team2.team2 =
+          firstTeam?.id === secondTeam?.id ? undefined : secondTeam;
 
         firstTeam && selected.push(firstTeam);
         secondTeam && selected.push(secondTeam);

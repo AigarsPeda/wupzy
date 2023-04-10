@@ -3,6 +3,7 @@ import Button from "components/elements/Button/Button";
 import addPlayoffTeam from "components/elements/CreatePlayOffModal/utils/addPlayoffTeam";
 import cratePlayoffMap from "components/elements/CreatePlayOffModal/utils/cratePlayoffMap";
 import removePlayoffTeam from "components/elements/CreatePlayOffModal/utils/removePlayoffTeam";
+import splitArray from "components/elements/CreatePlayOffModal/utils/splitArray";
 import type { GameType } from "components/elements/CreatePlayOffModal/utils/util.types";
 import InfoParagraph from "components/elements/InfoParagraph/InfoParagraph";
 import ModalWrap from "components/elements/ModalWrap/ModalWrap";
@@ -15,7 +16,7 @@ import type { TeamType, TeamsMapType } from "types/team.types";
 import { api } from "utils/api";
 import createAllPossibleOddNumberArray from "utils/createAllPossibleOddNumberArray";
 import createMap from "utils/createMap";
-import getFirstOddNumber from "utils/getFirstOddNumber";
+import getPrevOddNumber from "utils/getPrevOddNumber";
 import getShortestGroup from "utils/getShortestGroup";
 import isOdd from "utils/isOdd";
 import sortMap from "utils/sortMap";
@@ -32,15 +33,12 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
   handleCancelClick,
 }) => {
   const { redirectToPath } = useRedirect();
+  const [numArray, setNumArray] = useState<number[]>([]);
   const [teamCount, setTeamCount] = useState<number | null>(null);
   const [teamsMap, setTeamsMap] = useState<TeamsMapType>(new Map());
-  const [brackets, setBrackets] = useState<Map<string, GameType[]>>(new Map());
   const [selectedTeams, setSelectedTeams] = useState<TeamType[]>([]);
-  const { mutate } = api.teamsTournaments.createPlayoffGames.useMutation({
-    onSuccess: () => {
-      redirectToPath(`${tournamentId}/playoff/`);
-    },
-  });
+  const [brackets, setBrackets] = useState<Map<string, GameType[]>>(new Map());
+  const { mutateAsync } = api.teamsTournaments.createPlayoffGames.useMutation();
   const { data: teams } = api.tournaments.getAllTournamentTeams.useQuery({
     tournamentId,
   });
@@ -54,15 +52,39 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
     return newMap;
   };
 
-  const handleSaveGames = () => {
+  const handleSaveGames = async () => {
     if (!teamCount) return;
 
     const games = brackets.get(`${teamCount}`) || [];
 
-    mutate({
+    const { oneTeam } = splitArray(games);
+
+    await mutateAsync({
       tournamentId,
-      games,
+      games: games,
     });
+
+    // If there are games with only one team, we move them to the next round
+    await mutateAsync({
+      tournamentId,
+      games: oneTeam,
+    });
+
+    redirectToPath(`${tournamentId}/playoff/`);
+  };
+
+  const isAllTeamsSelected = () => {
+    if (!teamCount) return false;
+
+    const games = brackets.get(`${teamCount}`) || [];
+
+    for (const game of games) {
+      if (!game?.team1.team1?.id || !game?.team2.team2?.id) {
+        return false;
+      }
+    }
+
+    return true;
   };
 
   useEffect(() => {
@@ -79,13 +101,13 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
       tMap = sortMap(putAllTeamsInOneGroup(tMap));
     }
 
-    console.log("tMap", tMap);
+    const num = getPrevOddNumber(Math.floor(getShortestGroup(tMap) / 2));
 
-    const num = getFirstOddNumber(Math.round(getShortestGroup(tMap) / 2));
     const numArray = createAllPossibleOddNumberArray(num);
     const lastNum = numArray[numArray.length - 1];
 
     setTeamsMap(tMap);
+    setNumArray(numArray);
     setTeamCount(lastNum || null);
   }, [teams]);
 
@@ -113,7 +135,7 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
           <PlayoffDropdown
             count={teamCount}
             handleCountClick={setTeamCount}
-            availableLength={getShortestGroup(teamsMap)}
+            availableLength={numArray}
           />
         </div>
 
@@ -152,10 +174,15 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
         </div>
         <div className="flex justify-end">
           <Button
-            btnColor="outline"
             btnClass="mr-3"
+            btnColor="outline"
+            isDisabled={!isAllTeamsSelected()}
             btnTitle="Create playoffs"
-            onClick={handleSaveGames}
+            onClick={() => {
+              handleSaveGames().catch((err) =>
+                console.error("Error creating playoff games", err)
+              );
+            }}
           />
         </div>
       </div>
