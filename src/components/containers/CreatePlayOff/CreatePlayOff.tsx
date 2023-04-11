@@ -1,7 +1,11 @@
-import CreatePlayOffModal from "components/elements/CreatePlayOffModal/CreatePlayOffModal";
 import RoundButton from "components/elements/RoundButton/RoundButton";
+import dynamic from "next/dynamic";
 import type { FC } from "react";
 import { useState } from "react";
+
+const CreatePlayOffModal = dynamic(
+  () => import("components/elements/CreatePlayOffModal/CreatePlayOffModal")
+);
 
 interface CreatePlayOffProps {
   tournamentId: string;

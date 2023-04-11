@@ -59,8 +59,6 @@ const Playoffs: FC<PlayoffsProps> = ({ tournamentId }) => {
   useEffect(() => {
     if (!data?.games) return;
 
-    console.log("data.games --->", data.games);
-
     const gameMap = createPlayoffMap(data.games);
     const { playoffMap } = cratePlayoffInputMap(gameMap);
 
