@@ -5,7 +5,7 @@ import InfoParagraph from "components/elements/InfoParagraph/InfoParagraph";
 import Input from "components/elements/Input/Input";
 import GridLayout from "components/layouts/GridLayout/GridLayout";
 import type { FC } from "react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BiTrash } from "react-icons/bi";
 import type {
   AttendantType,
@@ -33,6 +33,7 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
 }) => {
   const [parent] = useAutoAnimate();
   const [teamName, setTeamName] = useState("");
+  const elRefs = useRef<HTMLInputElement[]>([]);
   const [editTeamName, setEditTeamName] = useState<string | null>(null);
   const [teamAttendants, setTeamAttendants] = useState<AttendantType[]>([
     {
@@ -142,6 +143,21 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
     return true;
   };
 
+  useEffect(() => {
+    const size = elRefs.current.length;
+
+    if (size === 0 || elRefs.current.length === 0) return;
+
+    // If there are no attendants, focus the first input
+    if (teamAttendants.length === 2) {
+      elRefs.current[0]?.focus();
+      return;
+    }
+
+    // If there are new attendants added, focus the last input
+    elRefs.current && elRefs.current[size - 1]?.focus();
+  }, [teamAttendants]);
+
   return (
     <div className="">
       <div className="mt-8">
@@ -170,6 +186,11 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
                   value={value || ""}
                   name="participantName"
                   label={`${index + 1} participants name`}
+                  ref={(el) => {
+                    if (!el) return;
+                    // create a new array with the new element
+                    elRefs.current = [...elRefs.current, el];
+                  }}
                   handleInputChange={(e) =>
                     handleInputChange(index, e.target.value)
                   }
