@@ -24,7 +24,9 @@ const cratePlayoffMap = (num: number, map: TeamsMapType) => {
         : map.get(secondGroup) || [];
 
       const firstGroupTeamsLength = firstGroupTeams?.length || 0;
-      const middleIdx = Math.round(firstGroupTeamsLength / 2);
+
+      // If Math.round is used, team with more points may not be selected
+      const middleIdx = Math.floor(firstGroupTeamsLength / 2);
 
       const games: GameType = {
         bracketNum: n,

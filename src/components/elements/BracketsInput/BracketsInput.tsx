@@ -65,8 +65,6 @@ const BracketsInput: FC<BracketsInputProps> = ({
                 const isTeam1Winner =
                   hasWinner && (team1Score || 0) > (team2Score || 0);
 
-                // const isTeam1Winner = team1Score > team2Score;
-
                 return (
                   <div key={`${index}`} className="w-full">
                     <Xwrapper>
