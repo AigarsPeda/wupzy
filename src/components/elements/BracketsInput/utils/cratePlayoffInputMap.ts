@@ -25,8 +25,6 @@ export type NextRoundType = {
 const cratePlayoffInputMap = (map: Map<string, PlayoffGamesType[]>) => {
   const keys = Array.from(map.keys()).sort();
 
-  console.log("map --->", map);
-
   // 6, 3, 1
   const originalNum = parseInt(keys[keys.length - 1] || "0");
   let num = originalNum;
@@ -38,20 +36,15 @@ const cratePlayoffInputMap = (map: Map<string, PlayoffGamesType[]>) => {
     const arr = Array.from(Array(num).keys()).map((n) => {
       const group = map.get(num.toString()) || [];
 
-      console.log("group --->", group);
-
-      // const nextRound = Math.round(num / 2).toString();
-
       const game = group[n];
 
       const team1 = game?.team1;
       const team2 = game?.team2;
-      // const bracketNum = game?.bracketNum || n;
 
       const g: GamePlayoffType = {
-        bracketNum: game?.bracketNum || 0,
         gameId: game?.id || "",
         stage: num.toString() || "",
+        bracketNum: game?.gameOrder || 0,
       };
 
       // insert g into bracketNum position in array
@@ -70,29 +63,8 @@ const cratePlayoffInputMap = (map: Map<string, PlayoffGamesType[]>) => {
         };
       }
 
-      // If there are no anther team move to next round to first position
-      // if (!team2 && team1 && num === originalNum) {
-      //   autoMoveToNextRound.push({
-      //     team: team1,
-      //     gameId: game?.id || "",
-      //     stage: Math.round(num / 2).toString(),
-      //     bracketNum: Math.floor(n / 2),
-      //   });
-      // }
-
-      // if (!team1 && team2 && num === originalNum) {
-      //   autoMoveToNextRound.push({
-      //     team: team2,
-      //     gameId: game?.id || "",
-      //     stage: Math.round(num / 2).toString(),
-      //     bracketNum: Math.floor(n / 2),
-      //   });
-      // }
-
       return g;
     });
-
-    // arr.sort((a, b) => a.bracketNum - b.bracketNum);
 
     playoffMap.set(`${num}`, arr);
 

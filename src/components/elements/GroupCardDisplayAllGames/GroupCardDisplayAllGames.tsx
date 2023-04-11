@@ -47,17 +47,18 @@ const GroupCardDisplayAllGames: FC<GroupCardDisplayAllGamesProps> = ({
           const gameOrder = i + 1;
           const gameCount = games?.games.length;
           const isDraw = game.team1Score === game.team2Score;
-          const isFirstTeamWinner = game.team1Score > game.team2Score;
-          const isSecondTeamWinner = game.team2Score > game.team1Score;
+          const isFirstTeamWinner =
+            (game.team1Score || 0) > (game.team2Score || 0);
+          // const isSecondTeamWinner = game.team2Score > game.team1Score;
 
           return (
             <li
               key={game.id}
-              className="mb-2 flex rounded-md bg-gray-100 py-2 px-2"
+              className="mb-2 flex rounded-md bg-gray-100 px-2 py-2"
             >
               <div
                 className={classNames(
-                  "mb-3 w-20 border-b-2 md:mr-3 md:mb-0 md:border-b-0 md:border-r-2 md:px-2"
+                  "mb-3 w-20 border-b-2 md:mb-0 md:mr-3 md:border-b-0 md:border-r-2 md:px-2"
                 )}
               >
                 <p className="pb-1 text-xs">{`${gameOrder} of ${gameCount}`}</p>
@@ -65,8 +66,8 @@ const GroupCardDisplayAllGames: FC<GroupCardDisplayAllGamesProps> = ({
               <div className="flex w-full">
                 <div className="mr-2 w-[50%] truncate">
                   <DisplayTeams
-                    infoScore={game.team1Score}
                     team={game.team1.participants}
+                    infoScore={game.team1Score || 0}
                     isWinner={isFirstTeamWinner && !isDraw}
                     teamName={
                       tournamentKind === "TEAMS" ? game.team1.name : undefined
@@ -75,9 +76,9 @@ const GroupCardDisplayAllGames: FC<GroupCardDisplayAllGamesProps> = ({
                 </div>
                 <div className="w-[50%] truncate">
                   <DisplayTeams
-                    infoScore={game.team2Score}
                     team={game.team2.participants}
-                    isWinner={isSecondTeamWinner && !isDraw}
+                    infoScore={game.team2Score || 0}
+                    isWinner={!isFirstTeamWinner && !isDraw}
                     teamName={
                       tournamentKind === "TEAMS" ? game.team2.name : undefined
                     }

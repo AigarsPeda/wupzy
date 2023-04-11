@@ -60,7 +60,7 @@ export const PlayoffGamesZodSchema = z.object({
   team1Score: zodScore,
   team2Score: zodScore,
   gameOrder: z.number(),
-  bracketNum: z.number(),
+  // bracketNum: z.number(),
   tournamentId: z.string(),
 });
 

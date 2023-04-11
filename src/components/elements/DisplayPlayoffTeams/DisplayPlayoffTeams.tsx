@@ -19,9 +19,9 @@ const DisplayPlayoffTeams: FC<DisplayPlayoffTeamsProps> = ({
 }) => {
   return (
     <div>
-      <div className="min-h-[2.5rem]">
+      <div className="min-h-[2.5rem] truncate">
         <h2>{teamName}</h2>
-        <div className="flex w-full space-x-2 text-xs text-gray-300">
+        <div className="flex w-full max-w-[9rem] space-x-2 overflow-x-auto text-xs text-gray-300">
           {participants.map((p) => (
             <p key={p.id}>{p.name}</p>
           ))}

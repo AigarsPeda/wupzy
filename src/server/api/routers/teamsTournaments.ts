@@ -397,7 +397,7 @@ export const teamsTournamentsRouter = createTRPCRouter({
         games: z
           .object({
             stage: z.string(),
-            bracketNum: z.number(),
+            // bracketNum: z.number(),
             team1: z.object({
               team1: TeamZodSchema.nullish(),
             }),
@@ -532,7 +532,8 @@ export const teamsTournamentsRouter = createTRPCRouter({
           tournamentId: input.tournamentId,
         },
         orderBy: {
-          bracketNum: "asc",
+          // bracketNum: "asc",
+          gameOrder: "asc",
         },
         include: {
           team1: {
@@ -558,8 +559,8 @@ export const teamsTournamentsRouter = createTRPCRouter({
         nextStage: z.string(),
         team1Score: z.number(),
         team2Score: z.number(),
-        nextBracket: z.number(),
         tournamentsId: z.string(),
+        nextBracketNum: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -574,6 +575,7 @@ export const teamsTournamentsRouter = createTRPCRouter({
       const count = await ctx.prisma.playoffGames.count({
         where: {
           stage: nextStage,
+          bracketNum: input.nextBracketNum,
           tournamentId: input.tournamentsId,
         },
       });
@@ -676,8 +678,8 @@ export const teamsTournamentsRouter = createTRPCRouter({
       const games = await ctx.prisma.playoffGames.findMany({
         where: {
           stage: nextStage,
-          bracketNum: input.nextBracket,
           tournamentId: game.tournamentId,
+          bracketNum: input.nextBracketNum,
         },
       });
 
@@ -687,7 +689,7 @@ export const teamsTournamentsRouter = createTRPCRouter({
           data: {
             stage: nextStage,
             team1Id: winnerTeamId,
-            bracketNum: input.nextBracket,
+            bracketNum: input.nextBracketNum,
             tournamentId: game.tournamentId,
             gameOrder: count !== 0 ? count + 1 : 0,
             participants: {

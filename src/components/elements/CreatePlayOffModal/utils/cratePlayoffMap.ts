@@ -26,16 +26,6 @@ const cratePlayoffMap = (num: number, map: TeamsMapType) => {
       const firstGroupTeamsLength = firstGroupTeams?.length || 0;
       const middleIdx = Math.round(firstGroupTeamsLength / 2);
 
-      // const isOdd = firstGroupTeamsLength % 2 !== 0;
-      // if (!isSlice && isOdd && firstGroupTeams) {
-      //   const firstTeam = firstGroupTeams[0];
-
-      //   if (firstTeam) {
-      //     firstTeam.points = 0;
-      //     firstGroupTeams.push(firstTeam);
-      //   }
-      // }
-
       const games: GameType = {
         bracketNum: n,
         stage: num.toString(),

@@ -57,6 +57,9 @@ const BracketsInput: FC<BracketsInputProps> = ({
                 const secondTeam = game.team2;
                 const marginBottom = `${Math.floor(i * 2 + 2)}rem`;
 
+                const team1Score = firstTeam?.team1Score || 0;
+                const team2Score = secondTeam?.team2Score || 0;
+
                 return (
                   <div key={`${index}`} className="w-full">
                     <Xwrapper>
@@ -69,40 +72,48 @@ const BracketsInput: FC<BracketsInputProps> = ({
                             : marginBottom,
                         }}
                       >
-                        <div className="flex min-h-[3.9rem] items-end space-x-2 truncate rounded bg-gray-800 px-2 py-1 text-white">
-                          {firstTeam && (
-                            <DisplayPlayoffTeams
-                              teamName={firstTeam.team1.name || ""}
-                              isScoreDisplay={Boolean(secondTeam)}
-                              smallPoints={firstTeam.team1Score || 0}
-                              participants={firstTeam.team1.participants || []}
-                              handleScoreChange={(n) => {
-                                handleScoreChange(n, firstTeam.team1, stage);
-                              }}
-                            />
-                          )}
-                          {secondTeam && (
-                            <DisplayPlayoffTeams
-                              teamName={secondTeam.team2.name || ""}
-                              isScoreDisplay={Boolean(firstTeam)}
-                              smallPoints={secondTeam.team2Score || 0}
-                              participants={secondTeam.team2.participants || []}
-                              handleScoreChange={(n) => {
-                                handleScoreChange(n, secondTeam.team2, stage);
-                              }}
-                            />
-                          )}
-                          {firstTeam && secondTeam && (
-                            <Button
-                              btnClass="h-[2.5rem]"
-                              btnTitle="Save"
-                              btnColor="outline"
-                              onClick={() => {
-                                handleScoreSave(game);
-                                console.log("save");
-                              }}
-                            />
-                          )}
+                        <div className="min-h-[3.9rem] max-w-[20rem] items-end space-x-2 truncate rounded bg-gray-800 px-2 py-1 text-white">
+                          <div className="flex justify-between space-x-2">
+                            {firstTeam && (
+                              <DisplayPlayoffTeams
+                                smallPoints={team1Score}
+                                isScoreDisplay={Boolean(secondTeam)}
+                                teamName={firstTeam.team1.name || ""}
+                                participants={
+                                  firstTeam.team1.participants || []
+                                }
+                                handleScoreChange={(n) => {
+                                  handleScoreChange(n, firstTeam.team1, stage);
+                                }}
+                              />
+                            )}
+                            {secondTeam && (
+                              <DisplayPlayoffTeams
+                                smallPoints={team2Score}
+                                isScoreDisplay={Boolean(firstTeam)}
+                                teamName={secondTeam.team2.name || ""}
+                                participants={
+                                  secondTeam.team2.participants || []
+                                }
+                                handleScoreChange={(n) => {
+                                  handleScoreChange(n, secondTeam.team2, stage);
+                                }}
+                              />
+                            )}
+                          </div>
+                          <div className="flex justify-end">
+                            {firstTeam && secondTeam && (
+                              <Button
+                                btnClass="h-[2.5rem] w-[8rem]"
+                                btnTitle="Save"
+                                btnColor="outline"
+                                onClick={() => {
+                                  handleScoreSave(game);
+                                  console.log("save");
+                                }}
+                              />
+                            )}
+                          </div>
                         </div>
 
                         {!isLast && (

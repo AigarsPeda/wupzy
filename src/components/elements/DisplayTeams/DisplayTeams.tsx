@@ -26,7 +26,10 @@ const DisplayTeams: FC<DisplayTeamsProps> = ({
     <>
       {teamName && (
         <p
-          className={classNames(isCurrentGame ? "text-white" : "text-gray-800")}
+          className={classNames(
+            isCurrentGame ? "text-white" : "text-gray-800",
+            "truncate"
+          )}
         >
           {teamName}
         </p>
@@ -34,11 +37,11 @@ const DisplayTeams: FC<DisplayTeamsProps> = ({
       <div
         className={classNames(
           isWinner ? "text-grey-900 font-bold" : "font-normal",
-          "flex w-full items-center"
+          "flex w-full max-w-[10rem] items-center overflow-x-auto"
         )}
       >
         {team.map((t) => (
-          <p key={t.id} className={classNames(teamName && "text-xs", "mr-2 ")}>
+          <p key={t.id} className={classNames(teamName && "text-xs", "mr-2")}>
             {t.name}
           </p>
         ))}

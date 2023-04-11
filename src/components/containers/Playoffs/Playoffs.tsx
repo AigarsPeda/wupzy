@@ -38,10 +38,10 @@ const Playoffs: FC<PlayoffsProps> = ({ tournamentId }) => {
 
   const handleScoreSave = (game: GamePlayoffType) => {
     const nextStage = parseInt(game.stage) / 2;
-    const nextBracket = Math.floor(game.bracketNum / 2);
+    const nextBracketNum = Math.floor(game.bracketNum / 2);
 
     updatePlayoffGame({
-      nextBracket,
+      nextBracketNum,
       gameId: game.gameId,
       tournamentsId: tournamentId,
       nextStage: nextStage.toString(),

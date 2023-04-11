@@ -85,7 +85,7 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
                   <div
                     className={classNames(
                       isCurrentGame ? "border-gray-400" : "border-gray-100",
-                      "mb-3 w-20 border-b-2  md:mr-3 md:mb-0 md:border-b-0 md:border-r-2 md:px-2"
+                      "mb-3 w-20 border-b-2  md:mb-0 md:mr-3 md:border-b-0 md:border-r-2 md:px-2"
                     )}
                   >
                     <p className="mb-1 text-xs text-gray-400">{gameStatus}</p>
@@ -94,13 +94,13 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
                     </p>
                   </div>
                   {game ? (
-                    <div className="flex w-full">
+                    <div className="flex w-full space-x-2">
                       <div className="w-[50%]">
                         <DisplayTeams
-                          infoScore={game.team1Score}
                           teamsScore={firstTeamScore}
                           isCurrentGame={isCurrentGame}
                           team={game.team1.participants}
+                          infoScore={game.team1Score || 0}
                           teamName={
                             tournamentKind === "TEAMS"
                               ? game.team1.name
@@ -113,10 +113,10 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
                       </div>
                       <div className="w-[50%]">
                         <DisplayTeams
-                          infoScore={game.team2Score}
                           teamsScore={secondTeamScore}
                           isCurrentGame={isCurrentGame}
                           team={game.team2.participants}
+                          infoScore={game.team2Score || 0}
                           teamName={
                             tournamentKind === "TEAMS"
                               ? game.team2.name
