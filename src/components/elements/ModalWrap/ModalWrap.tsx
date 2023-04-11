@@ -68,7 +68,7 @@ const ModalWrap: FC<ModalWrapProps> = ({
               modalWidth === "medium" && "md:max-w-md",
               isFullScreen && "h-full w-full",
               modalsWidth && modalsWidth,
-              "absolute z-[69] mx-2 rounded bg-white shadow-lg sm:mx-5"
+              "absolute z-[69] mx-2 h-[90%] w-[90%] rounded bg-white shadow-lg sm:mx-5"
             )}
           >
             <div

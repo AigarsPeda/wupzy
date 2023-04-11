@@ -57,8 +57,15 @@ const BracketsInput: FC<BracketsInputProps> = ({
                 const secondTeam = game.team2;
                 const marginBottom = `${Math.floor(i * 2 + 2)}rem`;
 
-                const team1Score = firstTeam?.team1Score || 0;
-                const team2Score = secondTeam?.team2Score || 0;
+                const team1Score = firstTeam?.team1Score;
+                const team2Score = secondTeam?.team2Score;
+
+                const hasWinner = Boolean(team1Score && team2Score);
+
+                const isTeam1Winner =
+                  hasWinner && (team1Score || 0) > (team2Score || 0);
+
+                // const isTeam1Winner = team1Score > team2Score;
 
                 return (
                   <div key={`${index}`} className="w-full">
@@ -72,10 +79,12 @@ const BracketsInput: FC<BracketsInputProps> = ({
                             : marginBottom,
                         }}
                       >
-                        <div className="min-h-[3.9rem] max-w-[20rem] items-end space-x-2 truncate rounded bg-gray-800 px-2 py-1 text-white">
+                        <div className="min-h-[3.9rem] max-w-[18.5rem] items-end space-x-2 truncate rounded bg-gray-800 px-2 py-1 text-white">
                           <div className="flex justify-between space-x-2">
                             {firstTeam && (
                               <DisplayPlayoffTeams
+                                hasWinner={hasWinner}
+                                isWinner={isTeam1Winner}
                                 smallPoints={team1Score}
                                 isScoreDisplay={Boolean(secondTeam)}
                                 teamName={firstTeam.team1.name || ""}
@@ -89,6 +98,8 @@ const BracketsInput: FC<BracketsInputProps> = ({
                             )}
                             {secondTeam && (
                               <DisplayPlayoffTeams
+                                hasWinner={hasWinner}
+                                isWinner={!isTeam1Winner}
                                 smallPoints={team2Score}
                                 isScoreDisplay={Boolean(firstTeam)}
                                 teamName={secondTeam.team2.name || ""}
@@ -102,14 +113,13 @@ const BracketsInput: FC<BracketsInputProps> = ({
                             )}
                           </div>
                           <div className="flex justify-end">
-                            {firstTeam && secondTeam && (
+                            {firstTeam && secondTeam && !hasWinner && (
                               <Button
-                                btnClass="h-[2.5rem] w-[8rem]"
                                 btnTitle="Save"
                                 btnColor="outline"
+                                btnClass="h-[2.5rem] w-[8rem]"
                                 onClick={() => {
                                   handleScoreSave(game);
-                                  console.log("save");
                                 }}
                               />
                             )}

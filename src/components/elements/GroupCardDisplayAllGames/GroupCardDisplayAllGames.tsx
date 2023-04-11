@@ -49,7 +49,9 @@ const GroupCardDisplayAllGames: FC<GroupCardDisplayAllGamesProps> = ({
           const isDraw = game.team1Score === game.team2Score;
           const isFirstTeamWinner =
             (game.team1Score || 0) > (game.team2Score || 0);
-          // const isSecondTeamWinner = game.team2Score > game.team1Score;
+
+          const isSecondTeamWinner =
+            (game.team2Score || 0) > (game.team1Score || 0);
 
           return (
             <li
@@ -78,7 +80,7 @@ const GroupCardDisplayAllGames: FC<GroupCardDisplayAllGamesProps> = ({
                   <DisplayTeams
                     team={game.team2.participants}
                     infoScore={game.team2Score || 0}
-                    isWinner={!isFirstTeamWinner && !isDraw}
+                    isWinner={isSecondTeamWinner && !isDraw}
                     teamName={
                       tournamentKind === "TEAMS" ? game.team2.name : undefined
                     }

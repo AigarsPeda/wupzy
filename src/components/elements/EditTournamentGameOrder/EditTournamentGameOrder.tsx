@@ -131,9 +131,9 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
                         <div className="grid place-content-center">
                           {i !== 0 && (
                             <SmallButton
-                              btnTitle={<IoIosArrowUp className="h-4 w-4" />}
                               btnClassNames="h-6 w-6 mb-2"
                               isDisabled={isWinner || isPrevGameWinner}
+                              btnTitle={<IoIosArrowUp className="h-4 w-4" />}
                               handleClick={() => {
                                 handleGameOrderChange(
                                   game.id,
@@ -145,9 +145,9 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
                           )}
                           {i !== games.length - 1 && (
                             <SmallButton
-                              btnTitle={<IoIosArrowDown className="h-4 w-4" />}
-                              btnClassNames="h-6 w-6"
                               isDisabled={isWinner}
+                              btnClassNames="h-6 w-6"
+                              btnTitle={<IoIosArrowDown className="h-4 w-4" />}
                               handleClick={() => {
                                 handleGameOrderChange(
                                   game.id,
@@ -161,13 +161,13 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
                       </div>
                     </div>
                     <DisplayTeams
-                      infoScore={game.team1Score || 0}
                       team={game.team1.participants}
+                      infoScore={game.team1Score || 0}
                       isWinner={isFirstTeamWinner && !isDraw}
                     />
                     <DisplayTeams
-                      infoScore={game.team2Score || 0}
                       team={game.team2.participants}
+                      infoScore={game.team2Score || 0}
                       isWinner={isSecondTeamWinner && !isDraw}
                     />
                   </div>

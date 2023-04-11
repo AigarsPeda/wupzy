@@ -36,7 +36,6 @@ const DisplayTeams: FC<DisplayTeamsProps> = ({
       )}
       <div
         className={classNames(
-          isWinner ? "text-grey-900 font-bold" : "font-normal",
           "flex w-full max-w-[10rem] items-center overflow-x-auto"
         )}
       >
@@ -50,7 +49,16 @@ const DisplayTeams: FC<DisplayTeamsProps> = ({
       {isCurrentGame && handleScoreChange && (
         <NumberInput value={teamsScore ?? 0} onChange={handleScoreChange} />
       )}
-      {!isCurrentGame && <p className="text-gray-800">{infoScore}</p>}
+      {!isCurrentGame && (
+        <p
+          className={classNames(
+            isWinner ? "font-bold text-gray-800" : "font-normal text-gray-400",
+            "text-2xl"
+          )}
+        >
+          {infoScore}
+        </p>
+      )}
     </>
   );
 };
