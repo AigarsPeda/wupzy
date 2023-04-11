@@ -59,7 +59,6 @@ const Playoffs: FC<PlayoffsProps> = ({ tournamentId }) => {
     if (!data?.games) return;
 
     const gameMap = createPlayoffMap(data.games);
-
     const { playoffMap } = cratePlayoffInputMap(gameMap);
 
     setBrackets(playoffMap);

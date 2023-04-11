@@ -1,6 +1,6 @@
 import type { InputErrorType } from "components/elements/Input/Input";
-import { emailRegex } from "hardcoded";
 import handleInputError from "utils/handleInputError";
+import isEmail from "utils/isEmail";
 
 type LoginFormType = {
   form: {
@@ -18,7 +18,7 @@ const loginReducer = (
 
   // validate email
   if (newState?.form?.email) {
-    const error = !emailRegex.test(newState?.form?.email)
+    const error = !isEmail(newState?.form?.email)
       ? {
           field: "email",
           message: "Invalid email",

@@ -1,9 +1,5 @@
 export const DEFAULT_REDIRECT_URL = "/tournaments";
 
-export const emailRegex = new RegExp(
-  "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
-);
-
 export const ALL = "All";
 
 export const DEFAULT_ATTENDANTS_COUNT = 4;
