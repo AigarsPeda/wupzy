@@ -43,6 +43,7 @@ const Playoffs: FC<PlayoffsProps> = ({ tournamentId }) => {
     updatePlayoffGame({
       nextBracket,
       gameId: game.gameId,
+      tournamentsId: tournamentId,
       nextStage: nextStage.toString(),
       team1Score: game.team1?.team1Score || 0,
       team2Score: game.team2?.team2Score || 0,
@@ -57,6 +58,8 @@ const Playoffs: FC<PlayoffsProps> = ({ tournamentId }) => {
 
   useEffect(() => {
     if (!data?.games) return;
+
+    console.log("data.games --->", data.games);
 
     const gameMap = createPlayoffMap(data.games);
     const { playoffMap } = cratePlayoffInputMap(gameMap);

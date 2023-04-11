@@ -411,7 +411,11 @@ export const teamsTournamentsRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const games = input.games;
 
-      // const nextStage = parseInt(input.games[0]?.stage || "0") / 2;
+      const count = await ctx.prisma.playoffGames.count({
+        where: {
+          tournamentId: input.tournamentId,
+        },
+      });
 
       for (let i = 0; i < games.length; i++) {
         const game = games[i];
@@ -430,9 +434,9 @@ export const teamsTournamentsRouter = createTRPCRouter({
 
         await ctx.prisma.playoffGames.create({
           data: {
-            gameOrder: i,
             stage: game.stage,
-            bracketNum: game.bracketNum,
+            gameOrder: count + i,
+            bracketNum: count + i,
             team1Id: game.team1?.team1?.id,
             team2Id: game.team2?.team2?.id,
             tournamentId: input.tournamentId,
@@ -555,6 +559,7 @@ export const teamsTournamentsRouter = createTRPCRouter({
         team1Score: z.number(),
         team2Score: z.number(),
         nextBracket: z.number(),
+        tournamentsId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -565,6 +570,13 @@ export const teamsTournamentsRouter = createTRPCRouter({
         input.team1Score,
         input.team2Score
       );
+
+      const count = await ctx.prisma.playoffGames.count({
+        where: {
+          stage: nextStage,
+          tournamentId: input.tournamentsId,
+        },
+      });
 
       const game = await ctx.prisma.playoffGames.findUnique({
         where: {
@@ -663,9 +675,9 @@ export const teamsTournamentsRouter = createTRPCRouter({
 
       const games = await ctx.prisma.playoffGames.findMany({
         where: {
-          tournamentId: game.tournamentId,
-          bracketNum: input.nextBracket,
           stage: nextStage,
+          bracketNum: input.nextBracket,
+          tournamentId: game.tournamentId,
         },
       });
 
@@ -673,11 +685,11 @@ export const teamsTournamentsRouter = createTRPCRouter({
       if (games.length === 0) {
         await ctx.prisma.playoffGames.create({
           data: {
-            gameOrder: 0,
             stage: nextStage,
             team1Id: winnerTeamId,
             bracketNum: input.nextBracket,
             tournamentId: game.tournamentId,
+            gameOrder: count !== 0 ? count + 1 : 0,
             participants: {
               connect: winnerIds,
             },
