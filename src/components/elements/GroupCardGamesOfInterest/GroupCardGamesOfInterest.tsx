@@ -78,12 +78,6 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
               getWinsPerTeam(finishedGames);
             const gameOrderNumber = gamesOfInterest[group]?.["-1"] ? i + 1 : i;
 
-            console.log(
-              "firstTeamWins, secondTeamWins",
-              firstTeamWins,
-              secondTeamWins
-            );
-
             return (
               <div
                 key={key}
@@ -132,7 +126,7 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
                                 teamsScore={firstTeamScore}
                                 isCurrentGame={isCurrentGame}
                                 team={game.team1.participants}
-                                infoScore={firstTeamWins}
+                                infoScore={firstTeamWins.toString()}
                                 teamName={
                                   tournamentKind === "TEAMS"
                                     ? game.team1.name
@@ -147,8 +141,8 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
                               <DisplayTeams
                                 teamsScore={secondTeamScore}
                                 isCurrentGame={isCurrentGame}
-                                infoScore={secondTeamWins}
                                 team={game.team2.participants}
+                                infoScore={secondTeamWins.toString()}
                                 teamName={
                                   tournamentKind === "TEAMS"
                                     ? game.team2.name

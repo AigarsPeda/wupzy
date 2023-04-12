@@ -10,8 +10,8 @@ const getWinsPerTeam = (
 
   if (!finishedGames) {
     return {
-      firstTeamWins: "0",
-      secondTeamWins: "0",
+      firstTeamWins: 0,
+      secondTeamWins: 0,
     };
   }
 
@@ -25,21 +25,21 @@ const getWinsPerTeam = (
 
   if (isBothTeams && firstTeamScores > secondTeamScores) {
     return {
-      firstTeamWins: (firstTeamWins + 1).toString(),
-      secondTeamWins: secondTeamWins.toString(),
+      firstTeamWins: firstTeamWins + 1,
+      secondTeamWins: secondTeamWins,
     };
   }
 
   if (isBothTeams && firstTeamScores < secondTeamScores) {
     return {
-      firstTeamWins: firstTeamWins.toString(),
-      secondTeamWins: (secondTeamWins + 1).toString(),
+      firstTeamWins: firstTeamWins,
+      secondTeamWins: secondTeamWins + 1,
     };
   }
 
   return {
-    firstTeamWins: firstTeamWins.toString(),
-    secondTeamWins: secondTeamWins.toString(),
+    firstTeamWins: firstTeamWins,
+    secondTeamWins: secondTeamWins,
   };
 };
 

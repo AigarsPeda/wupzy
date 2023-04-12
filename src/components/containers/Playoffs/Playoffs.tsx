@@ -59,16 +59,14 @@ const Playoffs: FC<PlayoffsProps> = ({ tournamentId }) => {
       secondTeamScore
     );
 
-    if (parseInt(firstTeamWins) >= nasserSetsToWin) {
-      console.log("first team wins");
+    if (firstTeamWins >= nasserSetsToWin) {
       winnerTeamId = game.team1?.team1.id;
       game.team1?.team1.participants.forEach((p) => {
         winnerIds.push({ id: p.id });
       });
     }
 
-    if (parseInt(secondTeamWins) >= nasserSetsToWin) {
-      console.log("second team wins");
+    if (secondTeamWins >= nasserSetsToWin) {
       winnerTeamId = game.team2?.team2.id;
       game.team2?.team2.participants.forEach((p) => {
         winnerIds.push({ id: p.id });
@@ -104,6 +102,8 @@ const Playoffs: FC<PlayoffsProps> = ({ tournamentId }) => {
 
   useEffect(() => {
     if (!data?.games) return;
+
+    console.log("data?.games", data?.games);
 
     const gameMap = createPlayoffMap(data.games);
     const { playoffMap } = cratePlayoffInputMap(gameMap);

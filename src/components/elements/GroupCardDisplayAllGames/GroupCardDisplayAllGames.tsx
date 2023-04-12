@@ -79,8 +79,8 @@ const GroupCardDisplayAllGames: FC<GroupCardDisplayAllGamesProps> = ({
               <div className="flex w-full">
                 <div className="mr-2 w-[50%] truncate">
                   <DisplayTeams
-                    infoScore={firstTeamWins}
                     team={game.team1.participants}
+                    infoScore={firstTeamWins.toString()}
                     isWinner={isFirstTeamWinner && !isDraw}
                     teamName={
                       tournamentKind === "TEAMS" ? game.team1.name : undefined
@@ -89,8 +89,8 @@ const GroupCardDisplayAllGames: FC<GroupCardDisplayAllGamesProps> = ({
                 </div>
                 <div className="w-[50%] truncate">
                   <DisplayTeams
-                    infoScore={secondTeamWins}
                     team={game.team2.participants}
+                    infoScore={secondTeamWins.toString()}
                     isWinner={isSecondTeamWinner && !isDraw}
                     teamName={
                       tournamentKind === "TEAMS" ? game.team2.name : undefined

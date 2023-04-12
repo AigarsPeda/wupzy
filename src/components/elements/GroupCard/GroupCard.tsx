@@ -74,11 +74,11 @@ const GroupCard: FC<GroupCardProps> = ({
       score.secondTeam
     );
 
-    if (parseInt(firstTeamWins) >= nasserSetsToWin) {
+    if (firstTeamWins >= nasserSetsToWin) {
       winnerTeamIds = [...firstTeamIds];
     }
 
-    if (parseInt(secondTeamWins) >= nasserSetsToWin) {
+    if (secondTeamWins >= nasserSetsToWin) {
       winnerTeamIds = [...secondTeamsIds];
     }
 
