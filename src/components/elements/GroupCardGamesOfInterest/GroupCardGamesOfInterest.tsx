@@ -6,6 +6,8 @@ import type { FC } from "react";
 import type { GamesOfInterestType } from "types/game.types";
 import type { TournamentTypeType } from "types/tournament.types";
 import classNames from "utils/classNames";
+import type { GamesType } from "types/game.types";
+import getWinsPerTeam from "../GroupCard/utils/getWinsPerTeam";
 
 const GAME_STATUS: {
   [key: string]: string;
@@ -26,7 +28,7 @@ interface GroupCardGamesOfInterestProps {
   };
   handleDisplayAllClick: () => void;
   handleScoreSave: (
-    gameId: string,
+    game: GamesType,
     firstTeamIds: string[],
     secondTeamIds: string[]
   ) => void;
@@ -69,6 +71,7 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
             const gameStatus = GAME_STATUS[key];
             const gameCount = totalGames[group] || 0;
             const isCurrentGame = gameStatus === "Current";
+            const { firstTeamWins, secondTeamWins } = getWinsPerTeam(game);
             const gameOrderNumber = gamesOfInterest[group]?.["-1"] ? i + 1 : i;
 
             return (
@@ -88,44 +91,71 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
                       "mb-3 w-20 border-b-2  md:mb-0 md:mr-3 md:border-b-0 md:border-r-2 md:px-2"
                     )}
                   >
-                    <p className="mb-1 text-xs text-gray-400">{gameStatus}</p>
+                    {/* <p className="mb-1 text-xs text-gray-400">{gameStatus}</p> */}
+                    <p className="mb-1 text-xs text-gray-400">Game</p>
                     <p className="pb-1 text-xs">
                       {game && `${gameOrderNumber} of ${gameCount}`}
                     </p>
+                    <p className="text-sm text-gray-400">Set</p>
+                    <p
+                      className={classNames(
+                        !isCurrentGame && "text-gray-400",
+                        "text-xl"
+                      )}
+                    >
+                      {game?.gameSet}
+                    </p>
                   </div>
                   {game ? (
-                    <div className="flex w-full space-x-2">
-                      <div className="w-[50%]">
-                        <DisplayTeams
-                          teamsScore={firstTeamScore}
-                          isCurrentGame={isCurrentGame}
-                          team={game.team1.participants}
-                          infoScore={game.team1Score || 0}
-                          teamName={
-                            tournamentKind === "TEAMS"
-                              ? game.team1.name
-                              : undefined
-                          }
-                          handleScoreChange={(n) => {
-                            handleScoreChange("firstTeam", n);
-                          }}
-                        />
+                    <div>
+                      <div className="flex w-full space-x-2">
+                        <div className="w-[50%]">
+                          <DisplayTeams
+                            teamsScore={firstTeamScore}
+                            isCurrentGame={isCurrentGame}
+                            team={game.team1.participants}
+                            infoScore={game.team1Score || 0}
+                            teamName={
+                              tournamentKind === "TEAMS"
+                                ? game.team1.name
+                                : undefined
+                            }
+                            handleScoreChange={(n) => {
+                              handleScoreChange("firstTeam", n);
+                            }}
+                          />
+                        </div>
+                        <div className="w-[50%]">
+                          <DisplayTeams
+                            teamsScore={secondTeamScore}
+                            isCurrentGame={isCurrentGame}
+                            team={game.team2.participants}
+                            infoScore={game.team2Score || 0}
+                            teamName={
+                              tournamentKind === "TEAMS"
+                                ? game.team2.name
+                                : undefined
+                            }
+                            handleScoreChange={(n) => {
+                              handleScoreChange("secondTeam", n);
+                            }}
+                          />
+                        </div>
                       </div>
-                      <div className="w-[50%]">
-                        <DisplayTeams
-                          teamsScore={secondTeamScore}
-                          isCurrentGame={isCurrentGame}
-                          team={game.team2.participants}
-                          infoScore={game.team2Score || 0}
-                          teamName={
-                            tournamentKind === "TEAMS"
-                              ? game.team2.name
-                              : undefined
-                          }
-                          handleScoreChange={(n) => {
-                            handleScoreChange("secondTeam", n);
-                          }}
-                        />
+                      <div className="mt-2 flex items-center">
+                        <p>
+                          <span className="mr-5 text-xs text-gray-400">
+                            Score per sets
+                          </span>
+                        </p>
+                        <p
+                          className={classNames(
+                            !isCurrentGame && "text-gray-400",
+                            ""
+                          )}
+                        >
+                          {firstTeamWins} - {secondTeamWins}
+                        </p>
                       </div>
                     </div>
                   ) : (
@@ -134,7 +164,7 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
                 </div>
 
                 {isCurrentGame && (
-                  <div className="mt-4 flex w-full flex-col justify-end md:mt-0">
+                  <div className="mt-3 flex w-full flex-col justify-center md:mt-2">
                     <Button
                       btnColor="outline"
                       btnTitle="Save score"
@@ -150,7 +180,7 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
                           (team) => team.id
                         );
 
-                        handleScoreSave(game.id, firstTeamIds, secondTeamsIds);
+                        handleScoreSave(game, firstTeamIds, secondTeamsIds);
                       }}
                     />
                   </div>

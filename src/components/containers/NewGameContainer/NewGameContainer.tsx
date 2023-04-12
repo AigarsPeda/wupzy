@@ -27,6 +27,7 @@ const NewTournamentContainer: FC = () => {
   const { windowSize } = useWindowSize();
   const [isKing, setIsKing] = useState(true);
   const [formStep, setFormStep] = useState(0);
+  const [gameSetCount, setGameSetCount] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tournamentName, setTournamentName] = useState("");
   const [teamsAttendants, setTeamsAttendants] = useState<TeamsAttendantMapType>(
@@ -82,6 +83,7 @@ const NewTournamentContainer: FC = () => {
 
     if (!isKing) {
       const { tournament } = await createTeamsTournament({
+        gameSetCount,
         name: tournamentName,
         teams: teamsAttendants,
       });
@@ -182,10 +184,19 @@ const NewTournamentContainer: FC = () => {
                 return (
                   <TournamentCreateMetaForm
                     isKing={isKing}
+                    gameSetCount={gameSetCount}
                     tournamentName={tournamentName}
                     setTournamentName={setTournamentName}
                     handleModeSwitch={() => {
                       setIsKing((state) => !state);
+                    }}
+                    handleGameSetClick={(n) => {
+                      if (n === null) {
+                        setGameSetCount(1);
+                        return;
+                      }
+
+                      setGameSetCount(n);
                     }}
                   />
                 );

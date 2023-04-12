@@ -1,19 +1,36 @@
 import { ParticipantsZodSchema, TeamZodSchema } from "types/team.types";
 import { z } from "zod";
 
+export const GameSets = z.record(
+  z.string(),
+  z.object({
+    firstTeam: z.number(),
+    secondTeam: z.number(),
+  })
+);
+
+const GamesStatsUnion = z.union([GameSets, z.unknown()]);
+
 export const GamesZodSchema = z.object({
   id: z.string(),
   group: z.string(),
+  gameSet: z.number(),
   team1Id: z.string(),
   team2Id: z.string(),
   team1: TeamZodSchema,
   team2: TeamZodSchema,
   gameOrder: z.number(),
+  tournamentId: z.string(),
   team1Score: z.number().nullish(),
   team2Score: z.number().nullish(),
-  tournamentId: z.string(),
   winners: z.array(ParticipantsZodSchema),
+  tournament: z.object({
+    setsInGame: z.number(),
+  }),
+  gameSets: GamesStatsUnion,
 });
+
+export type GameSetsType = z.infer<typeof GameSets>;
 
 export type GamesType = z.infer<typeof GamesZodSchema>;
 

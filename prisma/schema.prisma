@@ -34,6 +34,7 @@ enum TournamentType {
 
 // One user can have many Tournaments
 model Tournament {
+  setsInGame   Int
   team         Team[]
   name         String
   userId       String
@@ -72,14 +73,16 @@ model Games {
   tournamentId String
   team2Id      String
   team1Id      String
-  participants Participant[]
   team1Score   Int?
   team2Score   Int?
+  participants Participant[]
+  gameSet      Int           @default(1)
   id           String        @id @default(cuid())
   winners      Participant[] @relation("winners")
   tournament   Tournament    @relation(fields: [tournamentId], references: [id])
   team1        Team          @relation("participant_team_1", fields: [team1Id], references: [id], onDelete: Cascade)
   team2        Team          @relation("participant_team_2", fields: [team2Id], references: [id], onDelete: Cascade)
+  gameSets     Json          @default("{}")
 }
 
 model PlayoffGames {

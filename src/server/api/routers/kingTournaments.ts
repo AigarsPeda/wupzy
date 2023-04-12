@@ -12,6 +12,8 @@ export const kingTournamentsRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const tournament = await ctx.prisma.tournament.create({
         data: {
+          // TODO: Make this dynamic
+          setsInGame: 1,
           name: input.name,
           userId: ctx.user.id,
         },

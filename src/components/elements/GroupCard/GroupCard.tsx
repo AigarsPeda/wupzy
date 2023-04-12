@@ -1,10 +1,12 @@
+import getWinsPerTeam from "components/elements/GroupCard/utils/getWinsPerTeam";
 import GroupCardDisplayAllGames from "components/elements/GroupCardDisplayAllGames/GroupCardDisplayAllGames";
 import GroupCardGamesOfInterest from "components/elements/GroupCardGamesOfInterest/GroupCardGamesOfInterest";
 import GroupParticipantCard from "components/elements/GroupParticipantCard/GroupParticipantCard";
 import GroupTeamsCard from "components/elements/GroupTeamsCard/GroupTeamsCard";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
-import type { GamesOfInterestType } from "types/game.types";
+import type { GamesOfInterestType, GamesType } from "types/game.types";
+import { GameSets } from "types/game.types";
 import type { ParticipantType } from "types/team.types";
 import type { TournamentTypeType } from "types/tournament.types";
 import { api } from "utils/api";
@@ -56,20 +58,49 @@ const GroupCard: FC<GroupCardProps> = ({
     });
 
   const handleScoreSave = async (
-    id: string,
+    game: GamesType,
     firstTeamIds: string[],
     secondTeamsIds: string[]
   ) => {
-    const tournament = await updateGameScore({
-      id,
+    let winnerTeamIds: string[] = [];
+    const currentSet = game.gameSet;
+    const nasserSetsToWin = game.tournament.setsInGame;
+
+    const { firstTeamWins, secondTeamWins } = getWinsPerTeam(
+      game,
+      score.firstTeam,
+      score.secondTeam
+    );
+
+    if (firstTeamWins === nasserSetsToWin) {
+      winnerTeamIds = [...firstTeamIds];
+    }
+
+    if (secondTeamWins === nasserSetsToWin) {
+      winnerTeamIds = [...secondTeamsIds];
+    }
+
+    // GameSets.parse(game.gameSets);
+
+    const setResults = {
+      ...GameSets.parse(game.gameSets),
+      [currentSet.toString()]: {
+        firstTeam: score.firstTeam,
+        secondTeam: score.secondTeam,
+      },
+    };
+
+    const updateGame = await updateGameScore({
+      setResults,
+      id: game.id,
+      tournamentId,
+      winnerTeamIds,
       team1Score: score.firstTeam,
       team2Score: score.secondTeam,
-      winnerTeamIds:
-        score.firstTeam > score.secondTeam ? firstTeamIds : secondTeamsIds,
     });
 
-    if (!tournament) {
-      console.error("error creating tournament");
+    if (!updateGame) {
+      console.error("error creating game");
       return;
     }
   };
@@ -102,8 +133,8 @@ const GroupCard: FC<GroupCardProps> = ({
             [team]: score,
           }));
         }}
-        handleScoreSave={(gameId, firstTeamIds, secondTeamIds) => {
-          handleScoreSave(gameId, firstTeamIds, secondTeamIds).catch((err) => {
+        handleScoreSave={(game, firstTeamIds, secondTeamIds) => {
+          handleScoreSave(game, firstTeamIds, secondTeamIds).catch((err) => {
             console.error("error updating game score", err);
           });
         }}

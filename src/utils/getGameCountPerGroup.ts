@@ -1,7 +1,7 @@
-import type { GamesType } from "types/game.types";
 import createMap from "utils/createMap";
+import type { GroupedObjectType } from "types/util.types";
 
-const getGameCountPerGroup = (games: GamesType[]) => {
+const getGameCountPerGroup = <T extends GroupedObjectType>(games: T[]) => {
   const gamesMap = createMap(games);
 
   const totalGames: {

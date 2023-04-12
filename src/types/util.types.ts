@@ -1,3 +1,5 @@
+import type { ParticipantType } from "./team.types";
+
 export type GroupedObjectType = {
   id: string;
   name?: string;
@@ -5,6 +7,7 @@ export type GroupedObjectType = {
   points?: number;
   gameOrder?: number;
   smallPoints?: number;
+  winners?: ParticipantType[];
 };
 
 export type GroupedMapType<T extends GroupedObjectType> = Map<string, T[]>;

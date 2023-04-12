@@ -12,11 +12,7 @@ const PlayOffPage: NextPage = () => {
     setTournamentId(query.tournamentsId);
   }, [query.tournamentsId]);
 
-  return (
-    <>
-      <Playoffs tournamentId={tournamentId} />
-    </>
-  );
+  return <Playoffs tournamentId={tournamentId} />;
 };
 
 export default PlayOffPage;

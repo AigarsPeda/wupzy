@@ -59,6 +59,11 @@ export const tournamentsRouter = createTRPCRouter({
               participants: true,
             },
           },
+          tournament: {
+            select: {
+              setsInGame: true,
+            },
+          },
           winners: true,
         },
       });
@@ -109,7 +114,15 @@ export const tournamentsRouter = createTRPCRouter({
         id: z.string(),
         team1Score: z.number(),
         team2Score: z.number(),
-        winnerTeamIds: z.array(z.string()).nullable(),
+        tournamentId: z.string(),
+        winnerTeamIds: z.array(z.string()).optional(),
+        setResults: z.record(
+          z.string(),
+          z.object({
+            firstTeam: z.number(),
+            secondTeam: z.number(),
+          })
+        ),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -129,12 +142,16 @@ export const tournamentsRouter = createTRPCRouter({
           id: input.id,
         },
         data: {
+          gameSet: {
+            increment: 1,
+          },
           team1Score: input.team1Score,
           team2Score: input.team2Score,
+          gameSets: input.setResults,
           team1: {
             update: {
               points: {
-                increment: team1Points,
+                increment: winnerIds?.length && team1Points,
               },
               smallPoints: {
                 increment: input.team1Score,
@@ -144,7 +161,7 @@ export const tournamentsRouter = createTRPCRouter({
           team2: {
             update: {
               points: {
-                increment: team2Points,
+                increment: winnerIds?.length && team2Points,
               },
               smallPoints: {
                 increment: input.team2Score,

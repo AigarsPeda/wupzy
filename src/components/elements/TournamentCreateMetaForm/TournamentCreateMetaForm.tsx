@@ -1,23 +1,31 @@
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import InfoParagraph from "components/elements/InfoParagraph/InfoParagraph";
 import Input from "components/elements/Input/Input";
 import LargeSwitch from "components/elements/LargeSwitch/LargeSwitch";
+import NumberDropdown from "components/elements/NumberDropdown/NumberDropdown";
 import useFocus from "hooks/useFocus";
 import type { FC } from "react";
 import { useEffect } from "react";
 
 interface TournamentCreateMetaFormProps {
   isKing: boolean;
+  gameSetCount: number;
   tournamentName: string;
   handleModeSwitch: () => void;
   setTournamentName: (value: string) => void;
+  handleGameSetClick: (n: number | null) => void;
 }
 
 const TournamentCreateMetaForm: FC<TournamentCreateMetaFormProps> = ({
   isKing,
+  gameSetCount,
   tournamentName,
   handleModeSwitch,
   setTournamentName,
+  handleGameSetClick,
 }) => {
+  const [parent] = useAutoAnimate();
+
   const { htmlElRef, setFocus } = useFocus();
 
   useEffect(() => {
@@ -26,13 +34,18 @@ const TournamentCreateMetaForm: FC<TournamentCreateMetaFormProps> = ({
 
   return (
     <>
-      <InfoParagraph
-        // className="mt-6"
-        text="* In 'king mode', participants are added one by one, and each participant plays against every other participant in randomly assigned pairs. In 'teams mode', teams are added and each team competes against every other team."
-      />
+      <InfoParagraph text="* In 'king mode', participants are added one by one, and each participant plays against every other participant in randomly assigned pairs. In 'teams mode', teams are added and each team competes against every other team." />
+      <div className="mt-8">
+        <LargeSwitch
+          isOn={isKing}
+          firstLabel="King"
+          secondLabel="Teams"
+          handleToggle={handleModeSwitch}
+        />
+      </div>
 
-      <div className="mt-12 flex flex-col">
-        <div className="f-full md:w-1/2">
+      <div className="mt-12">
+        <div className="f-full transition-all md:flex" ref={parent}>
           <Input
             ref={htmlElRef}
             name="tournamentName"
@@ -42,14 +55,18 @@ const TournamentCreateMetaForm: FC<TournamentCreateMetaFormProps> = ({
               setTournamentName(e.target.value);
             }}
           />
-        </div>
-        <div className="mt-8">
-          <LargeSwitch
-            isOn={isKing}
-            firstLabel="King"
-            secondLabel="Teams"
-            handleToggle={handleModeSwitch}
-          />
+          {!isKing && (
+            <div className="relative ml-2 mt-3">
+              <div className="absolute -left-0 -top-10">
+                <InfoParagraph text="* Sets to win a game" />
+              </div>
+              <NumberDropdown
+                numArrayLength={12}
+                count={gameSetCount}
+                handleCountClick={handleGameSetClick}
+              />
+            </div>
+          )}
         </div>
       </div>
     </>
