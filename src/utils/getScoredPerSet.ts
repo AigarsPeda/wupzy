@@ -1,7 +1,8 @@
 import type { ActivesGame } from "types/game.types";
 import { GameSets } from "types/game.types";
+import type { GamePlayoffType } from "../components/elements/BracketsInput/utils/cratePlayoffInputMap";
 
-const getScoredPerSet = (game: ActivesGame) => {
+const getScoredPerSet = (game: ActivesGame | GamePlayoffType) => {
   if (!game) return {};
 
   const finishedGames = GameSets.parse(game.gameSets);

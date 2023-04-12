@@ -7,6 +7,7 @@ import type { FC } from "react";
 import type { TournamentTypeType } from "types/tournament.types";
 import { api } from "utils/api";
 import classNames from "utils/classNames";
+import { GameSets } from "../../../types/game.types";
 
 interface GroupCardDisplayAllGamesProps {
   group: string;
@@ -49,7 +50,13 @@ const GroupCardDisplayAllGames: FC<GroupCardDisplayAllGamesProps> = ({
           const gameOrder = i + 1;
           const gameCount = games?.games.length;
           const isDraw = game.team1Score === game.team2Score;
-          const { firstTeamWins, secondTeamWins } = getWinsPerTeam(game);
+
+          const finishedGames = game.gameSets
+            ? GameSets.parse(game.gameSets)
+            : null;
+
+          const { firstTeamWins, secondTeamWins } =
+            getWinsPerTeam(finishedGames);
 
           const isFirstTeamWinner =
             (game.team1Score || 0) > (game.team2Score || 0);

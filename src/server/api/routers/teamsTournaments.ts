@@ -1,11 +1,11 @@
 import { TRPCError } from "@trpc/server";
 import createTeamsGames from "server/api/routers/utils/createTeamsGames";
 import filterAllPossibleTeamsGames from "server/api/routers/utils/filterAllPossibleTeamsGames";
+import getPoints from "server/api/routers/utils/getPoints";
 import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
 import { TeamZodSchema, TeamsAttendantMapZodSchema } from "types/team.types";
 import shuffleArray from "utils/shuffleArray";
 import { z } from "zod";
-import getPoints from "./utils/getPoints";
 
 const START_GROUP = "A";
 
@@ -538,7 +538,6 @@ export const teamsTournamentsRouter = createTRPCRouter({
           tournamentId: input.tournamentId,
         },
         orderBy: {
-          // bracketNum: "asc",
           gameOrder: "asc",
         },
         include: {
@@ -550,6 +549,11 @@ export const teamsTournamentsRouter = createTRPCRouter({
           team2: {
             include: {
               participants: true,
+            },
+          },
+          tournament: {
+            select: {
+              setsInGame: true,
             },
           },
         },
@@ -565,8 +569,22 @@ export const teamsTournamentsRouter = createTRPCRouter({
         nextStage: z.string(),
         team1Score: z.number(),
         team2Score: z.number(),
-        tournamentsId: z.string(),
+        tournamentId: z.string(),
         nextBracketNum: z.number(),
+        setResults: z.record(
+          z.string(),
+          z.object({
+            firstTeam: z.number(),
+            secondTeam: z.number(),
+          })
+        ),
+        winnerTeamId: z.string().optional(),
+        winnerIds: z
+          .object({
+            id: z.string(),
+          })
+          .array()
+          .optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -578,75 +596,19 @@ export const teamsTournamentsRouter = createTRPCRouter({
         input.team2Score
       );
 
-      const count = await ctx.prisma.playoffGames.count({
-        where: {
-          stage: nextStage,
-          bracketNum: input.nextBracketNum,
-          tournamentId: input.tournamentsId,
-        },
-      });
-
-      const game = await ctx.prisma.playoffGames.findUnique({
-        where: {
-          id: input.gameId,
-        },
-        include: {
-          team1: {
-            include: {
-              participants: true,
-            },
-          },
-          team2: {
-            include: {
-              participants: true,
-            },
-          },
-        },
-      });
-
-      if (!game) {
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Game not found",
-        });
-      }
-
-      const winnerTeamId =
-        team1Points > team2Points ? game.team1Id : game.team2Id;
-      const winnerIds: {
-        id: string;
-      }[] = [];
-
-      if (team1Points > team2Points) {
-        game.team1?.participants.forEach((p) => {
-          winnerIds.push({ id: p.id });
-        });
-      }
-      if (team2Points > team1Points) {
-        game.team2?.participants.forEach((p) => {
-          winnerIds.push({ id: p.id });
-        });
-      }
-      if (team2Points === team1Points) {
-        game.team1?.participants.forEach((p) => {
-          winnerIds.push({ id: p.id });
-        });
-        game.team2?.participants.forEach((p) => {
-          winnerIds.push({ id: p.id });
-        });
-      }
-
       await ctx.prisma.playoffGames.update({
         where: {
           id: input.gameId,
         },
         data: {
-          team1Score: team1Score,
-          team2Score: team2Score,
+          gameSets: input.setResults,
+          gameSet: {
+            increment: 1,
+          },
           team1: {
             update: {
               points: {
-                increment: team1Points,
+                increment: input.winnerIds?.length && team1Points,
               },
               smallPoints: {
                 increment: team1Score,
@@ -656,7 +618,7 @@ export const teamsTournamentsRouter = createTRPCRouter({
           team2: {
             update: {
               points: {
-                increment: team2Points,
+                increment: input.winnerIds?.length && team2Points,
               },
               smallPoints: {
                 increment: team2Score,
@@ -664,7 +626,7 @@ export const teamsTournamentsRouter = createTRPCRouter({
             },
           },
           playoffwinners: {
-            connect: winnerIds,
+            connect: input.winnerIds,
           },
         },
         include: {
@@ -681,46 +643,55 @@ export const teamsTournamentsRouter = createTRPCRouter({
         },
       });
 
+      // Create new game if there is a winner
       const games = await ctx.prisma.playoffGames.findMany({
         where: {
           stage: nextStage,
-          tournamentId: game.tournamentId,
           bracketNum: input.nextBracketNum,
+          tournamentId: input.tournamentId,
+        },
+      });
+
+      const count = await ctx.prisma.playoffGames.count({
+        where: {
+          stage: nextStage,
+          bracketNum: input.nextBracketNum,
+          tournamentId: input.tournamentId,
         },
       });
 
       // Create new game
-      if (games.length === 0) {
+      if (games.length === 0 && input.winnerTeamId?.length) {
         await ctx.prisma.playoffGames.create({
           data: {
             stage: nextStage,
-            team1Id: winnerTeamId,
+            team1Id: input.winnerTeamId,
             bracketNum: input.nextBracketNum,
-            tournamentId: game.tournamentId,
+            tournamentId: input.tournamentId,
             gameOrder: count !== 0 ? count + 1 : 0,
             participants: {
-              connect: winnerIds,
+              connect: input.winnerIds,
             },
           },
         });
       }
 
       // Update existing game
-      if (games.length === 1) {
+      if (games.length === 1 && input.winnerTeamId?.length) {
         await ctx.prisma.playoffGames.update({
           where: {
             id: games[0]?.id,
           },
           data: {
-            team2Id: winnerTeamId,
+            team2Id: input.winnerTeamId,
             participants: {
-              connect: winnerIds,
+              connect: input.winnerIds,
             },
           },
         });
       }
 
-      return { game };
+      // return { game };
     }),
 
   createPlayoffGame: protectedProcedure
@@ -750,8 +721,8 @@ export const teamsTournamentsRouter = createTRPCRouter({
         await ctx.prisma.playoffGames.create({
           data: {
             gameOrder: i,
-            stage: game?.stage || "",
             team1Id: game?.team?.id,
+            stage: game?.stage || "",
             bracketNum: game?.bracketNum || 0,
             tournamentId: input.tournamentId,
             participants: {

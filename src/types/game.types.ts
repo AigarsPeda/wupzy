@@ -74,11 +74,15 @@ export const PlayoffGamesZodSchema = z.object({
   stage: z.string(),
   team1Id: zodTeamId,
   team2Id: zodTeamId,
+  gameSet: z.number(),
   team1Score: zodScore,
   team2Score: zodScore,
   gameOrder: z.number(),
-  // bracketNum: z.number(),
   tournamentId: z.string(),
+  gameSets: GamesStatsUnion,
+  tournament: z.object({
+    setsInGame: z.number(),
+  }),
 });
 
 export type PlayoffGamesType = z.infer<typeof PlayoffGamesZodSchema>;

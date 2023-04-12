@@ -9,6 +9,8 @@ import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { api } from "utils/api";
 import createPlayoffMap from "utils/createPlayoffMap";
+import { GameSets } from "../../../types/game.types";
+import getWinsPerTeam from "../../elements/GroupCard/utils/getWinsPerTeam";
 
 interface PlayoffsProps {
   tournamentId: string;
@@ -39,14 +41,58 @@ const Playoffs: FC<PlayoffsProps> = ({ tournamentId }) => {
   const handleScoreSave = (game: GamePlayoffType) => {
     const nextStage = parseInt(game.stage) / 2;
     const nextBracketNum = Math.floor(game.bracketNum / 2);
+    const winnerIds: {
+      id: string;
+    }[] = [];
+
+    const currentSet = game.gameSet;
+    const nasserSetsToWin = game.setsInGame;
+    let winnerTeamId: string | undefined = undefined;
+    const fistTeamScore = game.team1?.team1Score || 0;
+    const secondTeamScore = game.team2?.team2Score || 0;
+
+    const finishedGames = GameSets.parse(game.gameSets);
+
+    const { firstTeamWins, secondTeamWins } = getWinsPerTeam(
+      finishedGames,
+      fistTeamScore,
+      secondTeamScore
+    );
+
+    if (parseInt(firstTeamWins) >= nasserSetsToWin) {
+      console.log("first team wins");
+      winnerTeamId = game.team1?.team1.id;
+      game.team1?.team1.participants.forEach((p) => {
+        winnerIds.push({ id: p.id });
+      });
+    }
+
+    if (parseInt(secondTeamWins) >= nasserSetsToWin) {
+      console.log("second team wins");
+      winnerTeamId = game.team2?.team2.id;
+      game.team2?.team2.participants.forEach((p) => {
+        winnerIds.push({ id: p.id });
+      });
+    }
+
+    const setResults = {
+      ...finishedGames,
+      [currentSet.toString()]: {
+        firstTeam: fistTeamScore,
+        secondTeam: secondTeamScore,
+      },
+    };
 
     updatePlayoffGame({
+      winnerIds,
+      setResults,
+      tournamentId,
+      winnerTeamId,
       nextBracketNum,
       gameId: game.gameId,
-      tournamentsId: tournamentId,
+      team1Score: fistTeamScore,
+      team2Score: secondTeamScore,
       nextStage: nextStage.toString(),
-      team1Score: game.team1?.team1Score || 0,
-      team2Score: game.team2?.team2Score || 0,
     });
   };
 

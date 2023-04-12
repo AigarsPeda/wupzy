@@ -92,9 +92,11 @@ model PlayoffGames {
   bracketNum     Int
   gameOrder      Int
   stage          String // <- 1/8, 1/4, 1/2, final
-  participants   Participant[]
   team1Score     Int?
   team2Score     Int?
+  participants   Participant[]
+  gameSet        Int           @default(1)
+  gameSets       Json          @default("{}")
   id             String        @id @default(cuid())
   playoffwinners Participant[] @relation("playoffwinners")
   tournament     Tournament    @relation(fields: [tournamentId], references: [id])

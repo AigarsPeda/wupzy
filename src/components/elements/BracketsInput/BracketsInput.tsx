@@ -5,6 +5,7 @@ import type { FC } from "react";
 import Xarrow, { Xwrapper } from "react-xarrows";
 import type { TeamType } from "types/team.types";
 import classNames from "utils/classNames";
+import DisplaySetScore from "../DisplaySetScore/DisplaySetScore";
 
 type CoordinatesType = {
   end: number[];
@@ -77,7 +78,7 @@ const BracketsInput: FC<BracketsInputProps> = ({
                             : marginBottom,
                         }}
                       >
-                        <div className="min-h-[3.9rem] max-w-[18.5rem] items-end space-x-2 truncate rounded bg-gray-800 px-2 py-1 text-white">
+                        <div className="min-h-[3.9rem] items-end space-x-2 truncate rounded bg-gray-800 px-2 py-1 text-white">
                           <div className="flex justify-between space-x-2">
                             {firstTeam && (
                               <DisplayPlayoffTeams
@@ -109,9 +110,17 @@ const BracketsInput: FC<BracketsInputProps> = ({
                                 }}
                               />
                             )}
+                            <div
+                              className={classNames(
+                                // isCurrentGame && "mt-3",
+                                "w-full max-w-[5rem]"
+                              )}
+                            >
+                              <DisplaySetScore game={game} />
+                            </div>
                           </div>
                           <div className="flex justify-end">
-                            {firstTeam && secondTeam && !hasWinner && (
+                            {firstTeam && secondTeam && (
                               <Button
                                 btnTitle="Save"
                                 btnColor="outline"

@@ -34,7 +34,7 @@ const DisplayPlayoffTeams: FC<DisplayPlayoffTeamsProps> = ({
       </div>
 
       <div className="flex h-10 justify-between">
-        {isScoreDisplay && hasWinner && (
+        {/* {isScoreDisplay && hasWinner && (
           <p
             className={classNames(
               isWinner ? "text-white" : "text-gray-400",
@@ -43,11 +43,13 @@ const DisplayPlayoffTeams: FC<DisplayPlayoffTeamsProps> = ({
           >
             {smallPoints}
           </p>
-        )}
+        )} */}
 
-        {isScoreDisplay && !hasWinner && (
+        {/* {isScoreDisplay && !hasWinner && (
           <NumberInput value={smallPoints || 0} onChange={handleScoreChange} />
-        )}
+        )} */}
+
+        <NumberInput value={smallPoints || 0} onChange={handleScoreChange} />
       </div>
     </div>
   );

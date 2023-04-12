@@ -1,10 +1,14 @@
-import type { PlayoffGamesType } from "types/game.types";
+import type { GameSetsType, PlayoffGamesType } from "types/game.types";
+import { GameSets } from "types/game.types";
 import type { TeamType } from "types/team.types";
 
 export type GamePlayoffType = {
   stage: string;
   gameId: string;
+  gameSet: number;
+  setsInGame: number;
   bracketNum: number;
+  gameSets: GameSetsType;
   team1?: {
     team1: TeamType;
     team1Score: number | null;
@@ -40,14 +44,16 @@ const cratePlayoffInputMap = (map: Map<string, PlayoffGamesType[]>) => {
 
       const team1 = game?.team1;
       const team2 = game?.team2;
+      const finishedGames = game?.gameSets ? GameSets.parse(game.gameSets) : {};
 
       const g: GamePlayoffType = {
         gameId: game?.id || "",
+        gameSets: finishedGames,
+        gameSet: game?.gameSet || 0,
         stage: num.toString() || "",
         bracketNum: game?.gameOrder || 0,
+        setsInGame: game?.tournament?.setsInGame || 0,
       };
-
-      // insert g into bracketNum position in array
 
       if (team1) {
         g.team1 = {

@@ -1,9 +1,10 @@
 import type { FC } from "react";
 import type { ActivesGame } from "types/game.types";
 import getScoredPerSet from "utils/getScoredPerSet";
+import type { GamePlayoffType } from "../BracketsInput/utils/cratePlayoffInputMap";
 
 interface DisplaySetScoreProps {
-  game: ActivesGame;
+  game: ActivesGame | GamePlayoffType;
 }
 
 const DisplaySetScore: FC<DisplaySetScoreProps> = ({ game }) => {

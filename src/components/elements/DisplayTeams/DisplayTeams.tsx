@@ -5,11 +5,11 @@ import classNames from "utils/classNames";
 
 interface DisplayTeamsProps {
   teamName?: string;
-  infoScore?: number;
   isWinner?: boolean;
   teamsScore?: number;
   isCurrentGame?: boolean;
   team: ParticipantType[];
+  infoScore?: string | number;
   handleScoreChange?: (n: number) => void;
 }
 
@@ -49,6 +49,16 @@ const DisplayTeams: FC<DisplayTeamsProps> = ({
       {isCurrentGame && handleScoreChange && (
         <NumberInput value={teamsScore ?? 0} onChange={handleScoreChange} />
       )}
+      {/* {!isCurrentGame && infoScore && (
+        <p
+          className={classNames(
+            isWinner ? "font-bold text-gray-800" : "font-normal text-gray-400",
+            "text-2xl"
+          )}
+        >
+          {infoScore}
+        </p>
+      )} */}
       {!isCurrentGame && infoScore && (
         <p
           className={classNames(

@@ -1,53 +1,45 @@
-import type { ActivesGame, GamesType } from "types/game.types";
-import { GameSets } from "types/game.types";
+import type { GameSetsType } from "types/game.types";
 
 const getWinsPerTeam = (
-  game: GamesType | ActivesGame,
+  finishedGames: GameSetsType | null,
   firstTeamScores?: number,
   secondTeamScores?: number
 ) => {
-  if (!game) {
-    return {
-      firstTeamWins: 0,
-      secondTeamWins: 0,
-    };
-  }
-
-  const finishedGames = GameSets.parse(game.gameSets);
+  // const finishedGames = GameSets.parse(game.gameSets);
   const isBothTeams = firstTeamScores && secondTeamScores;
 
   if (!finishedGames) {
     return {
-      firstTeamWins: 0,
-      secondTeamWins: 0,
+      firstTeamWins: "0",
+      secondTeamWins: "0",
     };
   }
 
   const firstTeamWins = Object.values(finishedGames).filter(
-    (set) => set.firstTeam > set.secondTeam
+    (set) => set?.firstTeam > set?.secondTeam
   ).length;
 
   const secondTeamWins = Object.values(finishedGames).filter(
-    (set) => set.firstTeam < set.secondTeam
+    (set) => set?.firstTeam < set?.secondTeam
   ).length;
 
   if (isBothTeams && firstTeamScores > secondTeamScores) {
     return {
-      firstTeamWins: firstTeamWins + 1,
-      secondTeamWins,
+      firstTeamWins: (firstTeamWins + 1).toString(),
+      secondTeamWins: secondTeamWins.toString(),
     };
   }
 
   if (isBothTeams && firstTeamScores < secondTeamScores) {
     return {
-      firstTeamWins,
-      secondTeamWins: secondTeamWins + 1,
+      firstTeamWins: firstTeamWins.toString(),
+      secondTeamWins: (secondTeamWins + 1).toString(),
     };
   }
 
   return {
-    firstTeamWins,
-    secondTeamWins,
+    firstTeamWins: firstTeamWins.toString(),
+    secondTeamWins: secondTeamWins.toString(),
   };
 };
 

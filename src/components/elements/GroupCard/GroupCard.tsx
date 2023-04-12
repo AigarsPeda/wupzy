@@ -66,22 +66,24 @@ const GroupCard: FC<GroupCardProps> = ({
     const currentSet = game.gameSet;
     const nasserSetsToWin = game.tournament.setsInGame;
 
+    const finishedGames = GameSets.parse(game.gameSets);
+
     const { firstTeamWins, secondTeamWins } = getWinsPerTeam(
-      game,
+      finishedGames,
       score.firstTeam,
       score.secondTeam
     );
 
-    if (firstTeamWins === nasserSetsToWin) {
+    if (parseInt(firstTeamWins) >= nasserSetsToWin) {
       winnerTeamIds = [...firstTeamIds];
     }
 
-    if (secondTeamWins === nasserSetsToWin) {
+    if (parseInt(secondTeamWins) >= nasserSetsToWin) {
       winnerTeamIds = [...secondTeamsIds];
     }
 
     const setResults = {
-      ...GameSets.parse(game.gameSets),
+      ...finishedGames,
       [currentSet.toString()]: {
         firstTeam: score.firstTeam,
         secondTeam: score.secondTeam,
@@ -98,7 +100,7 @@ const GroupCard: FC<GroupCardProps> = ({
     });
 
     if (!updateGame) {
-      console.error("error creating game");
+      console.error("Error updating games score");
       return;
     }
   };

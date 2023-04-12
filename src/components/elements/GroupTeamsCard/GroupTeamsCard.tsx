@@ -26,14 +26,14 @@ const GroupTeamsCard: FC<GroupTeamsCardProps> = ({ teams }) => {
       </div>
 
       <ul ref={parent} className="w-full">
-        {sortTeams(teams, "points").map((team, i) => {
+        {sortTeams(teams).map((team, i) => {
           const isFirstGroup = i === 0;
           return (
             <li
               key={`${i}${team.id}`}
               className={classNames(
                 !isFirstGroup && "border-t-2",
-                "grid grid-cols-3 gap-4 py-2 px-2"
+                "grid grid-cols-3 gap-4 px-2 py-2"
               )}
             >
               <div className="flex justify-start">

@@ -6,6 +6,7 @@ import GroupCardHeader from "components/elements/GroupCardHeader/GroupCardHeader
 import UnderLineButton from "components/elements/UnderLineButton/UnderLineButton";
 import type { FC } from "react";
 import type { GamesOfInterestType, GamesType } from "types/game.types";
+import { GameSets } from "types/game.types";
 import type { TournamentTypeType } from "types/tournament.types";
 import classNames from "utils/classNames";
 
@@ -68,11 +69,20 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
       <div className="mb-5 h-full">
         {getGames() ? (
           getGames()?.map(([key, game], i) => {
+            const gameSets = game?.gameSets;
             const gameStatus = GAME_STATUS[key];
             const gameCount = totalGames[group] || 0;
             const isCurrentGame = gameStatus === "Current";
-            const { firstTeamWins, secondTeamWins } = getWinsPerTeam(game);
+            const finishedGames = gameSets ? GameSets.parse(gameSets) : {};
+            const { firstTeamWins, secondTeamWins } =
+              getWinsPerTeam(finishedGames);
             const gameOrderNumber = gamesOfInterest[group]?.["-1"] ? i + 1 : i;
+
+            console.log(
+              "firstTeamWins, secondTeamWins",
+              firstTeamWins,
+              secondTeamWins
+            );
 
             return (
               <div
@@ -117,7 +127,7 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
                           )}
                         >
                           <div className="flex">
-                            <div className="">
+                            <div>
                               <DisplayTeams
                                 teamsScore={firstTeamScore}
                                 isCurrentGame={isCurrentGame}
