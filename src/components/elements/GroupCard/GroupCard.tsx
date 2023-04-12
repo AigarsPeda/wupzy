@@ -80,8 +80,6 @@ const GroupCard: FC<GroupCardProps> = ({
       winnerTeamIds = [...secondTeamsIds];
     }
 
-    // GameSets.parse(game.gameSets);
-
     const setResults = {
       ...GameSets.parse(game.gameSets),
       [currentSet.toString()]: {
@@ -116,7 +114,7 @@ const GroupCard: FC<GroupCardProps> = ({
   }, [participants, refetchTeams]);
 
   return (
-    <div className="mb-6 min-h-[20rem] min-w-[20rem] rounded-md border border-gray-50 bg-gray-50 py-3 shadow-md md:px-8 xl:flex">
+    <div className="space-x-2 md2:flex">
       <GroupCardGamesOfInterest
         group={group}
         totalGames={totalGames}
@@ -140,7 +138,7 @@ const GroupCard: FC<GroupCardProps> = ({
         }}
       />
 
-      <div className="mt-5 w-full xl:mt-10">
+      <div className="mt-5 w-full md2:mt-10 ">
         {tournamentKind === "TEAMS" ? (
           <GroupTeamsCard teams={teams?.teams || []} />
         ) : (

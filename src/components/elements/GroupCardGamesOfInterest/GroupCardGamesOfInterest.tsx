@@ -1,13 +1,13 @@
 import Button from "components/elements/Button/Button";
+import DisplaySetScore from "components/elements/DisplaySetScore/DisplaySetScore";
 import DisplayTeams from "components/elements/DisplayTeams/DisplayTeams";
+import getWinsPerTeam from "components/elements/GroupCard/utils/getWinsPerTeam";
 import GroupCardHeader from "components/elements/GroupCardHeader/GroupCardHeader";
 import UnderLineButton from "components/elements/UnderLineButton/UnderLineButton";
 import type { FC } from "react";
-import type { GamesOfInterestType } from "types/game.types";
+import type { GamesOfInterestType, GamesType } from "types/game.types";
 import type { TournamentTypeType } from "types/tournament.types";
 import classNames from "utils/classNames";
-import type { GamesType } from "types/game.types";
-import getWinsPerTeam from "../GroupCard/utils/getWinsPerTeam";
 
 const GAME_STATUS: {
   [key: string]: string;
@@ -52,7 +52,7 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
   };
 
   return (
-    <div className="col-span-3 md:pr-5">
+    <div>
       <GroupCardHeader
         label="Games"
         title={group}
@@ -81,110 +81,119 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
                   isCurrentGame
                     ? "bg-gray-800 py-3 text-white md:py-6"
                     : "bg-gray-200 py-1 md:py-3",
-                  "mb-3 rounded-md px-3 md:flex"
+                  "relative mb-3 rounded-md px-3 md:flex"
                 )}
               >
                 <div className="w-full md:flex">
                   <div
                     className={classNames(
                       isCurrentGame ? "border-gray-400" : "border-gray-100",
-                      "mb-3 w-20 border-b-2  md:mb-0 md:mr-3 md:border-b-0 md:border-r-2 md:px-2"
+                      "mb-3 flex w-full justify-between border-b-2  md:mb-0 md:mr-3 md:block md:w-24 md:border-b-0 md:border-r-2 md:px-2"
                     )}
                   >
-                    {/* <p className="mb-1 text-xs text-gray-400">{gameStatus}</p> */}
-                    <p className="mb-1 text-xs text-gray-400">Game</p>
-                    <p className="pb-1 text-xs">
-                      {game && `${gameOrderNumber} of ${gameCount}`}
-                    </p>
-                    <p className="text-sm text-gray-400">Set</p>
-                    <p
-                      className={classNames(
-                        !isCurrentGame && "text-gray-400",
-                        "text-xl"
-                      )}
-                    >
-                      {game?.gameSet}
-                    </p>
-                  </div>
-                  {game ? (
                     <div>
-                      <div className="flex w-full space-x-2">
-                        <div className="w-[50%]">
-                          <DisplayTeams
-                            teamsScore={firstTeamScore}
-                            isCurrentGame={isCurrentGame}
-                            team={game.team1.participants}
-                            infoScore={game.team1Score || 0}
-                            teamName={
-                              tournamentKind === "TEAMS"
-                                ? game.team1.name
-                                : undefined
-                            }
-                            handleScoreChange={(n) => {
-                              handleScoreChange("firstTeam", n);
-                            }}
-                          />
-                        </div>
-                        <div className="w-[50%]">
-                          <DisplayTeams
-                            teamsScore={secondTeamScore}
-                            isCurrentGame={isCurrentGame}
-                            team={game.team2.participants}
-                            infoScore={game.team2Score || 0}
-                            teamName={
-                              tournamentKind === "TEAMS"
-                                ? game.team2.name
-                                : undefined
-                            }
-                            handleScoreChange={(n) => {
-                              handleScoreChange("secondTeam", n);
-                            }}
-                          />
+                      <p className="mb-1 text-xs text-gray-400">Game</p>
+                      <p className="pb-1 text-xs">
+                        {game && `${gameOrderNumber} of ${gameCount}`}
+                      </p>
+                    </div>
+                    {isCurrentGame && (
+                      <div>
+                        <div className="flex items-center">
+                          <p className={classNames("text-2xl text-white")}>
+                            {firstTeamWins} - {secondTeamWins}
+                          </p>
                         </div>
                       </div>
-                      <div className="mt-2 flex items-center">
-                        <p>
-                          <span className="mr-5 text-xs text-gray-400">
-                            Score per sets
-                          </span>
-                        </p>
-                        <p
+                    )}
+                  </div>
+                  {game ? (
+                    <div className="w-full">
+                      <div className="w-full">
+                        <div
                           className={classNames(
-                            !isCurrentGame && "text-gray-400",
-                            ""
+                            isCurrentGame ? "" : "flex",
+                            "w-full justify-between"
                           )}
                         >
-                          {firstTeamWins} - {secondTeamWins}
-                        </p>
+                          <div className="flex">
+                            <div className="">
+                              <DisplayTeams
+                                teamsScore={firstTeamScore}
+                                isCurrentGame={isCurrentGame}
+                                team={game.team1.participants}
+                                infoScore={firstTeamWins}
+                                teamName={
+                                  tournamentKind === "TEAMS"
+                                    ? game.team1.name
+                                    : undefined
+                                }
+                                handleScoreChange={(n) => {
+                                  handleScoreChange("firstTeam", n);
+                                }}
+                              />
+                            </div>
+                            <div className="mx-2">
+                              <DisplayTeams
+                                teamsScore={secondTeamScore}
+                                isCurrentGame={isCurrentGame}
+                                infoScore={secondTeamWins}
+                                team={game.team2.participants}
+                                teamName={
+                                  tournamentKind === "TEAMS"
+                                    ? game.team2.name
+                                    : undefined
+                                }
+                                handleScoreChange={(n) => {
+                                  handleScoreChange("secondTeam", n);
+                                }}
+                              />
+                            </div>
+                            {isCurrentGame && (
+                              <div className="flex w-32 flex-col items-end justify-end">
+                                <Button
+                                  btnColor="outline"
+                                  btnTitle="Save score"
+                                  btnClass="border-gray-400 h-[2.5rem] w-full"
+                                  onClick={() => {
+                                    if (!game) return;
+
+                                    const firstTeamIds =
+                                      game.team1.participants.map(
+                                        (team) => team.id
+                                      );
+
+                                    const secondTeamsIds =
+                                      game.team2.participants.map(
+                                        (team) => team.id
+                                      );
+
+                                    handleScoreSave(
+                                      game,
+                                      firstTeamIds,
+                                      secondTeamsIds
+                                    );
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </div>
+
+                          <div
+                            className={classNames(
+                              isCurrentGame && "mt-3",
+                              "w-full max-w-[5rem]"
+                            )}
+                          >
+                            <DisplaySetScore game={game} />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   ) : (
                     <p className="text-gray-400">no game</p>
                   )}
                 </div>
-
-                {isCurrentGame && (
-                  <div className="mt-3 flex w-full flex-col justify-center md:mt-2">
-                    <Button
-                      btnColor="outline"
-                      btnTitle="Save score"
-                      btnClass="border-gray-400 h-[2.5rem] w-32"
-                      onClick={() => {
-                        if (!game) return;
-
-                        const firstTeamIds = game.team1.participants.map(
-                          (team) => team.id
-                        );
-
-                        const secondTeamsIds = game.team2.participants.map(
-                          (team) => team.id
-                        );
-
-                        handleScoreSave(game, firstTeamIds, secondTeamsIds);
-                      }}
-                    />
-                  </div>
-                )}
               </div>
             );
           })

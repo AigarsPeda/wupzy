@@ -4,6 +4,9 @@ module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      screens: {
+        md2: "1080px",
+      },
       fontFamily: {
         // used for logo
         koulen: ["var(--font-koulen)"],

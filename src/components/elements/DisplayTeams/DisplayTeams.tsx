@@ -5,7 +5,7 @@ import classNames from "utils/classNames";
 
 interface DisplayTeamsProps {
   teamName?: string;
-  infoScore: number;
+  infoScore?: number;
   isWinner?: boolean;
   teamsScore?: number;
   isCurrentGame?: boolean;
@@ -49,7 +49,7 @@ const DisplayTeams: FC<DisplayTeamsProps> = ({
       {isCurrentGame && handleScoreChange && (
         <NumberInput value={teamsScore ?? 0} onChange={handleScoreChange} />
       )}
-      {!isCurrentGame && (
+      {!isCurrentGame && infoScore && (
         <p
           className={classNames(
             isWinner ? "font-bold text-gray-800" : "font-normal text-gray-400",

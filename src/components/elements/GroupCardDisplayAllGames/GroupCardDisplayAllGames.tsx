@@ -1,4 +1,6 @@
+import DisplaySetScore from "components/elements/DisplaySetScore/DisplaySetScore";
 import DisplayTeams from "components/elements/DisplayTeams/DisplayTeams";
+import getWinsPerTeam from "components/elements/GroupCard/utils/getWinsPerTeam";
 import ModalWrap from "components/elements/ModalWrap/ModalWrap";
 import useWindowSize from "hooks/useWindowSize";
 import type { FC } from "react";
@@ -47,6 +49,8 @@ const GroupCardDisplayAllGames: FC<GroupCardDisplayAllGamesProps> = ({
           const gameOrder = i + 1;
           const gameCount = games?.games.length;
           const isDraw = game.team1Score === game.team2Score;
+          const { firstTeamWins, secondTeamWins } = getWinsPerTeam(game);
+
           const isFirstTeamWinner =
             (game.team1Score || 0) > (game.team2Score || 0);
 
@@ -68,8 +72,8 @@ const GroupCardDisplayAllGames: FC<GroupCardDisplayAllGamesProps> = ({
               <div className="flex w-full">
                 <div className="mr-2 w-[50%] truncate">
                   <DisplayTeams
+                    infoScore={firstTeamWins}
                     team={game.team1.participants}
-                    infoScore={game.team1Score || 0}
                     isWinner={isFirstTeamWinner && !isDraw}
                     teamName={
                       tournamentKind === "TEAMS" ? game.team1.name : undefined
@@ -78,14 +82,17 @@ const GroupCardDisplayAllGames: FC<GroupCardDisplayAllGamesProps> = ({
                 </div>
                 <div className="w-[50%] truncate">
                   <DisplayTeams
+                    infoScore={secondTeamWins}
                     team={game.team2.participants}
-                    infoScore={game.team2Score || 0}
                     isWinner={isSecondTeamWinner && !isDraw}
                     teamName={
                       tournamentKind === "TEAMS" ? game.team2.name : undefined
                     }
                   />
                 </div>
+              </div>
+              <div className="w-full max-w-[5.5rem]">
+                <DisplaySetScore game={game} />
               </div>
             </li>
           );

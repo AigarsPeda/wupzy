@@ -1,8 +1,8 @@
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import GroupCard from "components/elements/GroupCard/GroupCard";
+import Spinner from "components/elements/Spinner/Spinner";
 import useParticipants from "hooks/useParticipants";
 import type { FC } from "react";
-import type { GamesType } from "types/game.types";
 import type { TournamentTypeType } from "types/tournament.types";
 import { api } from "utils/api";
 import createGamesOfInterest from "utils/createGamesOfInterest";
@@ -22,11 +22,10 @@ const GroupCardContainer: FC<GroupCardContainerProps> = ({
   const { data: games, refetch: refetchGames } =
     api.tournaments.getAllTournamentGames.useQuery({ tournamentId });
 
-  if (isParticipantsLoading) return <p>Loading...</p>;
+  if (isParticipantsLoading) return <Spinner size="small" />;
 
   return (
     <div ref={parent}>
-      {console.log("games", games)}
       {participants &&
         games?.games &&
         [...participants.participants].map(([group, participants]) => {
