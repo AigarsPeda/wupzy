@@ -1,17 +1,18 @@
 import type { GameSetsType } from "types/game.types";
+import isObjIsEmpty from "utils/isObjIsEmpty";
 
 const getWinsPerTeam = (
   finishedGames: GameSetsType | null,
   firstTeamScores?: number,
   secondTeamScores?: number
 ) => {
-  // const finishedGames = GameSets.parse(game.gameSets);
-  const isBothTeams = firstTeamScores && secondTeamScores;
+  const firstScore = firstTeamScores || 0;
+  const secondScore = secondTeamScores || 0;
 
-  if (!finishedGames) {
+  if (!finishedGames || isObjIsEmpty(finishedGames)) {
     return {
-      firstTeamWins: 0,
-      secondTeamWins: 0,
+      firstTeamWins: firstScore > secondScore ? 1 : 0,
+      secondTeamWins: firstScore < secondScore ? 1 : 0,
     };
   }
 
@@ -23,14 +24,14 @@ const getWinsPerTeam = (
     (set) => set?.firstTeam < set?.secondTeam
   ).length;
 
-  if (isBothTeams && firstTeamScores > secondTeamScores) {
+  if (firstScore > secondScore) {
     return {
       firstTeamWins: firstTeamWins + 1,
       secondTeamWins: secondTeamWins,
     };
   }
 
-  if (isBothTeams && firstTeamScores < secondTeamScores) {
+  if (firstScore < secondScore) {
     return {
       firstTeamWins: firstTeamWins,
       secondTeamWins: secondTeamWins + 1,
@@ -38,8 +39,8 @@ const getWinsPerTeam = (
   }
 
   return {
-    firstTeamWins: firstTeamWins,
-    secondTeamWins: secondTeamWins,
+    firstTeamWins,
+    secondTeamWins,
   };
 };
 

@@ -276,8 +276,6 @@ export const teamsTournamentsRouter = createTRPCRouter({
             team1Id: game.first.teamId,
             team2Id: game.second.teamId,
             tournamentId: input.tournamentId,
-            // setsInGameId: tournament?.setsInGameId || "1",
-            // gameSetCount: setCount[0]?.gameSetCount || 1,
             participants: {
               connect: [
                 ...game.first.participants,
@@ -381,8 +379,6 @@ export const teamsTournamentsRouter = createTRPCRouter({
             team1Id: game.first.teamId,
             team2Id: game.second.teamId,
             tournamentId: input.tournamentId,
-
-            // setsInGameId: tournament?.setsInGameId || "1",
             participants: {
               connect: [
                 ...game.first.participants,
@@ -403,7 +399,6 @@ export const teamsTournamentsRouter = createTRPCRouter({
         games: z
           .object({
             stage: z.string(),
-            // bracketNum: z.number(),
             team1: z.object({
               team1: TeamZodSchema.nullish(),
             }),

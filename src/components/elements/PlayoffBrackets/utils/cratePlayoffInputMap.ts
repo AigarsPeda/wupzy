@@ -29,7 +29,6 @@ export type NextRoundType = {
 const cratePlayoffInputMap = (map: Map<string, PlayoffGamesType[]>) => {
   const keys = Array.from(map.keys()).sort();
 
-  // 6, 3, 1
   const originalNum = parseInt(keys[keys.length - 1] || "0");
   let num = originalNum;
 

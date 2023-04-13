@@ -1,16 +1,15 @@
 import changeTeamsScore from "components/containers/Playoffs/utils/changeTeamsScore";
-import BracketsInput from "components/elements/BracketsInput/BracketsInput";
-import type { GamePlayoffType } from "components/elements/BracketsInput/utils/cratePlayoffInputMap";
-import cratePlayoffInputMap from "components/elements/BracketsInput/utils/cratePlayoffInputMap";
+import getWinsPerTeam from "components/elements/GroupCard/utils/getWinsPerTeam";
+import PlayoffBrackets from "components/elements/PlayoffBrackets/PlayoffBrackets";
+import type { GamePlayoffType } from "components/elements/PlayoffBrackets/utils/cratePlayoffInputMap";
+import cratePlayoffInputMap from "components/elements/PlayoffBrackets/utils/cratePlayoffInputMap";
 import Spinner from "components/elements/Spinner/Spinner";
-import GridLayout from "components/layouts/GridLayout/GridLayout";
 import useRedirect from "hooks/useRedirect";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
+import { GameSets } from "types/game.types";
 import { api } from "utils/api";
 import createPlayoffMap from "utils/createPlayoffMap";
-import { GameSets } from "../../../types/game.types";
-import getWinsPerTeam from "../../elements/GroupCard/utils/getWinsPerTeam";
 
 interface PlayoffsProps {
   tournamentId: string;
@@ -60,6 +59,7 @@ const Playoffs: FC<PlayoffsProps> = ({ tournamentId }) => {
     );
 
     if (firstTeamWins >= nasserSetsToWin) {
+      console.log("firstTeamWins --->", firstTeamWins);
       winnerTeamId = game.team1?.team1.id;
       game.team1?.team1.participants.forEach((p) => {
         winnerIds.push({ id: p.id });
@@ -103,8 +103,6 @@ const Playoffs: FC<PlayoffsProps> = ({ tournamentId }) => {
   useEffect(() => {
     if (!data?.games) return;
 
-    console.log("data?.games", data?.games);
-
     const gameMap = createPlayoffMap(data.games);
     const { playoffMap } = cratePlayoffInputMap(gameMap);
 
@@ -116,8 +114,8 @@ const Playoffs: FC<PlayoffsProps> = ({ tournamentId }) => {
   }
 
   return (
-    <GridLayout minWith="320" isGap>
-      <BracketsInput
+    <>
+      <PlayoffBrackets
         brackets={[...brackets]}
         handleScoreSave={handleScoreSave}
         handleScoreChange={(num, team, stage) => {
@@ -125,7 +123,7 @@ const Playoffs: FC<PlayoffsProps> = ({ tournamentId }) => {
           setBrackets(newMap);
         }}
       />
-    </GridLayout>
+    </>
   );
 };
 

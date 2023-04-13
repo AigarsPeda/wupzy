@@ -4,10 +4,10 @@ import getWinsPerTeam from "components/elements/GroupCard/utils/getWinsPerTeam";
 import ModalWrap from "components/elements/ModalWrap/ModalWrap";
 import useWindowSize from "hooks/useWindowSize";
 import type { FC } from "react";
+import { GameSets } from "types/game.types";
 import type { TournamentTypeType } from "types/tournament.types";
 import { api } from "utils/api";
 import classNames from "utils/classNames";
-import { GameSets } from "../../../types/game.types";
 
 interface GroupCardDisplayAllGamesProps {
   group: string;
