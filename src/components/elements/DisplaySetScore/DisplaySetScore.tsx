@@ -1,7 +1,7 @@
+import type { GamePlayoffType } from "components/elements/PlayoffBrackets/utils/cratePlayoffInputMap";
 import type { FC } from "react";
 import type { ActivesGame } from "types/game.types";
 import getScoredPerSet from "utils/getScoredPerSet";
-import type { GamePlayoffType } from "components/elements/BracketsInput/utils/cratePlayoffInputMap";
 
 interface DisplaySetScoreProps {
   game: ActivesGame | GamePlayoffType;

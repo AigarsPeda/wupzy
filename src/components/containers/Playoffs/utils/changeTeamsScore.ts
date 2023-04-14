@@ -1,4 +1,4 @@
-import type { GamePlayoffType } from "components/elements/BracketsInput/utils/cratePlayoffInputMap";
+import type { GamePlayoffType } from "components/elements/PlayoffBrackets/utils/cratePlayoffInputMap";
 import type { TeamType } from "types/team.types";
 
 const changeTeamsScore = (
