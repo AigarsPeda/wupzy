@@ -18,7 +18,8 @@ const GroupCardContainer: FC<GroupCardContainerProps> = ({
   tournamentKind,
 }) => {
   const [parent] = useAutoAnimate();
-  const { participants, isParticipantsLoading } = useParticipants(tournamentId);
+  const { participants, refetchParticipants, isParticipantsLoading } =
+    useParticipants(tournamentId);
   const { data: games, refetch: refetchGames } =
     api.tournaments.getAllTournamentGames.useQuery({ tournamentId });
 
@@ -39,7 +40,12 @@ const GroupCardContainer: FC<GroupCardContainerProps> = ({
               totalGames={getGameCountPerGroup(games.games)}
               gamesOfInterest={createGamesOfInterest(games.games)}
               refetchData={() => {
-                refetchGames().catch((err) => console.error(err));
+                refetchGames().catch((err) =>
+                  console.error("Error refetching games: ", err)
+                );
+                refetchParticipants().catch((err) =>
+                  console.error("Error refetching participants: ", err)
+                );
               }}
             />
           );

@@ -3,6 +3,7 @@ import ModalWrap from "components/elements/ModalWrap/ModalWrap";
 import { useRouter } from "next/router";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
+import GridLayout from "../../layouts/GridLayout/GridLayout";
 
 interface EditTournamentProps {
   isModalOpen: boolean;
@@ -26,12 +27,13 @@ const EditTournament: FC<EditTournamentProps> = ({
     <ModalWrap
       modalWidth="7xl"
       topPosition="top"
-      modalsWidth="md:w-1/2 w-3/4"
       isModalVisible={isModalOpen}
       modalTitle="Edit tournament groups"
       handleCancelClick={handleCloseModal}
     >
-      <EditTournamentGroup tournamentId={tournamentId} />
+      <GridLayout minWith="250">
+        <EditTournamentGroup tournamentId={tournamentId} />
+      </GridLayout>
     </ModalWrap>
   );
 };

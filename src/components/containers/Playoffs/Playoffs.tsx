@@ -59,7 +59,6 @@ const Playoffs: FC<PlayoffsProps> = ({ tournamentId }) => {
     );
 
     if (firstTeamWins >= nasserSetsToWin) {
-      console.log("firstTeamWins --->", firstTeamWins);
       winnerTeamId = game.team1?.team1.id;
       game.team1?.team1.participants.forEach((p) => {
         winnerIds.push({ id: p.id });

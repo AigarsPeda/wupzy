@@ -175,7 +175,7 @@ const NewTournamentContainer: FC = () => {
         <div
           ref={parent}
           style={{
-            height: windowSize.height - 300,
+            height: windowSize.height - 350,
           }}
         >
           {(() => {

@@ -71,7 +71,7 @@ const GroupCardDisplayAllGames: FC<GroupCardDisplayAllGamesProps> = ({
             >
               <div
                 className={classNames(
-                  "mb-3 w-20 border-b-2 md:mb-0 md:mr-3 md:border-b-0 md:border-r-2 md:px-2"
+                  "mb-3 w-28 border-b-2 md:mb-0 md:mr-3 md:border-b-0 md:border-r-2 md:px-2"
                 )}
               >
                 <p className="pb-1 text-xs">{`${gameOrder} of ${gameCount}`}</p>

@@ -32,7 +32,7 @@ const TournamentCreateReview: FC<TournamentCreateReviewProps> = ({
       </h1>
 
       <p className="mt-4 text-xs text-gray-400">Attendants:</p>
-      <div className="w-full truncate">
+      <div className="max-h-[30rem] w-full overflow-y-auto truncate">
         {isKing ? (
           <div>
             <ul>

@@ -1,12 +1,14 @@
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import Button from "components/elements/Button/Button";
 import DisplayTeams from "components/elements/DisplayTeams/DisplayTeams";
+import getWinsPerTeam from "components/elements/GroupCard/utils/getWinsPerTeam";
 import SmallButton from "components/elements/SmallButton/SmallButton";
 import useWindowSize from "hooks/useWindowSize";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import type { GamesMapType } from "types/game.types";
+import { GameSets } from "types/game.types";
 import { api } from "utils/api";
 import classNames from "utils/classNames";
 import compareMapsGameOrder from "utils/compareMapsGameOrder";
@@ -87,7 +89,7 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
         className="overflow-y-auto py-5"
         style={
           windowSize.width && windowSize.width > 650
-            ? { height: "calc(100vh - 17rem)" }
+            ? { height: "calc(100vh - 14.5rem)" }
             : { height: "calc(100vh - 14rem)" }
         }
       >
@@ -109,10 +111,24 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
                 const isWinner = game.winners.length > 0;
 
                 const prevGame = games[i - 1];
+                const prevGamesSets = prevGame?.gameSets;
+                const prevFinishedGames = prevGamesSets
+                  ? GameSets.parse(prevGamesSets)
+                  : {};
 
-                const isPrevGameWinner = prevGame
-                  ? prevGame.winners.length > 0
-                  : false;
+                const {
+                  firstTeamWins: prevFirstTeamWins,
+                  secondTeamWins: secondFirstTeamWins,
+                } = getWinsPerTeam(prevFinishedGames);
+
+                const isPrevGameIsStarted =
+                  prevFirstTeamWins > 0 || secondFirstTeamWins > 0;
+
+                const gameSets = game.gameSets;
+                const finishedGames = gameSets ? GameSets.parse(gameSets) : {};
+
+                const { firstTeamWins, secondTeamWins } =
+                  getWinsPerTeam(finishedGames);
 
                 return (
                   <div
@@ -132,7 +148,12 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
                           {i !== 0 && (
                             <SmallButton
                               btnClassNames="h-6 w-6 mb-2"
-                              isDisabled={isWinner || isPrevGameWinner}
+                              isDisabled={
+                                isWinner ||
+                                firstTeamWins > 0 ||
+                                secondTeamWins > 0 ||
+                                isPrevGameIsStarted
+                              }
                               btnTitle={<IoIosArrowUp className="h-4 w-4" />}
                               handleClick={() => {
                                 handleGameOrderChange(
@@ -145,7 +166,11 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
                           )}
                           {i !== games.length - 1 && (
                             <SmallButton
-                              isDisabled={isWinner}
+                              isDisabled={
+                                isWinner ||
+                                firstTeamWins > 0 ||
+                                secondTeamWins > 0
+                              }
                               btnClassNames="h-6 w-6"
                               btnTitle={<IoIosArrowDown className="h-4 w-4" />}
                               handleClick={() => {
@@ -160,16 +185,24 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
                         </div>
                       </div>
                     </div>
-                    <DisplayTeams
-                      team={game.team1.participants}
-                      infoScore={game.team1Score || 0}
-                      isWinner={isFirstTeamWinner && !isDraw}
-                    />
-                    <DisplayTeams
-                      team={game.team2.participants}
-                      infoScore={game.team2Score || 0}
-                      isWinner={isSecondTeamWinner && !isDraw}
-                    />
+                    <div className="flex w-full">
+                      <div className="w-full">
+                        <DisplayTeams
+                          team={game.team1.participants}
+                          infoScore={firstTeamWins.toString()}
+                          isWinner={isFirstTeamWinner && !isDraw}
+                          teamName={game.team1.name || undefined}
+                        />
+                      </div>
+                      <div className="w-full">
+                        <DisplayTeams
+                          team={game.team2.participants}
+                          infoScore={secondTeamWins.toString()}
+                          teamName={game.team2.name || undefined}
+                          isWinner={isSecondTeamWinner && !isDraw}
+                        />
+                      </div>
+                    </div>
                   </div>
                 );
               })}
@@ -177,7 +210,7 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
           );
         })}
       </div>
-      <div className="flex justify-end py-2">
+      <div className="flex items-end justify-end py-2">
         <Button
           btnClass="mr-4"
           btnTitle="Cancel"

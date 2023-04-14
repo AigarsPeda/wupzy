@@ -39,10 +39,9 @@ export const kingTournamentsRouter = createTRPCRouter({
 
       const games = createAllPossibleKingGames(allParticipants);
       const shuffledGames = shuffleArray(games);
+      let gameOrder = 1;
 
       for (const game of shuffledGames) {
-        let order = 1;
-
         const team1 = await ctx.prisma.team.create({
           data: {
             name: "Team 1",
@@ -67,7 +66,7 @@ export const kingTournamentsRouter = createTRPCRouter({
 
         await ctx.prisma.games.create({
           data: {
-            gameOrder: order,
+            gameOrder,
             team1Id: team1.id,
             team2Id: team2.id,
             group: START_GROUP,
@@ -78,7 +77,7 @@ export const kingTournamentsRouter = createTRPCRouter({
           },
         });
 
-        order++;
+        gameOrder++;
       }
 
       return { tournament };
@@ -137,10 +136,9 @@ export const kingTournamentsRouter = createTRPCRouter({
       });
 
       const lastGamesOrderNumber = lastOrderNumber[0]?.gameOrder || 0;
+      let order = lastGamesOrderNumber + 1;
 
       for (const game of shuffledGames) {
-        let order = lastGamesOrderNumber + 1;
-
         const team1 = await ctx.prisma.team.create({
           data: {
             name: "Team 1",
@@ -222,10 +220,9 @@ export const kingTournamentsRouter = createTRPCRouter({
       });
 
       const lastGamesOrderNumber = lastOrderNumber[0]?.gameOrder || 0;
+      let order = lastGamesOrderNumber + 1;
 
       for (const game of shuffledGames) {
-        let order = lastGamesOrderNumber + 1;
-
         const team1 = await ctx.prisma.team.create({
           data: {
             name: "Team 1",

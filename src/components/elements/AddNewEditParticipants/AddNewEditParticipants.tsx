@@ -105,6 +105,8 @@ const AddNewEditParticipants: FC<AddNewEditParticipantsProps> = ({
                 name,
                 participantId: editParticipants.id,
               });
+              setName("");
+              setIsEdit(false);
               return;
             }
 
@@ -114,6 +116,8 @@ const AddNewEditParticipants: FC<AddNewEditParticipantsProps> = ({
               tournamentId,
               group: selectedGroup || "A",
             });
+            setName("");
+            setIsEdit(false);
           }}
         />
       </div>

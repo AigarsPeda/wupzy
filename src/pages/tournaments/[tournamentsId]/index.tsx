@@ -41,16 +41,20 @@ const Tournament: NextPage = () => {
       <div className="mb-4 flex justify-between">
         <TournamentHeader tournament={tournament?.tournament} />
         <div className="flex">
-          {tournament && tournament.tournament.isPlayoff ? (
-            <Button
-              btnClass="mr-2"
-              btnTitle="Playoff"
-              onClick={() => {
-                redirectToPath(`${tournamentId}/playoff/`);
-              }}
-            />
-          ) : (
-            <CreatePlayOff tournamentId={tournamentId} />
+          {tournament && tournament.tournament.type === "TEAMS" && (
+            <>
+              {tournament.tournament.isPlayoff ? (
+                <Button
+                  btnClass="mr-2"
+                  btnTitle="Playoff"
+                  onClick={() => {
+                    redirectToPath(`${tournamentId}/playoff/`);
+                  }}
+                />
+              ) : (
+                <CreatePlayOff tournamentId={tournamentId} />
+              )}
+            </>
           )}
           <EditTournamentContainer tournamentId={tournamentId} />
         </div>

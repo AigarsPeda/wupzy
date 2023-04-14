@@ -2,6 +2,7 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import type { FC } from "react";
 import type { ParticipantType } from "types/team.types";
 import classNames from "utils/classNames";
+import sortParticipants from "utils/sortParticipants";
 
 interface GroupParticipantCard {
   participants: ParticipantType[];
@@ -24,14 +25,14 @@ const GroupParticipantCard: FC<GroupParticipantCard> = ({ participants }) => {
         </div>
       </div>
       <ul ref={parent} className="w-full">
-        {participants.map((team, i) => {
+        {sortParticipants(participants).map((team, i) => {
           const isFirstGroup = i === 0;
           return (
             <li
               key={`${i}${team.id}`}
               className={classNames(
                 !isFirstGroup && "border-t-2",
-                "grid grid-cols-3 gap-4 py-2 px-2"
+                "grid grid-cols-3 gap-4 px-2 py-2"
               )}
             >
               <div className="flex justify-start">
