@@ -30,7 +30,7 @@ const Playoffs: FC<PlayoffsProps> = ({ tournamentId }) => {
       }
     );
 
-  const { mutate: updatePlayoffGame } =
+  const { mutate: updatePlayoffGame, isLoading: isLoadingUpdatePlayoffGame } =
     api.teamsTournaments.updatePlayoffGame.useMutation({
       onSuccess: async () => {
         await refetch();
@@ -117,6 +117,7 @@ const Playoffs: FC<PlayoffsProps> = ({ tournamentId }) => {
       <PlayoffBrackets
         brackets={[...brackets]}
         handleScoreSave={handleScoreSave}
+        isLoading={isLoadingUpdatePlayoffGame}
         handleScoreChange={(num, team, stage) => {
           const newMap = changeTeamsScore(num, team, stage, brackets);
           setBrackets(newMap);

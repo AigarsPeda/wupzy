@@ -1,7 +1,9 @@
+import Spinner from "components/elements/Spinner/Spinner";
 import type { FC } from "react";
 import classNames from "utils/classNames";
 
 interface SmallButtonProps {
+  isLoading?: boolean;
   isDisabled?: boolean;
   btnClassNames?: string;
   handleClick: () => void;
@@ -14,21 +16,22 @@ const SmallButton: FC<SmallButtonProps> = ({
   isDisabled,
   handleClick,
   btnClassNames,
+  isLoading = false,
   btnColor = "gray",
 }) => {
   return (
     <button
-      disabled={isDisabled}
+      disabled={isDisabled || isLoading}
       className={classNames(
         btnColor === "red" && "bg-red-500 text-white",
         btnColor === "gray" && "bg-gray-200 hover:bg-gray-800 hover:text-white",
         "flex items-center justify-center rounded-md text-sm transition-all duration-150 ease-in-out",
-        isDisabled && "cursor-not-allowed opacity-50",
+        isDisabled && "relative cursor-not-allowed opacity-50",
         btnClassNames ? btnClassNames : ""
       )}
       onClick={handleClick}
     >
-      {btnTitle}
+      {isLoading ? <Spinner size="xs" /> : btnTitle}
     </button>
   );
 };

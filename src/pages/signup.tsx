@@ -1,3 +1,4 @@
+import ErrorMessage from "components/elements/ErrorMessage/ErrorMessage";
 import Form from "components/elements/Form/Form";
 import Logo from "components/elements/Logo/Logo";
 import SignupLoginImage from "components/elements/SignupLoginImage/SignupLoginImage";
@@ -14,8 +15,9 @@ import setCookie from "utils/cookie";
 const SignUp: NextPage = () => {
   const router = useRouter();
   const { redirectToPath } = useRedirect();
-  const { isError, mutateAsync } = api.users.signUpUser.useMutation();
   const [disabledInputs, setDisabledInputs] = useState(["confirmPassword"]);
+  const { isError, mutateAsync, error, isLoading } =
+    api.users.signUpUser.useMutation();
   const [signUpForm, setSignUpForm] = useReducer(signupReducer, {
     form: {
       firstName: "",
@@ -78,6 +80,7 @@ const SignUp: NextPage = () => {
             <Logo />
           </div>
           <Form
+            isLoading={isLoading}
             submitBtnText="Sign Up"
             inputs={signUpForm.form}
             errors={signUpForm.error}
@@ -95,7 +98,16 @@ const SignUp: NextPage = () => {
               ),
             }}
           />
-          {isError && <p className="text-red-500">Something went wrong!</p>}
+
+          {isError && (
+            <ErrorMessage
+              message={
+                error?.message?.includes("email")
+                  ? "Email is taken"
+                  : "Something went wrong!"
+              }
+            />
+          )}
         </div>
         <SignupLoginImage />
       </div>

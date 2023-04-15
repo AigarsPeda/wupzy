@@ -42,7 +42,7 @@ const EditTournamentGroup: FC<EditTournamentGroupProps> = ({
       style={
         windowSize.width && windowSize.width > 650
           ? { maxHeight: "calc(100vh - 17rem)" }
-          : { maxHeight: "calc(100vh - 14rem)" }
+          : { maxHeight: "calc(100vh - 8.5rem)" }
       }
     >
       {tournament?.tournament.type === "KING" && (

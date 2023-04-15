@@ -15,6 +15,7 @@ type CoordinatesType = {
 };
 
 interface PlayoffBracketsProps {
+  isLoading: boolean;
   brackets: [string, GamePlayoffType[]][];
   handleScoreSave: (game: GamePlayoffType) => void;
   handleScoreChange: (n: number, team: TeamType, stage: string) => void;
@@ -22,6 +23,7 @@ interface PlayoffBracketsProps {
 
 const PlayoffBrackets: FC<PlayoffBracketsProps> = ({
   brackets,
+  isLoading,
   handleScoreSave,
   handleScoreChange,
 }) => {
@@ -87,73 +89,67 @@ const PlayoffBrackets: FC<PlayoffBracketsProps> = ({
                             : marginBottom,
                         }}
                       >
-                        <div className="min-h-[3.9rem] items-end space-x-2 truncate rounded bg-gray-800 px-2 py-1 text-white">
-                          <div
-                          // className={classNames(
-                          //   hasWinner && "items-center md:flex ",
-                          //   ""
-                          // )}
-                          >
-                            <div className="flex min-w-[10rem] items-center justify-between space-x-2">
-                              {firstTeam && (
-                                <div className="w-full">
-                                  <DisplayPlayoffTeams
-                                    hasWinner={hasWinner}
-                                    wonSets={firstTeamWins}
-                                    smallPoints={team1Score}
-                                    isScoreDisplay={Boolean(secondTeam)}
-                                    teamName={firstTeam.team1.name || ""}
-                                    participants={
-                                      firstTeam.team1.participants || []
-                                    }
-                                    handleScoreChange={(n) => {
-                                      handleScoreChange(
-                                        n,
-                                        firstTeam.team1,
-                                        stage
-                                      );
-                                    }}
-                                  />
-                                </div>
-                              )}
-                              {secondTeam && (
-                                <div className="w-full">
-                                  <DisplayPlayoffTeams
-                                    hasWinner={hasWinner}
-                                    smallPoints={team2Score}
-                                    wonSets={secondTeamWins}
-                                    isScoreDisplay={Boolean(firstTeam)}
-                                    teamName={secondTeam.team2.name || ""}
-                                    participants={
-                                      secondTeam.team2.participants || []
-                                    }
-                                    handleScoreChange={(n) => {
-                                      handleScoreChange(
-                                        n,
-                                        secondTeam.team2,
-                                        stage
-                                      );
-                                    }}
-                                  />
-                                </div>
-                              )}
-                              <div>
-                                {firstTeam && secondTeam && !hasWinner && (
-                                  <Button
-                                    btnTitle="Save"
-                                    btnColor="outline"
-                                    btnClass="h-[2.5rem] w-[8rem]"
-                                    onClick={() => {
-                                      handleScoreSave(game);
-                                    }}
-                                  />
-                                )}
+                        <div className="min-h-[3.9rem] items-end truncate rounded bg-gray-800 px-2 py-1 text-white">
+                          <div className="flex min-w-[10rem] items-center justify-between space-x-2">
+                            {firstTeam && (
+                              <div className="w-full">
+                                <DisplayPlayoffTeams
+                                  hasWinner={hasWinner}
+                                  wonSets={firstTeamWins}
+                                  smallPoints={team1Score}
+                                  isScoreDisplay={Boolean(secondTeam)}
+                                  teamName={firstTeam.team1.name || ""}
+                                  participants={
+                                    firstTeam.team1.participants || []
+                                  }
+                                  handleScoreChange={(n) => {
+                                    handleScoreChange(
+                                      n,
+                                      firstTeam.team1,
+                                      stage
+                                    );
+                                  }}
+                                />
                               </div>
+                            )}
+                            {secondTeam && (
+                              <div className="w-full">
+                                <DisplayPlayoffTeams
+                                  hasWinner={hasWinner}
+                                  smallPoints={team2Score}
+                                  wonSets={secondTeamWins}
+                                  isScoreDisplay={Boolean(firstTeam)}
+                                  teamName={secondTeam.team2.name || ""}
+                                  participants={
+                                    secondTeam.team2.participants || []
+                                  }
+                                  handleScoreChange={(n) => {
+                                    handleScoreChange(
+                                      n,
+                                      secondTeam.team2,
+                                      stage
+                                    );
+                                  }}
+                                />
+                              </div>
+                            )}
+                            <div>
+                              {firstTeam && secondTeam && !hasWinner && (
+                                <Button
+                                  btnTitle="Save"
+                                  btnColor="outline"
+                                  isLoading={isLoading}
+                                  btnClass="h-[2.5rem] md:w-[8rem] w-24"
+                                  onClick={() => {
+                                    handleScoreSave(game);
+                                  }}
+                                />
+                              )}
                             </div>
+                          </div>
 
-                            <div className={classNames("w-full max-w-[5rem]")}>
-                              <DisplaySetScore game={game} />
-                            </div>
+                          <div className={classNames("w-full max-w-[5rem]")}>
+                            <DisplaySetScore game={game} />
                           </div>
                         </div>
 

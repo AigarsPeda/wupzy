@@ -45,9 +45,10 @@ const TournamentCreateMetaForm: FC<TournamentCreateMetaFormProps> = ({
       </div>
 
       <div className="mt-12">
-        <div className="f-full transition-all md:flex" ref={parent}>
+        <div className="f-full flex items-end transition-all" ref={parent}>
           <Input
             ref={htmlElRef}
+            isMargin={false}
             name="tournamentName"
             value={tournamentName}
             label="Name of tournament"
@@ -57,9 +58,7 @@ const TournamentCreateMetaForm: FC<TournamentCreateMetaFormProps> = ({
           />
           {!isKing && (
             <div className="relative ml-2 mt-3">
-              <div className="absolute -left-0 -top-10">
-                <InfoParagraph text="* Sets to win a game" />
-              </div>
+              <InfoParagraph text="* Sets to win a game" className="mb-1" />
               <NumberDropdown
                 numArrayLength={12}
                 count={gameSetCount}

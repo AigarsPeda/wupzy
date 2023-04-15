@@ -1,6 +1,7 @@
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import Button from "components/elements/Button/Button";
 import DisplayTeams from "components/elements/DisplayTeams/DisplayTeams";
+import ErrorMessage from "components/elements/ErrorMessage/ErrorMessage";
 import getWinsPerTeam from "components/elements/GroupCard/utils/getWinsPerTeam";
 import SmallButton from "components/elements/SmallButton/SmallButton";
 import useWindowSize from "hooks/useWindowSize";
@@ -32,13 +33,16 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
   const [gamesState, setGamesState] = useState<GamesMapType>(new Map());
   const { data: games, refetch: refetchGames } =
     api.tournaments.getAllTournamentGames.useQuery({ group, tournamentId });
-  const { mutateAsync: updateGameOrder } =
-    api.tournaments.updateGameOrder.useMutation({
-      onSuccess: async () => {
-        await refetchGames();
-        handleCancelClick();
-      },
-    });
+  const {
+    isError,
+    mutateAsync: updateGameOrder,
+    isLoading: isLoadingUpdateGameOrder,
+  } = api.tournaments.updateGameOrder.useMutation({
+    onSuccess: async () => {
+      await refetchGames();
+      handleCancelClick();
+    },
+  });
 
   const handleGameOrderChange = (id: string, order: number, group: string) => {
     const newGamesState = new Map(gamesState);
@@ -99,7 +103,7 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
               id="group"
               key={group}
               ref={parent}
-              className="relative mx-auto w-[450px]"
+              className="relative mx-auto"
             >
               {games.map((game, i) => {
                 const gameOrder = i + 1;
@@ -137,7 +141,7 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
                   >
                     <div
                       className={classNames(
-                        "g mb-3 grid w-20 place-content-center border-b-2 md:mb-0 md:mr-3 md:border-b-0 md:border-r-2 md:px-2"
+                        "mr-3 grid w-20 place-content-center border-r-2 pr-2 md:mb-0 md:px-2"
                       )}
                     >
                       <div className="flex w-full items-center justify-center">
@@ -210,6 +214,11 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
           );
         })}
       </div>
+      <div>
+        {isError && (
+          <ErrorMessage message="Something went wrong. Please try again." />
+        )}
+      </div>
       <div className="flex items-end justify-end py-2">
         <Button
           btnClass="mr-4"
@@ -221,6 +230,7 @@ const EditTournamentGameOrder: FC<EditTournamentGameOrderProps> = ({
           btnTitle="Save"
           btnColor="black"
           isDisabled={!isOrderEdited}
+          isLoading={isLoadingUpdateGameOrder}
           onClick={() => {
             handleGameOrderSave().catch((err) =>
               console.error("Error saving game order: ", err)

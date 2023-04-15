@@ -41,7 +41,7 @@ const Button = forwardRef<Ref, ButtonProps>(
       ref={ref}
       type={type}
       onClick={() => {
-        if (!isDisabled) {
+        if (!isDisabled && !isLoading) {
           onClick();
         }
       }}
@@ -67,7 +67,7 @@ const Button = forwardRef<Ref, ButtonProps>(
         !isDisabled &&
           btnColor === "outline" &&
           "border-2 border-gray-800 bg-white text-gray-800 hover:scale-105 hover:shadow-gray-400",
-        "flex items-center justify-center rounded-md text-center shadow transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-gray-100",
+        "relative flex items-center justify-center rounded-md text-center shadow transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-gray-100",
         btnClass && btnClass,
         fontSize === "sm" && "text-sm",
         fontSize === "md" && "text-xs md:text-sm",
@@ -78,7 +78,7 @@ const Button = forwardRef<Ref, ButtonProps>(
         <span className="pointer-events-none text-gray-600">{icon}</span>
       )}
       {isLoading ? (
-        <Spinner size="small" />
+        <Spinner size="xs" color={btnColor !== "black" ? "dark" : "light"} />
       ) : (
         <span className={textClass}>{btnTitle}</span>
       )}

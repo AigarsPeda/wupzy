@@ -20,6 +20,7 @@ const GAME_STATUS: {
 
 interface GroupCardGamesOfInterestProps {
   group: string;
+  isLoading: boolean;
   firstTeamScore: number;
   secondTeamScore: number;
   gamesOfInterest: GamesOfInterestType;
@@ -38,6 +39,7 @@ interface GroupCardGamesOfInterestProps {
 
 const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
   group,
+  isLoading,
   totalGames,
   tournamentKind,
   firstTeamScore,
@@ -158,6 +160,7 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
                                 <Button
                                   btnColor="outline"
                                   btnTitle="Save score"
+                                  isLoading={isLoading}
                                   btnClass="border-gray-400 h-[2.5rem] w-full"
                                   onClick={() => {
                                     if (!game) return;

@@ -1,3 +1,4 @@
+import ErrorMessage from "components/elements/ErrorMessage/ErrorMessage";
 import Form from "components/elements/Form/Form";
 import Logo from "components/elements/Logo/Logo";
 import SignupLoginImage from "components/elements/SignupLoginImage/SignupLoginImage";
@@ -6,9 +7,7 @@ import useRedirect from "hooks/useRedirect";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
-import { useState } from "react";
-import { useEffect } from "react";
-import { useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import loginReducer from "reducers/loginReducer";
 import { api } from "utils/api";
 import setCookie from "utils/cookie";
@@ -17,7 +16,7 @@ const Login: NextPage = () => {
   const router = useRouter();
   const { redirectToPath } = useRedirect();
   const [isCookie, setIsCookie] = useState(false);
-  const { isError, mutateAsync } = api.users.loginUser.useMutation();
+  const { isError, isLoading, mutateAsync } = api.users.loginUser.useMutation();
   const [loginForm, setLoginForm] = useReducer(loginReducer, {
     form: {
       email: "",
@@ -78,6 +77,7 @@ const Login: NextPage = () => {
             <Logo />
           </div>
           <Form
+            isLoading={isLoading}
             submitBtnText="Login"
             inputs={loginForm.form}
             errors={loginForm.error}
@@ -94,7 +94,7 @@ const Login: NextPage = () => {
               ),
             }}
           />
-          {isError && <p className="text-red-500">Something went wrong!</p>}
+          {isError && <ErrorMessage message="Something went wrong!" />}
         </div>
         <SignupLoginImage />
       </div>

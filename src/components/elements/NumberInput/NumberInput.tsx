@@ -12,7 +12,7 @@ const NumberInput: FC<NumberInputProps> = ({ value, height, onChange }) => {
     <div
       className={classNames(
         height ? height : "h-10",
-        "relative flex w-28 flex-row rounded-lg border-2 border-transparent bg-transparent md:w-32"
+        "relative flex w-24 flex-row rounded-lg border-2 border-transparent bg-transparent md:w-32"
       )}
     >
       <button

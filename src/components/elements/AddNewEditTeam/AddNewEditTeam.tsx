@@ -11,8 +11,8 @@ interface AddNewEditTeamProps {
   tournamentId: string;
   isAddNewTeamOpen: boolean;
   selectedGroup: string | null;
-  editTeam: TeamType | undefined;
   handleCancelClick: () => void;
+  editTeam: TeamType | undefined;
 }
 
 const AddNewEditTeam: FC<AddNewEditTeamProps> = ({
@@ -39,7 +39,7 @@ const AddNewEditTeam: FC<AddNewEditTeamProps> = ({
   const { refetch: refetchTeams } =
     api.tournaments.getAllTournamentTeams.useQuery({ tournamentId });
 
-  const { mutate: addTeamToTournament } =
+  const { mutate: addTeamToTournament, isLoading: isLoadingAddTeam } =
     api.teamsTournaments.addTeamToTournament.useMutation({
       onSuccess: async () => {
         setTeamsName("");
@@ -231,6 +231,7 @@ const AddNewEditTeam: FC<AddNewEditTeamProps> = ({
           />
           <Button
             btnTitle="Save team"
+            isLoading={isLoadingAddTeam}
             onClick={() => {
               if (isEdit && editTeam) {
                 updateTeam({

@@ -37,12 +37,12 @@ const NewTournamentContainer: FC = () => {
     createStringArrayFromNumber(DEFAULT_ATTENDANTS_COUNT)
   );
   const {
-    mutateAsync: createKingTournament,
-    isLoading,
     isError,
+    isLoading: isKingLoading,
+    mutateAsync: createKingTournament,
   } = api.kingTournaments.createKingTournament.useMutation();
 
-  const { mutateAsync: createTeamsTournament } =
+  const { mutateAsync: createTeamsTournament, isLoading: isTeamsLoading } =
     api.teamsTournaments.createTeamsTournament.useMutation();
 
   const isFirstStep = formStep === 0;
@@ -174,8 +174,9 @@ const NewTournamentContainer: FC = () => {
       >
         <div
           ref={parent}
+          className="overflow-y-auto"
           style={{
-            height: windowSize.height - 350,
+            height: windowSize.height - 275,
           }}
         >
           {(() => {
@@ -255,9 +256,9 @@ const NewTournamentContainer: FC = () => {
             }}
           />
           <Button
-            isLoading={isLoading}
             isDisabled={isNextStepDisabled()}
             btnTitle={isLastStep ? "Create" : "Next"}
+            isLoading={isKingLoading || isTeamsLoading}
             onClick={() => {
               if (isLastStep) {
                 createTournament().catch(() => {

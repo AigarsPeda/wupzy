@@ -33,7 +33,6 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
 }) => {
   const [parent] = useAutoAnimate();
   const [teamName, setTeamName] = useState("");
-  // const elRefs = useRef<HTMLInputElement[]>([]);
   const [editTeamName, setEditTeamName] = useState<string | null>(null);
   const [teamAttendants, setTeamAttendants] = useState<AttendantType[]>([
     {
@@ -143,21 +142,6 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
     return true;
   };
 
-  // useEffect(() => {
-  //   const size = elRefs.current.length;
-
-  //   if (size === 0 || elRefs.current.length === 0) return;
-
-  //   // If there are no attendants, focus the first input
-  //   if (teamAttendants.length === 2) {
-  //     elRefs.current[0]?.focus();
-  //     return;
-  //   }
-
-  //   // If there are new attendants added, focus the last input
-  //   elRefs.current && elRefs.current[size - 1]?.focus();
-  // }, [teamAttendants]);
-
   return (
     <div className="">
       <div className="mt-8">
@@ -186,11 +170,6 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
                   value={value || ""}
                   name="participantName"
                   label={`${index + 1} participants name`}
-                  // ref={(el) => {
-                  //   if (!el) return;
-                  //   // create a new array with the new element
-                  //   elRefs.current = [...elRefs.current, el];
-                  // }}
                   handleInputChange={(e) =>
                     handleInputChange(index, e.target.value)
                   }
@@ -236,62 +215,59 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
         </div>
       )}
 
-      <div className="mt-4">
-        <div className="border-b-2">
-          <label
-            htmlFor="teamName"
-            className="text-sm font-semibold text-gray-600"
-          >
-            Created teams
-          </label>
-        </div>
-        <div className="h-[15rem] overflow-y-auto pt-4">
-          <GridLayout isGap ref={parent} minWith="150-033">
-            {getAttendantsKeyArray().map((teamName, i) => {
-              return (
-                <div key={`${teamName}${i}`} className="relative">
-                  <button
-                    onClick={() => {
-                      if (editTeamName === teamName) {
-                        setTeamName("");
-                        setEditTeamName(null);
-                        setTeamAttendants([
-                          {
-                            id: "1",
-                            name: "",
-                          },
-                          {
-                            id: "2",
-                            name: "",
-                          },
-                        ]);
-                        return;
-                      }
-
-                      setEditTeamName(teamName);
-                      handleTeamSwitch(teamName);
-                    }}
-                    className={classNames(
-                      editTeamName === teamName && "border-gray-800",
-                      "w-full truncate rounded-md border-2 border-gray-300 bg-gray-300 px-3 py-2 text-sm font-bold transition-all duration-300"
-                    )}
-                  >
-                    {teamName}
-                  </button>
-                  <div className=" absolute -top-2.5 right-0">
-                    <button
-                      onClick={() => deleteTeam(teamName)}
-                      className="ml-2 rounded-full bg-gray-200 p-1 text-sm font-bold text-red-500"
-                    >
-                      <BiTrash />
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </GridLayout>
-        </div>
+      <div className="my-4 border-b-2">
+        <label
+          htmlFor="teamName"
+          className="text-sm font-semibold text-gray-600"
+        >
+          Created teams
+        </label>
       </div>
+
+      <GridLayout isGap ref={parent} minWith="150-033">
+        {getAttendantsKeyArray().map((teamName, i) => {
+          return (
+            <div key={`${teamName}${i}`} className="relative">
+              <button
+                onClick={() => {
+                  if (editTeamName === teamName) {
+                    setTeamName("");
+                    setEditTeamName(null);
+                    setTeamAttendants([
+                      {
+                        id: "1",
+                        name: "",
+                      },
+                      {
+                        id: "2",
+                        name: "",
+                      },
+                    ]);
+                    return;
+                  }
+
+                  setEditTeamName(teamName);
+                  handleTeamSwitch(teamName);
+                }}
+                className={classNames(
+                  editTeamName === teamName && "border-gray-800",
+                  "w-full truncate rounded-md border-2 border-gray-300 bg-gray-300 px-3 py-2 text-sm font-bold transition-all duration-300"
+                )}
+              >
+                {teamName}
+              </button>
+              <div className="absolute -top-2.5 right-0">
+                <button
+                  onClick={() => deleteTeam(teamName)}
+                  className="ml-2 rounded-full bg-gray-200 p-1 text-sm font-bold text-red-600"
+                >
+                  <BiTrash />
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </GridLayout>
     </div>
   );
 };

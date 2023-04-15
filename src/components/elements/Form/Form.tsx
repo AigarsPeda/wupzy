@@ -13,6 +13,7 @@ type LinkType = {
 
 interface FormProps {
   link: LinkType;
+  isLoading: boolean;
   submitBtnText: string;
   disabledInputs?: string[];
   errors?: InputErrorType[];
@@ -25,6 +26,7 @@ const Form: FC<FormProps> = ({
   link,
   inputs,
   errors,
+  isLoading,
   handleLogin,
   submitBtnText,
   disabledInputs,
@@ -61,6 +63,7 @@ const Form: FC<FormProps> = ({
         <Button
           btnClass="mt-8"
           btnSize="small"
+          isLoading={isLoading}
           btnTitle={submitBtnText}
           onClick={() => {
             handleLogin().catch(() => console.error("Error logging in"));

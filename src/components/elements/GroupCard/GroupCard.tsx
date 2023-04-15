@@ -14,13 +14,13 @@ import { api } from "utils/api";
 interface GroupCardProps {
   group: string;
   tournamentId: string;
+  refetchData: () => void;
   participants: ParticipantType[];
   tournamentKind: TournamentTypeType;
   gamesOfInterest: GamesOfInterestType;
   totalGames: {
     [key: string]: number;
   };
-  refetchData: () => void;
 }
 
 const GroupCard: FC<GroupCardProps> = ({
@@ -44,7 +44,7 @@ const GroupCard: FC<GroupCardProps> = ({
       tournamentId,
     });
 
-  const { mutateAsync: updateGameScore } =
+  const { mutateAsync: updateGameScore, isLoading: isLoadingScoreUpdate } =
     api.tournaments.updateGameScore.useMutation({
       onSuccess: async () => {
         await refetchTeams();
@@ -116,12 +116,13 @@ const GroupCard: FC<GroupCardProps> = ({
   }, [participants, refetchTeams]);
 
   return (
-    <div className="space-x-2 md2:flex">
+    <div className=" md2:flex">
       <GroupCardGamesOfInterest
         group={group}
         totalGames={totalGames}
         tournamentKind={tournamentKind}
         firstTeamScore={score.firstTeam}
+        isLoading={isLoadingScoreUpdate}
         gamesOfInterest={gamesOfInterest}
         secondTeamScore={score.secondTeam}
         handleDisplayAllClick={() => {

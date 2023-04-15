@@ -26,7 +26,7 @@ const AddNewEditParticipants: FC<AddNewEditParticipantsProps> = ({
   const [isEdit, setIsEdit] = useState(false);
   const { refetchParticipants } = useParticipants(tournamentId);
 
-  const { mutate: updatedParticipant } =
+  const { mutate: updatedParticipant, isLoading: isLoadingUpdatedParticipant } =
     api.participant.updatedParticipant.useMutation({
       onSuccess: async () => {
         setName("");
@@ -35,7 +35,7 @@ const AddNewEditParticipants: FC<AddNewEditParticipantsProps> = ({
       },
     });
 
-  const { mutate: addParticipantToGroup } =
+  const { mutate: addParticipantToGroup, isLoading: isLoadingAddParticipant } =
     api.kingTournaments.addParticipantToGroup.useMutation({
       onSuccess: async () => {
         setName("");
@@ -44,7 +44,7 @@ const AddNewEditParticipants: FC<AddNewEditParticipantsProps> = ({
       },
     });
 
-  const { mutate: deleteParticipant } =
+  const { mutate: deleteParticipant, isLoading: isLoadingDeleteParticipant } =
     api.participant.deleteParticipant.useMutation({
       onSuccess: async () => {
         setName("");
@@ -85,6 +85,7 @@ const AddNewEditParticipants: FC<AddNewEditParticipantsProps> = ({
             btnColor="red"
             btnClass="mr-2"
             btnTitle="Delete"
+            isLoading={isLoadingDeleteParticipant}
             onClick={() => {
               deleteParticipant({
                 tournamentId,
@@ -97,6 +98,7 @@ const AddNewEditParticipants: FC<AddNewEditParticipantsProps> = ({
           btnClass="w-40"
           btnTitle={isEdit ? "Update" : "Add"}
           btnColor={name.length > 2 ? "black" : "outline"}
+          isLoading={isLoadingAddParticipant || isLoadingUpdatedParticipant}
           onClick={() => {
             if (name.length <= 2) return;
 

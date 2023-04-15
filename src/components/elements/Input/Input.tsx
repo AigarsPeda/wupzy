@@ -1,3 +1,4 @@
+import ErrorMessage from "components/elements/ErrorMessage/ErrorMessage";
 import { forwardRef } from "react";
 import classNames from "utils/classNames";
 
@@ -18,6 +19,7 @@ interface InputProps {
   value: string;
   type?: string;
   size?: "sm" | "lg";
+  isMargin?: boolean;
   isDisabled?: boolean;
   error?: InputErrorType;
   isCapitalized?: boolean;
@@ -36,13 +38,14 @@ const Input = forwardRef<Ref, InputProps>(
       isDisabled,
       type = "text",
       size = "lg",
+      isMargin = true,
       handleInputChange,
       isCapitalized = false,
     },
     ref
   ) => (
     <>
-      <div className="relative my-4 w-full">
+      <div className={classNames(isMargin && "my-4", "relative w-full")}>
         <input
           ref={(() => {
             // If ref is passed, use it, otherwise use null
@@ -82,7 +85,9 @@ const Input = forwardRef<Ref, InputProps>(
         </label>
 
         {error?.message && (
-          <p className="absolute mt-1 text-xs text-red-500">{error.message}</p>
+          <div className="absolute">
+            <ErrorMessage message={error.message} />
+          </div>
         )}
       </div>
     </>

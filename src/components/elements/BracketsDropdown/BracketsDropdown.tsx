@@ -67,7 +67,7 @@ const BracketsDropdown: FC<BracketsDropdownProps> = ({
         {selectedTeam && (
           <li className="border-b-2 border-gray-100">
             <ListButton
-              btnTitle={<span className="text-red-500">Remove</span>}
+              btnTitle={<span className="text-red-600">Remove</span>}
               handleClick={() => {
                 handleDropdownClose();
                 handleTeamsRemove(selectedTeam);

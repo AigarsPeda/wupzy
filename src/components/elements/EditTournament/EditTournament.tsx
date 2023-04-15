@@ -1,9 +1,9 @@
 import EditTournamentGroup from "components/elements/EditTournamentGroup/EditTournamentGroup";
 import ModalWrap from "components/elements/ModalWrap/ModalWrap";
+import GridLayout from "components/layouts/GridLayout/GridLayout";
 import { useRouter } from "next/router";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
-import GridLayout from "../../layouts/GridLayout/GridLayout";
 
 interface EditTournamentProps {
   isModalOpen: boolean;
