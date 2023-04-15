@@ -114,6 +114,7 @@ const Playoffs: FC<PlayoffsProps> = ({ tournamentId }) => {
 
   return (
     <>
+      {console.log("brackets", brackets)}
       <PlayoffBrackets
         brackets={[...brackets]}
         handleScoreSave={handleScoreSave}

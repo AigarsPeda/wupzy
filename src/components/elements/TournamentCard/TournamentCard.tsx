@@ -12,14 +12,14 @@ const TournamentCard: FC<TournamentCardProps> = ({ tournament }) => {
 
   return (
     <button
-      className="rounded-lg border border-gray-100 bg-white p-4 shadow-lg transition-all duration-200 hover:bg-gray-100"
+      className="rounded-lg border border-gray-100 bg-white p-4 text-left shadow-lg transition-all duration-200 hover:bg-gray-100"
       onClick={() => {
         router.push(`/tournaments/${tournament.id}`).catch(() => {
           console.error("error changing route");
         });
       }}
     >
-      <div className="flex items-center justify-end">
+      <div className="mb-5 flex items-center">
         <p className="text-sm">{tournament.type}</p>
       </div>
       <div className="flex flex-col space-y-3">
@@ -31,12 +31,12 @@ const TournamentCard: FC<TournamentCardProps> = ({ tournament }) => {
           <p className="text-sm text-gray-500">Crated</p>
           <p className="text-sm">{formatDate(tournament.createdAt)}</p>
         </div>
-        <div>
+        {/* <div>
           <p className="text-sm text-gray-500">Winner</p>
           <p className="text-sm">
             {tournament.winner ? tournament.winner : "Not finished yet"}
           </p>
-        </div>
+        </div> */}
       </div>
     </button>
   );

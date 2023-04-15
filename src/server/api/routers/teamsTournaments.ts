@@ -396,9 +396,11 @@ export const teamsTournamentsRouter = createTRPCRouter({
     .input(
       z.object({
         tournamentId: z.string(),
+
         games: z
           .object({
             stage: z.string(),
+            bracketNum: z.number(),
             team1: z.object({
               team1: TeamZodSchema.nullish(),
             }),
@@ -433,96 +435,105 @@ export const teamsTournamentsRouter = createTRPCRouter({
         const team2Ids =
           game.team2?.team2?.participants.map((p) => ({ id: p.id })) || [];
 
-        await ctx.prisma.playoffGames.create({
-          data: {
-            stage: game.stage,
-            gameOrder: count + i,
-            bracketNum: count + i,
-            team1Id: game.team1?.team1?.id,
-            team2Id: game.team2?.team2?.id,
-            tournamentId: input.tournamentId,
-            participants: {
-              connect: [...team1Ids, ...team2Ids],
+        const firstTeams = game.team1?.team1;
+        const secondTeams = game.team2?.team2;
+
+        if (firstTeams && secondTeams) {
+          await ctx.prisma.playoffGames.create({
+            data: {
+              stage: game.stage,
+              gameOrder: count + i,
+              bracketNum: game.bracketNum,
+              team1Id: game.team1?.team1?.id,
+              team2Id: game.team2?.team2?.id,
+              tournamentId: input.tournamentId,
+              participants: {
+                connect: [...team1Ids, ...team2Ids],
+              },
             },
-          },
-        });
-      }
+            include: {
+              team1: true,
+              team2: true,
+            },
+          });
+        } else {
+          const existingTeam = firstTeams || secondTeams;
 
-      await ctx.prisma.tournament.update({
-        where: {
-          id: input.tournamentId,
-        },
-        data: {
-          isPlayoff: true,
-        },
-      });
+          if (!existingTeam) {
+            throw new TRPCError({
+              code: "INTERNAL_SERVER_ERROR",
+              message: "Team not found",
+            });
+          }
 
-      // find all games for this tournament without score and add 0-0
-      const gamesWithoutScore = await ctx.prisma.games.findMany({
-        where: {
-          tournamentId: input.tournamentId,
-          team1Score: null,
-          team2Score: null,
-        },
-      });
+          const existingTeamIds = existingTeam?.participants.map((p) => ({
+            id: p.id,
+          }));
 
-      for (let i = 0; i < gamesWithoutScore.length; i++) {
-        const game = gamesWithoutScore[i];
-        const team1Score = 0;
-        const team2Score = 0;
-        const team1Points = 0;
-        const team2Points = 0;
-
-        if (!game) {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Game not found",
+          await ctx.prisma.playoffGames.create({
+            data: {
+              stage: game.stage,
+              gameOrder: count + i,
+              team1Id: existingTeam?.id,
+              bracketNum: game.bracketNum,
+              tournamentId: input.tournamentId,
+              participants: {
+                connect: [...existingTeamIds],
+              },
+            },
+            include: {
+              team1: true,
+              team2: true,
+            },
           });
         }
-
-        await ctx.prisma.games.update({
-          where: {
-            id: game.id,
-          },
-          data: {
-            team1Score: team1Score,
-            team2Score: team2Score,
-            team1: {
-              update: {
-                points: {
-                  increment: team1Points,
-                },
-                smallPoints: {
-                  increment: team1Score,
-                },
-              },
-            },
-            team2: {
-              update: {
-                points: {
-                  increment: team2Points,
-                },
-                smallPoints: {
-                  increment: team2Score,
-                },
-              },
-            },
-          },
-
-          include: {
-            team1: {
-              include: {
-                participants: true,
-              },
-            },
-            team2: {
-              include: {
-                participants: true,
-              },
-            },
-          },
-        });
       }
+
+      // const isBothTeams = game.team1?.team1?.id && game.team2?.team2?.id;
+
+      //   if (!isBothTeams) {
+      //     const nextStage = (parseInt(game.stage) / 2).toString();
+      //     const bracketNum = Math.floor(game.bracketNum / 2);
+      //     const existingTeam = game.team1?.team1 || game.team2?.team2;
+
+      //     console.log("bracketNum ---->", bracketNum);
+
+      //     // if (!existingTeam) {
+      //     //   throw new TRPCError({
+      //     //     code: "INTERNAL_SERVER_ERROR",
+      //     //     message: "Team not found",
+      //     //   });
+      //     // }
+
+      //     // await ctx.prisma.playoffGames.create({
+      //     //   data: {
+      //     //     stage: nextStage,
+      //     //     gameOrder: count + i,
+      //     //     bracketNum: bracketNum,
+      //     //     team1Id: existingTeam?.id,
+      //     //     // team2Id: game.team2?.team2?.id,
+      //     //     tournamentId: input.tournamentId,
+      //     //     participants: {
+      //     //       connect: [...team1Ids, ...team2Ids],
+      //     //     },
+      //     //   },
+      //     // });
+
+      //     // existingTeam.
+
+      //     // game.bracketNum = Math.floor(existingTeam.bracketNum / 2);
+      //     // existingTeam.stage = (parseInt(existingTeam.stage) / 2).toString();
+      //   }
+      // }
+
+      // await ctx.prisma.tournament.update({
+      //   where: {
+      //     id: input.tournamentId,
+      //   },
+      //   data: {
+      //     isPlayoff: true,
+      //   },
+      // });
     }),
 
   getPlayoffGames: protectedProcedure
@@ -638,7 +649,7 @@ export const teamsTournamentsRouter = createTRPCRouter({
         },
       });
 
-      // Create new game if there is a winner
+      // Find game if there is a winner
       const games = await ctx.prisma.playoffGames.findMany({
         where: {
           stage: nextStage,

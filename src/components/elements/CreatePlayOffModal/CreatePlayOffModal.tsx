@@ -20,6 +20,7 @@ import getPrevOddNumber from "utils/getPrevOddNumber";
 import getShortestGroup from "utils/getShortestGroup";
 import isOdd from "utils/isOdd";
 import sortMap from "utils/sortMap";
+import getNextOddNumber from "../../../utils/getNextOddNumber";
 
 interface CreatePlayOffModalProps {
   isModalOpen: boolean;
@@ -57,20 +58,18 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
 
     const games = brackets.get(`${teamCount}`) || [];
 
-    const { oneTeam } = splitArray(games);
+    console.log("games --->", games);
 
-    await mutateAsync({
-      tournamentId,
-      games: games,
-    });
+    // const { oneTeam } = splitArray(games);
 
-    // If there are games with only one team, we move them to the next round
-    await mutateAsync({
-      tournamentId,
-      games: oneTeam,
-    });
+    // console.log("oneTeam --->", oneTeam);
 
-    redirectToPath(`${tournamentId}/playoff/`);
+    // await mutateAsync({
+    //   tournamentId,
+    //   games: games,
+    // });
+
+    // redirectToPath(`${tournamentId}/playoff/`);
   };
 
   const isAllTeamsSelected = () => {
@@ -101,8 +100,9 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
       tMap = sortMap(putAllTeamsInOneGroup(tMap));
     }
 
-    const num = getPrevOddNumber(Math.floor(getShortestGroup(tMap) / 2));
-
+    const playoffBrackets = Math.floor(getShortestGroup(tMap) / 2);
+    // const num = getPrevOddNumber(playoffBrackets);
+    const num = getNextOddNumber(playoffBrackets);
     const numArray = createAllPossibleOddNumberArray(num, 2);
     const lastNum = numArray[numArray.length - 1];
 
@@ -176,7 +176,7 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
           <Button
             btnClass="mr-3"
             btnColor="outline"
-            isDisabled={!isAllTeamsSelected()}
+            // isDisabled={!isAllTeamsSelected()}
             btnTitle="Create playoffs"
             onClick={() => {
               handleSaveGames().catch((err) =>

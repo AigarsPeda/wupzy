@@ -1,4 +1,4 @@
-import type { GameType } from "./util.types";
+import type { GameType } from "components/elements/CreatePlayOffModal/utils/util.types";
 
 type SplitArrayType = {
   oneTeam: GameType[];
