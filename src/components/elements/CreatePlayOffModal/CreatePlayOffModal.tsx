@@ -3,7 +3,6 @@ import Button from "components/elements/Button/Button";
 import addPlayoffTeam from "components/elements/CreatePlayOffModal/utils/addPlayoffTeam";
 import cratePlayoffMap from "components/elements/CreatePlayOffModal/utils/cratePlayoffMap";
 import removePlayoffTeam from "components/elements/CreatePlayOffModal/utils/removePlayoffTeam";
-import splitArray from "components/elements/CreatePlayOffModal/utils/splitArray";
 import type { GameType } from "components/elements/CreatePlayOffModal/utils/util.types";
 import InfoParagraph from "components/elements/InfoParagraph/InfoParagraph";
 import ModalWrap from "components/elements/ModalWrap/ModalWrap";
@@ -16,11 +15,10 @@ import type { TeamType, TeamsMapType } from "types/team.types";
 import { api } from "utils/api";
 import createAllPossibleOddNumberArray from "utils/createAllPossibleOddNumberArray";
 import createMap from "utils/createMap";
-import getPrevOddNumber from "utils/getPrevOddNumber";
+import getNextOddNumber from "utils/getNextOddNumber";
 import getShortestGroup from "utils/getShortestGroup";
 import isOdd from "utils/isOdd";
 import sortMap from "utils/sortMap";
-import getNextOddNumber from "../../../utils/getNextOddNumber";
 
 interface CreatePlayOffModalProps {
   isModalOpen: boolean;
@@ -60,31 +58,27 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
 
     console.log("games --->", games);
 
-    // const { oneTeam } = splitArray(games);
+    await mutateAsync({
+      tournamentId,
+      games: games,
+    });
 
-    // console.log("oneTeam --->", oneTeam);
-
-    // await mutateAsync({
-    //   tournamentId,
-    //   games: games,
-    // });
-
-    // redirectToPath(`${tournamentId}/playoff/`);
+    redirectToPath(`${tournamentId}/playoff/`);
   };
 
-  const isAllTeamsSelected = () => {
-    if (!teamCount) return false;
+  // const isAllTeamsSelected = () => {
+  //   if (!teamCount) return false;
 
-    const games = brackets.get(`${teamCount}`) || [];
+  //   const games = brackets.get(`${teamCount}`) || [];
 
-    for (const game of games) {
-      if (!game?.team1.team1?.id || !game?.team2.team2?.id) {
-        return false;
-      }
-    }
+  //   for (const game of games) {
+  //     if (!game?.team1.team1?.id || !game?.team2.team2?.id) {
+  //       return false;
+  //     }
+  //   }
 
-    return true;
-  };
+  //   return true;
+  // };
 
   useEffect(() => {
     if (!teams) return;

@@ -45,7 +45,10 @@ const Tournament: NextPage = () => {
             isPlayoff={Boolean(tournament?.tournament.isPlayoff)}
           />
 
-          <EditTournamentContainer tournamentId={tournamentId} />
+          <EditTournamentContainer
+            tournamentId={tournamentId}
+            isPlayoff={Boolean(tournament?.tournament.isPlayoff)}
+          />
         </div>
       </div>
       {tournament && (

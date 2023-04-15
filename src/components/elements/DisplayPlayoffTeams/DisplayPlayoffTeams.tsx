@@ -6,6 +6,7 @@ interface DisplayPlayoffTeamsProps {
   wonSets: number;
   teamName: string;
   hasWinner: boolean;
+  isBothTeams: boolean;
   isScoreDisplay: boolean;
   participants: ParticipantType[];
   smallPoints: number | null | undefined;
@@ -16,6 +17,7 @@ const DisplayPlayoffTeams: FC<DisplayPlayoffTeamsProps> = ({
   wonSets,
   teamName,
   hasWinner,
+  isBothTeams,
   smallPoints,
   participants,
   handleScoreChange,
@@ -31,7 +33,7 @@ const DisplayPlayoffTeams: FC<DisplayPlayoffTeamsProps> = ({
         </div>
       </div>
 
-      {!hasWinner && (
+      {!hasWinner && isBothTeams && (
         <div className="flex h-10 w-full justify-between">
           <NumberInput value={smallPoints || 0} onChange={handleScoreChange} />
         </div>

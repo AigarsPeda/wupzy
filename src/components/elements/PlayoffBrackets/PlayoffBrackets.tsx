@@ -62,6 +62,10 @@ const PlayoffBrackets: FC<PlayoffBracketsProps> = ({
                 const secondTeam = game.team2;
                 const marginBottom = `${Math.floor(i * 2 + 2)}rem`;
 
+                const isBothTeams = Boolean(
+                  firstTeam?.team1.id && secondTeam?.team2.id
+                );
+
                 const necessaryToWin = game.setsInGame;
 
                 const team1Score = firstTeam?.team1Score;
@@ -97,6 +101,7 @@ const PlayoffBrackets: FC<PlayoffBracketsProps> = ({
                                   hasWinner={hasWinner}
                                   wonSets={firstTeamWins}
                                   smallPoints={team1Score}
+                                  isBothTeams={isBothTeams}
                                   isScoreDisplay={Boolean(secondTeam)}
                                   teamName={firstTeam.team1.name || ""}
                                   participants={
@@ -118,6 +123,7 @@ const PlayoffBrackets: FC<PlayoffBracketsProps> = ({
                                   hasWinner={hasWinner}
                                   smallPoints={team2Score}
                                   wonSets={secondTeamWins}
+                                  isBothTeams={isBothTeams}
                                   isScoreDisplay={Boolean(firstTeam)}
                                   teamName={secondTeam.team2.name || ""}
                                   participants={

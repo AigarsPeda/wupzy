@@ -438,26 +438,31 @@ export const teamsTournamentsRouter = createTRPCRouter({
         const firstTeams = game.team1?.team1;
         const secondTeams = game.team2?.team2;
 
-        if (firstTeams && secondTeams) {
-          await ctx.prisma.playoffGames.create({
-            data: {
-              stage: game.stage,
-              gameOrder: count + i,
-              bracketNum: game.bracketNum,
-              team1Id: game.team1?.team1?.id,
-              team2Id: game.team2?.team2?.id,
-              tournamentId: input.tournamentId,
-              participants: {
-                connect: [...team1Ids, ...team2Ids],
-              },
+        console.log("game --->", game);
+
+        await ctx.prisma.playoffGames.create({
+          data: {
+            stage: game.stage,
+            gameOrder: count + i,
+            bracketNum: game.bracketNum,
+            team1Id: game.team1?.team1?.id,
+            team2Id: game.team2?.team2?.id,
+            tournamentId: input.tournamentId,
+            participants: {
+              connect: [...team1Ids, ...team2Ids],
             },
-            include: {
-              team1: true,
-              team2: true,
-            },
-          });
-        } else {
+          },
+          include: {
+            team1: true,
+            team2: true,
+          },
+        });
+
+        // If there is only one team in the bracket, create a game for the next stage
+        if (!firstTeams || !secondTeams) {
           const existingTeam = firstTeams || secondTeams;
+          const nextBracketNum = Math.floor(game.bracketNum / 2);
+          const nextStage = (parseInt(game.stage) / 2).toString();
 
           if (!existingTeam) {
             throw new TRPCError({
@@ -472,10 +477,10 @@ export const teamsTournamentsRouter = createTRPCRouter({
 
           await ctx.prisma.playoffGames.create({
             data: {
-              stage: game.stage,
+              stage: nextStage,
               gameOrder: count + i,
               team1Id: existingTeam?.id,
-              bracketNum: game.bracketNum,
+              bracketNum: nextBracketNum,
               tournamentId: input.tournamentId,
               participants: {
                 connect: [...existingTeamIds],
@@ -489,51 +494,14 @@ export const teamsTournamentsRouter = createTRPCRouter({
         }
       }
 
-      // const isBothTeams = game.team1?.team1?.id && game.team2?.team2?.id;
-
-      //   if (!isBothTeams) {
-      //     const nextStage = (parseInt(game.stage) / 2).toString();
-      //     const bracketNum = Math.floor(game.bracketNum / 2);
-      //     const existingTeam = game.team1?.team1 || game.team2?.team2;
-
-      //     console.log("bracketNum ---->", bracketNum);
-
-      //     // if (!existingTeam) {
-      //     //   throw new TRPCError({
-      //     //     code: "INTERNAL_SERVER_ERROR",
-      //     //     message: "Team not found",
-      //     //   });
-      //     // }
-
-      //     // await ctx.prisma.playoffGames.create({
-      //     //   data: {
-      //     //     stage: nextStage,
-      //     //     gameOrder: count + i,
-      //     //     bracketNum: bracketNum,
-      //     //     team1Id: existingTeam?.id,
-      //     //     // team2Id: game.team2?.team2?.id,
-      //     //     tournamentId: input.tournamentId,
-      //     //     participants: {
-      //     //       connect: [...team1Ids, ...team2Ids],
-      //     //     },
-      //     //   },
-      //     // });
-
-      //     // existingTeam.
-
-      //     // game.bracketNum = Math.floor(existingTeam.bracketNum / 2);
-      //     // existingTeam.stage = (parseInt(existingTeam.stage) / 2).toString();
-      //   }
-      // }
-
-      // await ctx.prisma.tournament.update({
-      //   where: {
-      //     id: input.tournamentId,
-      //   },
-      //   data: {
-      //     isPlayoff: true,
-      //   },
-      // });
+      await ctx.prisma.tournament.update({
+        where: {
+          id: input.tournamentId,
+        },
+        data: {
+          isPlayoff: true,
+        },
+      });
     }),
 
   getPlayoffGames: protectedProcedure

@@ -1,17 +1,23 @@
-import EditTournament from "components/elements/EditTournament/EditTournament";
 import RoundButton from "components/elements/RoundButton/RoundButton";
 import useParticipants from "hooks/useParticipants";
 import useWindowSize from "hooks/useWindowSize";
+import dynamic from "next/dynamic";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { IoSettingsOutline } from "react-icons/io5";
 import { api } from "utils/api";
 
+const EditTournament = dynamic(
+  () => import("components/elements/EditTournament/EditTournament")
+);
+
 interface EditTournamentContainerProps {
+  isPlayoff: boolean;
   tournamentId: string;
 }
 
 const EditTournamentContainer: FC<EditTournamentContainerProps> = ({
+  isPlayoff,
   tournamentId,
 }) => {
   const { windowSize } = useWindowSize();
@@ -46,7 +52,7 @@ const EditTournamentContainer: FC<EditTournamentContainerProps> = ({
 
   return (
     <div>
-      {!isAllGamesEnded && (
+      {!isAllGamesEnded && !isPlayoff && (
         <RoundButton
           textSize="sm"
           bgColor="gray"
