@@ -16,8 +16,8 @@ interface ModalWrapProps {
     | "7xl"
     | "large"
     | "medium";
-
   modalTitle: string;
+  modalHeight?: string;
   header?: JSX.Element;
   modalsWidth?: string;
   isFullScreen?: boolean;
@@ -31,6 +31,7 @@ interface ModalWrapProps {
 const ModalWrap: FC<ModalWrapProps> = ({
   children,
   modalTitle,
+  modalHeight,
   modalsWidth,
   isFullScreen,
   titleClassName,
@@ -68,7 +69,8 @@ const ModalWrap: FC<ModalWrapProps> = ({
               modalWidth === "medium" && "md:max-w-md",
               isFullScreen && "h-full w-full",
               modalsWidth && modalsWidth,
-              "absolute z-[69] mx-2 h-[90%] w-[90%] rounded bg-white shadow-lg sm:mx-5"
+              modalHeight ? modalHeight : "h-[90%]",
+              "absolute z-[69] mx-2 w-[90%] rounded bg-white shadow-lg sm:mx-5"
             )}
           >
             <div

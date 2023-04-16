@@ -55,7 +55,6 @@ const EditTournamentContainer: FC<EditTournamentContainerProps> = ({
       {!isAllGamesEnded && !isPlayoff && (
         <RoundButton
           textSize="sm"
-          bgColor="gray"
           btnType="button"
           btnContentClassNames="mr-2"
           btnContent={windowSize.width >= 400 && "Edit"}

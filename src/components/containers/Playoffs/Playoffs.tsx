@@ -113,18 +113,15 @@ const Playoffs: FC<PlayoffsProps> = ({ tournamentId }) => {
   }
 
   return (
-    <>
-      {console.log(brackets)}
-      <PlayoffBrackets
-        brackets={[...brackets]}
-        handleScoreSave={handleScoreSave}
-        isLoading={isLoadingUpdatePlayoffGame}
-        handleScoreChange={(num, team, stage) => {
-          const newMap = changeTeamsScore(num, team, stage, brackets);
-          setBrackets(newMap);
-        }}
-      />
-    </>
+    <PlayoffBrackets
+      brackets={[...brackets]}
+      handleScoreSave={handleScoreSave}
+      isLoading={isLoadingUpdatePlayoffGame}
+      handleScoreChange={(num, team, stage) => {
+        const newMap = changeTeamsScore(num, team, stage, brackets);
+        setBrackets(newMap);
+      }}
+    />
   );
 };
 

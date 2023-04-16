@@ -12,7 +12,6 @@ const SettingContainer: FC = () => {
     <Dropdown
       dropdownBtn={
         <RoundButton
-          bgColor="gray"
           btnType="button"
           btnClass="ml-2"
           btnContent={<IoSettingsOutline className="h-7 w-7" />}
@@ -26,7 +25,7 @@ const SettingContainer: FC = () => {
         setIsDropdownOpen(false);
       }}
     >
-      <div className="py-3 px-2">
+      <div className="px-2 py-3">
         <LogoutButton />
       </div>
     </Dropdown>

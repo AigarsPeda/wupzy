@@ -7,27 +7,38 @@ import { useEffect } from "react";
 import { api } from "utils/api";
 
 const TournamentsPage: NextPage = () => {
+  // const [parent] = useAutoAnimate();
   const { redirectToPath } = useRedirect();
-  const res = api.tournaments.getAllTournaments.useQuery(undefined, {
-    suspense: false,
-    retry: 2,
-  });
+  const { data, error, isLoading, isFetching, refetch } =
+    api.tournaments.getAllTournaments.useQuery(undefined, {
+      suspense: false,
+      retry: 2,
+    });
 
   useEffect(() => {
-    if (!res.isLoading && res.error?.data?.code === "UNAUTHORIZED") {
+    if (!isLoading && error?.data?.code === "UNAUTHORIZED") {
       redirectToPath("/login", window.location.pathname);
     }
-  }, [redirectToPath, res.error?.data?.code, res.isLoading]);
+  }, [redirectToPath, error?.data?.code, isLoading]);
 
-  if (res.isFetching) {
+  if (isFetching) {
     return <Spinner size="small" />;
   }
 
   return (
     <GridLayout minWith="320" isGap>
-      {res.data && res.data.tournaments.length > 0 ? (
-        res.data.tournaments.map((tournament) => (
-          <TournamentCard key={tournament.id} tournament={tournament} />
+      {data && data.tournaments.length > 0 ? (
+        data.tournaments.map((tournament) => (
+          <TournamentCard
+            key={tournament.id}
+            tournament={tournament}
+            isPlayoff={Boolean(tournament.isPlayoff)}
+            refetch={() => {
+              refetch().catch((err) => {
+                console.log(err);
+              });
+            }}
+          />
         ))
       ) : (
         <p>No tournaments</p>

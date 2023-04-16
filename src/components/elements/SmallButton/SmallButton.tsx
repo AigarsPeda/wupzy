@@ -23,7 +23,7 @@ const SmallButton: FC<SmallButtonProps> = ({
     <button
       disabled={isDisabled || isLoading}
       className={classNames(
-        btnColor === "red" && "bg-red-500 text-white",
+        btnColor === "red" && "bg-red-600 text-white",
         btnColor === "gray" && "bg-gray-200 hover:bg-gray-800 hover:text-white",
         "flex items-center justify-center rounded-md text-sm transition-all duration-150 ease-in-out",
         isDisabled && "relative cursor-not-allowed opacity-50",

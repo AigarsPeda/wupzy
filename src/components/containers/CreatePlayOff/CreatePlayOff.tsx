@@ -1,9 +1,8 @@
 import RoundButton from "components/elements/RoundButton/RoundButton";
+import useRedirect from "hooks/useRedirect";
 import dynamic from "next/dynamic";
 import type { FC } from "react";
 import { useState } from "react";
-import Button from "components/elements/Button/Button";
-import useRedirect from "hooks/useRedirect";
 
 const CreatePlayOffModal = dynamic(
   () => import("components/elements/CreatePlayOffModal/CreatePlayOffModal")
@@ -21,17 +20,18 @@ const CreatePlayOff: FC<CreatePlayOffProps> = ({ tournamentId, isPlayoff }) => {
   return (
     <div>
       {isPlayoff ? (
-        <Button
-          btnClass="mr-2"
-          btnTitle="Playoff"
-          onClick={() => {
+        <RoundButton
+          textSize="sm"
+          btnType="button"
+          btnContent="Playoff"
+          btnContentClassNames="px-2"
+          handleClick={() => {
             redirectToPath(`${tournamentId}/playoff/`);
           }}
         />
       ) : (
         <RoundButton
           textSize="sm"
-          bgColor="gray"
           btnClass="mr-2"
           btnType="button"
           btnContentClassNames="px-4"

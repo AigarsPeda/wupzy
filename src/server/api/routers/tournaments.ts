@@ -11,6 +11,9 @@ export const tournamentsRouter = createTRPCRouter({
       where: {
         userId: ctx.user.id,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     return { tournaments };
@@ -251,5 +254,39 @@ export const tournamentsRouter = createTRPCRouter({
       });
 
       return { tournament };
+    }),
+
+  deleteTournament: protectedProcedure
+    .input(z.object({ tournamentId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.prisma.games.deleteMany({
+        where: {
+          tournamentId: input.tournamentId,
+        },
+      });
+
+      await ctx.prisma.playoffGames.deleteMany({
+        where: {
+          tournamentId: input.tournamentId,
+        },
+      });
+
+      await ctx.prisma.team.deleteMany({
+        where: {
+          tournamentId: input.tournamentId,
+        },
+      });
+
+      await ctx.prisma.participant.deleteMany({
+        where: {
+          tournamentId: input.tournamentId,
+        },
+      });
+
+      await ctx.prisma.tournament.delete({
+        where: {
+          id: input.tournamentId,
+        },
+      });
     }),
 });

@@ -22,7 +22,6 @@ const EditGroupDropdown: FC<EditGroupDropdownProps> = ({
     <Dropdown
       dropdownBtn={
         <RoundButton
-          bgColor="gray"
           btnType="button"
           btnClass="ml-2"
           btnContent={<IoSettingsOutline className="h-4 w-4" />}

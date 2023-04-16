@@ -14,7 +14,7 @@ interface ButtonProps {
   btnTitle: string | ReactNode;
   iconPosition?: "left" | "right";
   type?: "button" | "submit" | "reset";
-  btnSize?: "large" | "default" | "small" | "full" | "square";
+  btnSize?: "large" | "default" | "small" | "full" | "square" | "xs";
   btnColor?: "black" | "white" | "red" | "outline" | "underline";
 }
 type Ref = HTMLButtonElement;
@@ -48,6 +48,7 @@ const Button = forwardRef<Ref, ButtonProps>(
       data-testid="button"
       disabled={isDisabled}
       className={classNames(
+        btnSize === "xs" && "h-9 px-2",
         btnSize === "small" && "h-11 w-24",
         btnSize === "large" && "h-11 w-48",
         btnSize === "full" && "h-10 w-full",
@@ -57,7 +58,7 @@ const Button = forwardRef<Ref, ButtonProps>(
         icon ? "justify-between px-4 py-2" : "justify-center",
         !isDisabled &&
           btnColor === "red" &&
-          "bg-red-500 text-white hover:scale-105 hover:shadow-red-400",
+          "bg-red-600 text-white hover:scale-105 hover:shadow-red-400",
         !isDisabled &&
           btnColor === "black" &&
           "bg-gray-800 text-white hover:scale-105 hover:shadow-gray-400",
