@@ -43,6 +43,7 @@ const Tournament: NextPage = () => {
           <CreatePlayOff
             tournamentId={tournamentId}
             isPlayoff={Boolean(tournament?.tournament.isPlayoff)}
+            tournamentType={tournament?.tournament.type ?? "TEAMS"}
           />
 
           <EditTournamentContainer

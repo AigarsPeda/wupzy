@@ -36,7 +36,7 @@ const DisplayTeams: FC<DisplayTeamsProps> = ({
       )}
       <div
         className={classNames(
-          "flex w-full max-w-[10rem] items-center overflow-x-auto"
+          "flex w-full max-w-[6.5rem] items-center overflow-x-auto py-1 md:max-w-[10rem]"
         )}
       >
         {team.map((t) => (

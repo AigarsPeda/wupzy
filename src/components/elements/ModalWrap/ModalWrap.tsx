@@ -1,5 +1,6 @@
 import useDelayUnmount from "hooks/useDelayUnmount";
 import useOnClickOutside from "hooks/useOnClickOutside";
+import useWindowSize from "hooks/useWindowSize";
 import type { FC, ReactNode } from "react";
 import { useRef } from "react";
 import { IoClose } from "react-icons/io5";
@@ -17,7 +18,7 @@ interface ModalWrapProps {
     | "large"
     | "medium";
   modalTitle: string;
-  modalHeight?: string;
+  // modalHeight?: string;
   header?: JSX.Element;
   modalsWidth?: string;
   isFullScreen?: boolean;
@@ -31,7 +32,7 @@ interface ModalWrapProps {
 const ModalWrap: FC<ModalWrapProps> = ({
   children,
   modalTitle,
-  modalHeight,
+  // modalHeight,
   modalsWidth,
   isFullScreen,
   titleClassName,
@@ -40,6 +41,7 @@ const ModalWrap: FC<ModalWrapProps> = ({
   modalWidth = "medium",
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
+  const { windowSize } = useWindowSize();
   const { shouldRender, isAnimation } = useDelayUnmount(isModalVisible, 100);
   useOnClickOutside<HTMLDivElement>(modalRef, () => {
     handleCancelClick();
@@ -69,9 +71,12 @@ const ModalWrap: FC<ModalWrapProps> = ({
               modalWidth === "medium" && "md:max-w-md",
               isFullScreen && "h-full w-full",
               modalsWidth && modalsWidth,
-              modalHeight ? modalHeight : "h-[90%]",
-              "absolute z-[69] mx-2 w-[90%] rounded bg-white shadow-lg sm:mx-5"
+              // modalHeight ? modalHeight : "h-[90%]",
+              "absolute z-[69] mx-2 w-[90%]  rounded bg-white shadow-lg sm:mx-5"
             )}
+            style={{
+              maxHeight: windowSize.height,
+            }}
           >
             <div
               className={classNames(

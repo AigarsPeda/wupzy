@@ -25,7 +25,6 @@ const TournamentCreateMetaForm: FC<TournamentCreateMetaFormProps> = ({
   handleGameSetClick,
 }) => {
   const [parent] = useAutoAnimate();
-
   const { htmlElRef, setFocus } = useFocus();
 
   useEffect(() => {
@@ -33,7 +32,7 @@ const TournamentCreateMetaForm: FC<TournamentCreateMetaFormProps> = ({
   }, [setFocus]);
 
   return (
-    <>
+    <div>
       <InfoParagraph text="* In 'king mode', participants are added one by one, and each participant plays against every other participant in randomly assigned pairs. In 'teams mode', teams are added and each team competes against every other team." />
       <div className="mt-8">
         <LargeSwitch
@@ -68,7 +67,7 @@ const TournamentCreateMetaForm: FC<TournamentCreateMetaFormProps> = ({
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

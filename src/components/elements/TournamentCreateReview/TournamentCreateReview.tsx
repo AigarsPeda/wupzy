@@ -32,37 +32,33 @@ const TournamentCreateReview: FC<TournamentCreateReviewProps> = ({
       </h1>
 
       <p className="mt-4 text-xs text-gray-400">Attendants:</p>
-      <div className="max-h-[30rem] w-full overflow-y-auto truncate">
+      <div className="h-[15rem] overflow-y-auto md:h-[28rem]">
         {isKing ? (
-          <div>
-            <ul>
-              {attendants.map((attendant, i) => (
-                <li className="mb-2 text-gray-800" key={`${attendant}${i}`}>
-                  {attendant}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ul>
+            {attendants.map((attendant, i) => (
+              <li className="mb-2 text-gray-800" key={`${attendant}${i}`}>
+                {attendant}
+              </li>
+            ))}
+          </ul>
         ) : (
-          <div>
-            <ul>
-              {[...teamsAttendants].map(([key, participants], i) => (
-                <li className="mb-2 text-gray-800" key={`${key}${i}`}>
-                  {key}
-                  <div className="flex space-x-2">
-                    {participants.map((attendant, i) => (
-                      <span
-                        key={`${attendant.name}${i}`}
-                        className="text-xs text-gray-400"
-                      >
-                        {attendant.name}
-                      </span>
-                    ))}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ul>
+            {[...teamsAttendants].map(([key, participants], i) => (
+              <li className="mb-2 text-gray-800" key={`${key}${i}`}>
+                {key}
+                <div className="flex space-x-2">
+                  {participants.map((attendant, i) => (
+                    <span
+                      key={`${attendant.name}${i}`}
+                      className="text-xs text-gray-400"
+                    >
+                      {attendant.name}
+                    </span>
+                  ))}
+                </div>
+              </li>
+            ))}
+          </ul>
         )}
       </div>
     </div>

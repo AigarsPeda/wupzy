@@ -38,7 +38,10 @@ const KingAttendantForm: FC<KingAttendantFormProps> = ({
   return (
     <>
       <InfoParagraph text="* To add player names, simply type them in the designated field. Need to add more players? Just click the plus button to add additional slots." />
-      <div className="mt-8 max-h-[23rem] overflow-y-auto" ref={parent}>
+      <div
+        className="mt-8 max-h-[20rem] overflow-y-auto md:max-h-[30rem]"
+        ref={parent}
+      >
         {kingAttendants.map((attendant, index) => {
           return (
             <div key={index} className="f-full md:w-1/2">

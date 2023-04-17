@@ -172,13 +172,7 @@ const NewTournamentContainer: FC = () => {
           );
         }}
       >
-        <div
-          ref={parent}
-          className="overflow-y-auto"
-          style={{
-            height: windowSize.height - 275,
-          }}
-        >
+        <div ref={parent} className="h-[28rem] md:h-[40rem]">
           {(() => {
             switch (formStep) {
               case 0:
@@ -232,7 +226,7 @@ const NewTournamentContainer: FC = () => {
           })()}
         </div>
 
-        <div className="my-6 w-full">
+        <div className="my-3 w-full md:my-6">
           {isError ? (
             <div className="flex w-full justify-center">
               <ErrorMessage message="Something went wrong! Please tray again." />

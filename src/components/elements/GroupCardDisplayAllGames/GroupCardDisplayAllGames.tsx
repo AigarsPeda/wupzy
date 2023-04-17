@@ -33,13 +33,9 @@ const GroupCardDisplayAllGames: FC<GroupCardDisplayAllGamesProps> = ({
   return (
     <ModalWrap
       modalWidth="2xl"
-      // topPosition="top"
       isModalVisible={isDisplayAllGames}
       modalTitle={`Group ${group} games`}
       handleCancelClick={handleCancelClick}
-      // modalWidth="2xl"
-      // isModalVisible={isModalOpen}
-      // modalTitle="Crete new tournament"
     >
       <ul
         className="overflow-y-auto"

@@ -143,8 +143,8 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
   };
 
   return (
-    <div className="">
-      <div className="mt-8">
+    <>
+      <div className="mt-2 md:mt-8">
         <InfoParagraph text="* To create a team, please enter the names of the team and at least two participants. Keep in mind that each team must have a minimum of two participants." />
         <div className="flex w-full flex-col md:w-1/2">
           <Input
@@ -155,10 +155,7 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
             handleInputChange={(e) => setTeamName(e.target.value)}
           />
         </div>
-        <div
-          ref={parent}
-          className="mt-4 flex max-h-[19rem] flex-col overflow-y-auto"
-        >
+        <div ref={parent} className="mt-4 flex flex-col overflow-y-auto">
           {teamAttendants.map((_attendant, index) => {
             const value = teamAttendants[index]?.name;
 
@@ -215,7 +212,7 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
         </div>
       )}
 
-      <div className="my-4 border-b-2">
+      <div className="my-2 border-b-2 md:my-4">
         <label
           htmlFor="teamName"
           className="text-sm font-semibold text-gray-600"
@@ -223,52 +220,53 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
           Created teams
         </label>
       </div>
-
-      <GridLayout isGap ref={parent} minWith="150-033">
-        {getAttendantsKeyArray().map((teamName, i) => {
-          return (
-            <div key={`${teamName}${i}`} className="relative">
-              <button
-                onClick={() => {
-                  if (editTeamName === teamName) {
-                    setTeamName("");
-                    setEditTeamName(null);
-                    setTeamAttendants([
-                      {
-                        id: "1",
-                        name: "",
-                      },
-                      {
-                        id: "2",
-                        name: "",
-                      },
-                    ]);
-                    return;
-                  }
-
-                  setEditTeamName(teamName);
-                  handleTeamSwitch(teamName);
-                }}
-                className={classNames(
-                  editTeamName === teamName && "border-gray-800",
-                  "w-full truncate rounded-md border-2 border-gray-300 bg-gray-300 px-3 py-2 text-sm font-bold transition-all duration-300"
-                )}
-              >
-                {teamName}
-              </button>
-              <div className="absolute -top-2.5 right-0">
+      <div className="h-[5.5rem] overflow-x-auto py-2 md:h-[15rem]">
+        <GridLayout isGap ref={parent} minWith="150-033">
+          {getAttendantsKeyArray().map((teamName, i) => {
+            return (
+              <div key={`${teamName}${i}`} className="relative">
                 <button
-                  onClick={() => deleteTeam(teamName)}
-                  className="ml-2 rounded-full bg-gray-200 p-1 text-sm font-bold text-red-600"
+                  onClick={() => {
+                    if (editTeamName === teamName) {
+                      setTeamName("");
+                      setEditTeamName(null);
+                      setTeamAttendants([
+                        {
+                          id: "1",
+                          name: "",
+                        },
+                        {
+                          id: "2",
+                          name: "",
+                        },
+                      ]);
+                      return;
+                    }
+
+                    setEditTeamName(teamName);
+                    handleTeamSwitch(teamName);
+                  }}
+                  className={classNames(
+                    editTeamName === teamName && "border-gray-800",
+                    "w-full truncate rounded-md border-2 border-gray-300 bg-gray-300 px-3 py-2 text-sm font-bold transition-all duration-300"
+                  )}
                 >
-                  <BiTrash />
+                  {teamName}
                 </button>
+                <div className="absolute -top-2.5 right-0">
+                  <button
+                    onClick={() => deleteTeam(teamName)}
+                    className="ml-2 rounded-full bg-gray-200 p-1 text-sm font-bold text-red-600"
+                  >
+                    <BiTrash />
+                  </button>
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </GridLayout>
-    </div>
+            );
+          })}
+        </GridLayout>
+      </div>
+    </>
   );
 };
 

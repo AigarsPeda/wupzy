@@ -19,13 +19,12 @@ const TournamentCard: FC<TournamentCardProps> = ({
   const { redirectToPath } = useRedirect();
 
   return (
-    <div className="rounded-lg border border-gray-100 bg-gray-100 p-4 text-left shadow-lg transition-all duration-200">
+    <div className="rounded-lg border border-gray-200 bg-gray-200 p-4 text-left shadow-lg transition-all duration-200">
       <div className="mb-5 flex items-center">
         <p className="text-sm text-gray-400">{tournament.type}</p>
       </div>
-      <div className="mb-4 flex flex-col space-y-3 border-b-2 pb-4">
+      <div className="mb-4 flex flex-col space-y-3 border-b-2 border-gray-300 pb-4">
         <div className="mb-2 flex flex-col">
-          {/* <p className="text-sm text-gray-500">Name</p> */}
           <h3 className="text-xl font-semibold">{tournament.name}</h3>
         </div>
         <div>
