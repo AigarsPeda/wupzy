@@ -4,8 +4,10 @@ import { serverEnv } from "env/schema.mjs";
 import jwt from "jsonwebtoken";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "server/db";
+import type Stripe from "stripe";
 import superjson from "superjson";
 import { validate as uuidValidate } from "uuid";
+import stripe from "../stripe/client";
 /**
  * YOU PROBABLY DON'T NEED TO EDIT THIS FILE, UNLESS:
  * 1. You want to modify request context (see Part 1)
@@ -28,9 +30,10 @@ import { validate as uuidValidate } from "uuid";
 const jwtSecret = serverEnv.JWT_SECRET || "jwtSecret";
 
 type CreateContextOptions = {
-  session: string | undefined;
+  stripe: Stripe;
   req: NextApiRequest;
   res: NextApiResponse;
+  session: string | undefined;
 };
 
 /**
@@ -49,6 +52,7 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
     req,
     res,
     prisma,
+    stripe,
     session: opts.session,
   };
 };
@@ -65,6 +69,7 @@ export const createTRPCContext = (opts: CreateNextContextOptions) => {
   return createInnerTRPCContext({
     req,
     res,
+    stripe,
     session: req.cookies.token,
   });
 };

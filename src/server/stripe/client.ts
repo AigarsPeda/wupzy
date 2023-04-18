@@ -1,6 +1,9 @@
 import Stripe from "stripe";
 
-const STRIPE_API_KEY = process.env.STRIPE_SECRET_KEY || "";
+const STRIPE_API_KEY =
+  process.env.NODE_ENV === "production"
+    ? process.env.STRIPE_SECRET_KEY || ""
+    : process.env.STRIPE_TEST_SECRET_KEY || "";
 
 const stripe = new Stripe(STRIPE_API_KEY, {
   apiVersion: "2022-11-15",

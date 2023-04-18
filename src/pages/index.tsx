@@ -1,10 +1,28 @@
 import CTASection from "components/elements/CTASection/CTASection";
 import { type NextPage } from "next";
 import Head from "next/head";
-import { api } from "../utils/api";
+import { useRouter } from "next/router";
+import type Stripe from "stripe";
+import { api } from "utils/api";
 
 const Home: NextPage = () => {
+  const router = useRouter();
   const { data } = api.stripe.getProducts.useQuery();
+  const { mutateAsync } = api.stripe.createCheckoutSession.useMutation();
+
+  const checkout = async (priceId: string) => {
+    const { id, url } = await mutateAsync({
+      priceId,
+    });
+
+    console.log("data --->", data);
+
+    if (id && url) {
+      router.push(url).catch((err) => {
+        console.log(err);
+      });
+    }
+  };
 
   return (
     <>
@@ -33,7 +51,36 @@ const Home: NextPage = () => {
       </Head>
       <main className="px-4 py-4 md:px-20 md:py-12">
         <CTASection />
-        {console.log("data", data)}
+        {console.log(data)}
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          {data &&
+            data.products.data.map((product) => {
+              const { images, name, description } =
+                product.product as Stripe.Product;
+
+              return (
+                <div
+                  key={product.id}
+                  className="rounded-lg bg-white p-4 shadow-lg"
+                >
+                  <p>{name}</p>
+                  <p className="text-gray-500">
+                    {(product.unit_amount || 0) / 100} {product.currency}
+                  </p>
+                  <button
+                    className="rounded-lg bg-blue-500 px-4 py-2 text-white"
+                    onClick={() => {
+                      checkout(product.id).catch((err) => {
+                        console.log(err);
+                      });
+                    }}
+                  >
+                    Buy
+                  </button>
+                </div>
+              );
+            })}
+        </div>
       </main>
     </>
   );

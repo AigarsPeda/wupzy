@@ -16,7 +16,7 @@ const CTASection: FC = () => {
           Here you can create tournaments, save scores for players and see your
           progress by comparing results with other players.
         </p>
-        <div className="mt-10 flex flex-col items-center justify-center md:flex-row">
+        {/* <div className="mt-10 flex flex-col items-center justify-center md:flex-row">
           <div className="mb-4 md:mr-4 md:mb-0">
             <Button
               btnColor="outline"
@@ -32,7 +32,7 @@ const CTASection: FC = () => {
             linkTitle={user.data ? "Tournaments" : "Get started"}
             linkClassName="w-52 px-10 py-3 text-base md:mr-6 mb-6 md:mb-0"
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );

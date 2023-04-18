@@ -9,6 +9,7 @@ export const DEFAULT_TEAM_COUNT = 3;
 export const ROUTES_WITHOUT_NAVBAR = [
   "/login",
   "/signup",
+  "/success",
   "/login/forgot",
   "/reset-password/[resettoken]",
 ];

@@ -1,11 +1,11 @@
 import { kingTournamentsRouter } from "server/api/routers/kingTournaments";
 import { participantRouter } from "server/api/routers/participant";
 import { resetPasswordRouter } from "server/api/routers/passwordReset";
+import { stripeRouter } from "server/api/routers/stripe";
 import { teamsTournamentsRouter } from "server/api/routers/teamsTournaments";
 import { tournamentsRouter } from "server/api/routers/tournaments";
 import { usersRouter } from "server/api/routers/users";
 import { createTRPCRouter } from "server/api/trpc";
-import { stripeRouter } from "./routers/stripe";
 
 /**
  * This is the primary router for your server.
