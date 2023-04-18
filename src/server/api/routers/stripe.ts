@@ -1,14 +1,4 @@
-import { TRPCError } from "@trpc/server";
-import jwt from "jsonwebtoken";
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-} from "server/api/trpc";
-import comparePassword from "utils/comparePassword";
-import createToken from "utils/createToken";
-import hashPassword from "utils/hashPassword";
-import { z } from "zod";
+import { createTRPCRouter, publicProcedure } from "server/api/trpc";
 import Stripe from "stripe";
 
 // const jwtSecret = process.env.JWT_SECRET || "jwtSecret";
