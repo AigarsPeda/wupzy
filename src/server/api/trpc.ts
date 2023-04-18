@@ -1,3 +1,11 @@
+import { initTRPC, TRPCError } from "@trpc/server";
+import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+import { serverEnv } from "env/schema.mjs";
+import jwt from "jsonwebtoken";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { prisma } from "server/db";
+import superjson from "superjson";
+import { validate as uuidValidate } from "uuid";
 /**
  * YOU PROBABLY DON'T NEED TO EDIT THIS FILE, UNLESS:
  * 1. You want to modify request context (see Part 1)
@@ -16,16 +24,13 @@
  * processing a request
  *
  */
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-
-import jwt from "jsonwebtoken";
-import { validate as uuidValidate } from "uuid";
-import { prisma } from "../db";
 
 const jwtSecret = serverEnv.JWT_SECRET || "jwtSecret";
 
 type CreateContextOptions = {
   session: string | undefined;
+  req: NextApiRequest;
+  res: NextApiResponse;
 };
 
 /**
@@ -39,7 +44,10 @@ type CreateContextOptions = {
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
+  const { req, res } = opts;
   return {
+    req,
+    res,
     prisma,
     session: opts.session,
   };
@@ -52,9 +60,11 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createTRPCContext = (opts: CreateNextContextOptions) => {
-  const { req } = opts;
+  const { req, res } = opts;
 
   return createInnerTRPCContext({
+    req,
+    res,
     session: req.cookies.token,
   });
 };
@@ -65,9 +75,6 @@ export const createTRPCContext = (opts: CreateNextContextOptions) => {
  * This is where the trpc api is initialized, connecting the context and
  * transformer
  */
-import { initTRPC, TRPCError } from "@trpc/server";
-import { serverEnv } from "env/schema.mjs";
-import superjson from "superjson";
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,

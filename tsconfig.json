@@ -26,7 +26,8 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.cjs",
-    "**/*.mjs"
+    "**/*.mjs",
+    "src/server/api/webhook/hello.JS"
   ],
   "exclude": [
     "node_modules"
