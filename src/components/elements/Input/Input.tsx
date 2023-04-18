@@ -45,7 +45,9 @@ const Input = forwardRef<Ref, InputProps>(
     ref
   ) => (
     <>
-      <div className={classNames(isMargin && "my-4", "relative w-full")}>
+      <div
+        className={classNames(isMargin && "my-2 md:my-4", "relative w-full")}
+      >
         <input
           ref={(() => {
             // If ref is passed, use it, otherwise use null
@@ -71,9 +73,9 @@ const Input = forwardRef<Ref, InputProps>(
           htmlFor={name}
           className={classNames(
             size === "sm" &&
-              "-top-3.5 text-xs peer-placeholder-shown:top-0 peer-placeholder-shown:text-sm peer-focus:-top-3.5 peer-focus:text-xs",
+              "-top-2.5 text-xs peer-placeholder-shown:top-0 peer-placeholder-shown:text-sm peer-focus:-top-2.5 peer-focus:text-xs md:-top-3.5 md:peer-focus:-top-3.5",
             size === "lg" &&
-              "-top-3.5 text-sm peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-3.5 peer-focus:text-sm",
+              "-top-3.5 text-sm peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm md:peer-focus:-top-3.5",
             isDisabled
               ? "peer-placeholder-shown:text-gray-200"
               : "peer-placeholder-shown:text-gray-400",

@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import classNames from "../../../utils/classNames";
+import classNames from "utils/classNames";
 
 interface ProgressBarProps {
   progress: number;
@@ -22,7 +22,7 @@ const ProgressBar: FC<ProgressBarProps> = ({ progress, isProgressNumber }) => {
         style={{ width: `${progress}%` }}
       >
         {isProgressNumber && (
-          <p className="font-primary-bold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform text-yellow-400">
+          <p className="font-primary-bold absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform text-yellow-400">
             {progress}%
           </p>
         )}

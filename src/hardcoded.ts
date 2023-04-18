@@ -6,6 +6,13 @@ export const DEFAULT_ATTENDANTS_COUNT = 4;
 
 export const DEFAULT_TEAM_COUNT = 3;
 
+export const ROUTES_WITHOUT_NAVBAR = [
+  "/login",
+  "/signup",
+  "/login/forgot",
+  "/reset-password/[resettoken]",
+];
+
 export const AVAILABLE_GROUPS = [
   "A",
   "B",

@@ -5,7 +5,7 @@ import InfoParagraph from "components/elements/InfoParagraph/InfoParagraph";
 import Input from "components/elements/Input/Input";
 import GridLayout from "components/layouts/GridLayout/GridLayout";
 import type { FC } from "react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BiTrash } from "react-icons/bi";
 import type {
   AttendantType,
@@ -33,6 +33,7 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
 }) => {
   const [parent] = useAutoAnimate();
   const [teamName, setTeamName] = useState("");
+  const elRefs = useRef<HTMLInputElement[]>([]);
   const [editTeamName, setEditTeamName] = useState<string | null>(null);
   const [teamAttendants, setTeamAttendants] = useState<AttendantType[]>([
     {
@@ -142,8 +143,28 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
     return true;
   };
 
+  useEffect(() => {
+    const size = elRefs.current.length;
+
+    if (teamName.length === 0) {
+      elRefs.current[0]?.focus();
+      return;
+    }
+
+    if (size === 0 || elRefs.current.length === 0) return;
+
+    // If there are no attendants, focus the first input
+    if (teamAttendants.length === 2) {
+      elRefs.current[0]?.focus();
+      return;
+    }
+
+    // If there are new attendants added, focus the last input
+    elRefs.current && elRefs.current[size - 1]?.focus();
+  }, [teamAttendants.length, teamName.length]);
+
   return (
-    <>
+    <div className="h-full">
       <div className="mt-2 md:mt-8">
         <InfoParagraph text="* To create a team, please enter the names of the team and at least two participants. Keep in mind that each team must have a minimum of two participants." />
         <div className="flex w-full flex-col md:w-1/2">
@@ -153,9 +174,18 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
             label="Team name"
             value={teamName}
             handleInputChange={(e) => setTeamName(e.target.value)}
+            ref={(el) => {
+              if (!el) return;
+
+              // create a new array with the new element
+              elRefs.current = [...elRefs.current, el];
+            }}
           />
         </div>
-        <div ref={parent} className="mt-4 flex flex-col overflow-y-auto">
+        <div
+          ref={parent}
+          // className="flex max-h-[calc(100vh_-_36rem)] flex-col overflow-y-auto md:max-h-[calc(100vh_-_50rem)]"
+        >
           {teamAttendants.map((_attendant, index) => {
             const value = teamAttendants[index]?.name;
 
@@ -170,6 +200,12 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
                   handleInputChange={(e) =>
                     handleInputChange(index, e.target.value)
                   }
+                  ref={(el) => {
+                    if (!el) return;
+
+                    // create a new array with the new element
+                    elRefs.current = [...elRefs.current, el];
+                  }}
                 />
               </div>
             );
@@ -178,12 +214,16 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
       </div>
 
       <div className="flex justify-between py-2">
-        <Button btnTitle="Add teammate" onClick={addNewAttendant} />
+        <Button
+          btnClass="mr-2"
+          btnTitle="Add teammate"
+          onClick={addNewAttendant}
+        />
         <div className="flex">
           <Button
-            btnTitle="Cancel"
-            btnClass="mr-2"
             btnColor="red"
+            btnClass="mr-2"
+            btnTitle="Cancel"
             onClick={() => {
               setTeamName("");
               setEditTeamName(null);
@@ -220,7 +260,9 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
           Created teams
         </label>
       </div>
-      <div className="h-[5.5rem] overflow-x-auto py-2 md:h-[15rem]">
+
+      {/* <div className="h-[calc(100vh_-_29rem)] overflow-x-auto py-2 md:h-[calc(100vh_-_35rem)]"> */}
+      <div className="max-h-[calc(100vh_-_29rem)]">
         <GridLayout isGap ref={parent} minWith="150-033">
           {getAttendantsKeyArray().map((teamName, i) => {
             return (
@@ -266,7 +308,7 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
           })}
         </GridLayout>
       </div>
-    </>
+    </div>
   );
 };
 

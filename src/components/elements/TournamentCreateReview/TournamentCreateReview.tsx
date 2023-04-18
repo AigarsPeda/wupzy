@@ -15,7 +15,7 @@ const TournamentCreateReview: FC<TournamentCreateReviewProps> = ({
   teamsAttendants,
 }) => {
   return (
-    <div className="mt-12">
+    <div className="mt-12 h-full">
       <p className="text-xs text-gray-400">Mode:</p>
       <h1 className="text-2xl font-bold text-gray-800">
         {isKing ? "King" : "Teams"}
@@ -32,7 +32,7 @@ const TournamentCreateReview: FC<TournamentCreateReviewProps> = ({
       </h1>
 
       <p className="mt-4 text-xs text-gray-400">Attendants:</p>
-      <div className="h-[15rem] overflow-y-auto md:h-[28rem]">
+      <div className="h-full overflow-x-auto overflow-y-auto py-2">
         {isKing ? (
           <ul>
             {attendants.map((attendant, i) => (

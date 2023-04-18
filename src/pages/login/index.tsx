@@ -5,6 +5,7 @@ import SignupLoginImage from "components/elements/SignupLoginImage/SignupLoginIm
 import { DEFAULT_REDIRECT_URL } from "hardcoded";
 import useRedirect from "hooks/useRedirect";
 import type { NextPage } from "next";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
 import { useEffect, useReducer, useState } from "react";
@@ -76,24 +77,32 @@ const Login: NextPage = () => {
           <div className="mb-10 transition-all md:mb-20 lg:mb-40">
             <Logo />
           </div>
-          <Form
-            isLoading={isLoading}
-            submitBtnText="Login"
-            inputs={loginForm.form}
-            errors={loginForm.error}
-            handleLogin={handleLogin}
-            handleInputChange={handleInputChange}
-            link={{
-              href: "/signup",
-              text: (
-                <>
-                  If you don&apos;t have an account,{" "}
-                  <span className="font-bold text-gray-900">click here</span> to
-                  sign up
-                </>
-              ),
-            }}
-          />
+          <div>
+            <Form
+              isLoading={isLoading}
+              submitBtnText="Login"
+              inputs={loginForm.form}
+              errors={loginForm.error}
+              handleLogin={handleLogin}
+              handleInputChange={handleInputChange}
+              link={{
+                href: "/signup",
+                text: (
+                  <>
+                    Need a account?
+                    <span className="ml-2 font-bold text-gray-900">
+                      Create an account
+                    </span>
+                  </>
+                ),
+              }}
+            />
+            <div className="mt-4">
+              <Link href="/login/forgot" className="text-gray-500">
+                Forgot password?
+              </Link>
+            </div>
+          </div>
           {isError && <ErrorMessage message="Something went wrong!" />}
         </div>
         <SignupLoginImage />

@@ -34,6 +34,9 @@ const Form: FC<FormProps> = ({
 }) => {
   return (
     <>
+      <Link href={link.href} className="mt-4 pr-10 text-gray-500">
+        {link.text}
+      </Link>
       <form
         className="grid w-full max-w-sm pr-10"
         onSubmit={(e) => {
@@ -70,9 +73,6 @@ const Form: FC<FormProps> = ({
           }}
         />
       </form>
-      <Link href={link.href} className="mt-4 pr-10 text-gray-500">
-        {link.text}
-      </Link>
     </>
   );
 };

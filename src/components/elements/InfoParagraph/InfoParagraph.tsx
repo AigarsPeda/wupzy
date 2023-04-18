@@ -10,7 +10,7 @@ const InfoParagraph: FC<InfoParagraphProps> = ({ text, className }) => {
   return (
     <p
       className={classNames(
-        className ? className : "my-4",
+        className ? className : "my-1 md:my-4",
         "text-xs text-gray-400"
       )}
     >

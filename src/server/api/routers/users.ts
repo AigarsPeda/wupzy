@@ -1,4 +1,5 @@
 import { TRPCError } from "@trpc/server";
+import jwt from "jsonwebtoken";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -8,6 +9,8 @@ import comparePassword from "utils/comparePassword";
 import createToken from "utils/createToken";
 import hashPassword from "utils/hashPassword";
 import { z } from "zod";
+
+const jwtSecret = process.env.JWT_SECRET || "jwtSecret";
 
 export const usersRouter = createTRPCRouter({
   signUpUser: publicProcedure
@@ -41,7 +44,6 @@ export const usersRouter = createTRPCRouter({
       await ctx.prisma.password.create({
         data: {
           password,
-          // userId: user.id,
           user: {
             connect: {
               id: user.id,
@@ -169,11 +171,71 @@ export const usersRouter = createTRPCRouter({
     };
   }),
 
-  // getCurrentUser: protectedProcedure.query(({ ctx }) => {
-  //   return ctx.prisma.user.findUnique({
-  //     where: {
-  //       id: ctx.user.id,
-  //     },
-  //   });
-  // }),
+  changePassword: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        userId: z.string(),
+        password: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const resetToken = await ctx.prisma.passwordReset.findUnique({
+        where: {
+          token: input.token,
+        },
+      });
+
+      if (!resetToken) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Reset not found",
+        });
+      }
+
+      const decoded = jwt.verify(resetToken.token, jwtSecret) as {
+        userId?: string;
+      };
+
+      const user = await ctx.prisma.user.findUnique({
+        where: {
+          id: decoded.userId,
+        },
+      });
+
+      if (!user || user.id !== input.userId) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Unauthorized",
+        });
+      }
+
+      const password = await hashPassword(input.password);
+
+      if (password instanceof Error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error hashing password",
+        });
+      }
+
+      await ctx.prisma.password.update({
+        where: {
+          userId: input.userId,
+        },
+        data: {
+          password,
+        },
+      });
+
+      await ctx.prisma.passwordReset.delete({
+        where: {
+          token: input.token,
+        },
+      });
+
+      return {
+        message: "Password changed successfully",
+      };
+    }),
 });

@@ -1,7 +1,7 @@
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import Button from "components/elements/Button/Button";
 import ErrorMessage from "components/elements/ErrorMessage/ErrorMessage";
-import ModalWrap from "components/elements/ModalWrap/ModalWrap";
+import NewModalWrap from "components/elements/NewModalWrap/NewModalWrap";
 import ProgressBar from "components/elements/ProgressBar/ProgressBar";
 import TournamentAttendantForm from "components/elements/TournamentAttendantForm/TournamentAttendantForm";
 import TournamentCreateMetaForm from "components/elements/TournamentCreateMetaForm/TournamentCreateMetaForm";
@@ -157,8 +157,7 @@ const NewTournamentContainer: FC = () => {
           setIsModalOpen((state) => !state);
         }}
       />
-      <ModalWrap
-        modalWidth="2xl"
+      <NewModalWrap
         isModalVisible={isModalOpen}
         modalTitle="Crete new tournament"
         handleCancelClick={() => {
@@ -171,8 +170,42 @@ const NewTournamentContainer: FC = () => {
             createStringArrayFromNumber(DEFAULT_ATTENDANTS_COUNT)
           );
         }}
+        footer={
+          <div className="flex w-full justify-between px-3 py-2 md:px-6 md:py-4">
+            <Button
+              btnColor="outline"
+              btnTitle="Previous"
+              isDisabled={isFirstStep}
+              onClick={() => {
+                if (isFirstStep) {
+                  return;
+                }
+
+                setFormStep((state) => state - 1);
+              }}
+            />
+            <Button
+              isDisabled={isNextStepDisabled()}
+              btnTitle={isLastStep ? "Create" : "Next"}
+              isLoading={isKingLoading || isTeamsLoading}
+              onClick={() => {
+                if (isLastStep) {
+                  createTournament().catch(() => {
+                    console.error("Error creating tournament");
+                  });
+                  return;
+                }
+
+                setFormStep((state) => state + 1);
+              }}
+            />
+          </div>
+        }
       >
-        <div ref={parent} className="h-[28rem] md:h-[40rem]">
+        <div
+          className="flex h-full w-full flex-col justify-between px-3 py-2 md:px-6 md:py-4"
+          ref={parent}
+        >
           {(() => {
             switch (formStep) {
               case 0:
@@ -225,47 +258,7 @@ const NewTournamentContainer: FC = () => {
             }
           })()}
         </div>
-
-        <div className="my-3 w-full md:my-6">
-          {isError ? (
-            <div className="flex w-full justify-center">
-              <ErrorMessage message="Something went wrong! Please tray again." />
-            </div>
-          ) : (
-            <ProgressBar progress={progress !== 0 ? progress : 5} />
-          )}
-        </div>
-
-        <div className="flex w-full justify-between">
-          <Button
-            btnColor="outline"
-            btnTitle="Previous"
-            isDisabled={isFirstStep}
-            onClick={() => {
-              if (isFirstStep) {
-                return;
-              }
-
-              setFormStep((state) => state - 1);
-            }}
-          />
-          <Button
-            isDisabled={isNextStepDisabled()}
-            btnTitle={isLastStep ? "Create" : "Next"}
-            isLoading={isKingLoading || isTeamsLoading}
-            onClick={() => {
-              if (isLastStep) {
-                createTournament().catch(() => {
-                  console.error("Error creating tournament");
-                });
-                return;
-              }
-
-              setFormStep((state) => state + 1);
-            }}
-          />
-        </div>
-      </ModalWrap>
+      </NewModalWrap>
     </>
   );
 };
