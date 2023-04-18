@@ -5,6 +5,7 @@ import { teamsTournamentsRouter } from "server/api/routers/teamsTournaments";
 import { tournamentsRouter } from "server/api/routers/tournaments";
 import { usersRouter } from "server/api/routers/users";
 import { createTRPCRouter } from "server/api/trpc";
+import { stripeRouter } from "./routers/stripe";
 
 /**
  * This is the primary router for your server.
@@ -13,6 +14,7 @@ import { createTRPCRouter } from "server/api/trpc";
  */
 export const appRouter = createTRPCRouter({
   users: usersRouter,
+  stripe: stripeRouter,
   tournaments: tournamentsRouter,
   participant: participantRouter,
   resetPassword: resetPasswordRouter,

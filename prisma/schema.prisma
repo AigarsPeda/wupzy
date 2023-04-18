@@ -16,16 +16,20 @@ datasource db {
 // }
 
 model User {
-  firstName     String
-  lastName      String
-  Password      Password[]
-  LoginToken    LoginToken[]
-  Tournaments   Tournament[]
-  PasswordReset PasswordReset[]
-  email         String          @unique
-  updatedAt     DateTime        @updatedAt
-  createdAt     DateTime        @default(now())
-  id            String          @id @default(cuid())
+  name                     String
+  lastName                 String
+  firstName                String
+  stripeCustomerId         String?
+  stripeSubscriptionId     String?
+  stripeSubscriptionStatus String?
+  Password                 Password[]
+  LoginToken               LoginToken[]
+  Tournaments              Tournament[]
+  PasswordReset            PasswordReset[]
+  email                    String          @unique
+  updatedAt                DateTime        @updatedAt
+  createdAt                DateTime        @default(now())
+  id                       String          @id @default(cuid())
 }
 
 enum TournamentType {
