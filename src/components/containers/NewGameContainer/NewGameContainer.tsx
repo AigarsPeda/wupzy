@@ -171,34 +171,46 @@ const NewTournamentContainer: FC = () => {
           );
         }}
         footer={
-          <div className="flex w-full justify-between px-3 py-2 md:px-6 md:py-4">
-            <Button
-              btnColor="outline"
-              btnTitle="Previous"
-              isDisabled={isFirstStep}
-              onClick={() => {
-                if (isFirstStep) {
-                  return;
-                }
+          <div>
+            <div className="my-3 w-full md:my-6">
+              {isError ? (
+                <div className="flex w-full justify-center">
+                  <ErrorMessage message="Something went wrong! Please tray again." />
+                </div>
+              ) : (
+                <ProgressBar progress={progress !== 0 ? progress : 5} />
+              )}
+            </div>
 
-                setFormStep((state) => state - 1);
-              }}
-            />
-            <Button
-              isDisabled={isNextStepDisabled()}
-              btnTitle={isLastStep ? "Create" : "Next"}
-              isLoading={isKingLoading || isTeamsLoading}
-              onClick={() => {
-                if (isLastStep) {
-                  createTournament().catch(() => {
-                    console.error("Error creating tournament");
-                  });
-                  return;
-                }
+            <div className="flex w-full justify-between px-3 py-2 md:px-6 md:py-4">
+              <Button
+                btnColor="outline"
+                btnTitle="Previous"
+                isDisabled={isFirstStep}
+                onClick={() => {
+                  if (isFirstStep) {
+                    return;
+                  }
 
-                setFormStep((state) => state + 1);
-              }}
-            />
+                  setFormStep((state) => state - 1);
+                }}
+              />
+              <Button
+                isDisabled={isNextStepDisabled()}
+                btnTitle={isLastStep ? "Create" : "Next"}
+                isLoading={isKingLoading || isTeamsLoading}
+                onClick={() => {
+                  if (isLastStep) {
+                    createTournament().catch(() => {
+                      console.error("Error creating tournament");
+                    });
+                    return;
+                  }
+
+                  setFormStep((state) => state + 1);
+                }}
+              />
+            </div>
           </div>
         }
       >
