@@ -20,6 +20,7 @@ export const usersRouter = createTRPCRouter({
         lastName: z.string(),
         password: z.string(),
         firstName: z.string(),
+        userId: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -32,18 +33,32 @@ export const usersRouter = createTRPCRouter({
         });
       }
 
-      const user = await ctx.prisma.user.create({
-        data: {
+      const user = await ctx.prisma.user.upsert({
+        where: {
+          id: input.userId,
+        },
+        update: {
+          email: input.email,
+          lastName: input.lastName,
+          firstName: input.firstName,
+        },
+        create: {
           email: input.email,
           lastName: input.lastName,
           firstName: input.firstName,
         },
       });
 
-      // save password to db
-      await ctx.prisma.password.create({
-        data: {
-          password,
+      // create password or update password
+      await ctx.prisma.password.upsert({
+        where: {
+          userId: user.id,
+        },
+        update: {
+          password: password,
+        },
+        create: {
+          password: password,
           user: {
             connect: {
               id: user.id,

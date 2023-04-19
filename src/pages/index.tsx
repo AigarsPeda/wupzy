@@ -15,8 +15,6 @@ const Home: NextPage = () => {
       priceId,
     });
 
-    console.log("data --->", data);
-
     if (id && url) {
       router.push(url).catch((err) => {
         console.log(err);
@@ -55,8 +53,7 @@ const Home: NextPage = () => {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {data &&
             data.products.data.map((product) => {
-              const { images, name, description } =
-                product.product as Stripe.Product;
+              const { name } = product.product as Stripe.Product;
 
               return (
                 <div

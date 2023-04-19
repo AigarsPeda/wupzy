@@ -17,6 +17,7 @@ interface FormProps {
   submitBtnText: string;
   disabledInputs?: string[];
   errors?: InputErrorType[];
+  isButtonDisabled?: boolean;
   inputs: { [key in string]: string };
   handleLogin: () => Promise<void>;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -30,6 +31,7 @@ const Form: FC<FormProps> = ({
   handleLogin,
   submitBtnText,
   disabledInputs,
+  isButtonDisabled,
   handleInputChange,
 }) => {
   return (
@@ -68,6 +70,7 @@ const Form: FC<FormProps> = ({
           btnSize="small"
           isLoading={isLoading}
           btnTitle={submitBtnText}
+          isDisabled={isButtonDisabled}
           onClick={() => {
             handleLogin().catch(() => console.error("Error logging in"));
           }}

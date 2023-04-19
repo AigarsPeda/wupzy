@@ -66,20 +66,6 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
     redirectToPath(`${tournamentId}/playoff/`);
   };
 
-  // const isAllTeamsSelected = () => {
-  //   if (!teamCount) return false;
-
-  //   const games = brackets.get(`${teamCount}`) || [];
-
-  //   for (const game of games) {
-  //     if (!game?.team1.team1?.id || !game?.team2.team2?.id) {
-  //       return false;
-  //     }
-  //   }
-
-  //   return true;
-  // };
-
   useEffect(() => {
     if (!teams) return;
 

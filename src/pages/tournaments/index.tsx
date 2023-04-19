@@ -7,7 +7,6 @@ import { useEffect } from "react";
 import { api } from "utils/api";
 
 const TournamentsPage: NextPage = () => {
-  // const [parent] = useAutoAnimate();
   const { redirectToPath } = useRedirect();
   const { data, error, isLoading, isFetching, refetch } =
     api.tournaments.getAllTournaments.useQuery(undefined, {
@@ -21,8 +20,8 @@ const TournamentsPage: NextPage = () => {
     }
   }, [redirectToPath, error?.data?.code, isLoading]);
 
-  if (isFetching) {
-    return <Spinner size="small" />;
+  if (isFetching || isLoading) {
+    return <Spinner />;
   }
 
   return (
