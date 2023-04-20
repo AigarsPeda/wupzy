@@ -26,6 +26,7 @@ const SignUp: NextPage = () => {
       sessionId: stripeSessionId,
     },
     {
+      enabled: Boolean(stripeSessionId),
       onSuccess(data) {
         if (data.token) {
           setCookie("token", data.token, 365);

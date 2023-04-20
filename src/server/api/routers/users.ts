@@ -153,8 +153,9 @@ export const usersRouter = createTRPCRouter({
       select: {
         id: true,
         email: true,
-        firstName: true,
         lastName: true,
+        firstName: true,
+        subscriptionStatus: true,
       },
     });
 

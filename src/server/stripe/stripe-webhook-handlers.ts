@@ -27,7 +27,6 @@ export const getOrCreateStripeCustomerIdForUser = async ({
   const customer = await stripe.customers.create({
     email: user.email ?? undefined,
     name: `${user.firstName} ${user.lastName}` ?? undefined,
-
     // use metadata to link this Stripe customer to internal user id
     metadata: {
       userId,
@@ -72,7 +71,8 @@ export const handleInvoicePaid = async ({
     },
     data: {
       stripeSubscriptionId: subscription.id,
-      stripeSubscriptionStatus: subscription.status,
+      subscriptionStatus: subscription.status,
+      expiresAt: new Date(subscription.current_period_end * 1000),
     },
   });
 };
@@ -94,7 +94,7 @@ export const handleSubscriptionCreatedOrUpdated = async ({
     },
     data: {
       stripeSubscriptionId: subscription.id,
-      stripeSubscriptionStatus: subscription.status,
+      subscriptionStatus: subscription.status,
     },
   });
 };
@@ -116,7 +116,7 @@ export const handleSubscriptionCanceled = async ({
     },
     data: {
       stripeSubscriptionId: null,
-      stripeSubscriptionStatus: null,
+      subscriptionStatus: "canceled",
     },
   });
 };

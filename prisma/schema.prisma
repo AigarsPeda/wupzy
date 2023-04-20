@@ -16,22 +16,21 @@ datasource db {
 // }
 
 model User {
-  lastName                 String
-  firstName                String
-  stripeCustomerId         String?         @unique
-  stripeSubscriptionId     String?
-  stripeSubscriptionStatus String?
-  country                  String?
-  expiresAt                DateTime?
-  subscription             String?
-  Password                 Password[]
-  LoginToken               LoginToken[]
-  Tournaments              Tournament[]
-  PasswordReset            PasswordReset[]
-  email                    String          @unique
-  updatedAt                DateTime        @updatedAt
-  createdAt                DateTime        @default(now())
-  id                       String          @id @default(cuid())
+  lastName             String
+  firstName            String
+  stripeSubscriptionId String?
+  country              String?
+  subscriptionStatus   String?
+  expiresAt            DateTime?
+  Password             Password[]
+  LoginToken           LoginToken[]
+  Tournaments          Tournament[]
+  PasswordReset        PasswordReset[]
+  stripeCustomerId     String?         @unique
+  email                String          @unique
+  updatedAt            DateTime        @updatedAt
+  createdAt            DateTime        @default(now())
+  id                   String          @id @default(cuid())
 }
 
 model StripeEvent {

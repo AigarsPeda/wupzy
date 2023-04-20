@@ -1,10 +1,12 @@
 import { TRPCError } from "@trpc/server";
+import createUserInDB from "server/api/routers/utils/user/createUserInDB";
 import { createTRPCRouter, publicProcedure } from "server/api/trpc";
 import stripe from "server/stripe/client";
+import createToken from "utils/createToken";
+import hashPassword from "utils/hashPassword";
 import { z } from "zod";
-import hashPassword from "../../../utils/hashPassword";
-import type Stripe from "stripe";
-import createToken from "../../../utils/createToken";
+
+const DEFAULT_PASSWORD = "w12rweriu-%yhwrZ@";
 
 export const stripeRouter = createTRPCRouter({
   getProducts: publicProcedure.query(async () => {
@@ -55,20 +57,9 @@ export const stripeRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      const { stripe } = ctx;
-      const defaultPassword = "w12rweriu-%yhwrZ@";
+      const { stripe, prisma } = ctx;
 
-      const sessionData = await stripe.checkout.sessions.retrieve(
-        input.sessionId
-      );
-
-      const customer = sessionData.customer_details;
-
-      const email = customer?.email ?? "";
-      const lastName = customer?.name?.split(" ")[1] ?? "";
-      const firstName = customer?.name?.split(" ")[0] ?? "";
-
-      const password = await hashPassword(defaultPassword);
+      const password = await hashPassword(DEFAULT_PASSWORD);
 
       if (password instanceof Error) {
         throw new TRPCError({
@@ -77,30 +68,17 @@ export const stripeRouter = createTRPCRouter({
         });
       }
 
-      // create or update user
-      const user = await ctx.prisma.user.upsert({
-        where: {
-          stripeCustomerId: sessionData.customer as string,
-        },
-        update: {
-          lastName: lastName,
-          firstName: firstName,
-          country: customer?.address?.country,
-          stripeSubscriptionStatus: sessionData.status,
-          subscription: sessionData.subscription as string,
-          stripeCustomerId: sessionData.customer as string,
-          stripeSubscriptionId: sessionData.subscription as string,
-        },
-        create: {
-          email: email,
-          lastName: lastName,
-          firstName: firstName,
-          country: customer?.address?.country,
-          stripeSubscriptionStatus: sessionData.status,
-          subscription: sessionData.subscription as string,
-          stripeCustomerId: sessionData.customer as string,
-          stripeSubscriptionId: sessionData.subscription as string,
-        },
+      if (!input.sessionId) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error session id",
+        });
+      }
+
+      const user = await createUserInDB({
+        stripe,
+        prisma,
+        sessionId: input.sessionId,
       });
 
       // create password or update password

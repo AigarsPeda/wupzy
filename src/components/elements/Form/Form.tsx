@@ -36,7 +36,7 @@ const Form: FC<FormProps> = ({
 }) => {
   return (
     <>
-      <Link href={link.href} className="mt-4 pr-10 text-gray-500">
+      <Link href={link.href} className="mb-4 pr-10 text-gray-500">
         {link.text}
       </Link>
       <form
