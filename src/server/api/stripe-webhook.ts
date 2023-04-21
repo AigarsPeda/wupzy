@@ -22,9 +22,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log("STRIPE WEBHOOK ----->>>>>>>");
   if (req.method === "POST") {
-    console.log("STRIPE WEBHOOK ----->>>>>>>");
     const buf = await buffer(req);
     const sig = req.headers["stripe-signature"];
 

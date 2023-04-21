@@ -27,14 +27,14 @@ const createUserInDB = async ({
 
   const user = await prisma.user.upsert({
     where: {
-      stripeCustomerId: sessionData.customer as string,
+      // stripeCustomerId: sessionData.customer as string,
+      email: email,
     },
     update: {
       lastName: lastName,
       firstName: firstName,
       country: customer?.address?.country,
       subscriptionStatus: subscription.status,
-      // stripeSubscriptionStatus: sessionData.status,
       stripeCustomerId: sessionData.customer as string,
       stripeSubscriptionId: sessionData.subscription as string,
       expiresAt: new Date(subscription.current_period_end * 1000),
@@ -45,7 +45,6 @@ const createUserInDB = async ({
       firstName: firstName,
       country: customer?.address?.country,
       subscriptionStatus: subscription.status,
-      // stripeSubscriptionStatus: sessionData.status,
       stripeCustomerId: sessionData.customer as string,
       stripeSubscriptionId: sessionData.subscription as string,
       expiresAt: new Date(subscription.current_period_end * 1000),

@@ -1,5 +1,5 @@
+import BuyProducts from "components/BuyProducts/BuyProducts";
 import CTASection from "components/elements/CTASection/CTASection";
-import DisplayProducts from "components/elements/DisplayProducts/DisplayProducts";
 import { type NextPage } from "next";
 import Head from "next/head";
 
@@ -31,7 +31,7 @@ const Home: NextPage = () => {
       </Head>
       <main className="px-4 py-4 md:px-20 md:py-12">
         <CTASection />
-        <DisplayProducts />
+        <BuyProducts />
       </main>
     </>
   );

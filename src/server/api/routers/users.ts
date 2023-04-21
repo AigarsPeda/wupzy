@@ -33,16 +33,27 @@ export const usersRouter = createTRPCRouter({
         });
       }
 
-      const user = await ctx.prisma.user.upsert({
+      // const user = await ctx.prisma.user.upsert({
+      //   where: {
+      //     id: input.userId,
+      //   },
+      //   update: {
+      //     email: input.email,
+      //     lastName: input.lastName,
+      //     firstName: input.firstName,
+      //   },
+      //   create: {
+      //     email: input.email,
+      //     lastName: input.lastName,
+      //     firstName: input.firstName,
+      //   },
+      // });
+
+      const user = await ctx.prisma.user.update({
         where: {
           id: input.userId,
         },
-        update: {
-          email: input.email,
-          lastName: input.lastName,
-          firstName: input.firstName,
-        },
-        create: {
+        data: {
           email: input.email,
           lastName: input.lastName,
           firstName: input.firstName,
@@ -155,6 +166,8 @@ export const usersRouter = createTRPCRouter({
         email: true,
         lastName: true,
         firstName: true,
+        expiresAt: true,
+        stripeCustomerId: true,
         subscriptionStatus: true,
       },
     });

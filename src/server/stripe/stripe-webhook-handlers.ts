@@ -95,6 +95,7 @@ export const handleSubscriptionCreatedOrUpdated = async ({
     data: {
       stripeSubscriptionId: subscription.id,
       subscriptionStatus: subscription.status,
+      expiresAt: new Date(subscription.current_period_end * 1000),
     },
   });
 };

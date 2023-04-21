@@ -18,7 +18,6 @@ datasource db {
 model User {
   lastName             String
   firstName            String
-  stripeSubscriptionId String?
   country              String?
   subscriptionStatus   String?
   expiresAt            DateTime?
@@ -26,6 +25,7 @@ model User {
   LoginToken           LoginToken[]
   Tournaments          Tournament[]
   PasswordReset        PasswordReset[]
+  stripeSubscriptionId String?         @unique
   stripeCustomerId     String?         @unique
   email                String          @unique
   updatedAt            DateTime        @updatedAt

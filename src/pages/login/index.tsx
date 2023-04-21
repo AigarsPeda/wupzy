@@ -77,35 +77,26 @@ const Login: NextPage = () => {
           <div className="mb-10 transition-all md:mb-20 lg:mb-40">
             <Logo />
           </div>
-          <div>
-            <Form
-              isLoading={isLoading}
-              submitBtnText="Login"
-              inputs={loginForm.form}
-              errors={loginForm.error}
-              handleLogin={handleLogin}
-              handleInputChange={handleInputChange}
-              link={{
-                href: "/signup",
-                text: (
-                  <>
-                    Need a account?
-                    <span className="ml-2 font-bold text-gray-900">
-                      Create an account
-                    </span>
-                  </>
-                ),
-              }}
-            />
-            <div className="mt-4">
-              <Link href="/login/forgot" className="text-gray-500">
-                Forgot password?
-              </Link>
+          <div className="flex">
+            <div className="w-full md:w-1/2">
+              <Form
+                isLoading={isLoading}
+                submitBtnText="Login"
+                inputs={loginForm.form}
+                errors={loginForm.error}
+                handleLogin={handleLogin}
+                handleInputChange={handleInputChange}
+              />
+              <div className="mt-4">
+                <Link href="/login/forgot" className="text-gray-500">
+                  Forgot password?
+                </Link>
+              </div>
             </div>
+            {isError && <ErrorMessage message="Something went wrong!" />}
+            <SignupLoginImage />
           </div>
-          {isError && <ErrorMessage message="Something went wrong!" />}
         </div>
-        <SignupLoginImage />
       </div>
     </>
   );

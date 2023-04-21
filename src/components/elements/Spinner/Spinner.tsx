@@ -15,7 +15,7 @@ const Spinner: FC<SpinnerProps> = ({ size = "medium", color = "dark" }) => {
         className={classNames(
           size === "xs" && "h-6 w-6 border-4",
           size === "large" && "h-64 w-64 border-8",
-          size === "small" && "border-6 h-16 w-16",
+          size === "small" && "h-14 w-14 border-4",
           size === "medium" && "h-32 w-32 border-8",
           color === "dark" && "border-gray-900",
           color === "light" && "border-gray-100",

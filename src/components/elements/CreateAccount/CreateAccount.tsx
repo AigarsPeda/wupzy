@@ -1,4 +1,4 @@
-import DisplayProducts from "components/elements/DisplayProducts/DisplayProducts";
+import BuyProducts from "components/BuyProducts/BuyProducts";
 import ModalWrap from "components/elements/ModalWrap/ModalWrap";
 import RoundButton from "components/elements/RoundButton/RoundButton";
 import type { FC } from "react";
@@ -23,7 +23,7 @@ const CreateAccount: FC = () => {
         handleCancelClick={() => setIsModalOpen(false)}
       >
         <div className="w-full">
-          <DisplayProducts />
+          <BuyProducts />
         </div>
       </ModalWrap>
     </>

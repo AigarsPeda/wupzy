@@ -12,7 +12,7 @@ type LinkType = {
 };
 
 interface FormProps {
-  link: LinkType;
+  link?: LinkType;
   isLoading: boolean;
   submitBtnText: string;
   disabledInputs?: string[];
@@ -35,10 +35,14 @@ const Form: FC<FormProps> = ({
   handleInputChange,
 }) => {
   return (
-    <>
-      <Link href={link.href} className="mb-4 pr-10 text-gray-500">
-        {link.text}
-      </Link>
+    <div className="w-full">
+      {link && (
+        <div className="mb-6 pr-10">
+          <Link href={link.href} className="text-gray-500">
+            {link.text}
+          </Link>
+        </div>
+      )}
       <form
         className="grid w-full max-w-sm pr-10"
         onSubmit={(e) => {
@@ -76,7 +80,7 @@ const Form: FC<FormProps> = ({
           }}
         />
       </form>
-    </>
+    </div>
   );
 };
 
