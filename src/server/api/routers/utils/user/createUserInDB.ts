@@ -1,5 +1,4 @@
 import type { PrismaClient } from "@prisma/client";
-
 import type Stripe from "stripe";
 
 const createUserInDB = async ({
@@ -23,11 +22,8 @@ const createUserInDB = async ({
   const lastName = customer?.name?.split(" ")[1] ?? "";
   const firstName = customer?.name?.split(" ")[0] ?? "";
 
-  console.log("subscription", subscription);
-
   const user = await prisma.user.upsert({
     where: {
-      // stripeCustomerId: sessionData.customer as string,
       email: email,
     },
     update: {

@@ -1,38 +1,21 @@
-import Button from "components/elements/Button/Button";
-import RoundLinkButton from "components/elements/RoundLinkButton/RoundLinkButton";
 import type { FC } from "react";
-import { api } from "utils/api";
 
 const CTASection: FC = () => {
-  const user = api.users.getCurrentUser.useQuery();
-
   return (
-    <div className="mt-14 flex w-full flex-col items-center justify-center text-center md:mt-20">
-      <div className="max-w-6xl">
-        <h1 className="text-5xl font-extrabold md:text-7xl">
-          This is place for your games stats and more
+    <div className="flex w-full flex-col items-center justify-center text-center">
+      <div className="">
+        <h1 className="max-w-3xl text-5xl font-extrabold md:text-7xl">
+          Sign up and manage your tournaments with ease!
         </h1>
-        <p className="mx-auto mt-6 max-w-4xl md:text-xl">
-          Here you can create tournaments, save scores for players and see your
-          progress by comparing results with other players.
+        <p className="mx-auto mb-5 mt-10 max-w-2xl font-primary text-gray-500 md:text-xl">
+          Simplify tournament management.{" "}
+          <span className="mr-1 font-medium text-gray-800">
+            Our website automates the process of creating tournament tables,
+            saving you time and effort,
+          </span>{" "}
+          so you can focus on playing the game rather than managing the
+          tournament.
         </p>
-        {/* <div className="mt-10 flex flex-col items-center justify-center md:flex-row">
-          <div className="mb-4 md:mr-4 md:mb-0">
-            <Button
-              btnColor="outline"
-              btnTitle={<span className="w-48 px-3 text-sm">Learn more</span>}
-              onClick={() => {
-                console.log("click");
-              }}
-            />
-          </div>
-          <RoundLinkButton
-            bgColor="black"
-            href={user.data ? "/tournaments" : "/signup"}
-            linkTitle={user.data ? "Tournaments" : "Get started"}
-            linkClassName="w-52 px-10 py-3 text-base md:mr-6 mb-6 md:mb-0"
-          />
-        </div> */}
       </div>
     </div>
   );

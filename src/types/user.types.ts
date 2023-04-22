@@ -7,6 +7,7 @@ const UserZodSchema = z.object({
   lastName: z.string(),
   firstName: z.string(),
   subscriptionStatus: z.string(),
+  stripeSubscriptionId: z.string(),
 });
 
 export type UserType = z.infer<typeof UserZodSchema>;

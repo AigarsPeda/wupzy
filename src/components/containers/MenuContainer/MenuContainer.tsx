@@ -74,7 +74,7 @@ const MenuContainer: FC = () => {
         <Link
           href={menuItem.path}
           key={`${menuItem.title}${i}`}
-          className="rounded py-2 px-4 text-lg font-medium text-gray-800 hover:bg-gray-200"
+          className="rounded px-4 py-2 text-lg font-medium text-gray-800 hover:bg-gray-200"
           onClick={() => {
             setIsDrawerOpen(false);
           }}

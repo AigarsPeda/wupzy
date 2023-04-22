@@ -6,7 +6,7 @@ import { ROUTES_WITHOUT_NAVBAR } from "hardcoded";
 import { useRouter } from "next/router";
 import type { FC } from "react";
 import { api } from "utils/api";
-import CreateAccount from "../CreateAccount/CreateAccount";
+import ProfileDropdown from "../ProfileDropdown/ProfileDropdown";
 
 const NavBar: FC = () => {
   const router = useRouter();
@@ -24,14 +24,17 @@ const NavBar: FC = () => {
           {data?.user ? (
             <RoundLinkButton href="/tournaments" linkTitle="Tournaments" />
           ) : (
-            <CreateAccount />
+            <RoundLinkButton href="/login" linkTitle="Login" />
           )}
         </div>
       ) : (
         <div className="mb-0.5 flex items-center justify-between">
           <MenuContainer />
           <Logo />
-          <NewTournamentContainer />
+          <div className="flex">
+            <NewTournamentContainer />
+            <ProfileDropdown />
+          </div>
         </div>
       )}
     </nav>

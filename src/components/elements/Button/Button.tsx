@@ -10,12 +10,12 @@ interface ButtonProps {
   onClick: () => void;
   isLoading?: boolean;
   isDisabled?: boolean;
-  fontSize?: "sm" | "md" | "lg";
   btnTitle: string | ReactNode;
+  fontSize?: "sm" | "md" | "lg";
   iconPosition?: "left" | "right";
   type?: "button" | "submit" | "reset";
-  btnSize?: "large" | "default" | "small" | "full" | "square" | "xs";
   btnColor?: "black" | "white" | "red" | "outline" | "underline";
+  btnSize?: "large" | "default" | "small" | "full" | "square" | "xs";
 }
 type Ref = HTMLButtonElement;
 
@@ -48,12 +48,13 @@ const Button = forwardRef<Ref, ButtonProps>(
       data-testid="button"
       disabled={isDisabled}
       className={classNames(
-        btnSize === "xs" && "h-9 px-2",
-        btnSize === "small" && "h-11 w-24",
-        btnSize === "large" && "h-11 w-48",
-        btnSize === "full" && "h-10 w-full",
-        btnSize === "square" && "h-11 w-11",
-        btnSize === "default" && "h-11 min-w-[4rem] px-4 md:min-w-[7.7rem]",
+        btnSize === "xs" && "h-8 px-2",
+        btnSize === "small" && "h-11 w-24 md:h-9",
+        btnSize === "large" && "h-11 w-48 md:h-9",
+        btnSize === "full" && "h-9 w-full",
+        btnSize === "square" && "h-11 w-11 md:h-9 md:w-9",
+        btnSize === "default" &&
+          "h-11 min-w-[4rem] px-4 md:h-9 md:min-w-[7.7rem]",
         isDisabled && "cursor-not-allowed bg-gray-300",
         icon ? "justify-between px-4 py-2" : "justify-center",
         !isDisabled &&

@@ -29,8 +29,10 @@ const Home: NextPage = () => {
         />
         <link rel="manifest" href="/site.webmanifest"></link>
       </Head>
-      <main className="px-4 py-4 md:px-20 md:py-12">
-        <CTASection />
+      <main className="px-4 py-4">
+        <div className="mt-10">
+          <CTASection />
+        </div>
         <BuyProducts />
       </main>
     </>

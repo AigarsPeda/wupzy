@@ -18,11 +18,15 @@ const BuyProducts = () => {
     }
   };
 
-  if (!data) {
-    return <Spinner size="medium" />;
-  }
-
-  return <DisplayProducts products={data.products} handleCheckout={checkout} />;
+  return (
+    <div className="relative mt-7 min-h-[10rem] w-full">
+      {!data ? (
+        <Spinner size="small" />
+      ) : (
+        <DisplayProducts products={data.products} handleCheckout={checkout} />
+      )}
+    </div>
+  );
 };
 
 export default BuyProducts;

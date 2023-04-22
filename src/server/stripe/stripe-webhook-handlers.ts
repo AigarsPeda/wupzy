@@ -53,8 +53,8 @@ export const handleInvoicePaid = async ({
   stripe,
   prisma,
 }: {
-  event: Stripe.Event;
   stripe: Stripe;
+  event: Stripe.Event;
   prisma: PrismaClient;
 }) => {
   const invoice = event.data.object as Stripe.Invoice;
@@ -67,7 +67,7 @@ export const handleInvoicePaid = async ({
   // update user with subscription data
   await prisma.user.update({
     where: {
-      id: userId,
+      stripeCustomerId: userId,
     },
     data: {
       stripeSubscriptionId: subscription.id,
@@ -90,7 +90,7 @@ export const handleSubscriptionCreatedOrUpdated = async ({
   // update user with subscription data
   await prisma.user.update({
     where: {
-      id: userId,
+      stripeCustomerId: userId,
     },
     data: {
       stripeSubscriptionId: subscription.id,
@@ -113,7 +113,7 @@ export const handleSubscriptionCanceled = async ({
   // remove subscription data from user
   await prisma.user.update({
     where: {
-      id: userId,
+      stripeCustomerId: userId,
     },
     data: {
       stripeSubscriptionId: null,

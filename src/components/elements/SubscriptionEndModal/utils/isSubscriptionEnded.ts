@@ -5,7 +5,11 @@ const isSubscriptionEnded = (d: Date | null | undefined) => {
     return false;
   }
 
-  return d < today;
+  // check if subscription has ended by yesterday
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  return d < yesterday;
 };
 
 export default isSubscriptionEnded;

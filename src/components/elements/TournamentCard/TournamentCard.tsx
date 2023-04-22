@@ -1,9 +1,9 @@
 import Button from "components/elements/Button/Button";
+import TournamentCardOptionDropdown from "components/elements/TournamentCardOptionDropdown/TournamentCardOptionDropdown";
 import useRedirect from "hooks/useRedirect";
 import type { FC } from "react";
 import type { TournamentType } from "types/tournament.types";
 import formatDate from "utils/formatDate";
-import TournamentCardOptionDropdown from "../TournamentCardOptionDropdown/TournamentCardOptionDropdown";
 
 interface TournamentCardProps {
   isPlayoff: boolean;
@@ -35,9 +35,10 @@ const TournamentCard: FC<TournamentCardProps> = ({
       <div className="flex items-center justify-end">
         {isPlayoff && (
           <Button
-            btnTitle="Playoff"
             btnSize="xs"
+            fontSize="sm"
             btnColor="outline"
+            btnTitle="Playoff"
             onClick={() => {
               redirectToPath(`tournaments/${tournament.id}/playoff/`);
             }}

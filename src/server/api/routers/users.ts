@@ -33,22 +33,6 @@ export const usersRouter = createTRPCRouter({
         });
       }
 
-      // const user = await ctx.prisma.user.upsert({
-      //   where: {
-      //     id: input.userId,
-      //   },
-      //   update: {
-      //     email: input.email,
-      //     lastName: input.lastName,
-      //     firstName: input.firstName,
-      //   },
-      //   create: {
-      //     email: input.email,
-      //     lastName: input.lastName,
-      //     firstName: input.firstName,
-      //   },
-      // });
-
       const user = await ctx.prisma.user.update({
         where: {
           id: input.userId,
@@ -157,7 +141,9 @@ export const usersRouter = createTRPCRouter({
       throw new TRPCError({ code: "UNAUTHORIZED" });
     }
 
-    const user = await ctx.prisma.user.findUnique({
+    const { prisma, stripe } = ctx;
+
+    const user = await prisma.user.findUnique({
       where: {
         id: ctx.user.id,
       },
@@ -169,11 +155,33 @@ export const usersRouter = createTRPCRouter({
         expiresAt: true,
         stripeCustomerId: true,
         subscriptionStatus: true,
+        stripeSubscriptionId: true,
       },
     });
 
     if (!user) {
       throw new TRPCError({ code: "NOT_FOUND" });
+    }
+
+    // check if users subscription is not expired
+    if (user.expiresAt && user.expiresAt < new Date()) {
+      // check if user has a stripe customer id
+      if (user.stripeSubscriptionId) {
+        // check if user has a stripe subscription
+        const subscription = await stripe.subscriptions.retrieve(
+          user.stripeSubscriptionId
+        );
+
+        await prisma.user.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            subscriptionStatus: subscription.status,
+            expiresAt: new Date(subscription.current_period_end * 1000),
+          },
+        });
+      }
     }
 
     return {
