@@ -141,7 +141,7 @@ const GroupCard: FC<GroupCardProps> = ({
         }}
       />
 
-      <div className="mt-5 w-full md2:mt-10 ">
+      <div className="mt-5 w-full md:ml-5 md2:mt-10">
         {tournamentKind === "TEAMS" ? (
           <GroupTeamsCard teams={teams?.teams || []} />
         ) : (

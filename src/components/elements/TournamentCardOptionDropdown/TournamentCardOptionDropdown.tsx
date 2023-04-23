@@ -32,16 +32,16 @@ const TournamentCardOptionDropdown: FC<TournamentCardOptionDropdownProps> = ({
   return (
     <>
       <Dropdown
-        dropdownClass="top-[2.3rem]"
+        dropdownClass="top-[2.28rem]"
         dropdownBtn={
           <button
             type="button"
-            className="ml-2 flex items-center justify-center"
+            className="ml-0 flex items-center justify-center"
             onClick={() => {
               setIsDropdownOpen((state) => !state);
             }}
           >
-            <BsThreeDotsVertical className="h-8 w-8" />
+            <BsThreeDotsVertical className="h-8 w-8 text-gray-400" />
           </button>
         }
         isDropdownOpen={isDropdownOpen}

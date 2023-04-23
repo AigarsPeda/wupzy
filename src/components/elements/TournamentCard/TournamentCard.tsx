@@ -4,6 +4,7 @@ import useRedirect from "hooks/useRedirect";
 import type { FC } from "react";
 import type { TournamentType } from "types/tournament.types";
 import formatDate from "utils/formatDate";
+import classNames from "../../../utils/classNames";
 
 interface TournamentCardProps {
   isPlayoff: boolean;
@@ -19,11 +20,11 @@ const TournamentCard: FC<TournamentCardProps> = ({
   const { redirectToPath } = useRedirect();
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-gray-200 p-4 text-left shadow-lg transition-all duration-200">
-      <div className="mb-5 flex items-center">
+    <div className="relative rounded-lg border border-gray-100 bg-gray-100 px-2 py-1 text-left shadow-lg transition-all duration-200">
+      <div className="mb-1 flex items-center">
         <p className="text-sm text-gray-400">{tournament.type}</p>
       </div>
-      <div className="mb-4 flex flex-col space-y-3 border-b-2 border-gray-300 pb-4">
+      <div className="mb-2 flex flex-col space-y-3 border-b-2 border-gray-300 pb-4">
         <div className="mb-2 flex flex-col">
           <h3 className="text-xl font-semibold">{tournament.name}</h3>
         </div>
@@ -57,6 +58,12 @@ const TournamentCard: FC<TournamentCardProps> = ({
           tournamentId={tournament.id}
         />
       </div>
+      {/* <div
+        className={classNames(
+          tournament.type === "TEAMS" ? "bg-sky-500" : "bg-violet-500",
+          "absolute left-0 top-1/2 h-28 w-1 -translate-x-1/2 -translate-y-1/2 transform rounded"
+        )}
+      /> */}
     </div>
   );
 };

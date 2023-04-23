@@ -12,6 +12,7 @@ const DisplaySetScore: FC<DisplaySetScoreProps> = ({ game }) => {
 
   return (
     <div className="w-full">
+      <p className="w-20 text-xs text-gray-400">Score in set:</p>
       {finishedGamesMap &&
         [...finishedGamesMap].map(([key, setResult]) => {
           return (
