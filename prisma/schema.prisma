@@ -59,6 +59,8 @@ model Tournament {
   userId       String
   winner       String?
   games        Games[]
+  shareLinkId  String?
+  shareLink    ShareLink?
   teams        Participant[]
   playoffgames PlayoffGames[]
   updatedAt    DateTime       @updatedAt
@@ -67,6 +69,14 @@ model Tournament {
   isPlayoff    Boolean        @default(false)
   id           String         @id @default(cuid())
   user         User           @relation(fields: [userId], references: [id])
+}
+
+model ShareLink {
+  tournamentId String     @unique
+  updatedAt    DateTime   @updatedAt
+  createdAt    DateTime   @default(now())
+  id           String     @id @default(cuid())
+  tournament   Tournament @relation(fields: [tournamentId], references: [id])
 }
 
 model Participant {

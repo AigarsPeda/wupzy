@@ -10,6 +10,7 @@ export const ROUTES_WITHOUT_NAVBAR = [
   "/login",
   "/signup",
   "/success",
+  "/share/[id]",
   "/login/forgot",
   "/reset-password/[resettoken]",
 ];

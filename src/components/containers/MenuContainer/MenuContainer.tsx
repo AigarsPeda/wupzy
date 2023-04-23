@@ -38,7 +38,7 @@ const MenuContainer: FC = () => {
         setIsDrawerOpen(false);
       }}
       drawerBtn={
-        <div className="flex">
+        <div className="flex w-full">
           <Button
             btnSize="square"
             btnTitle={<TiThMenu className="h-6 w-6" />}
@@ -47,7 +47,7 @@ const MenuContainer: FC = () => {
             }}
           />
 
-          <div className="ml-2 w-6">
+          <div className="ml-2 w-auto">
             {isBackButtonDisabled() && (
               <Button
                 btnSize="square"

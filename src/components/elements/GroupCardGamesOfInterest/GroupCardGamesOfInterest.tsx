@@ -10,7 +10,7 @@ import { GameSets } from "types/game.types";
 import type { TournamentTypeType } from "types/tournament.types";
 import classNames from "utils/classNames";
 
-const GAME_STATUS: {
+export const GAME_STATUS: {
   [key: string]: string;
 } = {
   "1": "Next",
@@ -156,7 +156,7 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
                               />
                             </div>
                             {isCurrentGame && (
-                              <div className="flex w-32 flex-col items-end justify-end">
+                              <div className="mt-4 flex w-32 flex-col items-center justify-center">
                                 <div className="h-[2.5rem]">
                                   <Button
                                     btnColor="outline"

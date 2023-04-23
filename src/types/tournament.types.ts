@@ -12,6 +12,7 @@ const TournamentZodSchema = z.object({
   createdAt: z.date(),
   isPlayoff: z.boolean(),
   winner: z.string().nullable(),
+  shareLinkId: z.string().nullable(),
   type: TournamentTypeZodSchema,
 });
 

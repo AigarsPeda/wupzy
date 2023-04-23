@@ -1,6 +1,7 @@
 import CreatePlayOff from "components/containers/CreatePlayOff/CreatePlayOff";
 import EditTournamentContainer from "components/containers/EditTournamentContainer/EditTournamentContainer";
 import GroupCardContainer from "components/containers/GroupCardContainer/GroupCardContainer";
+import CreateShareLink from "components/elements/CreateShareLink/CreateShareLink";
 import Spinner from "components/elements/Spinner/Spinner";
 import TournamentHeader from "components/elements/TournamentHeader/TournamentHeader";
 import useRedirect from "hooks/useRedirect";
@@ -39,18 +40,22 @@ const Tournament: NextPage = () => {
     <>
       <div className="mb-4 flex justify-between">
         <TournamentHeader tournament={tournament?.tournament} />
-        <div className="flex">
-          <CreatePlayOff
-            tournamentId={tournamentId}
-            isPlayoff={Boolean(tournament?.tournament.isPlayoff)}
-            tournamentType={tournament?.tournament.type ?? "TEAMS"}
-          />
+        {tournament && (
+          <div className="flex">
+            <CreatePlayOff
+              tournamentId={tournamentId}
+              isPlayoff={Boolean(tournament.tournament.isPlayoff)}
+              tournamentType={tournament.tournament.type ?? "TEAMS"}
+            />
 
-          <EditTournamentContainer
-            tournamentId={tournamentId}
-            isPlayoff={Boolean(tournament?.tournament.isPlayoff)}
-          />
-        </div>
+            <CreateShareLink tournament={tournament.tournament} />
+
+            <EditTournamentContainer
+              tournamentId={tournamentId}
+              isPlayoff={Boolean(tournament?.tournament.isPlayoff)}
+            />
+          </div>
+        )}
       </div>
       {tournament && (
         <GroupCardContainer

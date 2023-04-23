@@ -40,7 +40,7 @@ const GroupTeamsCard: FC<GroupTeamsCardProps> = ({ teams }) => {
                 <div>
                   <p>{team.name}</p>
                   <div className="flex space-x-2">
-                    {team.participants.map((participant) => (
+                    {team.participants?.map((participant) => (
                       <p key={participant.id} className="text-sm text-gray-400">
                         {participant.name}
                       </p>

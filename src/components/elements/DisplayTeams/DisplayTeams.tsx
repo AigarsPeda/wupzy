@@ -46,10 +46,10 @@ const DisplayTeams: FC<DisplayTeamsProps> = ({
         ))}
       </div>
 
-      {isCurrentGame && handleScoreChange && (
+      {handleScoreChange && (
         <NumberInput value={teamsScore ?? 0} onChange={handleScoreChange} />
       )}
-      {!isCurrentGame && infoScore && (
+      {infoScore && (
         <p
           className={classNames(
             isWinner ? "font-bold text-gray-800" : "font-normal text-gray-400",

@@ -1,6 +1,7 @@
 import { kingTournamentsRouter } from "server/api/routers/kingTournaments";
 import { participantRouter } from "server/api/routers/participant";
 import { resetPasswordRouter } from "server/api/routers/passwordReset";
+import { shareLinkRouter } from "server/api/routers/shareLink";
 import { stripeRouter } from "server/api/routers/stripe";
 import { teamsTournamentsRouter } from "server/api/routers/teamsTournaments";
 import { tournamentsRouter } from "server/api/routers/tournaments";
@@ -15,6 +16,7 @@ import { createTRPCRouter } from "server/api/trpc";
 export const appRouter = createTRPCRouter({
   users: usersRouter,
   stripe: stripeRouter,
+  shareLink: shareLinkRouter,
   tournaments: tournamentsRouter,
   participant: participantRouter,
   resetPassword: resetPasswordRouter,

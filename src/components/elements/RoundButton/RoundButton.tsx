@@ -1,9 +1,11 @@
 import type { FC } from "react";
 import classNames from "utils/classNames";
+import Spinner from "../Spinner/Spinner";
 
 interface RoundButtonProps {
   btnClass?: string;
   icon?: JSX.Element;
+  isLoading?: boolean;
   handleClick: () => void;
   btnType?: "submit" | "button";
   textSize?: "sm" | "md" | "lg";
@@ -15,6 +17,7 @@ interface RoundButtonProps {
 const RoundButton: FC<RoundButtonProps> = ({
   icon,
   btnClass,
+  isLoading,
   btnContent,
   handleClick,
   textSize = "md",
@@ -42,14 +45,20 @@ const RoundButton: FC<RoundButtonProps> = ({
       )}
       onClick={handleClick}
     >
-      {btnContent && (
+      {isLoading && (
+        <span className="relative px-6 py-2.5">
+          <Spinner size="xs" color="light" />
+        </span>
+      )}
+
+      {!isLoading && btnContent && (
         <span
           className={classNames(btnContentClassNames && btnContentClassNames)}
         >
           {btnContent}
         </span>
       )}
-      {icon && <span>{icon}</span>}
+      {!isLoading && icon && <span>{icon}</span>}
     </button>
   );
 };
