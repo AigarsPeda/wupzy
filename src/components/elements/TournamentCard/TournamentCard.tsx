@@ -4,7 +4,6 @@ import useRedirect from "hooks/useRedirect";
 import type { FC } from "react";
 import type { TournamentType } from "types/tournament.types";
 import formatDate from "utils/formatDate";
-import classNames from "../../../utils/classNames";
 
 interface TournamentCardProps {
   isPlayoff: boolean;
@@ -20,7 +19,7 @@ const TournamentCard: FC<TournamentCardProps> = ({
   const { redirectToPath } = useRedirect();
 
   return (
-    <div className="relative rounded-lg border border-gray-100 bg-gray-100 px-2 py-1 text-left shadow-lg transition-all duration-200">
+    <div className="relative rounded-lg border border-gray-100 bg-gray-50 px-2 py-1 text-left shadow-lg transition-all duration-200">
       <div className="mb-1 flex items-center">
         <p className="text-sm text-gray-400">{tournament.type}</p>
       </div>

@@ -86,7 +86,7 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
                 className={classNames(
                   isCurrentGame
                     ? "bg-gray-800 py-3 text-white md:py-6"
-                    : "bg-gray-200 py-1 md:py-3",
+                    : "bg-gray-100 py-1 md:py-3",
                   "relative mb-3 rounded-md px-3 md:flex"
                 )}
               >
@@ -157,31 +157,35 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
                             </div>
                             {isCurrentGame && (
                               <div className="flex w-32 flex-col items-end justify-end">
-                                <Button
-                                  btnColor="outline"
-                                  btnTitle="Save score"
-                                  isLoading={isLoading}
-                                  btnClass="border-gray-400 h-[2.5rem] w-full"
-                                  onClick={() => {
-                                    if (!game) return;
+                                <div className="h-[2.5rem]">
+                                  <Button
+                                    btnColor="outline"
+                                    btnTitle="Save score"
+                                    textClass="px-3"
+                                    btnSize="full"
+                                    isLoading={isLoading}
+                                    btnClass="border-gray-400 w-full"
+                                    onClick={() => {
+                                      if (!game) return;
 
-                                    const firstTeamIds =
-                                      game.team1.participants.map(
-                                        (team) => team.id
+                                      const firstTeamIds =
+                                        game.team1.participants.map(
+                                          (team) => team.id
+                                        );
+
+                                      const secondTeamsIds =
+                                        game.team2.participants.map(
+                                          (team) => team.id
+                                        );
+
+                                      handleScoreSave(
+                                        game,
+                                        firstTeamIds,
+                                        secondTeamsIds
                                       );
-
-                                    const secondTeamsIds =
-                                      game.team2.participants.map(
-                                        (team) => team.id
-                                      );
-
-                                    handleScoreSave(
-                                      game,
-                                      firstTeamIds,
-                                      secondTeamsIds
-                                    );
-                                  }}
-                                />
+                                    }}
+                                  />
+                                </div>
                               </div>
                             )}
                           </div>

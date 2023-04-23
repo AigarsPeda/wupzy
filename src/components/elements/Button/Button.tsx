@@ -51,7 +51,7 @@ const Button = forwardRef<Ref, ButtonProps>(
         btnSize === "xs" && "h-8 px-2",
         btnSize === "small" && "h-11 w-24 md:h-9",
         btnSize === "large" && "h-11 w-48 md:h-9",
-        btnSize === "full" && "h-9 w-full",
+        btnSize === "full" && "h-full w-full",
         btnSize === "square" && "h-11 w-11 md:h-9 md:w-9",
         btnSize === "default" &&
           "h-11 min-w-[4rem] px-4 md:h-9 md:min-w-[7.7rem]",
@@ -70,10 +70,10 @@ const Button = forwardRef<Ref, ButtonProps>(
           btnColor === "outline" &&
           "border-2 border-gray-800 bg-white text-gray-800 hover:scale-105 hover:shadow-gray-400",
         "relative flex items-center justify-center rounded-md text-center shadow transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-gray-100",
-        btnClass && btnClass,
         fontSize === "sm" && "text-sm",
         fontSize === "md" && "text-xs md:text-sm",
-        fontSize === "lg" && "text-lg"
+        fontSize === "lg" && "text-lg",
+        btnClass && btnClass
       )}
     >
       {iconPosition === "left" && icon && (
