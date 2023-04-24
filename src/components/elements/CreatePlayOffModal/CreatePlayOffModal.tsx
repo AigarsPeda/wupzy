@@ -71,14 +71,16 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
 
     let tMap = sortMap(createMap(teams?.teams));
 
-    const shortestLength = getShortestGroup(tMap);
-    const keys = Array.from(tMap.keys());
+    // const shortestLength = getShortestGroup(tMap);
+    // const keys = Array.from(tMap.keys());
 
-    if (!isOdd([...keys].length) || !isOdd(shortestLength)) {
-      // If there is an odd number of keys, we add all teams to one group
-      // and create a new map with the new group
-      tMap = sortMap(putAllTeamsInOneGroup(tMap));
-    }
+    // if (!isOdd([...keys].length) || !isOdd(shortestLength)) {
+    // If there is an odd number of keys, we add all teams to one group
+    // and create a new map with the new group
+    tMap = sortMap(putAllTeamsInOneGroup(tMap));
+    // }
+
+    console.log("tMap --->", tMap);
 
     const playoffBrackets = Math.floor(getShortestGroup(tMap) / 2);
     // const num = getPrevOddNumber(playoffBrackets);

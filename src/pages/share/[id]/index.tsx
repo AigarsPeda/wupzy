@@ -37,11 +37,11 @@ const Share: NextPage = () => {
   }, [data?.shareTournament]);
 
   return (
-    <div>
+    <>
       <div className="mb-5 transition-all md:mb-10">
         <Logo />
       </div>
-      <GridLayout isGap minWith="350">
+      <GridLayout isGap minWith="320">
         {[...createMap(data?.shareTournament.tournament.games ?? [])].map(
           ([group, games]) => {
             const teams = teamMap.get(group);
@@ -87,7 +87,7 @@ const Share: NextPage = () => {
                         "mb-2 flex rounded-md bg-gray-100 px-2 py-2"
                       )}
                     >
-                      <div className={classNames("w-full md:flex")}>
+                      <div>
                         <div className="flex w-full">
                           <div
                             className={classNames(
@@ -124,7 +124,7 @@ const Share: NextPage = () => {
                             />
                           </div>
                         </div>
-                        <div className="flex justify-end">
+                        <div className="mt-3 flex md:mt-0 md:justify-end">
                           <div className="w-full max-w-[5.5rem]">
                             <DisplaySetScore game={game as GamesType} />
                           </div>
@@ -150,7 +150,7 @@ const Share: NextPage = () => {
           }
         )}
       </GridLayout>
-    </div>
+    </>
   );
 };
 

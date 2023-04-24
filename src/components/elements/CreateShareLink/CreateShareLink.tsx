@@ -1,13 +1,12 @@
 import ModalWrap from "components/elements/ModalWrap/ModalWrap";
 import RoundButton from "components/elements/RoundButton/RoundButton";
+import useWindowSize from "hooks/useWindowSize";
 import { QRCodeSVG } from "qrcode.react";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
+import { MdIosShare } from "react-icons/md";
 import type { TournamentType } from "types/tournament.types";
 import { api } from "utils/api";
-import { FiShare } from "react-icons/fi";
-import useWindowSize from "../../../hooks/useWindowSize";
-import { MdIosShare } from "react-icons/md";
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_DOMAIN || "";
 
@@ -52,7 +51,7 @@ const CreateShareLink: FC<ShareLinkProps> = ({ tournament }) => {
         isLoading={isLoading}
         btnContentClassNames="md:px-4"
         icon={<MdIosShare className="h-5 w-5" />}
-        btnContent={shareLinkId && windowSize.width > 500 ? " Share link" : ""}
+        btnContent={windowSize.width > 500 ? "Share link" : ""}
         handleClick={() => {
           if (shareLinkId) {
             setIsModalOpen((state) => !state);
