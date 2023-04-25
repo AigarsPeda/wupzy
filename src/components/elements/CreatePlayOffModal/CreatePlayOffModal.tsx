@@ -55,8 +55,6 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
 
     const games = brackets.get(`${teamCount}`) || [];
 
-    console.log("games --->", games);
-
     await mutateAsync({
       tournamentId,
       games: games,
@@ -78,8 +76,6 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
     // and create a new map with the new group
     tMap = sortMap(putAllTeamsInOneGroup(tMap));
     // }
-
-    console.log("tMap --->", tMap);
 
     const playoffBrackets = Math.floor(getShortestGroup(tMap) / 2);
     // const num = getPrevOddNumber(playoffBrackets);
