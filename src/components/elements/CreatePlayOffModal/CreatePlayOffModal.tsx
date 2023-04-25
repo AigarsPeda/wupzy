@@ -17,7 +17,6 @@ import createAllPossibleOddNumberArray from "utils/createAllPossibleOddNumberArr
 import createMap from "utils/createMap";
 import getNextOddNumber from "utils/getNextOddNumber";
 import getShortestGroup from "utils/getShortestGroup";
-import isOdd from "utils/isOdd";
 import sortMap from "utils/sortMap";
 
 interface CreatePlayOffModalProps {

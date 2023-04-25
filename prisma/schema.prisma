@@ -68,7 +68,7 @@ model Tournament {
   createdAt    DateTime       @default(now())
   isPlayoff    Boolean        @default(false)
   id           String         @id @default(cuid())
-  user         User           @relation(fields: [userId], references: [id])
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model ShareLink {
@@ -76,7 +76,7 @@ model ShareLink {
   updatedAt    DateTime   @updatedAt
   createdAt    DateTime   @default(now())
   id           String     @id @default(cuid())
-  tournament   Tournament @relation(fields: [tournamentId], references: [id])
+  tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
 }
 
 model Participant {
@@ -93,7 +93,7 @@ model Participant {
   id             String         @id @default(cuid())
   gameswinners   Games[]        @relation("winners")
   playoffwinners PlayoffGames[] @relation("playoffwinners")
-  tournament     Tournament     @relation(fields: [tournamentId], references: [id])
+  tournament     Tournament     @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
 }
 
 model Games {
@@ -108,7 +108,7 @@ model Games {
   gameSet      Int           @default(1)
   id           String        @id @default(cuid())
   winners      Participant[] @relation("winners")
-  tournament   Tournament    @relation(fields: [tournamentId], references: [id])
+  tournament   Tournament    @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
   team1        Team          @relation("participant_team_1", fields: [team1Id], references: [id], onDelete: Cascade)
   team2        Team          @relation("participant_team_2", fields: [team2Id], references: [id], onDelete: Cascade)
   gameSets     Json          @default("{}")
@@ -128,7 +128,7 @@ model PlayoffGames {
   gameSets       Json          @default("{}")
   id             String        @id @default(cuid())
   playoffwinners Participant[] @relation("playoffwinners")
-  tournament     Tournament    @relation(fields: [tournamentId], references: [id])
+  tournament     Tournament    @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
   team1          Team?         @relation("playoff_team_1", fields: [team1Id], references: [id], onDelete: Cascade)
   team2          Team?         @relation("playoff_team_2", fields: [team2Id], references: [id], onDelete: Cascade)
 }
@@ -147,7 +147,7 @@ model Team {
   playoff2     PlayoffGames[] @relation("playoff_team_2")
   games        Games[]        @relation("participant_team_1")
   games2       Games[]        @relation("participant_team_2")
-  tournament   Tournament     @relation(fields: [tournamentId], references: [id])
+  tournament   Tournament     @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
 }
 
 // One user can have one password
@@ -155,7 +155,7 @@ model Password {
   password String
   userId   String @unique
   id       String @id @default(cuid())
-  user     User   @relation(fields: [userId], references: [id])
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 // One user can have many login tokens
@@ -166,7 +166,7 @@ model LoginToken {
   isActive  Boolean  @default(false)
   createdAt DateTime @default(now())
   id        String   @id @default(cuid())
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model PasswordReset {
@@ -176,5 +176,5 @@ model PasswordReset {
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
   id        String   @id @default(cuid())
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

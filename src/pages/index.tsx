@@ -1,5 +1,6 @@
 import BuyProducts from "components/BuyProducts/BuyProducts";
 import CTASection from "components/elements/CTASection/CTASection";
+import ExplanationsSection from "components/elements/ExplanationsSection/ExplanationsSection";
 import { type NextPage } from "next";
 import Head from "next/head";
 
@@ -34,6 +35,7 @@ const Home: NextPage = () => {
           <CTASection />
         </div>
         <BuyProducts />
+        <ExplanationsSection />
       </main>
     </>
   );

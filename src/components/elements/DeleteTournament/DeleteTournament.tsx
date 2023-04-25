@@ -17,13 +17,13 @@ const DeleteTournament: FC<DeleteTournamentProps> = ({
     <ModalWrap
       modalWidth="xl"
       topPosition="top"
-      modalHeight="md:h-96 h-60"
+      modalHeight="h-60"
       isModalVisible={isModalOpen}
       modalTitle=" "
       handleCancelClick={handleCloseModal}
     >
       <div className="flex h-full w-full items-center justify-center text-center">
-        <div>
+        <div className="mt-10">
           <h1 className="text-2xl">Do you really want to delete tournament?</h1>
           <div className="mt-8 flex items-center justify-center">
             <Button
