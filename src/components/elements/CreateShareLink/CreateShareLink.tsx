@@ -78,7 +78,7 @@ const CreateShareLink: FC<ShareLinkProps> = ({ tournament }) => {
           </p>
           {shareLinkId ? (
             <div className="mt-4">
-              <p className="text-sm text-gray-800">
+              <p className="text-xs text-gray-800 md:text-sm">
                 {`${BASE_URL}/share/${shareLinkId}`}
               </p>
               <div className="my-5 flex w-full justify-center">

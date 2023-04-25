@@ -1,3 +1,4 @@
+import CSSTooltip from "components/elements/CSSTooltip/CSSTooltip";
 import NumberInput from "components/elements/NumberInput/NumberInput";
 import type { FC } from "react";
 import type { ParticipantType } from "types/team.types";
@@ -25,14 +26,23 @@ const DisplayTeams: FC<DisplayTeamsProps> = ({
   return (
     <>
       {teamName && (
-        <p
-          className={classNames(
-            isCurrentGame ? "text-white" : "text-gray-800",
-            "truncate"
-          )}
+        <CSSTooltip
+          tooltipClassName="bottom-3"
+          tooltipContent={
+            <div className="rounded-lg bg-white px-2 py-1 text-gray-800 shadow-md">
+              {teamName}
+            </div>
+          }
         >
-          {teamName}
-        </p>
+          <p
+            className={classNames(
+              isCurrentGame ? "text-white" : "text-gray-800",
+              "max-w-[6.5rem] truncate"
+            )}
+          >
+            {teamName}
+          </p>
+        </CSSTooltip>
       )}
       <div
         className={classNames(

@@ -46,7 +46,7 @@ const TournamentCreateMetaForm: FC<TournamentCreateMetaFormProps> = ({
 
       <div>
         <div className="flex items-end">
-          <div className="mt-10 w-full md:mt-6 md:w-1/2">
+          <div className="mt-10 w-full md:w-1/2">
             <Input
               ref={htmlElRef}
               isMargin={false}

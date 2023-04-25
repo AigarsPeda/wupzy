@@ -438,8 +438,6 @@ export const teamsTournamentsRouter = createTRPCRouter({
         const firstTeams = game.team1?.team1;
         const secondTeams = game.team2?.team2;
 
-        console.log("game --->", game);
-
         await ctx.prisma.playoffGames.create({
           data: {
             stage: game.stage,
