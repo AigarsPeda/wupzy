@@ -7,9 +7,9 @@ generator client {
 
 datasource db {
   // provider = "sqlite" // uncomment this line to use SQLite
-  provider = "mysql"
-  url      = env("DATABASE_URL")
-  // relationMode = "prisma"
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 // generator erd {
@@ -70,6 +70,8 @@ model Tournament {
   isPlayoff    Boolean        @default(false)
   id           String         @id @default(cuid())
   user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model ShareLink {
@@ -95,6 +97,8 @@ model Participant {
   gameswinners   Games[]        @relation("winners")
   playoffwinners PlayoffGames[] @relation("playoffwinners")
   tournament     Tournament     @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+
+  @@index([tournamentId])
 }
 
 model Games {
@@ -113,6 +117,10 @@ model Games {
   team1        Team          @relation("participant_team_1", fields: [team1Id], references: [id], onDelete: Cascade)
   team2        Team          @relation("participant_team_2", fields: [team2Id], references: [id], onDelete: Cascade)
   gameSets     Json          @default("{}")
+
+  @@index([team1Id])
+  @@index([team2Id])
+  @@index([tournamentId])
 }
 
 model PlayoffGames {
@@ -132,6 +140,10 @@ model PlayoffGames {
   tournament     Tournament    @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
   team1          Team?         @relation("playoff_team_1", fields: [team1Id], references: [id], onDelete: Cascade)
   team2          Team?         @relation("playoff_team_2", fields: [team2Id], references: [id], onDelete: Cascade)
+
+  @@index([team1Id])
+  @@index([team2Id])
+  @@index([tournamentId])
 }
 
 model Team {
@@ -149,6 +161,8 @@ model Team {
   games        Games[]        @relation("participant_team_1")
   games2       Games[]        @relation("participant_team_2")
   tournament   Tournament     @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+
+  @@index([tournamentId])
 }
 
 // One user can have one password
@@ -168,6 +182,8 @@ model LoginToken {
   createdAt DateTime @default(now())
   id        String   @id @default(cuid())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model PasswordReset {
@@ -178,4 +194,6 @@ model PasswordReset {
   createdAt DateTime @default(now())
   id        String   @id @default(cuid())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
