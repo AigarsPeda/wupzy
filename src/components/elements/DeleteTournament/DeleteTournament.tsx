@@ -3,12 +3,14 @@ import ModalWrap from "components/elements/ModalWrap/ModalWrap";
 import type { FC } from "react";
 
 interface DeleteTournamentProps {
+  isLoading: boolean;
   isModalOpen: boolean;
   handleCloseModal: () => void;
   handleDeleteTournament: () => void;
 }
 
 const DeleteTournament: FC<DeleteTournamentProps> = ({
+  isLoading,
   isModalOpen,
   handleCloseModal,
   handleDeleteTournament,
@@ -27,13 +29,15 @@ const DeleteTournament: FC<DeleteTournamentProps> = ({
           <h1 className="text-2xl">Do you really want to delete tournament?</h1>
           <div className="mt-8 flex items-center justify-center">
             <Button
-              btnTitle="Delete"
               btnColor="red"
+              btnTitle="Delete"
+              isLoading={isLoading}
               onClick={handleDeleteTournament}
             />
             <Button
               btnClass="ml-4"
               btnTitle="Cancel"
+              isLoading={isLoading}
               onClick={handleCloseModal}
             />
           </div>

@@ -22,7 +22,7 @@ const TournamentCardOptionDropdown: FC<TournamentCardOptionDropdownProps> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { mutate } = api.tournaments.deleteTournament.useMutation({
+  const { mutate, isLoading } = api.tournaments.deleteTournament.useMutation({
     onSuccess: () => {
       refetch();
       setIsModalOpen(false);
@@ -61,6 +61,7 @@ const TournamentCardOptionDropdown: FC<TournamentCardOptionDropdownProps> = ({
         />
       </Dropdown>
       <DeleteTournament
+        isLoading={isLoading}
         isModalOpen={isModalOpen}
         handleDeleteTournament={() => {
           mutate({ tournamentId });
