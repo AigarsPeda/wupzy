@@ -22,10 +22,10 @@ const DesktopImg: FC = () => {
             height={windowSize.width < 1060 ? 400 : 550}
             alt="wupzy score"
             className={classNames(
-              windowSize.width < 1060 ? "left-[-3.3rem]" : "-left-0",
+              windowSize.width < 1060 ? "left-[-3.3rem]" : "left-5",
               "absolute  top-1/2 mx-auto -translate-y-[75%] transform rounded-lg border border-violet-300/70 shadow-md shadow-violet-200"
             )}
-            src="/asset/wupzy_score.webp"
+            src="/asset/wupzy_score_a.webp"
           />
         )}
         {windowSize.width > 780 && (

@@ -3,7 +3,7 @@ import type { FC } from "react";
 const ExplanationsSection: FC = () => {
   return (
     <div className="mx-auto mt-20 flex max-w-3xl">
-      <p className="text-2xl">
+      <p className="font-primary text-2xl">
         <span className="mr-2 whitespace-nowrap">What is wupzy?</span>
         <span className="text-lg text-gray-600">
           {" "}

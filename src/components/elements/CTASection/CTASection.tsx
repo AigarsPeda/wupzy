@@ -4,7 +4,7 @@ const CTASection: FC = () => {
   return (
     <div className="flex w-full flex-col items-center justify-center text-center">
       <div className="">
-        <h1 className="max-w-4xl text-5xl font-extrabold md:text-7xl">
+        <h1 className="max-w-4xl font-primary text-5xl font-extrabold md:text-7xl">
           Sign up and manage your tournaments with ease!
         </h1>
         <p className="mx-auto mb-5 mt-10 max-w-2xl font-primary text-gray-600 md:text-xl">
