@@ -156,7 +156,12 @@ const GroupCardGamesOfInterest: FC<GroupCardGamesOfInterestProps> = ({
                               />
                             </div>
                             {isCurrentGame && (
-                              <div className="mt-4 flex w-32 flex-col items-center justify-center">
+                              <div
+                                className={classNames(
+                                  tournamentKind === "TEAMS" && "mt-4",
+                                  "flex w-32 flex-col items-center justify-center"
+                                )}
+                              >
                                 <div className="h-[2.5rem]">
                                   <Button
                                     btnColor="outline"

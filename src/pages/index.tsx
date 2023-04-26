@@ -1,5 +1,6 @@
 import BuyProducts from "components/BuyProducts/BuyProducts";
 import CTASection from "components/elements/CTASection/CTASection";
+import DesktopImg from "components/elements/DesktopImg/DesktopImg";
 import ExplanationsSection from "components/elements/ExplanationsSection/ExplanationsSection";
 import WupzyFeatures from "components/elements/WupzyFeatures/WupzyFeatures";
 import { type NextPage } from "next";
@@ -37,6 +38,7 @@ const Home: NextPage = () => {
         </div>
         <BuyProducts />
         <ExplanationsSection />
+        <DesktopImg />
         <WupzyFeatures />
       </main>
     </>
