@@ -68,6 +68,8 @@ const CreatePlayOffModal: FC<CreatePlayOffModalProps> = ({
 
     let tMap = sortMap(createMap(teams?.teams));
 
+    if (!tMap.size) return;
+
     // const shortestLength = getShortestGroup(tMap);
     // const keys = Array.from(tMap.keys());
 

@@ -5,6 +5,7 @@ import type { ParticipantType } from "types/team.types";
 interface DisplayPlayoffTeamsProps {
   wonSets: number;
   teamName: string;
+  isShare?: boolean;
   hasWinner: boolean;
   isBothTeams: boolean;
   isScoreDisplay: boolean;
@@ -15,6 +16,7 @@ interface DisplayPlayoffTeamsProps {
 
 const DisplayPlayoffTeams: FC<DisplayPlayoffTeamsProps> = ({
   wonSets,
+  isShare,
   teamName,
   hasWinner,
   isBothTeams,
@@ -33,7 +35,7 @@ const DisplayPlayoffTeams: FC<DisplayPlayoffTeamsProps> = ({
         </div>
       </div>
 
-      {!hasWinner && isBothTeams && (
+      {!hasWinner && isBothTeams && !isShare && (
         <div className="flex h-10 w-full justify-between">
           <NumberInput value={smallPoints || 0} onChange={handleScoreChange} />
         </div>

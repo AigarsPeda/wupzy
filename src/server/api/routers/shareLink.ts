@@ -76,7 +76,26 @@ export const shareLinkRouter = createTRPCRouter({
                   participants: true,
                 },
               },
-              playoffgames: true,
+              playoffgames: {
+                include: {
+                  team1: {
+                    include: {
+                      participants: true,
+                    },
+                  },
+                  team2: {
+                    include: {
+                      participants: true,
+                    },
+                  },
+                  tournament: {
+                    select: {
+                      setsInGame: true,
+                    },
+                  },
+                  participants: true,
+                },
+              },
               teams: true, // Why is this returning participants?
             },
           },

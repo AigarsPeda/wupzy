@@ -15,6 +15,7 @@ type CoordinatesType = {
 };
 
 interface PlayoffBracketsProps {
+  isShare?: boolean;
   isLoading: boolean;
   brackets: [string, GamePlayoffType[]][];
   handleScoreSave: (game: GamePlayoffType) => void;
@@ -22,6 +23,7 @@ interface PlayoffBracketsProps {
 }
 
 const PlayoffBrackets: FC<PlayoffBracketsProps> = ({
+  isShare,
   brackets,
   isLoading,
   handleScoreSave,
@@ -98,6 +100,7 @@ const PlayoffBrackets: FC<PlayoffBracketsProps> = ({
                             {firstTeam && (
                               <div className="w-full">
                                 <DisplayPlayoffTeams
+                                  isShare={isShare}
                                   hasWinner={hasWinner}
                                   wonSets={firstTeamWins}
                                   smallPoints={team1Score}
@@ -120,6 +123,7 @@ const PlayoffBrackets: FC<PlayoffBracketsProps> = ({
                             {secondTeam && (
                               <div className="w-full">
                                 <DisplayPlayoffTeams
+                                  isShare={isShare}
                                   hasWinner={hasWinner}
                                   smallPoints={team2Score}
                                   wonSets={secondTeamWins}
@@ -140,17 +144,20 @@ const PlayoffBrackets: FC<PlayoffBracketsProps> = ({
                               </div>
                             )}
                             <div>
-                              {firstTeam && secondTeam && !hasWinner && (
-                                <Button
-                                  btnTitle="Save"
-                                  btnColor="outline"
-                                  isLoading={isLoading}
-                                  btnClass="h-[2.5rem] md:w-[8rem] w-24"
-                                  onClick={() => {
-                                    handleScoreSave(game);
-                                  }}
-                                />
-                              )}
+                              {firstTeam &&
+                                secondTeam &&
+                                !hasWinner &&
+                                !isShare && (
+                                  <Button
+                                    btnTitle="Save"
+                                    btnColor="outline"
+                                    isLoading={isLoading}
+                                    btnClass="h-[2.5rem] md:w-[8rem] w-24"
+                                    onClick={() => {
+                                      handleScoreSave(game);
+                                    }}
+                                  />
+                                )}
                             </div>
                           </div>
 
