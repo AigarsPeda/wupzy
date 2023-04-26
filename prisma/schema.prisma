@@ -7,8 +7,9 @@ generator client {
 
 datasource db {
   // provider = "sqlite" // uncomment this line to use SQLite
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 // generator erd {
