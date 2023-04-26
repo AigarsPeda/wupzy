@@ -17,8 +17,8 @@ datasource db {
 // }
 
 model User {
-  lastName             String
-  firstName            String
+  lastName             String          @db.VarChar(500)
+  firstName            String          @db.VarChar(500)
   country              String?
   subscriptionStatus   String?
   expiresAt            DateTime?
@@ -26,9 +26,9 @@ model User {
   LoginToken           LoginToken[]
   Tournaments          Tournament[]
   PasswordReset        PasswordReset[]
-  stripeSubscriptionId String?         @unique
-  stripeCustomerId     String?         @unique
-  email                String          @unique
+  stripeSubscriptionId String?         @unique @db.VarChar(500)
+  stripeCustomerId     String?         @unique @db.VarChar(500)
+  email                String          @unique @db.VarChar(500)
   updatedAt            DateTime        @updatedAt
   createdAt            DateTime        @default(now())
   id                   String          @id @default(cuid())
@@ -41,7 +41,7 @@ model StripeEvent {
   request          Json?
   type             String
   object           String
-  account          String?
+  account          String?  @db.VarChar(500)
   created          DateTime
   livemode         Boolean
   pending_webhooks Int
@@ -56,11 +56,11 @@ enum TournamentType {
 model Tournament {
   setsInGame   Int
   team         Team[]
-  name         String
-  userId       String
+  name         String         @db.VarChar(500)
+  userId       String         @db.VarChar(500)
   winner       String?
   games        Games[]
-  shareLinkId  String?
+  shareLinkId  String?        @db.VarChar(500)
   shareLink    ShareLink?
   teams        Participant[]
   playoffgames PlayoffGames[]
@@ -84,8 +84,8 @@ model ShareLink {
 
 model Participant {
   team           Team[]
-  name           String
-  tournamentId   String
+  name           String         @db.VarChar(500)
+  tournamentId   String         @db.VarChar(500)
   group          String
   games          Games[]
   playoffgames   PlayoffGames[]
@@ -104,9 +104,9 @@ model Participant {
 model Games {
   gameOrder    Int
   group        String
-  tournamentId String
-  team2Id      String
-  team1Id      String
+  tournamentId String        @db.VarChar(500)
+  team2Id      String        @db.VarChar(500)
+  team1Id      String        @db.VarChar(500)
   team1Score   Int?
   team2Score   Int?
   participants Participant[]
@@ -124,9 +124,9 @@ model Games {
 }
 
 model PlayoffGames {
-  tournamentId   String
-  team2Id        String?
-  team1Id        String?
+  tournamentId   String        @db.VarChar(500)
+  team2Id        String?       @db.VarChar(500)
+  team1Id        String?       @db.VarChar(500)
   bracketNum     Int
   gameOrder      Int
   stage          String // <- 1/8, 1/4, 1/2, final
@@ -147,15 +147,15 @@ model PlayoffGames {
 }
 
 model Team {
-  name         String
-  group        String
-  tournamentId String
+  name         String         @db.VarChar(500)
+  group        String         @db.VarChar(500)
+  tournamentId String         @db.VarChar(500)
   participants Participant[]
   updatedAt    DateTime       @updatedAt
   points       Int            @default(0)
   smallPoints  Int            @default(0)
   createdAt    DateTime       @default(now())
-  id           String         @id @default(cuid())
+  id           String         @id @default(cuid()) @db.VarChar(500)
   playoff      PlayoffGames[] @relation("playoff_team_1")
   playoff2     PlayoffGames[] @relation("playoff_team_2")
   games        Games[]        @relation("participant_team_1")
@@ -167,7 +167,7 @@ model Team {
 
 // One user can have one password
 model Password {
-  password String
+  password String @db.VarChar(500)
   userId   String @unique
   id       String @id @default(cuid())
   user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -175,8 +175,8 @@ model Password {
 
 // One user can have many login tokens
 model LoginToken {
-  userId    String
-  token     String   @unique()
+  userId    String   @db.VarChar(500)
+  token     String   @unique() @db.VarChar(500)
   updatedAt DateTime @updatedAt
   isActive  Boolean  @default(false)
   createdAt DateTime @default(now())
@@ -187,9 +187,9 @@ model LoginToken {
 }
 
 model PasswordReset {
-  userId    String
+  userId    String   @db.VarChar(500)
   isActive  Boolean
-  token     String   @unique()
+  token     String   @unique() @db.VarChar(500)
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
   id        String   @id @default(cuid())
