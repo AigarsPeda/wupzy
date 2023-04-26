@@ -70,7 +70,7 @@ const ModalWrap: FC<ModalWrapProps> = ({
               isFullScreen && "h-full w-full",
               modalsWidth && modalsWidth,
               modalHeight && modalHeight,
-              "absolute z-[69] m-5 w-full rounded bg-white shadow-lg sm:mx-5"
+              "absolute z-[69] mx-2 w-full rounded bg-white shadow-lg sm:mx-5"
             )}
           >
             <div className={classNames("px-3 py-2 text-left md:px-6 md:py-4")}>

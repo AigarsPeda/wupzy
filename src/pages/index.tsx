@@ -40,6 +40,9 @@ const Home: NextPage = () => {
         <ExplanationsSection />
         <DesktopImg />
         <WupzyFeatures />
+        <div className="mt-14 md:mt-24">
+          <BuyProducts />
+        </div>
       </main>
     </>
   );

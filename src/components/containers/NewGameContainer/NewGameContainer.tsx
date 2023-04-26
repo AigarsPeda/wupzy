@@ -158,6 +158,7 @@ const NewTournamentContainer: FC = () => {
         }}
       />
       <NewModalWrap
+        isFullScreen
         isModalVisible={isModalOpen}
         modalTitle="Crete new tournament"
         handleCancelClick={() => {

@@ -6,9 +6,10 @@ import { IoClose } from "react-icons/io5";
 import classNames from "utils/classNames";
 
 interface NewModalWrapProps {
-  children: ReactNode;
-  modalTitle: string;
   footer: ReactNode;
+  modalTitle: string;
+  children: ReactNode;
+  isFullScreen?: boolean;
   isModalVisible: boolean;
   handleCancelClick: () => void;
 }
@@ -17,6 +18,7 @@ const NewModalWrap: FC<NewModalWrapProps> = ({
   footer,
   children,
   modalTitle,
+  isFullScreen,
   isModalVisible,
   handleCancelClick,
 }) => {
@@ -37,7 +39,12 @@ const NewModalWrap: FC<NewModalWrapProps> = ({
           )}
         >
           <div className="relative h-full w-full">
-            <div className="absolute left-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 transform p-3 md:p-10">
+            <div
+              className={classNames(
+                !isFullScreen && "p-3",
+                "absolute left-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 transform md:p-10"
+              )}
+            >
               <div
                 ref={modalRef}
                 className="flex h-full w-full flex-col justify-between rounded bg-white"
