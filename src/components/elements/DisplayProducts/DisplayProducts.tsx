@@ -40,7 +40,7 @@ const DisplayProducts: FC<DisplayProductsProps> = ({
 
   return (
     <div className="mx-auto grid max-w-2xl grid-cols-1 gap-4 font-primary md:grid-cols-2">
-      {products?.data.map((product, i) => {
+      {products?.data.map((product) => {
         const { name } = product.product as Stripe.Product;
 
         return (
