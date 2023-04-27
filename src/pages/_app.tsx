@@ -1,6 +1,7 @@
-import { Cabin, Koulen, Roboto } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 import MainLayout from "components/layouts/MainLayout/MainLayout";
 import { type AppType } from "next/app";
+import { Cabin, Koulen, Roboto } from "next/font/google";
 import "styles/globals.css";
 import { api } from "utils/api";
 
@@ -43,6 +44,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       </style>
       <MainLayout>
         <Component {...pageProps} />
+        <Analytics />
       </MainLayout>
     </>
   );

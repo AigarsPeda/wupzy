@@ -40,7 +40,9 @@ const GroupCardDisplayAllGames: FC<GroupCardDisplayAllGamesProps> = ({
       handleCancelClick={handleCancelClick}
     >
       {isLoading ? (
-        <Spinner size="small" />
+        <div className="relative h-40 w-full">
+          <Spinner size="small" />
+        </div>
       ) : (
         <ul
           className="overflow-y-auto"
