@@ -95,47 +95,28 @@ export const resetPasswordRouter = createTRPCRouter({
               </div>`,
       };
 
-      // transporter.sendMail(mailOptions, function (error, info) {
-      //   if (error) {
-      //     console.error(error);
-      //     return { message: "Error sending email" };
-      //   } else {
-      //     console.log(`Email sent: ${info.response}`);
-      //     return { message: "Reset token sent" };
-      //   }
-      // });
-
-      await new Promise((resolve, reject) => {
-        // send mail
-        transporter.sendMail(mailOptions, (err, info) => {
-          if (err) {
-            console.error(err);
-            reject(err);
-
-            return { message: "Error sending email" };
-          } else {
-            console.log(info);
-            resolve(info);
-
-            return { message: "Reset token sent" };
-          }
+      try {
+        await new Promise((resolve, reject) => {
+          // send mail
+          transporter.sendMail(mailOptions, (err, info) => {
+            if (err) {
+              console.error(err);
+              reject(err);
+            } else {
+              console.log(info);
+              resolve(info);
+            }
+          });
         });
-      });
 
-      //   await new Promise((resolve, reject) => {
-      //     // verify connection configuration
-      //     transporter.verify(function (error, success) {
-      //         if (error) {
-      //             console.log(error);
-      //             reject(error);
-      //         } else {
-      //             console.log("Server is ready to take our messages");
-      //             resolve(success);
-      //         }
-      //     });
-      // });
-
-      // return { message: "Reset token sent" };
+        return { message: "Reset token sent" };
+      } catch (error) {
+        console.error(error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error sending email",
+        });
+      }
     }),
 
   validateToken: publicProcedure
