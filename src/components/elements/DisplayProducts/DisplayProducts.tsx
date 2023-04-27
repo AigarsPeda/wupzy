@@ -40,7 +40,7 @@ const DisplayProducts: FC<DisplayProductsProps> = ({
 
   return (
     <div className="mx-auto grid max-w-2xl grid-cols-1 gap-4 font-primary md:grid-cols-2">
-      {products?.data.map((product) => {
+      {products?.data.map((product, i) => {
         const { name } = product.product as Stripe.Product;
 
         return (
@@ -54,21 +54,19 @@ const DisplayProducts: FC<DisplayProductsProps> = ({
             }}
           >
             <div
-              style={
-                {
-                  // animation: `pulse 2s ease-in-out infinite`,
-                }
-              }
-              className="absolute -inset-1 rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-25 blur transition delay-75 duration-1000 group-hover:opacity-50 group-hover:duration-200"
+              style={{
+                animationDelay: `${i + 1.5}s`,
+              }}
+              className="absolute -inset-1 animate-slow-ping rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-30 blur transition duration-1000 group-hover:animate-none group-hover:opacity-60 group-hover:duration-200"
             ></div>
-            <div className="items-top relative justify-start space-x-6 rounded-lg bg-white leading-none ring-1 ring-gray-900/5">
+            <div className="items-top relative rounded-lg bg-white leading-none ring-1 ring-gray-900/5">
               <div className="w-full rounded-t-lg bg-gray-50 p-4">
                 <p className="text-center font-primary text-xl text-gray-700">
                   {name}
                 </p>
               </div>
               <div className="py-4">
-                <div className="px-4 pt-3">
+                <div className="mx-auto px-4 pt-3">
                   <div className="mx-auto flex items-center justify-center text-center font-primary text-gray-500">
                     <p className="text-4xl text-gray-800">
                       {(product.unit_amount || 0) / 100}{" "}
