@@ -85,12 +85,14 @@ export const resetPasswordRouter = createTRPCRouter({
       transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
           console.error(error);
+          return { message: "Error sending email" };
         } else {
           console.log(`Email sent: ${info.response}`);
+          return { message: "Reset token sent" };
         }
       });
 
-      return { message: "Reset token sent" };
+      // return { message: "Reset token sent" };
     }),
 
   validateToken: publicProcedure
