@@ -9,7 +9,8 @@ import { api } from "utils/api";
 
 const Forgot: NextPage = () => {
   const [email, setEmail] = useState("");
-  const { mutate, isSuccess } = api.resetPassword.getResetToken.useMutation();
+  const { mutate, isSuccess, isLoading } =
+    api.resetPassword.getResetToken.useMutation();
 
   return (
     <>
@@ -38,6 +39,7 @@ const Forgot: NextPage = () => {
               <Button
                 btnTitle="Send"
                 btnSize="small"
+                isLoading={isLoading}
                 btnClass="md:mt-8 mt-4"
                 onClick={() => {
                   mutate({ email });
