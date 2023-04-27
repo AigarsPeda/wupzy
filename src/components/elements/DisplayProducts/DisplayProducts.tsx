@@ -40,40 +40,50 @@ const DisplayProducts: FC<DisplayProductsProps> = ({
 
   return (
     <div className="mx-auto grid max-w-2xl grid-cols-1 gap-4 font-primary md:grid-cols-2">
-      {products?.data.map((product) => {
+      {products?.data.map((product, i) => {
         const { name } = product.product as Stripe.Product;
 
         return (
           <button
             key={product.id}
-            className="group mx-auto w-full max-w-sm rounded-lg border bg-white shadow-lg transition-all hover:border-violet-300/70 hover:shadow-violet-100"
+            className="z-1 group relative mx-auto w-full max-w-sm rounded-lg border bg-white shadow-lg transition-all "
             onClick={() => {
               handleCheckout(product.id).catch((err) => {
                 console.log("Error in handleCheckout: ", err);
               });
             }}
           >
-            <div className="w-full rounded-t-lg bg-gray-50 p-4">
-              <p className="text-center font-primary text-xl text-gray-700">
-                {name}
-              </p>
-            </div>
-            <div className="py-4">
-              <div className="px-4 pt-3">
-                <div className="mx-auto flex items-center justify-center text-center font-primary text-gray-500">
-                  <p className="text-4xl text-gray-800">
-                    {(product.unit_amount || 0) / 100} {getCurrencies(product)}
-                  </p>
-                  {/* <p className="mx-2 text-3xl font-normal">/</p> */}
-                  <p className="ml-2.5 w-10 break-normal text-left text-xs">
-                    {getPeriod(product.recurring?.interval || "month")}
-                  </p>
-                </div>
+            <div
+              style={
+                {
+                  // animation: `pulse 2s ease-in-out infinite`,
+                }
+              }
+              className="absolute -inset-1 rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-25 blur transition delay-75 duration-1000 group-hover:opacity-50 group-hover:duration-200"
+            ></div>
+            <div className="items-top relative justify-start space-x-6 rounded-lg bg-white leading-none ring-1 ring-gray-900/5">
+              <div className="w-full rounded-t-lg bg-gray-50 p-4">
+                <p className="text-center font-primary text-xl text-gray-700">
+                  {name}
+                </p>
               </div>
-              <div className="flex w-full items-center justify-center px-4 pb-4 pt-7">
-                <span className="buy-button rounded-lg bg-gray-900 px-6 py-2 text-base font-medium text-white transition-all group-hover:bg-violet-800 md:text-sm">
-                  Select
-                </span>
+              <div className="py-4">
+                <div className="px-4 pt-3">
+                  <div className="mx-auto flex items-center justify-center text-center font-primary text-gray-500">
+                    <p className="text-4xl text-gray-800">
+                      {(product.unit_amount || 0) / 100}{" "}
+                      {getCurrencies(product)}
+                    </p>
+                    <p className="ml-2.5 w-10 break-normal text-left text-xs">
+                      {getPeriod(product.recurring?.interval || "month")}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex w-full items-center justify-center px-4 pb-4 pt-7">
+                  <span className="buy-button rounded-lg bg-gray-900 px-6 py-2 text-base font-medium text-white transition-all group-hover:bg-violet-800 md:text-sm">
+                    Select
+                  </span>
+                </div>
               </div>
             </div>
           </button>

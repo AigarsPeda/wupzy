@@ -2,9 +2,9 @@ import Image from "next/image";
 
 const WupzyFeatures = () => {
   return (
-    <div className="mx-auto mt-16 max-w-4xl md:mt-32">
+    <div className="mx-auto mt-16 max-w-4xl md:mt-24">
       <div className="mx-auto max-w-3xl">
-        <p className="mb-8 font-primary text-lg text-gray-600 md:mb-16">
+        <p className="mb-14 font-primary text-lg text-gray-600 md:mb-16">
           Plus, Wupzy&apos;s user-friendly interface and responsive design make
           it easy to create, manage, and view tournament tables on any device,
           whether you&apos;re using a desktop computer or a mobile phone. So,
@@ -13,7 +13,7 @@ const WupzyFeatures = () => {
         </p>
       </div>
       <div className="mx-auto grid max-w-4xl grid-cols-1 gap-4 md:grid-cols-3">
-        <div className="flex flex-col items-center justify-between rounded-lg border p-2 text-center">
+        <div className="relative flex flex-col items-center justify-between rounded-lg p-2 text-center">
           <div className="flex h-full flex-col items-center justify-between text-center">
             <h1 className="font-primary text-2xl font-extrabold md:text-3xl">
               Create &quot;King&quot; tournament
@@ -32,8 +32,9 @@ const WupzyFeatures = () => {
             className="mx-auto rounded-lg"
             src="/asset/wupzy_create.webp"
           />
+          {/* <div className="absolute -inset-1 rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-25 blur transition delay-75 duration-1000 group-hover:opacity-40 group-hover:duration-200"></div> */}
         </div>
-        <div className="flex flex-col items-center justify-between rounded-lg border p-2 text-center">
+        <div className="flex flex-col items-center justify-between rounded-lg p-2 text-center">
           <div className="flex h-full flex-col items-center justify-between text-center">
             <h1 className="font-primary text-2xl font-extrabold md:text-3xl">
               Never lose track of your games
@@ -53,7 +54,7 @@ const WupzyFeatures = () => {
             />
           </div>
         </div>
-        <div className="flex flex-col items-center justify-between rounded-lg border p-2 text-center">
+        <div className="flex flex-col items-center justify-between rounded-lg p-2 text-center">
           <div className="flex h-full flex-col items-center justify-between text-center">
             <h1 className="font-primary text-2xl font-extrabold md:text-3xl">
               Create shareable links
