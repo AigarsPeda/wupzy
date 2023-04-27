@@ -65,6 +65,19 @@ export const resetPasswordRouter = createTRPCRouter({
         },
       });
 
+      await new Promise((resolve, reject) => {
+        // verify connection configuration
+        transporter.verify(function (error, success) {
+          if (error) {
+            console.log(error);
+            reject(error);
+          } else {
+            console.log("Server is ready to take our messages");
+            resolve(success);
+          }
+        });
+      });
+
       const mailOptions: Mail.Options = {
         to: `${user.email}`, // list of receivers
         from: "wupzy@wupzy.com", // sender address
@@ -82,15 +95,45 @@ export const resetPasswordRouter = createTRPCRouter({
               </div>`,
       };
 
-      transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-          console.error(error);
-          return { message: "Error sending email" };
-        } else {
-          console.log(`Email sent: ${info.response}`);
-          return { message: "Reset token sent" };
-        }
+      // transporter.sendMail(mailOptions, function (error, info) {
+      //   if (error) {
+      //     console.error(error);
+      //     return { message: "Error sending email" };
+      //   } else {
+      //     console.log(`Email sent: ${info.response}`);
+      //     return { message: "Reset token sent" };
+      //   }
+      // });
+
+      await new Promise((resolve, reject) => {
+        // send mail
+        transporter.sendMail(mailOptions, (err, info) => {
+          if (err) {
+            console.error(err);
+            reject(err);
+
+            return { message: "Error sending email" };
+          } else {
+            console.log(info);
+            resolve(info);
+
+            return { message: "Reset token sent" };
+          }
+        });
       });
+
+      //   await new Promise((resolve, reject) => {
+      //     // verify connection configuration
+      //     transporter.verify(function (error, success) {
+      //         if (error) {
+      //             console.log(error);
+      //             reject(error);
+      //         } else {
+      //             console.log("Server is ready to take our messages");
+      //             resolve(success);
+      //         }
+      //     });
+      // });
 
       // return { message: "Reset token sent" };
     }),
