@@ -22,7 +22,7 @@ const Home: NextPage = () => {
           content="Platform that lets you effortlessly create
           tournament tables."
         />
-        <meta property="og:image" content="/android-chrome-512x512.png" />
+        <meta property="og:image" content="/logo_photo.jpg" />
         <meta name="robots" content="index,follow" />
         <meta property="og:title" content="Wupzy" />
         <meta name="twitter:card" content="summary" />
@@ -32,7 +32,7 @@ const Home: NextPage = () => {
           tournament tables, save game scores, view real-time results, and share
           them with all participants in just a few clicks."
         />
-        <meta property="twitter:image" content="/android-chrome-512x512.png" />
+        <meta property="twitter:image" content="/logo_photo.jpg" />
         <meta
           property="twitter:title"
           content="Wupzy is a powerful platform that lets you  create
