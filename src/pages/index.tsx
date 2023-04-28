@@ -19,14 +19,13 @@ const Home: NextPage = () => {
         />
         <meta
           property="og:description"
-          content="Wupzy is a powerful platform that lets you effortlessly create
-          tournament tables, save game scores, view real-time results, and share
-          them with all participants in just a few clicks."
+          content="Platform that lets you effortlessly create
+          tournament tables."
         />
         <meta property="og:image" content="/android-chrome-512x512.png" />
         <meta name="robots" content="index,follow" />
         <meta property="og:title" content="Wupzy" />
-        <meta property="twitter:card" content="summary_large_image" />
+        <meta name="twitter:card" content="summary" />
         <meta
           property="twitter:description"
           content="Wupzy is a powerful platform that lets you effortlessly create
@@ -36,7 +35,7 @@ const Home: NextPage = () => {
         <meta property="twitter:image" content="/android-chrome-512x512.png" />
         <meta
           property="twitter:title"
-          content="Wupzy is a powerful platform that lets you effortlessly create
+          content="Wupzy is a powerful platform that lets you  create
           tournament tables, save game scores, view real-time results, and share
           them with all participants in just a few clicks."
         />
