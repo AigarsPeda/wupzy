@@ -17,7 +17,30 @@ const Home: NextPage = () => {
           tournament tables, save game scores, view real-time results, and share
           them with all participants in just a few clicks."
         />
+        <meta
+          property="og:description"
+          content="Wupzy is a powerful platform that lets you effortlessly create
+          tournament tables, save game scores, view real-time results, and share
+          them with all participants in just a few clicks."
+        />
+        <meta property="og:image" content="/android-chrome-512x512.png" />
         <meta name="robots" content="index,follow" />
+        <meta property="og:title" content="Wupzy" />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta
+          property="twitter:description"
+          content="Wupzy is a powerful platform that lets you effortlessly create
+          tournament tables, save game scores, view real-time results, and share
+          them with all participants in just a few clicks."
+        />
+        <meta property="twitter:image" content="/android-chrome-512x512.png" />
+        <meta
+          property="twitter:title"
+          content="Wupzy is a powerful platform that lets you effortlessly create
+          tournament tables, save game scores, view real-time results, and share
+          them with all participants in just a few clicks."
+        />
+
         <link rel="icon" href="/favicon.ico" />
         <link
           rel="apple-touch-icon"
