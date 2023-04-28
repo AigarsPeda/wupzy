@@ -27,7 +27,8 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs",
-    "src/server/api/webhook/hello.JS"
+    "src/server/api/webhook/hello.JS",
+    "next-sitemap.js"
   ],
   "exclude": [
     "node_modules"
