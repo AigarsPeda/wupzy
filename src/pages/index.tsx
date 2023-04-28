@@ -10,8 +10,13 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>wupzy</title>
-        <meta name="description" content="wupzy" />
+        <title>Wupzy</title>
+        <meta
+          name="description"
+          content="Wupzy is a powerful platform that lets you effortlessly create
+          tournament tables, save game scores, view real-time results, and share
+          them with all participants in just a few clicks."
+        />
         <link rel="icon" href="/favicon.ico" />
         <link
           rel="apple-touch-icon"
