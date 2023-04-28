@@ -1,4 +1,4 @@
-const siteUrl = process.env.NEXT_PUBLIC_APP_DOMAIN || "";
+const siteUrl = "https://www.wupzy.com";
 module.exports = {
   siteUrl,
   exclude: ["/404"],
