@@ -8,6 +8,7 @@
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start",
+    "postbuild": "next-sitemap",
     "stripe:listen": "stripe listen --forward-to localhost:3000/api/stripe-webhook --latest"
   },
   "dependencies": {
@@ -24,6 +25,7 @@
     "jsonwebtoken": "^9.0.0",
     "micro": "^10.0.1",
     "next": "^13.2.4",
+    "next-sitemap": "^4.0.7",
     "nodemailer": "^6.9.1",
     "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
