@@ -17,6 +17,7 @@ const Home: NextPage = () => {
           tournament tables, save game scores, view real-time results, and share
           them with all participants in just a few clicks."
         />
+        <meta name="robots" content="index,follow" />
         <link rel="icon" href="/favicon.ico" />
         <link
           rel="apple-touch-icon"
