@@ -28,7 +28,8 @@
     "**/*.cjs",
     "**/*.mjs",
     "src/server/api/webhook/hello.JS",
-    "next-sitemap.js"
+    "next-sitemap.js",
+    "next-sitemap.config.js"
   ],
   "exclude": [
     "node_modules"
