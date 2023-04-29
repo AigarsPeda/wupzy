@@ -1,5 +1,7 @@
 import BuyProducts from "components/BuyProducts/BuyProducts";
+import AdditionalInfo from "components/elements/AdditionalInfo/AdditionalInfo";
 import CTASection from "components/elements/CTASection/CTASection";
+import CancelSubscription from "components/elements/CancelSubscription/CancelSubscription";
 import DesktopImg from "components/elements/DesktopImg/DesktopImg";
 import ExplanationsSection from "components/elements/ExplanationsSection/ExplanationsSection";
 import WupzyFeatures from "components/elements/WupzyFeatures/WupzyFeatures";
@@ -65,6 +67,11 @@ const Home: NextPage = () => {
         <div className="mt-14 md:mt-24">
           <BuyProducts />
         </div>
+        <div className="mt-14 md:mt-24">
+          <AdditionalInfo />
+        </div>
+
+        <CancelSubscription />
       </main>
     </>
   );

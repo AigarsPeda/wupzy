@@ -1,18 +1,40 @@
 import MenuContainer from "components/containers/MenuContainer/MenuContainer";
 import NewTournamentContainer from "components/containers/NewGameContainer/NewGameContainer";
 import Logo from "components/elements/Logo/Logo";
+import ProfileDropdown from "components/elements/ProfileDropdown/ProfileDropdown";
 import RoundLinkButton from "components/elements/RoundLinkButton/RoundLinkButton";
 import { ROUTES_WITHOUT_NAVBAR } from "hardcoded";
 import { useRouter } from "next/router";
 import type { FC } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import { api } from "utils/api";
-import ProfileDropdown from "../ProfileDropdown/ProfileDropdown";
 
 const NavBar: FC = () => {
   const router = useRouter();
-  const { data } = api.users.getCurrentUser.useQuery();
+  const [isUser, setIsUser] = useState(false);
+  const { refetch } = api.users.getCurrentUser.useQuery(undefined, {
+    retry: 0,
+    onSuccess(data) {
+      if (data.user) {
+        setIsUser(true);
+      }
+    },
+    onError() {
+      setIsUser(false);
+    },
+  });
 
   const isIndexPage = () => router.pathname === "/";
+
+  useEffect(() => {
+    // if page changed, refetch user data
+    router.events.on("routeChangeComplete", () => {
+      refetch().catch((err) => {
+        console.error(err);
+      });
+    });
+  }, [refetch, router.events]);
 
   if (ROUTES_WITHOUT_NAVBAR.includes(router.pathname)) return null;
 
@@ -21,7 +43,7 @@ const NavBar: FC = () => {
       {isIndexPage() ? (
         <>
           <Logo />
-          {data?.user ? (
+          {isUser ? (
             <RoundLinkButton href="/tournaments" linkTitle="Tournaments" />
           ) : (
             <RoundLinkButton href="/login" linkTitle="Login" />

@@ -1,7 +1,7 @@
 import DisplayProducts from "components/elements/DisplayProducts/DisplayProducts";
-import Spinner from "components/elements/Spinner/Spinner";
 import { useRouter } from "next/router";
 import { api } from "utils/api";
+import ProductsLoading from "components/elements/ProductsLoading/ProductsLoading";
 
 const BuyProducts = () => {
   const router = useRouter();
@@ -21,7 +21,7 @@ const BuyProducts = () => {
   return (
     <div className="relative mt-7 min-h-[10rem] w-full">
       {!data ? (
-        <Spinner size="small" />
+        <ProductsLoading />
       ) : (
         <DisplayProducts products={data.products} handleCheckout={checkout} />
       )}

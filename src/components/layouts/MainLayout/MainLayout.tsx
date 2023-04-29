@@ -1,6 +1,8 @@
 import NavBar from "components/elements/NavBar/NavBar";
 import dynamic from "next/dynamic";
 import type { FC, ReactNode } from "react";
+import Footer from "../../elements/Footer/Footer";
+import { useRouter } from "next/router";
 
 const SubscriptionEndModal = dynamic(
   () => import("components/elements/SubscriptionEndModal/SubscriptionEndModal")
@@ -11,6 +13,10 @@ interface MainLayoutProps {
 }
 
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {
+  const router = useRouter();
+
+  const isIndexPage = () => router.pathname === "/";
+
   return (
     <div className="max-w-screen-1xl min-h-screen">
       <NavBar />
@@ -18,6 +24,8 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
         {children}
       </div>
       <SubscriptionEndModal />
+
+      {isIndexPage() && <Footer />}
     </div>
   );
 };
