@@ -23,7 +23,7 @@ const Home: NextPage = () => {
           tournament tables."
         />
         <meta property="og:image" content="/logo_photo.jpg" />
-        <meta name="robots" content="index,follow" />
+        <meta name="robots" content="all" />
         <meta property="og:title" content="Wupzy" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta
