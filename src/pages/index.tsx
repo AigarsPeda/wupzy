@@ -24,8 +24,11 @@ const Home: NextPage = () => {
           content="Platform that lets you effortlessly create
           tournament tables."
         />
+        <meta charSet="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta property="og:image" content="/logo_photo.jpg" />
-        <meta name="robots" content="all" />
+        <meta name="robots" content="follow, index" />
         <meta property="og:title" content="Wupzy" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta
