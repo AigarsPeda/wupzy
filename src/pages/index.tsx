@@ -57,17 +57,17 @@ const Home: NextPage = () => {
         <link rel="manifest" href="/site.webmanifest"></link>
       </Head>
       <main className="px-4 py-4">
-        <div className="mt-10">
+        <div className="mt-0 md:mt-10">
           <CTASection />
         </div>
         <BuyProducts />
         <ExplanationsSection />
         <DesktopImg />
         <WupzyFeatures />
-        <div className="mt-14 md:mt-24">
+        <div className="mt-10 md:mt-20">
           <BuyProducts />
         </div>
-        <div className="mt-14 md:mt-24">
+        <div className="mt-10 md:mt-20">
           <AdditionalInfo />
         </div>
 

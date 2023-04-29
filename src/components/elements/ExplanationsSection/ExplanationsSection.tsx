@@ -2,10 +2,10 @@ import type { FC } from "react";
 
 const ExplanationsSection: FC = () => {
   return (
-    <div className="mx-auto mt-20 flex max-w-3xl">
-      <p className="font-primary text-2xl">
+    <div className="mx-auto mt-10 flex max-w-3xl md:mt-20">
+      <p className="font-primary">
         <span className="mr-2 whitespace-nowrap">What is wupzy?</span>
-        <span className="text-gray-600 md:text-lg">
+        <span className="text-gray-600">
           {" "}
           Wupzy is a powerful platform that lets you effortlessly create
           tournament tables, save game scores, view real-time results, and share

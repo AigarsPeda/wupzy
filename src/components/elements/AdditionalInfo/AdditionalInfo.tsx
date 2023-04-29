@@ -5,7 +5,7 @@ const AdditionalInfo: FC = () => {
   return (
     <div>
       <div className="mx-auto max-w-3xl">
-        <p className="font-primary text-lg text-gray-600">
+        <p className="font-primary text-gray-600">
           With Wupzy, creating playoff tables has never been easier. Our
           user-friendly platform guides you through the process step-by-step, so
           you can quickly set up your playoff brackets and get back to enjoying

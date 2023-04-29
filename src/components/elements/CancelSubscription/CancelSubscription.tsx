@@ -4,7 +4,7 @@ const CancelSubscription: FC = () => {
   return (
     <div>
       <div className="mx-auto max-w-3xl">
-        <p className="font-primary text-lg text-gray-600">
+        <p className="font-primary text-gray-600">
           <span className="font-medium text-gray-900">
             Users have full control over their subscription.
           </span>{" "}
