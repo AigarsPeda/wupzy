@@ -33,10 +33,6 @@ const Tournament: NextPage = () => {
     }
   }, [tournamentError?.data?.code, isTournamentLoading, redirectToPath]);
 
-  if (isTournamentLoading) {
-    return <Spinner size="small" />;
-  }
-
   return (
     <>
       <PageHead
@@ -46,25 +42,29 @@ const Tournament: NextPage = () => {
           tournament tables, save game scores, view real-time results, and share
           them with all participants in just a few clicks."
       />
-      <div className="mb-4 flex justify-between">
-        <TournamentHeader tournament={tournament?.tournament} />
-        {tournament && (
-          <div className="flex">
-            <CreatePlayOff
-              tournamentId={tournamentId}
-              isPlayoff={Boolean(tournament.tournament.isPlayoff)}
-              tournamentType={tournament.tournament.type ?? "TEAMS"}
-            />
+      {isTournamentLoading ? (
+        <Spinner size="small" />
+      ) : (
+        <div className="mb-4 flex justify-between">
+          <TournamentHeader tournament={tournament?.tournament} />
+          {tournament && (
+            <div className="flex">
+              <CreatePlayOff
+                tournamentId={tournamentId}
+                isPlayoff={Boolean(tournament.tournament.isPlayoff)}
+                tournamentType={tournament.tournament.type ?? "TEAMS"}
+              />
 
-            <CreateShareLink tournament={tournament.tournament} />
+              <CreateShareLink tournament={tournament.tournament} />
 
-            <EditTournamentContainer
-              tournamentId={tournamentId}
-              isPlayoff={Boolean(tournament?.tournament.isPlayoff)}
-            />
-          </div>
-        )}
-      </div>
+              <EditTournamentContainer
+                tournamentId={tournamentId}
+                isPlayoff={Boolean(tournament?.tournament.isPlayoff)}
+              />
+            </div>
+          )}
+        </div>
+      )}
       {tournament && (
         <GroupCardContainer
           tournamentId={tournamentId}

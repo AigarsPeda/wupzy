@@ -40,10 +40,6 @@ const ResetPassword: NextPage = () => {
     setUserId(data.userId);
   }, [data]);
 
-  if (isLoading) return <Spinner />;
-
-  if (isError) return <div>Something went wrong</div>;
-
   return (
     <>
       <PageHead
@@ -56,41 +52,51 @@ const ResetPassword: NextPage = () => {
       <div className="mb-10 transition-all md:mb-20 lg:mb-40">
         <Logo />
       </div>
-      <div className="mt-32 md:mt-64">
-        <div className="">
-          <h1 className="mb-10 text-5xl">Enter new password</h1>
-          <div className="items-center md:flex">
-            <div className="w-72">
-              <Input
-                type="password"
-                value={password}
-                name="password"
-                label="Password"
-                handleInputChange={(e) => setPassword(e.target.value)}
-              />
-              <Input
-                type="password"
-                value={confirmPassword}
-                name="confirmPassword"
-                label="Confirm password"
-                handleInputChange={(e) => setConfirmPassword(e.target.value)}
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <div className="mt-32 md:mt-64">
+          {isError ? (
+            <div>Something went wrong</div>
+          ) : (
+            <div>
+              <h1 className="mb-10 text-5xl">Enter new password</h1>
+              <div className="items-center md:flex">
+                <div className="w-72">
+                  <Input
+                    type="password"
+                    value={password}
+                    name="password"
+                    label="Password"
+                    handleInputChange={(e) => setPassword(e.target.value)}
+                  />
+                  <Input
+                    type="password"
+                    value={confirmPassword}
+                    name="confirmPassword"
+                    label="Confirm password"
+                    handleInputChange={(e) =>
+                      setConfirmPassword(e.target.value)
+                    }
+                  />
+                </div>
+              </div>
+
+              <Button
+                btnSize="small"
+                btnTitle="Reset"
+                btnClass="md:mt-8 mt-4"
+                onClick={() => {
+                  console.log("userId", userId);
+                  console.log("password", password);
+                  console.log("resetToken", resetToken);
+                  mutate({ userId, password, token: resetToken });
+                }}
               />
             </div>
-          </div>
-
-          <Button
-            btnSize="small"
-            btnTitle="Reset"
-            btnClass="md:mt-8 mt-4"
-            onClick={() => {
-              console.log("userId", userId);
-              console.log("password", password);
-              console.log("resetToken", resetToken);
-              mutate({ userId, password, token: resetToken });
-            }}
-          />
+          )}
         </div>
-      </div>
+      )}
     </>
   );
 };
