@@ -28,7 +28,7 @@ const WupzyFeatures = () => {
           <Image
             width={350}
             height={550}
-            alt="wupzy desktop view"
+            alt="wupzy king view"
             className="mx-auto rounded-lg"
             src="/asset/wupzy_create.webp"
           />
@@ -48,7 +48,7 @@ const WupzyFeatures = () => {
             <Image
               width={350}
               height={550}
-              alt="wupzy desktop view"
+              alt="wupzy game view"
               className="mx-auto rounded-lg"
               src="/asset/wupzy_new_games_a.webp"
             />
@@ -69,7 +69,7 @@ const WupzyFeatures = () => {
             <Image
               width={350}
               height={550}
-              alt="wupzy desktop view"
+              alt="wupzy share link view"
               className="mx-auto rounded-lg"
               src="/asset/wupzy_share_mob_link_a.webp"
             />

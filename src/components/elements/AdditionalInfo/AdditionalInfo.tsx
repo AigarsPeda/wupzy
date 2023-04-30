@@ -17,9 +17,6 @@ const AdditionalInfo: FC = () => {
         width={850}
         height={600}
         loading="lazy"
-        // style={{
-        //   objectFit: "none",
-        // }}
         alt="wupzy playoffs view"
         className="mx-auto rounded-lg"
         src="/asset/wupzy_playoffs.webp"
