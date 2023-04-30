@@ -34,7 +34,7 @@ const PageHead: FC<PageHeadProps> = ({
 
       <meta property="og:title" content={title} />
       <meta property="og:image" content="/logo_photo.jpg" />
-      <meta property="og:url" content={`www.wupzy.com${router.asPath}`} />
+      <meta property="og:url" content={`https://wupzy.com${router.asPath}`} />
 
       <link rel="icon" href="/favicon.ico" />
       <link rel="manifest" href="/site.webmanifest" />
