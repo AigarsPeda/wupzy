@@ -21,10 +21,6 @@ const TournamentsPage: NextPage = () => {
     }
   }, [redirectToPath, error?.data?.code, isLoading]);
 
-  if (isFetching || isLoading) {
-    return <Spinner />;
-  }
-
   return (
     <>
       <PageHead
@@ -35,24 +31,28 @@ const TournamentsPage: NextPage = () => {
           them with all participants in just a few clicks."
       />
 
-      <GridLayout minWith="320" isGap>
-        {data && data.tournaments.length > 0 ? (
-          data.tournaments.map((tournament) => (
-            <TournamentCard
-              key={tournament.id}
-              tournament={tournament}
-              isPlayoff={Boolean(tournament.isPlayoff)}
-              refetch={() => {
-                refetch().catch((err) => {
-                  console.log(err);
-                });
-              }}
-            />
-          ))
-        ) : (
-          <p>No tournaments</p>
-        )}
-      </GridLayout>
+      {isFetching || isLoading ? (
+        <Spinner />
+      ) : (
+        <GridLayout minWith="320" isGap>
+          {data && data.tournaments.length > 0 ? (
+            data.tournaments.map((tournament) => (
+              <TournamentCard
+                key={tournament.id}
+                tournament={tournament}
+                isPlayoff={Boolean(tournament.isPlayoff)}
+                refetch={() => {
+                  refetch().catch((err) => {
+                    console.log(err);
+                  });
+                }}
+              />
+            ))
+          ) : (
+            <p>No tournaments</p>
+          )}
+        </GridLayout>
+      )}
     </>
   );
 };
