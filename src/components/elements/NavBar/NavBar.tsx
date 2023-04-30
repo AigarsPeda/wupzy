@@ -25,8 +25,6 @@ const NavBar: FC = () => {
     },
   });
 
-  // const isIndexPage = () => router.pathname === "/";
-
   const isMainNavBar = () => {
     return ROUTES_WITH_MAIN_NAV.includes(router.pathname);
   };

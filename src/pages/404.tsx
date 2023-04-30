@@ -1,8 +1,16 @@
 import Logo from "components/elements/Logo/Logo";
+import PageHead from "components/elements/PageHead/PageHead";
 
 const PageNotFound = () => {
   return (
     <>
+      <PageHead
+        title="Wupzy | 404"
+        descriptionShort="Platform that lets you effortlessly create tournament tables."
+        descriptionLong="Wupzy is a powerful platform that lets you effortlessly create
+          tournament tables, save game scores, view real-time results, and share
+          them with all participants in just a few clicks."
+      />
       <div className="mb-10 transition-all md:mb-20 lg:mb-40">
         <Logo />
       </div>

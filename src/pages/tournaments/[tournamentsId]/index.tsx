@@ -2,6 +2,7 @@ import CreatePlayOff from "components/containers/CreatePlayOff/CreatePlayOff";
 import EditTournamentContainer from "components/containers/EditTournamentContainer/EditTournamentContainer";
 import GroupCardContainer from "components/containers/GroupCardContainer/GroupCardContainer";
 import CreateShareLink from "components/elements/CreateShareLink/CreateShareLink";
+import PageHead from "components/elements/PageHead/PageHead";
 import Spinner from "components/elements/Spinner/Spinner";
 import TournamentHeader from "components/elements/TournamentHeader/TournamentHeader";
 import useRedirect from "hooks/useRedirect";
@@ -38,6 +39,13 @@ const Tournament: NextPage = () => {
 
   return (
     <>
+      <PageHead
+        title="Wupzy | Tournament"
+        descriptionShort="Platform that lets you effortlessly create tournament tables."
+        descriptionLong="Wupzy is a powerful platform that lets you effortlessly create
+          tournament tables, save game scores, view real-time results, and share
+          them with all participants in just a few clicks."
+      />
       <div className="mb-4 flex justify-between">
         <TournamentHeader tournament={tournament?.tournament} />
         {tournament && (

@@ -1,6 +1,7 @@
 import Button from "components/elements/Button/Button";
 import Input from "components/elements/Input/Input";
 import Logo from "components/elements/Logo/Logo";
+import PageHead from "components/elements/PageHead/PageHead";
 import type { NextPage } from "next";
 import Link from "next/link";
 import { useState } from "react";
@@ -14,6 +15,13 @@ const Forgot: NextPage = () => {
 
   return (
     <>
+      <PageHead
+        title="Wupzy | Forgot password"
+        descriptionShort="Platform that lets you effortlessly create tournament tables."
+        descriptionLong="Wupzy is a powerful platform that lets you effortlessly create
+          tournament tables, save game scores, view real-time results, and share
+          them with all participants in just a few clicks."
+      />
       <div className="mb-10 transition-all md:mb-20 lg:mb-40">
         <Logo />
       </div>

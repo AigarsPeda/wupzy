@@ -1,3 +1,4 @@
+import PageHead from "components/elements/PageHead/PageHead";
 import Spinner from "components/elements/Spinner/Spinner";
 import TournamentCard from "components/elements/TournamentCard/TournamentCard";
 import GridLayout from "components/layouts/GridLayout/GridLayout";
@@ -25,24 +26,34 @@ const TournamentsPage: NextPage = () => {
   }
 
   return (
-    <GridLayout minWith="320" isGap>
-      {data && data.tournaments.length > 0 ? (
-        data.tournaments.map((tournament) => (
-          <TournamentCard
-            key={tournament.id}
-            tournament={tournament}
-            isPlayoff={Boolean(tournament.isPlayoff)}
-            refetch={() => {
-              refetch().catch((err) => {
-                console.log(err);
-              });
-            }}
-          />
-        ))
-      ) : (
-        <p>No tournaments</p>
-      )}
-    </GridLayout>
+    <>
+      <PageHead
+        title="Wupzy | Tournaments"
+        descriptionShort="Platform that lets you effortlessly create tournament tables."
+        descriptionLong="Wupzy is a powerful platform that lets you effortlessly create
+          tournament tables, save game scores, view real-time results, and share
+          them with all participants in just a few clicks."
+      />
+
+      <GridLayout minWith="320" isGap>
+        {data && data.tournaments.length > 0 ? (
+          data.tournaments.map((tournament) => (
+            <TournamentCard
+              key={tournament.id}
+              tournament={tournament}
+              isPlayoff={Boolean(tournament.isPlayoff)}
+              refetch={() => {
+                refetch().catch((err) => {
+                  console.log(err);
+                });
+              }}
+            />
+          ))
+        ) : (
+          <p>No tournaments</p>
+        )}
+      </GridLayout>
+    </>
   );
 };
 

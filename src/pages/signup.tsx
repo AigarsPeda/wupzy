@@ -1,6 +1,7 @@
 import ErrorMessage from "components/elements/ErrorMessage/ErrorMessage";
 import Form from "components/elements/Form/Form";
 import Logo from "components/elements/Logo/Logo";
+import PageHead from "components/elements/PageHead/PageHead";
 import SignupLoginImage from "components/elements/SignupLoginImage/SignupLoginImage";
 import Spinner from "components/elements/Spinner/Spinner";
 import { DEFAULT_REDIRECT_URL } from "hardcoded";
@@ -140,6 +141,13 @@ const SignUp: NextPage = () => {
 
   return (
     <>
+      <PageHead
+        title="Wupzy | Sign Up"
+        descriptionShort="Platform that lets you effortlessly create tournament tables."
+        descriptionLong="Wupzy is a powerful platform that lets you effortlessly create
+          tournament tables, save game scores, view real-time results, and share
+          them with all participants in just a few clicks."
+      />
       <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))]">
         <div className="mt-0 flex h-full w-full flex-col">
           <div className="lg:mb-30 mb-5 transition-all md:mb-16">

@@ -1,12 +1,13 @@
 import Button from "components/elements/Button/Button";
 import Input from "components/elements/Input/Input";
 import Logo from "components/elements/Logo/Logo";
+import PageHead from "components/elements/PageHead/PageHead";
 import Spinner from "components/elements/Spinner/Spinner";
+import useRedirect from "hooks/useRedirect";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { api } from "utils/api";
-import useRedirect from "../../../hooks/useRedirect";
 
 const ResetPassword: NextPage = () => {
   const { query } = useRouter();
@@ -45,6 +46,13 @@ const ResetPassword: NextPage = () => {
 
   return (
     <>
+      <PageHead
+        title="Wupzy | Reset password"
+        descriptionShort="Platform that lets you effortlessly create tournament tables."
+        descriptionLong="Wupzy is a powerful platform that lets you effortlessly create
+          tournament tables, save game scores, view real-time results, and share
+          them with all participants in just a few clicks."
+      />
       <div className="mb-10 transition-all md:mb-20 lg:mb-40">
         <Logo />
       </div>

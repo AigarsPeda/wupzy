@@ -1,4 +1,5 @@
 import Logo from "components/elements/Logo/Logo";
+import PageHead from "components/elements/PageHead/PageHead";
 import SharePlayoffGames from "components/elements/SharePlayoffGames/SharePlayoffGames";
 import ShareRegularGames from "components/elements/ShareRegularGames/ShareRegularGames";
 import type { NextPage } from "next";
@@ -22,6 +23,13 @@ const Share: NextPage = () => {
 
   return (
     <>
+      <PageHead
+        title="Wupzy | Share"
+        descriptionShort="Platform that lets you effortlessly create tournament tables."
+        descriptionLong="Wupzy is a powerful platform that lets you effortlessly create
+          tournament tables, save game scores, view real-time results, and share
+          them with all participants in just a few clicks."
+      />
       <div className="mb-5 transition-all md:mb-10">
         <Logo />
       </div>
