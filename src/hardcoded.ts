@@ -16,6 +16,8 @@ export const ROUTES_WITHOUT_NAVBAR = [
   "/reset-password/[resettoken]",
 ];
 
+export const ROUTES_WITH_MAIN_NAV = ["/", "/terms-of-service"];
+
 export const AVAILABLE_GROUPS = [
   "A",
   "B",
