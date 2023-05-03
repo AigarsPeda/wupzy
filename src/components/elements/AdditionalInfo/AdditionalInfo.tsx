@@ -7,7 +7,9 @@ const AdditionalInfo: FC = () => {
       <div className="mx-auto max-w-3xl">
         <p className="font-primary text-gray-600">
           With Wupzy,{" "}
-          <span className="highlight font-bold">creating playoff</span> tables
+          <span className="highlight highlight-shadow font-bold">
+            creating playoff tables
+          </span>
           has never been easier. Our user-friendly platform guides you through
           the process step-by-step, so you can quickly set up your playoff
           brackets and get back to enjoying the action. Say goodbye to confusing

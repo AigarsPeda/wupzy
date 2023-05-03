@@ -6,11 +6,13 @@ const WupzyFeatures = () => {
       <div className="mx-auto max-w-3xl">
         <p className="mb-14 font-primary text-gray-600 md:mb-16">
           Plus, Wupzy&apos;s user-friendly interface and{" "}
-          <span className="highlight font-bold">responsive design</span> make it
-          easy to create, manage, and view tournament tables on any device,
-          whether you&apos;re using a desktop computer or a mobile phone. So,
-          you can enjoy the full range of features and functionality on the go,
-          no matter where you are
+          <span className="highlight highlight-shadow font-bold">
+            responsive design
+          </span>{" "}
+          make it easy to create, manage, and view tournament tables on any
+          device, whether you&apos;re using a desktop computer or a mobile
+          phone. So, you can enjoy the full range of features and functionality
+          on the go, no matter where you are
         </p>
       </div>
       <div className="mx-auto grid max-w-4xl grid-cols-1 gap-4 md:grid-cols-3">

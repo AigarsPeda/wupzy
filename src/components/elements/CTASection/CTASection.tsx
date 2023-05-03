@@ -9,10 +9,12 @@ const CTASection: FC = () => {
           Sign up and manage your tournaments with ease!
         </h1>
         <h2 className="mx-auto mb-5 mt-10 max-w-2xl font-primary text-gray-600 md:text-xl">
-          <span className="highlight">Simplify tournament management.</span> Our
-          website automates the process of creating tournament tables, saving
-          you time and effort, so you can focus on playing the game rather than
-          managing the tournament.
+          <span className="highlight highlight-shadow">
+            Simplify tournament management.
+          </span>{" "}
+          Our website automates the process of creating tournament tables,
+          saving you time and effort, so you can focus on playing the game
+          rather than managing the tournament.
         </h2>
 
         {/* <h2 className="mx-auto mb-5 mt-10 max-w-2xl font-primary text-gray-600 md:text-lg">
