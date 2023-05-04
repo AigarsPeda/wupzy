@@ -1,19 +1,21 @@
 import Image from "next/image";
 import type { FC } from "react";
+import Highlighter from "react-highlight-words";
 
 const AdditionalInfo: FC = () => {
   return (
     <div>
       <div className="mx-auto max-w-3xl">
         <p className="font-primary text-gray-600">
-          With Wupzy,{" "}
-          <span className="highlight highlight-shadow font-bold">
-            creating playoff tables
-          </span>
-          has never been easier. Our user-friendly platform guides you through
-          the process step-by-step, so you can quickly set up your playoff
-          brackets and get back to enjoying the action. Say goodbye to confusing
-          and time-consuming playoff table creation. Wupzy makes it a breeze!
+          <Highlighter
+            autoEscape={true}
+            highlightClassName="highlightLine px-1 py-0.5"
+            searchWords={["creating playoff tables"]}
+            textToHighlight="With Wupzy, creating playoff tables has never been easier. Our user-friendly platform guides you through
+            the process step-by-step, so you can quickly set up your playoff
+            brackets and get back to enjoying the action. Say goodbye to confusing
+            and time-consuming playoff table creation. Wupzy makes it a breeze!"
+          />
         </p>
       </div>
       <Image

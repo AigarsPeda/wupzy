@@ -43,42 +43,11 @@
     margin: 0;
   }
 
-  /* .highlightLine {
+  .highlightLine {
     color: #f3f4f6;
     position: relative;
     background-image: linear-gradient(to right, #6366f1, #a855f7);
-  } */
-  /* 
-  .highlight {
-    color: #f3f4f6;
-    position: relative;
-  } */
-
-  /* mark {
-    background-image: linear-gradient(to right, #6366f1, #a855f7);
-    color: #f3f4f6;
-    padding: 0.2rem;
-    background-size: 100% 65%;
-  } */
-
-  /* .highlight {
-    display: inline;
-    padding: 0.25em 0;
-    color: #ffffff;
-    transform: rotate(-2deg);
-    background-image: linear-gradient(to right, #6366f1, #a855f7);
-  } */
-  /* .highlight::before {
-    left: -5px;
-    z-index: -1;
-    content: "";
-    height: 95%;
-    bottom: -0px;
-    position: absolute;
-    width: calc(100% + 6px);
-    transform: rotate(-1deg);
-    background-image: linear-gradient(to right, #6366f1, #a855f7);
-  } */
+  }
 
   .highlight {
     display: inline;
