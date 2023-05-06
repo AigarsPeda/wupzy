@@ -46,10 +46,13 @@
   .highlightLine {
     color: #f3f4f6;
     position: relative;
+    /* background-size: 100% 3px; */
+    /* background-repeat: repeat-x; */
+    /* background-position: 0 100%; */
     background-image: linear-gradient(to right, #6366f1, #a855f7);
   }
 
-  .highlight {
+  /* .highlight {
     display: inline;
     background: #a855f7;
     color: #fff;
@@ -60,8 +63,22 @@
     position: relative;
     left: 10px;
     padding-left: 0;
+    
     box-shadow: 10px 0 0 #a855f7, -10px 0 0 #a855f7;
+  } */
+
+  /* p {
+    margin: 0 auto;
+    line-height: 1.5em;
   }
+
+  span {
+    background-image: linear-gradient(to right, #6366f1, #a855f7);
+    background-repeat: repeat-x;
+    background-position: 0 100%;
+    background-size: 100% 3px;
+    transform: skew(-12deg) translateX(-50%);
+  } */
 }
 
 @tailwind base;

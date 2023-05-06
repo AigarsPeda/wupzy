@@ -8,7 +8,7 @@ const ExplanationsSection: FC = () => {
         <Highlighter
           autoEscape={true}
           highlightClassName="highlightLine px-1 py-0.5"
-          searchWords={["save game scores"]}
+          searchWords={["tournament tables", "save game scores"]}
           textToHighlight="What is wupzy? Wupzy is a powerful platform that lets you effortlessly create
             tournament tables, save game scores, view
             real-time results, and share them with all participants in just a few
