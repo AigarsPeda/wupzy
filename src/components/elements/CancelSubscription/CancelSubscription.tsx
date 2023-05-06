@@ -1,11 +1,11 @@
+import useOnScreen from "hooks/useOnScreen";
 import type { FC } from "react";
 import { useRef } from "react";
 import { RoughNotation } from "react-rough-notation";
-import useOnScreen from "../../../hooks/useOnScreen";
 
 const CancelSubscription: FC = () => {
   const ref = useRef<HTMLDivElement>(null);
-  const { isIntersecting } = useOnScreen(ref);
+  const { isIntersecting } = useOnScreen(ref, "-150px");
 
   return (
     <div>
@@ -17,7 +17,7 @@ const CancelSubscription: FC = () => {
             strokeWidth={3}
             type="underline"
             color="#a855f7"
-            animationDelay={500}
+            animationDelay={600}
           >
             Users have full control over their subscription.
           </RoughNotation>{" "}

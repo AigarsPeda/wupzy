@@ -5,7 +5,7 @@ import { RoughNotation } from "react-rough-notation";
 
 const ExplanationsSection: FC = () => {
   const ref = useRef<HTMLDivElement>(null);
-  const { isIntersecting } = useOnScreen(ref);
+  const { isIntersecting } = useOnScreen(ref, "-100px");
 
   return (
     <div className="mx-auto mt-10 flex max-w-3xl md:mt-20">
@@ -28,7 +28,7 @@ const ExplanationsSection: FC = () => {
           color="#a855f7"
           type="underline"
           show={isIntersecting}
-          animationDelay={1000}
+          animationDelay={1200}
         >
           {" "}
           save game scores,

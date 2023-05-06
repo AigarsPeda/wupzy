@@ -6,7 +6,7 @@ import { RoughNotation } from "react-rough-notation";
 
 const AdditionalInfo: FC = () => {
   const ref = useRef<HTMLDivElement>(null);
-  const { isIntersecting } = useOnScreen(ref);
+  const { isIntersecting } = useOnScreen(ref, "-150px");
 
   return (
     <div>

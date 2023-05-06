@@ -5,7 +5,7 @@ import { RoughNotation } from "react-rough-notation";
 
 const WupzyFeatures = () => {
   const ref = useRef<HTMLDivElement>(null);
-  const { isIntersecting } = useOnScreen(ref);
+  const { isIntersecting } = useOnScreen(ref, "-150px");
 
   return (
     <div className="mx-auto mt-10 max-w-4xl md:mt-20">
