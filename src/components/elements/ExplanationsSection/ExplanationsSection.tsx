@@ -13,6 +13,7 @@ const ExplanationsSection: FC = () => {
         What is wupzy? Wupzy is a powerful platform that lets you effortlessly
         create{" "}
         <RoughNotation
+          multiline
           padding={1}
           strokeWidth={3}
           color="#a855f7"
@@ -23,6 +24,7 @@ const ExplanationsSection: FC = () => {
           tournament tables,
         </RoughNotation>{" "}
         <RoughNotation
+          multiline
           padding={1}
           strokeWidth={3}
           color="#a855f7"

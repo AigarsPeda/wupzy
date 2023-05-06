@@ -12,12 +12,13 @@ const CancelSubscription: FC = () => {
       <div className="mx-auto max-w-3xl">
         <p className="font-primary text-gray-600" ref={ref}>
           <RoughNotation
-            show={isIntersecting}
+            multiline
             padding={1}
             strokeWidth={3}
-            type="underline"
             color="#a855f7"
+            type="underline"
             animationDelay={600}
+            show={isIntersecting}
           >
             Users have full control over their subscription.
           </RoughNotation>{" "}

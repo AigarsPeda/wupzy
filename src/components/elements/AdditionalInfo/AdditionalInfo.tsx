@@ -14,6 +14,7 @@ const AdditionalInfo: FC = () => {
         <p className="font-primary text-gray-600" ref={ref}>
           With Wupzy,{" "}
           <RoughNotation
+            multiline
             padding={1}
             strokeWidth={3}
             color="#a855f7"

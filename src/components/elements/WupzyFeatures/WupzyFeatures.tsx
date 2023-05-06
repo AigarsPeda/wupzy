@@ -13,6 +13,7 @@ const WupzyFeatures = () => {
         <p className="mb-14 font-primary text-gray-600 md:mb-16" ref={ref}>
           Plus, Wupzy&apos;s user-friendly interface and{" "}
           <RoughNotation
+            multiline
             padding={1}
             strokeWidth={3}
             color="#a855f7"
