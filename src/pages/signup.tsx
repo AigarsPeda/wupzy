@@ -139,6 +139,10 @@ const SignUp: NextPage = () => {
     return <ErrorMessage message="Something went wrong" />;
   }
 
+  // if (!stripeSessionId) {
+  //   return redirectToPath(DEFAULT_REDIRECT_URL);
+  // }
+
   return (
     <>
       <PageHead

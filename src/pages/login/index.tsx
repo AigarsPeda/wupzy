@@ -82,7 +82,7 @@ const Login: NextPage = () => {
       />
       <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))]">
         <div className="mt-0 flex h-full w-full flex-col">
-          <div className="mb-10 transition-all md:mb-20 lg:mb-40">
+          <div className="mb-10">
             <Logo />
           </div>
           <div className="flex">

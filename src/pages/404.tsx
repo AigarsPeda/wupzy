@@ -11,7 +11,7 @@ const PageNotFound = () => {
           tournament tables, save game scores, view real-time results, and share
           them with all participants in just a few clicks."
       />
-      <div className="mb-10 transition-all md:mb-20 lg:mb-40">
+      <div className="mb-10 transition-all">
         <Logo />
       </div>
       <div className="h-full w-full text-center">
