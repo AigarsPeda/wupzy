@@ -1,20 +1,30 @@
+import useOnScreen from "hooks/useOnScreen";
 import Image from "next/image";
-import Highlighter from "react-highlight-words";
+import { useRef } from "react";
+import { RoughNotation } from "react-rough-notation";
 
 const WupzyFeatures = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const { isIntersecting } = useOnScreen(ref);
+
   return (
     <div className="mx-auto mt-10 max-w-4xl md:mt-20">
       <div className="mx-auto max-w-3xl">
-        <p className="mb-14 font-primary text-gray-600 md:mb-16">
-          <Highlighter
-            autoEscape={true}
-            highlightClassName="highlightLine px-1 py-0.5"
-            searchWords={["responsive design"]}
-            textToHighlight="Plus, Wupzy's user-friendly interface and responsive design           make it easy to create, manage, and view tournament tables on any
-            device, whether you're using a desktop computer or a mobile
-            phone. So, you can enjoy the full range of features and functionality
-            on the go, no matter where you are"
-          />
+        <p className="mb-14 font-primary text-gray-600 md:mb-16" ref={ref}>
+          Plus, Wupzy&apos;s user-friendly interface and{" "}
+          <RoughNotation
+            padding={1}
+            strokeWidth={3}
+            color="#a855f7"
+            type="underline"
+            animationDelay={500}
+            show={isIntersecting}
+          >
+            responsive design,
+          </RoughNotation>{" "}
+          whether you&apos;re using a desktop computer or a mobile phone. So,
+          you can enjoy the full range of features and functionality on the go,
+          no matter where you are
         </p>
       </div>
       <div className="mx-auto grid max-w-4xl grid-cols-1 gap-4 md:grid-cols-3">

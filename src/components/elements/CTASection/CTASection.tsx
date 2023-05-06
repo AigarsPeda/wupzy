@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import Highlighter from "react-highlight-words";
+import { RoughNotation } from "react-rough-notation";
 
 const CTASection: FC = () => {
   return (
@@ -10,14 +10,23 @@ const CTASection: FC = () => {
         </h1>
 
         <h2 className="mx-auto mb-5 mt-10 max-w-2xl font-primary text-gray-600 md:text-lg">
-          <Highlighter
-            autoEscape={true}
-            highlightClassName="highlightLine px-1 py-0.5"
-            searchWords={[
-              "Our website automates the process of creating tournament tables, saving you time and effort",
-            ]}
-            textToHighlight="Simplify tournament management. Our website automates the process of creating tournament tables, saving you time and effort, so you can focus on playing the game rather than managing the tournament."
-          />
+          Simplify tournament management.
+          <RoughNotation
+            show
+            multiline
+            padding={1}
+            strokeWidth={3}
+            animate={false}
+            color="#a855f7"
+            type="highlight"
+          >
+            <span className="text-white">
+              Our website automates the process of creating tournament tables,
+              saving you time and effort,
+            </span>
+          </RoughNotation>{" "}
+          saving you time and effort, so you can focus on playing the game
+          rather than managing the tournament.
         </h2>
       </div>
     </div>

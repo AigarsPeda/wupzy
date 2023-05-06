@@ -1,19 +1,40 @@
+import useOnScreen from "hooks/useOnScreen";
 import type { FC } from "react";
-import Highlighter from "react-highlight-words";
+import { useRef } from "react";
+import { RoughNotation } from "react-rough-notation";
 
 const ExplanationsSection: FC = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const { isIntersecting } = useOnScreen(ref);
+
   return (
     <div className="mx-auto mt-10 flex max-w-3xl md:mt-20">
-      <p className="font-primary">
-        <Highlighter
-          autoEscape={true}
-          highlightClassName="highlightLine px-1 py-0.5"
-          searchWords={["tournament tables", "save game scores"]}
-          textToHighlight="What is wupzy? Wupzy is a powerful platform that lets you effortlessly create
-            tournament tables, save game scores, view
-            real-time results, and share them with all participants in just a few
-            clicks"
-        />
+      <p className="font-primary" ref={ref}>
+        What is wupzy? Wupzy is a powerful platform that lets you effortlessly
+        create{" "}
+        <RoughNotation
+          padding={1}
+          strokeWidth={3}
+          color="#a855f7"
+          type="underline"
+          animationDelay={500}
+          show={isIntersecting}
+        >
+          tournament tables,
+        </RoughNotation>{" "}
+        <RoughNotation
+          padding={1}
+          strokeWidth={3}
+          color="#a855f7"
+          type="underline"
+          show={isIntersecting}
+          animationDelay={1000}
+        >
+          {" "}
+          save game scores,
+        </RoughNotation>{" "}
+        view real-time results, and share them with all participants in just a
+        few clicks
       </p>
     </div>
   );
