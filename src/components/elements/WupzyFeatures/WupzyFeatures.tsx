@@ -31,8 +31,16 @@ const WupzyFeatures = () => {
       <div className="mx-auto grid max-w-4xl grid-cols-1 gap-4 md:grid-cols-3">
         <div className="relative flex flex-col items-center justify-between rounded-lg p-2 text-center">
           <div className="flex h-full flex-col items-center justify-between text-center">
-            <h1 className="font-primary text-2xl font-extrabold md:text-3xl">
-              Create &quot;King&quot; tournament
+            <h1 className="font-primary text-2xl font-extrabold text-white md:text-3xl">
+              <RoughNotation
+                multiline
+                color="#030712"
+                animate={false}
+                type="highlight"
+                show={isIntersecting}
+              >
+                Create &quot;King&quot; tournament
+              </RoughNotation>
             </h1>
 
             <p className="mx-auto my-5 max-w-2xl font-primary text-gray-600">
@@ -52,8 +60,16 @@ const WupzyFeatures = () => {
         </div>
         <div className="flex flex-col items-center justify-between rounded-lg p-2 text-center">
           <div className="flex h-full flex-col items-center justify-between text-center">
-            <h1 className="font-primary text-2xl font-extrabold md:text-3xl">
-              Never lose track of your games
+            <h1 className="px-2 font-primary text-2xl font-extrabold text-white md:text-3xl">
+              <RoughNotation
+                multiline
+                color="#030712"
+                animate={false}
+                type="highlight"
+                show={isIntersecting}
+              >
+                Never lose track of your games
+              </RoughNotation>
             </h1>
 
             <p className="mx-auto my-5 max-w-2xl font-primary text-gray-600">
@@ -72,8 +88,16 @@ const WupzyFeatures = () => {
         </div>
         <div className="flex flex-col items-center justify-between rounded-lg p-2 text-center">
           <div className="flex h-full flex-col items-center justify-between text-center">
-            <h1 className="font-primary text-2xl font-extrabold md:text-3xl">
-              Create shareable links
+            <h1 className="font-primary text-2xl font-extrabold text-white md:text-3xl">
+              <RoughNotation
+                multiline
+                color="#030712"
+                animate={false}
+                type="highlight"
+                show={isIntersecting}
+              >
+                Create shareable links
+              </RoughNotation>
             </h1>
 
             <p className="mx-auto my-5 max-w-2xl font-primary text-gray-600">

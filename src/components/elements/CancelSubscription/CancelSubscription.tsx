@@ -24,8 +24,20 @@ const CancelSubscription: FC = () => {
           </RoughNotation>{" "}
           If you ever need to unsubscribe, you can easily do so with just a few
           clicks, no questions asked. And if you unsubscribe in the middle of a
-          month, you still have access to all of our features for the remainder
-          of that month. It&apos;s just one more way we put our users first.
+          month, you{" "}
+          <RoughNotation
+            multiline
+            padding={1}
+            strokeWidth={3}
+            color="#a855f7"
+            type="underline"
+            animationDelay={1200}
+            show={isIntersecting}
+          >
+            still have access
+          </RoughNotation>{" "}
+          to all of our features for the remainder of that month. It&apos;s just
+          one more way we put our users first.
         </p>
       </div>
     </div>

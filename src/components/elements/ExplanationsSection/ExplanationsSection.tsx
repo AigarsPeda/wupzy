@@ -35,8 +35,20 @@ const ExplanationsSection: FC = () => {
           {" "}
           save game scores,
         </RoughNotation>{" "}
-        view real-time results, and share them with all participants in just a
-        few clicks
+        view{" "}
+        <RoughNotation
+          multiline
+          padding={1}
+          strokeWidth={3}
+          color="#a855f7"
+          type="underline"
+          show={isIntersecting}
+          animationDelay={2200}
+        >
+          {" "}
+          real-time results,
+        </RoughNotation>{" "}
+        and share them with all participants in just a few clicks
       </p>
     </div>
   );

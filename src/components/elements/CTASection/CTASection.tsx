@@ -17,7 +17,7 @@ const CTASection: FC = () => {
             padding={1}
             strokeWidth={3}
             animate={false}
-            color="#a855f7"
+            color="#030712"
             type="highlight"
           >
             <span className="text-white">
