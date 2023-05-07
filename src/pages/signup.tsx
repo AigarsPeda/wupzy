@@ -18,10 +18,10 @@ const SignUp: NextPage = () => {
   const router = useRouter();
   const { redirectToPath } = useRedirect();
   const [stripeSessionId, setStripeSessionId] = useState("");
-  const [userId, setUserId] = useState<undefined | string>(undefined);
+  const [stripeCustomerId, setStripeCustomerId] = useState<null | string>(null);
   const [disabledInputs, setDisabledInputs] = useState(["confirmPassword"]);
   const { isError, mutateAsync, error, isLoading } =
-    api.users.signUpUser.useMutation();
+    api.users.updateUser.useMutation();
   const { isLoading: isLoadingStripeUser, isError: isStripeError } =
     api.stripe.getStripeUser.useQuery(
       {
@@ -45,7 +45,7 @@ const SignUp: NextPage = () => {
               },
             });
 
-            setUserId(data.user.id);
+            setStripeCustomerId(data.user.stripeCustomerId);
           }
         },
       }
@@ -72,7 +72,7 @@ const SignUp: NextPage = () => {
       password,
       lastName,
       firstName,
-      userId,
+      stripeCustomerId: stripeCustomerId || undefined,
     });
 
     if (res.token) {
@@ -138,10 +138,6 @@ const SignUp: NextPage = () => {
   if (isStripeError) {
     return <ErrorMessage message="Something went wrong" />;
   }
-
-  // if (!stripeSessionId) {
-  //   return redirectToPath(DEFAULT_REDIRECT_URL);
-  // }
 
   return (
     <>

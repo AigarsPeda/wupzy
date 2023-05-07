@@ -1,5 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import jwt from "jsonwebtoken";
+import createUpdatePassword from "server/api/routers/utils/user/createUpdatePassword";
+import createUserInDB from "server/api/routers/utils/user/createUserInDB";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -13,17 +15,18 @@ import { z } from "zod";
 const jwtSecret = process.env.JWT_SECRET || "jwtSecret";
 
 export const usersRouter = createTRPCRouter({
-  signUpUser: publicProcedure
+  updateUser: publicProcedure
     .input(
       z.object({
         email: z.string(),
         lastName: z.string(),
         password: z.string(),
         firstName: z.string(),
-        userId: z.string().optional(),
+        stripeCustomerId: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const { prisma } = ctx;
       const password = await hashPassword(input.password);
 
       if (password instanceof Error) {
@@ -33,39 +36,22 @@ export const usersRouter = createTRPCRouter({
         });
       }
 
-      const user = await ctx.prisma.user.update({
-        where: {
-          id: input.userId,
-        },
-        data: {
+      const { user } = await createUserInDB({
+        prisma,
+        user: {
           email: input.email,
           lastName: input.lastName,
           firstName: input.firstName,
+          stripeCustomerId: input.stripeCustomerId,
         },
       });
 
-      // create password or update password
-      await ctx.prisma.password.upsert({
-        where: {
-          userId: user.id,
-        },
-        update: {
-          password: password,
-        },
-        create: {
-          password: password,
-          user: {
-            connect: {
-              id: user.id,
-            },
-          },
-        },
-      });
+      await createUpdatePassword(user.id, password, prisma);
 
       const token = createToken(user.id);
 
       // Save token to db
-      await ctx.prisma.loginToken.create({
+      await prisma.loginToken.create({
         data: {
           token,
           isActive: true,

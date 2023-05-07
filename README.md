@@ -13,6 +13,10 @@
 
     yarn prisma db push
 
+### To see the database
+
+    yarn prisma studio
+
 ### Generate Prisma Client
 
     yarn prisma generate

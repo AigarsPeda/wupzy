@@ -1,5 +1,7 @@
 import { TRPCError } from "@trpc/server";
+import createUpdatePassword from "server/api/routers/utils/user/createUpdatePassword";
 import createUserInDB from "server/api/routers/utils/user/createUserInDB";
+import getStripeUser from "server/api/routers/utils/user/getStripeUser";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -82,29 +84,17 @@ export const stripeRouter = createTRPCRouter({
         });
       }
 
-      const user = await createUserInDB({
+      const stripeUser = await getStripeUser({
         stripe,
-        prisma,
         sessionId: input.sessionId,
       });
 
-      // create password or update password
-      await ctx.prisma.password.upsert({
-        where: {
-          userId: user.id,
-        },
-        update: {
-          password: password,
-        },
-        create: {
-          password: password,
-          user: {
-            connect: {
-              id: user.id,
-            },
-          },
-        },
+      const { user } = await createUserInDB({
+        prisma,
+        user: stripeUser,
       });
+
+      await createUpdatePassword(user.id, password, ctx.prisma);
 
       const token = createToken(user.id);
 

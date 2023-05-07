@@ -5,7 +5,7 @@ import { RoughNotation } from "react-rough-notation";
 
 const CancelSubscription: FC = () => {
   const ref = useRef<HTMLDivElement>(null);
-  const { isIntersecting } = useOnScreen(ref, "-150px");
+  const { isIntersecting } = useOnScreen(ref, "-100px");
 
   return (
     <div>

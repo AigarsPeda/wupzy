@@ -25,7 +25,7 @@ const WupzyFeatures = () => {
           </RoughNotation>{" "}
           whether you&apos;re using a desktop computer or a mobile phone. So,
           you can enjoy the full range of features and functionality on the go,
-          no matter where you are
+          no matter where you are.
         </p>
       </div>
       <div className="mx-auto grid max-w-4xl grid-cols-1 gap-4 md:grid-cols-3">
@@ -56,7 +56,6 @@ const WupzyFeatures = () => {
             className="mx-auto rounded-lg"
             src="/asset/wupzy_create.webp"
           />
-          {/* <div className="absolute -inset-1 rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-25 blur transition delay-75 duration-1000 group-hover:opacity-40 group-hover:duration-200"></div> */}
         </div>
         <div className="flex flex-col items-center justify-between rounded-lg p-2 text-center">
           <div className="flex h-full flex-col items-center justify-between text-center">
