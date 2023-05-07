@@ -33,11 +33,11 @@ const WupzyFeatures = () => {
           <div className="flex h-full flex-col items-center justify-between text-center">
             <h1 className="font-primary text-2xl font-extrabold text-white md:text-3xl">
               <RoughNotation
+                show
                 multiline
                 color="#030712"
                 animate={false}
                 type="highlight"
-                show={isIntersecting}
               >
                 Create &quot;King&quot; tournament
               </RoughNotation>
@@ -62,11 +62,11 @@ const WupzyFeatures = () => {
           <div className="flex h-full flex-col items-center justify-between text-center">
             <h1 className="px-2 font-primary text-2xl font-extrabold text-white md:text-3xl">
               <RoughNotation
+                show
                 multiline
                 color="#030712"
                 animate={false}
                 type="highlight"
-                show={isIntersecting}
               >
                 Never lose track of your games
               </RoughNotation>
@@ -90,11 +90,11 @@ const WupzyFeatures = () => {
           <div className="flex h-full flex-col items-center justify-between text-center">
             <h1 className="font-primary text-2xl font-extrabold text-white md:text-3xl">
               <RoughNotation
+                show
                 multiline
                 color="#030712"
                 animate={false}
                 type="highlight"
-                show={isIntersecting}
               >
                 Create shareable links
               </RoughNotation>
