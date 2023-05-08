@@ -23,7 +23,7 @@ const PageHead: FC<PageHeadProps> = ({
       <meta name="robots" content="follow, index" />
 
       <meta name="description" content={descriptionLong} />
-      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
       <meta property="og:description" content={descriptionShort} />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 

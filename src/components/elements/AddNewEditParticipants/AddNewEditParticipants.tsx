@@ -25,7 +25,8 @@ const AddNewEditParticipants: FC<AddNewEditParticipantsProps> = ({
   const [name, setName] = useState("");
   const [isEdit, setIsEdit] = useState(false);
   const { refetchParticipants } = useParticipants(tournamentId);
-
+  const { refetch: refetchGames } =
+    api.tournaments.getAllTournamentGames.useQuery({ tournamentId });
   const { mutate: updatedParticipant, isLoading: isLoadingUpdatedParticipant } =
     api.participant.updatedParticipant.useMutation({
       onSuccess: async () => {
@@ -41,6 +42,7 @@ const AddNewEditParticipants: FC<AddNewEditParticipantsProps> = ({
         setName("");
         handleCancelClick();
         await refetchParticipants();
+        await refetchGames();
       },
     });
 
@@ -66,6 +68,9 @@ const AddNewEditParticipants: FC<AddNewEditParticipantsProps> = ({
       isModalVisible={isAddNewParticipants}
       modalTitle={isEdit ? "Edit participant" : "Add new participant"}
       handleCancelClick={() => {
+        // refetchGames().catch((e) => {
+        //   console.error("Error while refetching games", e);
+        // });
         setName("");
         setIsEdit(false);
         handleCancelClick();

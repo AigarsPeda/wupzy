@@ -25,6 +25,7 @@ const EditParticipantTeamsCard: FC<EditParticipantTeamsCardProps> = ({
 }) => {
   const [parent] = useAutoAnimate();
   const [isError, setIsError] = useState(false);
+
   const [teamsMap, setTeamsMap] = useState<TeamsMapType>(new Map());
   const { data: teams, refetch: refetchTeams } =
     api.tournaments.getAllTournamentTeams.useQuery({ tournamentId });
