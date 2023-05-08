@@ -9,7 +9,7 @@ const CTASection: FC = () => {
           Sign up and manage your tournaments with ease!
         </h1>
 
-        <h2 className="mx-auto mb-5 mt-10 max-w-2xl font-primary text-gray-600 md:text-lg">
+        <h2 className="mx-auto mb-5 mt-10 max-w-2xl font-primary text-gray-800 md:text-lg">
           Simplify tournament management.
           <RoughNotation
             show

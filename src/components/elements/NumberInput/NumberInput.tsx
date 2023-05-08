@@ -17,7 +17,7 @@ const NumberInput: FC<NumberInputProps> = ({ value, height, onChange }) => {
     >
       <button
         data-action="decrement"
-        className="h-full w-20 cursor-pointer rounded-l bg-gray-300 text-gray-600 outline-none transition-all hover:bg-gray-400 hover:text-gray-700"
+        className="h-full w-20 cursor-pointer rounded-l bg-gray-300 text-gray-800 outline-none transition-all hover:bg-gray-400 hover:text-gray-700"
         onClick={() => {
           if (value > 0) {
             onChange(value - 1);
@@ -44,7 +44,7 @@ const NumberInput: FC<NumberInputProps> = ({ value, height, onChange }) => {
       ></input>
       <button
         data-action="increment"
-        className="h-full w-20 cursor-pointer rounded-r bg-gray-300 text-gray-600 transition-all hover:bg-gray-400 hover:text-gray-700"
+        className="h-full w-20 cursor-pointer rounded-r bg-gray-300 text-gray-800 transition-all hover:bg-gray-400 hover:text-gray-700"
         onClick={() => {
           onChange(value + 1);
         }}

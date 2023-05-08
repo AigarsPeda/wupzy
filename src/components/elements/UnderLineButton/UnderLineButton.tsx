@@ -48,7 +48,7 @@ const UnderLineButton = forwardRef<Ref, ButtonProps>(
       )}
     >
       {iconPosition === "left" && icon && (
-        <span className="pointer-events-none text-gray-600">{icon}</span>
+        <span className="pointer-events-none text-gray-800">{icon}</span>
       )}
       {isLoading ? (
         <Spinner size="small" />
@@ -59,7 +59,7 @@ const UnderLineButton = forwardRef<Ref, ButtonProps>(
         </span>
       )}
       {iconPosition === "right" && icon && (
-        <span className="pointer-events-none text-gray-600">{icon}</span>
+        <span className="pointer-events-none text-gray-800">{icon}</span>
       )}
       <span
         className={classNames(

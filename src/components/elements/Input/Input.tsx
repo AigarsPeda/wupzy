@@ -80,7 +80,7 @@ const Input = forwardRef<Ref, InputProps>(
               ? "peer-placeholder-shown:text-gray-200"
               : "peer-placeholder-shown:text-gray-400",
             isCapitalized && "capitalize",
-            "pointer-events-none absolute left-0 text-gray-600 transition-all  peer-focus:text-gray-600"
+            "pointer-events-none absolute left-0 text-gray-800 transition-all  peer-focus:text-gray-800"
           )}
         >
           {label}

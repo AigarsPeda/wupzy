@@ -8,8 +8,11 @@ const ExplanationsSection: FC = () => {
   const { isIntersecting } = useOnScreen(ref, "-100px");
 
   return (
-    <div className="mx-auto mt-10 flex max-w-3xl md:mt-20">
-      <p className="font-primary" ref={ref}>
+    <div className="mx-auto mt-10 max-w-3xl md:mt-20">
+      <p
+        className="font-primary font-medium text-gray-800 md:text-lg"
+        ref={ref}
+      >
         What is wupzy? Wupzy is a powerful platform that lets you effortlessly
         create{" "}
         <RoughNotation

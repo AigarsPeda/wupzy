@@ -255,7 +255,7 @@ const TeamsAttendantForm: FC<TeamsAttendantFormProps> = ({
       <div className="my-2 border-b-2 md:my-4">
         <label
           htmlFor="teamName"
-          className="text-sm font-semibold text-gray-600"
+          className="text-sm font-semibold text-gray-800"
         >
           Created teams
         </label>

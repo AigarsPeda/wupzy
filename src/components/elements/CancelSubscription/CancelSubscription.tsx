@@ -10,7 +10,10 @@ const CancelSubscription: FC = () => {
   return (
     <div>
       <div className="mx-auto max-w-3xl">
-        <p className="font-primary text-gray-600" ref={ref}>
+        <p
+          className="font-primary font-medium text-gray-800 md:text-lg"
+          ref={ref}
+        >
           <RoughNotation
             multiline
             padding={1}

@@ -7,6 +7,7 @@ import ExplanationsSection from "components/elements/ExplanationsSection/Explana
 import PageHead from "components/elements/PageHead/PageHead";
 import WupzyFeatures from "components/elements/WupzyFeatures/WupzyFeatures";
 import { type NextPage } from "next";
+import SportExplanationsSection from "../components/elements/SportExplanationsSection/SportExplanationsSection";
 
 const Home: NextPage = () => {
   return (
@@ -23,8 +24,9 @@ const Home: NextPage = () => {
           <CTASection />
         </div>
         <BuyProducts />
-        <ExplanationsSection />
+        <SportExplanationsSection />
         <DesktopImg />
+        <ExplanationsSection />
         <WupzyFeatures />
         <div className="mt-10 md:mt-20">
           <BuyProducts />
