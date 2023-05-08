@@ -42,6 +42,7 @@ const DisplayProducts: FC<DisplayProductsProps> = ({
     <div className="mx-auto grid max-w-2xl grid-cols-1 gap-4 font-primary md:grid-cols-2">
       {products?.data.map((product, i) => {
         const { name } = product.product as Stripe.Product;
+        // const oldPrice = Math.floor(((product.unit_amount || 0) / 100) * 1.5);
 
         return (
           <button
@@ -66,6 +67,9 @@ const DisplayProducts: FC<DisplayProductsProps> = ({
                 </p>
               </div>
               <div className="py-4">
+                {/* <div className="w-content px-2 py-1">
+                  <p className="text-2xl text-gray-800">{oldPrice} €</p>
+                </div> */}
                 <div className="mx-auto px-4 pt-3">
                   <div className="mx-auto flex items-center justify-center text-center font-primary text-gray-500">
                     <p className="text-4xl text-gray-800">
