@@ -28,9 +28,11 @@ const WupzyFeatures = () => {
           <Image
             width={350}
             height={550}
+            placeholder="blur"
             alt="wupzy king view"
             className="mx-auto rounded-lg"
             src="/asset/wupzy_create.webp"
+            blurDataURL="/asset/blurredImage.avif"
           />
         </div>
         <div className="flex flex-col items-center justify-between rounded-lg p-2 text-center">
@@ -55,9 +57,11 @@ const WupzyFeatures = () => {
             <Image
               width={350}
               height={550}
+              placeholder="blur"
               alt="wupzy game view"
               className="mx-auto rounded-lg"
               src="/asset/wupzy_new_games_a.webp"
+              blurDataURL="/asset/blurredImage.avif"
             />
           </div>
         </div>
@@ -84,9 +88,11 @@ const WupzyFeatures = () => {
             <Image
               width={350}
               height={550}
+              placeholder="blur"
               alt="wupzy share link view"
               className="mx-auto rounded-lg"
               src="/asset/wupzy_share_mob_link_a.webp"
+              blurDataURL="/asset/blurredImage.avif"
             />
           </div>
         </div>

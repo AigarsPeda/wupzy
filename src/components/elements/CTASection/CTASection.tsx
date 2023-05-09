@@ -25,8 +25,8 @@ const CTASection: FC = () => {
               saving you time and effort,
             </span>
           </RoughNotation>{" "}
-          saving you time and effort, so you can focus on playing the game
-          rather than managing the tournament.
+          so you can focus on playing the game rather than managing the
+          tournament.
         </h2>
       </div>
     </div>

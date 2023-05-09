@@ -13,7 +13,9 @@ const DesktopImg: FC = () => {
           width={850}
           height={600}
           loading="lazy"
+          placeholder="blur"
           alt="wupzy desktop view"
+          blurDataURL="/asset/blurredImage.avif"
           className="mx-auto rounded-lg border shadow"
           src="/asset/wupzy_desktop_view.webp"
         />
@@ -22,6 +24,7 @@ const DesktopImg: FC = () => {
             <Image
               loading="lazy"
               alt="wupzy score"
+              placeholder="empty"
               width={windowSize.width < 1060 ? 400 : 550}
               height={windowSize.width < 1060 ? 400 : 550}
               className={classNames(
@@ -36,6 +39,8 @@ const DesktopImg: FC = () => {
           <Image
             loading="lazy"
             alt="wupzy score"
+            placeholder="blur"
+            blurDataURL="/asset/blurredImage.avif"
             width={windowSize.width < 1060 ? 525 : 695}
             height={windowSize.width < 1060 ? 525 : 695}
             className={classNames(
@@ -51,6 +56,8 @@ const DesktopImg: FC = () => {
           <Image
             alt="wupzy score"
             loading="lazy"
+            placeholder="blur"
+            blurDataURL="/asset/blurredImage.avif"
             width={windowSize.width < 1060 ? 210 : 250}
             height={windowSize.width < 1060 ? 210 : 250}
             className={classNames(
