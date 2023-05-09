@@ -26,6 +26,7 @@ model User {
   LoginToken           LoginToken[]
   Tournaments          Tournament[]
   PasswordReset        PasswordReset[]
+  subscriptionTrialEnd DateTime?
   stripeSubscriptionId String?         @unique @db.VarChar(500)
   stripeCustomerId     String?         @unique @db.VarChar(500)
   email                String          @unique @db.VarChar(500)

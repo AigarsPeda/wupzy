@@ -53,6 +53,9 @@ export const stripeRouter = createTRPCRouter({
             price: input.priceId,
           },
         ],
+        subscription_data: {
+          trial_period_days: 5,
+        },
         success_url: successUrl,
         cancel_url: `${baseUrl}/`,
         customer: input.stripeCustomerId,

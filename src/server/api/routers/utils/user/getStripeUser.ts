@@ -19,6 +19,9 @@ const getStripeUser = async ({
   const email = customer?.email ?? "";
   const subscriptionStatus = subscription.status;
   const country = customer?.address?.country ?? "";
+  const subscriptionTrialEnd = subscription.trial_end
+    ? new Date(subscription.trial_end * 1000)
+    : undefined;
   const lastName = customer?.name?.split(" ")[1] ?? "";
   const firstName = customer?.name?.split(" ")[0] ?? "";
   const stripeCustomerId = sessionData.customer as string;
@@ -33,6 +36,7 @@ const getStripeUser = async ({
     stripeCustomerId: stripeCustomerId,
     subscriptionStatus: subscriptionStatus,
     stripeSubscriptionId: stripeSubscriptionId,
+    subscriptionTrialEnd: subscriptionTrialEnd,
   };
 };
 

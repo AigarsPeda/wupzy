@@ -12,6 +12,7 @@ const createUserInDB = async ({
     firstName: string;
     stripeCustomerId?: string;
     subscriptionStatus?: string;
+    subscriptionTrialEnd?: Date;
     stripeSubscriptionId?: string;
   };
   prisma: PrismaClient;
