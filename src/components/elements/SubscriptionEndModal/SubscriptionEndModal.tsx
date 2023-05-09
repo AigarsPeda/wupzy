@@ -75,6 +75,7 @@ const SubscriptionEndModal: FC = () => {
 
   return (
     <ModalWrap
+      modalWidth="2xl"
       isModalVisible={Boolean(products) && isModalVisible}
       modalTitle="Your subscription has ended"
       handleCancelClick={() => {

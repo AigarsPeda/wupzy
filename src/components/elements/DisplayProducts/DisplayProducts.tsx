@@ -42,12 +42,11 @@ const DisplayProducts: FC<DisplayProductsProps> = ({
     <div className="mx-auto grid max-w-2xl grid-cols-1 gap-4 font-primary md:grid-cols-2">
       {products?.data.map((product, i) => {
         const { name } = product.product as Stripe.Product;
-        // const oldPrice = Math.floor(((product.unit_amount || 0) / 100) * 1.5);
 
         return (
           <button
             key={product.id}
-            className="z-1 group relative mx-auto w-full max-w-sm rounded-lg border bg-white shadow-lg transition-all "
+            className="z-1 buy-button group relative mx-auto w-full max-w-sm rounded-lg border bg-white shadow-lg transition-all "
             onClick={() => {
               handleCheckout(product.id).catch((err) => {
                 console.log("Error in handleCheckout: ", err);

@@ -54,7 +54,8 @@ export const stripeRouter = createTRPCRouter({
           },
         ],
         subscription_data: {
-          trial_period_days: 5,
+          // If is logged and has a stripe customer id, don't create a trial
+          trial_period_days: input.stripeCustomerId ? undefined : 5,
         },
         success_url: successUrl,
         cancel_url: `${baseUrl}/`,

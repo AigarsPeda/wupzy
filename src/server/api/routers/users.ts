@@ -158,6 +158,7 @@ export const usersRouter = createTRPCRouter({
           user.stripeSubscriptionId
         );
 
+        // check if subscription is active
         await prisma.user.update({
           where: {
             id: user.id,
