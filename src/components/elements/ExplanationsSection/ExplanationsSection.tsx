@@ -8,7 +8,7 @@ const ExplanationsSection: FC = () => {
   const { isIntersecting } = useOnScreen(ref, "-100px");
 
   return (
-    <div className="mx-auto mt-10 max-w-3xl md:mt-20">
+    <div className="mx-auto mt-10 max-w-3xl md:mt-24">
       <p
         className="font-primary font-medium text-gray-800 md:text-lg"
         ref={ref}
