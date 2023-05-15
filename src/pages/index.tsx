@@ -24,9 +24,9 @@ const Home: NextPage = () => {
           <CTASection />
         </div>
         <BuyProducts />
-        <SportExplanationsSection />
-        <DesktopImg />
         <ExplanationsSection />
+        <DesktopImg />
+        <SportExplanationsSection />
         <WupzyFeatures />
         <div className="mt-10 md:mt-20">
           <BuyProducts />

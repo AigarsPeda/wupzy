@@ -8,8 +8,8 @@ const SportExplanationsSection: FC = () => {
   const { isIntersecting } = useOnScreen(ref, "-50px");
 
   return (
-    <div className="mx-auto my-14 max-w-3xl" ref={ref}>
-      <p className="font-primary font-medium text-gray-800 md:text-lg">
+    <div className="mx-auto mt-10 max-w-3xl md:mt-24" ref={ref}>
+      <p className="font-primary text-gray-800 md:text-lg">
         <RoughNotation
           type="bracket"
           strokeWidth={3}
@@ -18,11 +18,15 @@ const SportExplanationsSection: FC = () => {
           show={isIntersecting}
           brackets={["left", "right"]}
         >
-          Wupzy isn&apos;t limited to just one sport. It caters to a wide range
-          of athletic disciplines. From 🎾 tennis and 🏐 volleyball to ⚽️
-          football and 🏀 basketball, you can rely on Wupzy to elevate your
-          tournament organization, regardless of the sport you&apos;re involved
-          in.
+          Creating tournament tables with Wupzy allows you to save scores and
+          view real-time results, all in one place. Participants don&apos;t have
+          go and look for the results on board or ask the organizers for the
+          results. See when next game is played. They can just go to the website
+          and see the results. Wupzy isn&apos;t limited to just one sport. It
+          caters to a wide range of athletic disciplines. From 🎾 tennis and 🏐
+          volleyball to ⚽️ football and 🏀 basketball, you can rely on Wupzy to
+          elevate your tournament organization, regardless of the sport
+          you&apos;re involved in.
         </RoughNotation>
       </p>
     </div>
