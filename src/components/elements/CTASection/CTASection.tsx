@@ -5,7 +5,7 @@ const CTASection: FC = () => {
     <div className="flex w-full flex-col items-center justify-center text-center">
       <div>
         <h1 className="max-w-4xl font-primary text-5xl font-extrabold tracking-tight md:text-7xl">
-          Sign up and create your game table today!
+          Create your tournament bracket today!
         </h1>
 
         <h2 className="mx-auto mb-5 mt-10 max-w-2xl font-primary text-gray-800 md:text-xl">
