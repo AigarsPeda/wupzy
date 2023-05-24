@@ -1,8 +1,8 @@
+import Footer from "components/elements/Footer/Footer";
 import NavBar from "components/elements/NavBar/NavBar";
 import dynamic from "next/dynamic";
-import type { FC, ReactNode } from "react";
-import Footer from "../../elements/Footer/Footer";
 import { useRouter } from "next/router";
+import type { FC, ReactNode } from "react";
 
 const SubscriptionEndModal = dynamic(
   () => import("components/elements/SubscriptionEndModal/SubscriptionEndModal")

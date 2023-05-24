@@ -1,13 +1,11 @@
 import Button from "components/elements/Button/Button";
 import Drawer from "components/elements/Drawer/Drawer";
 import LogoutButton from "components/elements/LogoutButton/LogoutButton";
-import useRedirect from "hooks/useRedirect";
 import Link from "next/link";
 import type { FC } from "react";
 import { useState } from "react";
-import { IoIosArrowBack } from "react-icons/io";
-import { TiThMenu } from "react-icons/ti";
 import { CgClose } from "react-icons/cg";
+import { TiThMenu } from "react-icons/ti";
 
 const MENU_ITEMS = [
   {
@@ -21,14 +19,14 @@ const MENU_ITEMS = [
 ];
 
 const MenuContainer: FC = () => {
-  const { goBack, getCurrentPath } = useRedirect();
+  // const { goBack, getCurrentPath } = useRedirect();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const isBackButtonDisabled = () => {
-    const path = getCurrentPath();
-    // don't show back button on home page and tournaments page
-    return path !== "/" && path !== "/tournaments";
-  };
+  // const isBackButtonDisabled = () => {
+  //   const path = getCurrentPath();
+  //   // don't show back button on home page and tournaments page
+  //   return path !== "/" && path !== "/tournaments";
+  // };
 
   return (
     <Drawer
@@ -47,7 +45,7 @@ const MenuContainer: FC = () => {
             }}
           />
 
-          <div className="ml-2 w-auto">
+          {/* <div className="ml-2 w-auto">
             {isBackButtonDisabled() && (
               <Button
                 btnSize="square"
@@ -56,7 +54,7 @@ const MenuContainer: FC = () => {
                 onClick={goBack}
               />
             )}
-          </div>
+          </div> */}
         </div>
       }
     >
