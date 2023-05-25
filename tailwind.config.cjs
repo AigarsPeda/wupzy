@@ -40,6 +40,10 @@ module.exports = {
         "slide-right": "slideRight ease 0.15s",
         "slow-ping": "slow-ping ease 4.5s infinite",
       },
+      transitionProperty: {
+        width: "width",
+        height: "height",
+      },
     },
   },
   plugins: [],
