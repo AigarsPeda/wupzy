@@ -7,6 +7,7 @@ import type { FC } from "react";
 import { useState } from "react";
 import { IoSettingsOutline } from "react-icons/io5";
 import { api } from "utils/api";
+import TopDrawer from "../TopDrawer/TopDrawer";
 
 const ProfileDropdown: FC = () => {
   const { mutate: cancelSubscription } =
@@ -16,17 +17,33 @@ const ProfileDropdown: FC = () => {
 
   return (
     <>
-      <Dropdown
+      <button
+        className="h-5 w-40 rounded-b-md bg-red-500"
+        onClick={() => {
+          setIsDropdownOpen((state) => !state);
+        }}
+      >
+        Test
+      </button>
+      {console.log(isDropdownOpen)}
+      <TopDrawer
+        isSideDrawerOpen={isDropdownOpen}
+        handleClose={() => {
+          setIsDropdownOpen(false);
+        }}
+      />
+      {/* <Dropdown
         dropdownClass="top-[3rem]"
         dropdownBtn={
-          <RoundButton
-            btnType="button"
-            btnClass="ml-2"
-            btnContent={<IoSettingsOutline className="h-7 w-7 md:h-5 md:w-5" />}
-            handleClick={() => {
-              setIsDropdownOpen((state) => !state);
-            }}
-          />
+          // <RoundButton
+          //   btnType="button"
+          //   btnClass="ml-2"
+          //   btnContent={<IoSettingsOutline className="h-7 w-7 md:h-5 md:w-5" />}
+          //   handleClick={() => {
+          //     setIsDropdownOpen((state) => !state);
+          //   }}
+          // />
+          <div className="h-5 w-40 rounded-b-md bg-red-500"></div>
         }
         isDropdownOpen={isDropdownOpen}
         handleDropdownClose={() => {
@@ -73,7 +90,7 @@ const ProfileDropdown: FC = () => {
             />
           </div>
         </div>
-      </ModalWrap>
+      </ModalWrap> */}
     </>
   );
 };

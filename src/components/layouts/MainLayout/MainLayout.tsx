@@ -20,7 +20,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   return (
     <div className="max-w-screen-1xl min-h-screen">
       <NavBar />
-      <div className="bg-very-light-gray px-4 py-4 md:px-20 md:py-6">
+      <div className="bg-very-light-gray px-4 py-10 md:px-20 md:py-10">
         {children}
       </div>
       <SubscriptionEndModal />

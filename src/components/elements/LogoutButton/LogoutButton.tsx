@@ -11,6 +11,7 @@ const LogoutButton = () => {
     <Button
       type="button"
       btnSize="full"
+      btnClass="hover:bg-red-500 py-3"
       btnTitle="Log out"
       isLoading={isLoading}
       onClick={() => {
