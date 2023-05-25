@@ -16,33 +16,23 @@ datasource db {
 //   provider = "prisma-erd-generator"
 // }
 
-enum SubscriptionStatus {
-  incomplete
-  incomplete_expired
-  trialing
-  active
-  past_due
-  canceled
-  unpaid
-}
-
 model User {
-  lastName             String              @db.VarChar(500)
-  firstName            String              @db.VarChar(500)
+  lastName             String          @db.VarChar(500)
+  firstName            String          @db.VarChar(500)
   country              String?
-  subscriptionStatus   SubscriptionStatus?
+  subscriptionStatus   String?
   expiresAt            DateTime?
   Password             Password[]
   LoginToken           LoginToken[]
   Tournaments          Tournament[]
   PasswordReset        PasswordReset[]
   subscriptionTrialEnd DateTime?
-  stripeSubscriptionId String?             @unique @db.VarChar(500)
-  stripeCustomerId     String?             @unique @db.VarChar(500)
-  email                String              @unique @db.VarChar(500)
-  updatedAt            DateTime            @updatedAt
-  createdAt            DateTime            @default(now())
-  id                   String              @id @default(cuid())
+  stripeSubscriptionId String?         @unique @db.VarChar(500)
+  stripeCustomerId     String?         @unique @db.VarChar(500)
+  email                String          @unique @db.VarChar(500)
+  updatedAt            DateTime        @updatedAt
+  createdAt            DateTime        @default(now())
+  id                   String          @id @default(cuid())
 }
 
 model StripeEvent {

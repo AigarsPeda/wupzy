@@ -164,8 +164,8 @@ export const usersRouter = createTRPCRouter({
             id: user.id,
           },
           data: {
-            subscriptionStatus: subscription.status,
             expiresAt: new Date(subscription.current_period_end * 1000),
+            subscriptionStatus: subscription.status,
           },
         });
       }
