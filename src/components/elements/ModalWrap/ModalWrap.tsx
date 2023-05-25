@@ -51,7 +51,7 @@ const ModalWrap: FC<ModalWrapProps> = ({
         <div
           className={classNames(
             isAnimation ? "opacity-100" : "opacity-0",
-            "fixed left-0 top-0 z-[69] flex h-full w-full items-center justify-center transition-all duration-300 ease-in-out"
+            "fixed left-0 top-0 z-[169] flex h-full w-full items-center justify-center transition-all duration-300 ease-in-out"
           )}
         >
           <div className="absolute h-full w-full bg-gray-900 opacity-50"></div>

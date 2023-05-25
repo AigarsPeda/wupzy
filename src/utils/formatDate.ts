@@ -1,4 +1,4 @@
-const formatDate = (date: Date | undefined) => {
+const formatDate = (date: Date | undefined | null) => {
   if (!date) {
     return "";
   }
