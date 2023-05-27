@@ -8,7 +8,7 @@ const ExplanationsSection: FC = () => {
   const { isIntersecting } = useOnScreen(ref, "-100px");
 
   return (
-    <div className="mx-auto mt-10 max-w-3xl md:mt-14">
+    <div className="mx-auto max-w-3xl">
       <p className="font-primary text-gray-800 md:text-lg" ref={ref}>
         When i was playing volleyball i often had to organize tournaments and we
         used paper and pen to right down the scores and the results. I thought

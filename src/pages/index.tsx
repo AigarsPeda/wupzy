@@ -23,11 +23,17 @@ const Home: NextPage = () => {
         <div className="mt-0 md:mt-10">
           <CTASection />
         </div>
-        <BuyProducts />
-        <ExplanationsSection />
+
         <DesktopImg />
+        <div className="mb-14 mt-5">
+          <ExplanationsSection />
+        </div>
+        <BuyProducts />
+        <div className="md:mt-10">
+          <WupzyFeatures />
+        </div>
         <SportExplanationsSection />
-        <WupzyFeatures />
+
         <div className="mt-10 md:mt-20">
           <BuyProducts />
         </div>

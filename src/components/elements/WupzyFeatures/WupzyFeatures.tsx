@@ -2,12 +2,12 @@ import Image from "next/image";
 
 const WupzyFeatures = () => {
   return (
-    <div className="mx-auto mt-10 max-w-4xl md:mt-20">
+    <div className="mx-auto max-w-4xl">
       <div className="mx-auto grid max-w-4xl grid-cols-1 gap-4 md:grid-cols-3">
         <div className="relative flex flex-col items-center justify-between rounded-lg p-2 text-center">
           <div className="flex h-full flex-col items-center justify-between text-center">
             <h1 className="mt-8 font-primary text-2xl font-extrabold text-white md:text-3xl">
-              <mark className="bg-yellow-300 text-gray-800">
+              <mark className="bg-gray-900 text-gray-50">
                 Create &quot;King&quot; tournament
               </mark>
             </h1>
@@ -40,7 +40,7 @@ const WupzyFeatures = () => {
         <div className="flex flex-col items-center justify-between rounded-lg p-2 text-center">
           <div className="flex h-full flex-col items-center justify-between text-center">
             <h1 className="mt-8 px-2 font-primary text-2xl font-extrabold text-white md:text-3xl">
-              <mark className="bg-yellow-300 text-gray-800">
+              <mark className="bg-gray-900 text-gray-50">
                 Never lose track of your games
               </mark>
             </h1>
@@ -73,7 +73,7 @@ const WupzyFeatures = () => {
         <div className="flex flex-col items-center justify-between rounded-lg p-2 text-center">
           <div className="flex h-full flex-col items-center justify-between text-center">
             <h1 className="mt-8 font-primary text-2xl font-extrabold text-white md:text-3xl">
-              <mark className="bg-yellow-300 text-gray-800">
+              <mark className="bg-gray-900 text-gray-50">
                 Create shareable links
               </mark>
             </h1>
