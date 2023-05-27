@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { RoughNotation } from "react-rough-notation";
 
 const WupzyFeatures = () => {
   return (
@@ -8,15 +7,6 @@ const WupzyFeatures = () => {
         <div className="relative flex flex-col items-center justify-between rounded-lg p-2 text-center">
           <div className="flex h-full flex-col items-center justify-between text-center">
             <h1 className="mt-8 font-primary text-2xl font-extrabold text-white md:text-3xl">
-              {/* <RoughNotation
-                show
-                multiline
-                color="#030712"
-                animate={false}
-                type="highlight"
-              >
-                Create &quot;King&quot; tournament
-              </RoughNotation> */}
               <mark className="bg-yellow-300 text-gray-800">
                 Create &quot;King&quot; tournament
               </mark>
@@ -53,15 +43,6 @@ const WupzyFeatures = () => {
               <mark className="bg-yellow-300 text-gray-800">
                 Never lose track of your games
               </mark>
-              {/* <RoughNotation
-                show
-                multiline
-                color="#030712"
-                animate={false}
-                type="highlight"
-              >
-                Never lose track of your games
-              </RoughNotation> */}
             </h1>
 
             <p className="mx-auto my-5 max-w-2xl font-primary text-gray-800">
@@ -92,15 +73,6 @@ const WupzyFeatures = () => {
         <div className="flex flex-col items-center justify-between rounded-lg p-2 text-center">
           <div className="flex h-full flex-col items-center justify-between text-center">
             <h1 className="mt-8 font-primary text-2xl font-extrabold text-white md:text-3xl">
-              {/* <RoughNotation
-                show
-                multiline
-                color="#030712"
-                animate={false}
-                type="highlight"
-              >
-                Create shareable links
-              </RoughNotation> */}
               <mark className="bg-yellow-300 text-gray-800">
                 Create shareable links
               </mark>
