@@ -23,8 +23,9 @@ const Home: NextPage = () => {
         <div className="mt-0 md:mt-10">
           <CTASection />
         </div>
-
-        <DesktopImg />
+        <div className="mt-5">
+          <DesktopImg />
+        </div>
         <div className="mb-14 mt-5">
           <ExplanationsSection />
         </div>
