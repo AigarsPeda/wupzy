@@ -8,7 +8,7 @@ const WupzyFeatures = () => {
         <div className="relative flex flex-col items-center justify-between rounded-lg p-2 text-center">
           <div className="flex h-full flex-col items-center justify-between text-center">
             <h1 className="mt-8 font-primary text-2xl font-extrabold text-white md:text-3xl">
-              <RoughNotation
+              {/* <RoughNotation
                 show
                 multiline
                 color="#030712"
@@ -16,7 +16,10 @@ const WupzyFeatures = () => {
                 type="highlight"
               >
                 Create &quot;King&quot; tournament
-              </RoughNotation>
+              </RoughNotation> */}
+              <mark className="bg-yellow-300 text-gray-800">
+                Create &quot;King&quot; tournament
+              </mark>
             </h1>
 
             <p className="mx-auto my-5 max-w-2xl font-primary text-gray-800">
@@ -47,7 +50,10 @@ const WupzyFeatures = () => {
         <div className="flex flex-col items-center justify-between rounded-lg p-2 text-center">
           <div className="flex h-full flex-col items-center justify-between text-center">
             <h1 className="mt-8 px-2 font-primary text-2xl font-extrabold text-white md:text-3xl">
-              <RoughNotation
+              <mark className="bg-yellow-300 text-gray-800">
+                Never lose track of your games
+              </mark>
+              {/* <RoughNotation
                 show
                 multiline
                 color="#030712"
@@ -55,7 +61,7 @@ const WupzyFeatures = () => {
                 type="highlight"
               >
                 Never lose track of your games
-              </RoughNotation>
+              </RoughNotation> */}
             </h1>
 
             <p className="mx-auto my-5 max-w-2xl font-primary text-gray-800">
@@ -86,7 +92,7 @@ const WupzyFeatures = () => {
         <div className="flex flex-col items-center justify-between rounded-lg p-2 text-center">
           <div className="flex h-full flex-col items-center justify-between text-center">
             <h1 className="mt-8 font-primary text-2xl font-extrabold text-white md:text-3xl">
-              <RoughNotation
+              {/* <RoughNotation
                 show
                 multiline
                 color="#030712"
@@ -94,7 +100,10 @@ const WupzyFeatures = () => {
                 type="highlight"
               >
                 Create shareable links
-              </RoughNotation>
+              </RoughNotation> */}
+              <mark className="bg-yellow-300 text-gray-800">
+                Create shareable links
+              </mark>
             </h1>
 
             <p className="mx-auto my-5 max-w-2xl font-primary text-gray-800">
