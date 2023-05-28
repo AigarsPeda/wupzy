@@ -5,9 +5,9 @@ import CancelSubscription from "components/elements/CancelSubscription/CancelSub
 import DesktopImg from "components/elements/DesktopImg/DesktopImg";
 import ExplanationsSection from "components/elements/ExplanationsSection/ExplanationsSection";
 import PageHead from "components/elements/PageHead/PageHead";
+import SportExplanationsSection from "components/elements/SportExplanationsSection/SportExplanationsSection";
 import WupzyFeatures from "components/elements/WupzyFeatures/WupzyFeatures";
 import { type NextPage } from "next";
-import SportExplanationsSection from "../components/elements/SportExplanationsSection/SportExplanationsSection";
 
 const Home: NextPage = () => {
   return (
