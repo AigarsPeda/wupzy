@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 
 const CookieConsent: NextPage = () => {
+  // If the user has already accepted the cookie consent, don't show it again
   return (
     <>
       <div className="fixed bottom-0 left-0 right-0 bg-gray-900 py-2 text-center text-white">
