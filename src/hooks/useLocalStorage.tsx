@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const getStorageValue = <T,>(key: string, defaultValue: T): T => {
   // getting stored value
@@ -22,9 +22,7 @@ const getStorageValue = <T,>(key: string, defaultValue: T): T => {
 
 export const useLocalStorage = <D,>(key: string, defaultValue: D) => {
   const [isError, setIsError] = useState(false);
-  const [value, saveValue] = useState<D>(() => {
-    return getStorageValue(key, defaultValue);
-  });
+  const [value, saveValue] = useState<D>(defaultValue);
 
   // saving input name
   const setValue = (newValue: D) => {
@@ -36,6 +34,10 @@ export const useLocalStorage = <D,>(key: string, defaultValue: D) => {
       setIsError(true);
     }
   };
+
+  useEffect(() => {
+    saveValue(getStorageValue(key, defaultValue));
+  }, [key, defaultValue]);
 
   return { value, isError, setValue };
 };
