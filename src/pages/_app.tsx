@@ -1,4 +1,5 @@
 import { Analytics } from "@vercel/analytics/react";
+import CookieConsentModal from "components/elements/CookieConsentModal/CookieConsentModal";
 import MainLayout from "components/layouts/MainLayout/MainLayout";
 import { type AppType } from "next/app";
 import { Cabin, Koulen, Roboto } from "next/font/google";
@@ -44,6 +45,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       </style>
       <MainLayout>
         <Component {...pageProps} />
+        <CookieConsentModal />
         <Analytics />
       </MainLayout>
     </>
