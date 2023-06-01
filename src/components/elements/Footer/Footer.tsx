@@ -10,8 +10,11 @@ const Footer = () => {
           <p className="text-white">wupzy@wupzy.com</p>
         </div>
         <div>
-          <Link href="/terms-of-service" className="ml-2 text-white">
+          <Link href="/terms-of-service" className="font-normal text-white">
             Terms of Service
+          </Link>
+          <Link href="/cookie_consent" className="ml-6 font-normal text-white">
+            Cookie Consent
           </Link>
         </div>
       </div>
