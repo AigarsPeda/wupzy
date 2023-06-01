@@ -21,6 +21,7 @@ const getStorageValue = <T,>(key: string, defaultValue: T): T => {
 };
 
 export const useLocalStorage = <D,>(key: string, defaultValue: D) => {
+  const [isError, setIsError] = useState(false);
   const [value, saveValue] = useState<D>(() => {
     return getStorageValue(key, defaultValue);
   });
@@ -32,8 +33,9 @@ export const useLocalStorage = <D,>(key: string, defaultValue: D) => {
       saveValue(newValue);
     } catch (error) {
       console.error("Error saving to local storage", error);
+      setIsError(true);
     }
   };
 
-  return [value, setValue] as const;
+  return { value, isError, setValue };
 };
