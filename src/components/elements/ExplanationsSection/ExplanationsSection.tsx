@@ -10,10 +10,9 @@ const ExplanationsSection: FC = () => {
   return (
     <div className="mx-auto max-w-3xl">
       <p className="font-primary text-gray-800 md:text-lg" ref={ref}>
-        When i was playing volleyball i often had to organize tournaments and we
-        used paper and pen to right down the scores and the results. I thought
-        that there must be a better way to do this and that&apos;s why i created
-        wupzy. Wupzy is a powerful platform that lets you{" "}
+        Ready to take your sport competitions to the next level? Sign up for
+        Wupzy today and experience the convenience, efficiency, and joy of
+        seamless competition management. For{" "}
         <RoughNotation
           multiline
           padding={1}
@@ -24,10 +23,10 @@ const ExplanationsSection: FC = () => {
           animationDuration={2000}
           show={isIntersecting}
         >
-          effortlessly create tournament tables, save game scores, view
-          real-time results, and share them with all participants in just a few
-          clicks.
+          just 1.95 EUR per month
         </RoughNotation>
+        , unlock a world of possibilities and never miss a moment of sport
+        action again!
       </p>
     </div>
   );

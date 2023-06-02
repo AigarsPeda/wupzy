@@ -5,14 +5,18 @@ const CTASection: FC = () => {
     <div className="flex w-full flex-col items-center justify-center text-center">
       <div>
         <h1 className="max-w-4xl font-primary text-5xl font-extrabold tracking-tight md:text-7xl">
-          Create your tournament bracket today!
+          Create your{" "}
+          <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-7xl font-extrabold text-transparent">
+            tournament{" "}
+          </span>
+          today!
         </h1>
 
         <h2 className="mx-auto mb-5 mt-10 max-w-2xl font-primary text-gray-800 md:text-xl">
-          With Wupzy, you have the ability to create tournament tables for
-          regular games and playoffs brackets. Additionally, you can save game
-          scores, view past results and upcoming matches, and easily share your
-          game table with other participants.
+          With Wupzy, you can effortlessly save game scores, access past
+          results, and stay updated on upcoming matches. Plus, our user-friendly
+          platform allows you to easily share your game tables with fellow
+          participants.
         </h2>
       </div>
     </div>
