@@ -1,12 +1,12 @@
 import BuyProducts from "components/BuyProducts/BuyProducts";
 import AdditionalInfo from "components/elements/AdditionalInfo/AdditionalInfo";
+import Benefits from "components/elements/Benefits/Benefits";
 import CTASection from "components/elements/CTASection/CTASection";
 import CancelSubscription from "components/elements/CancelSubscription/CancelSubscription";
 import DesktopImg from "components/elements/DesktopImg/DesktopImg";
 import ExplanationsSection from "components/elements/ExplanationsSection/ExplanationsSection";
 import PageHead from "components/elements/PageHead/PageHead";
 import SportExplanationsSection from "components/elements/SportExplanationsSection/SportExplanationsSection";
-import WupzyFeatures from "components/elements/WupzyFeatures/WupzyFeatures";
 import { type NextPage } from "next";
 
 const Home: NextPage = () => {
@@ -31,7 +31,8 @@ const Home: NextPage = () => {
         </div>
         <BuyProducts />
         <div className="md:mt-10">
-          <WupzyFeatures />
+          {/* <WupzyFeatures /> */}
+          <Benefits />
         </div>
         <SportExplanationsSection />
 
