@@ -66,7 +66,7 @@ const Benefits: FC = () => {
           >
             <h2 className="text-3xl">{title}</h2>
             <div className="mb-3 mt-1 h-1 w-40 rounded-full bg-gradient-to-r from-purple-400 to-pink-600"></div>
-            <p className=" font-primary">{text}</p>
+            <p className="font-primary">{text}</p>
           </div>
         ))}
       </GridLayout>
