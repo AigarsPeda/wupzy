@@ -30,20 +30,20 @@ const Home: NextPage = () => {
           <ExplanationsSection />
         </div>
         <BuyProducts />
-        <div className="md:mt-10">
+        <div className="mt-14 md:mt-16">
           {/* <WupzyFeatures /> */}
           <Benefits />
         </div>
-        <SportExplanationsSection />
+        {/* <SportExplanationsSection /> */}
 
         <div className="mt-10 md:mt-20">
           <BuyProducts />
         </div>
-        <div className="mt-10 md:mt-20">
+        {/* <div className="mt-10 md:mt-20">
           <AdditionalInfo />
-        </div>
+        </div> */}
 
-        <CancelSubscription />
+        {/* <CancelSubscription /> */}
       </main>
     </>
   );
