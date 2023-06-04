@@ -1,5 +1,5 @@
-import GridLayout from "components/layouts/GridLayout/GridLayout";
 import type { FC } from "react";
+import GridLayout from "~/components/layout/GridLayout/GridLayout";
 
 const BENEFITS = [
   {

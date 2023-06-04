@@ -2,199 +2,70 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["jsonProtocol"]
 }
 
 datasource db {
-  // provider = "sqlite" // uncomment this line to use SQLite
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  provider = "postgresql"
+  // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
+  // Further reading:
+  // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
+  // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
+  // url      = env("DATABASE_URL")
+
+  url               = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl         = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
 }
 
-// generator erd {
-//   provider = "prisma-erd-generator"
-// }
+model Example {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Necessary for Next auth
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? // @db.Text
+  access_token      String? // @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? // @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
 
 model User {
-  lastName             String          @db.VarChar(500)
-  firstName            String          @db.VarChar(500)
-  country              String?
-  subscriptionStatus   String?
-  expiresAt            DateTime?
-  Password             Password[]
-  LoginToken           LoginToken[]
-  Tournaments          Tournament[]
-  PasswordReset        PasswordReset[]
-  subscriptionTrialEnd DateTime?
-  stripeSubscriptionId String?         @unique @db.VarChar(500)
-  stripeCustomerId     String?         @unique @db.VarChar(500)
-  email                String          @unique @db.VarChar(500)
-  updatedAt            DateTime        @updatedAt
-  createdAt            DateTime        @default(now())
-  id                   String          @id @default(cuid())
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
 }
 
-model StripeEvent {
-  id               String   @id @unique
-  api_version      String?
-  data             Json
-  request          Json?
-  type             String
-  object           String
-  account          String?  @db.VarChar(500)
-  created          DateTime
-  livemode         Boolean
-  pending_webhooks Int
-}
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
 
-enum TournamentType {
-  KING
-  TEAMS
-}
-
-// One user can have many Tournaments
-model Tournament {
-  setsInGame   Int
-  team         Team[]
-  name         String         @db.VarChar(500)
-  userId       String         @db.VarChar(500)
-  winner       String?
-  games        Games[]
-  shareLinkId  String?        @db.VarChar(500)
-  shareLink    ShareLink?
-  teams        Participant[]
-  playoffgames PlayoffGames[]
-  updatedAt    DateTime       @updatedAt
-  type         TournamentType @default(KING)
-  createdAt    DateTime       @default(now())
-  isPlayoff    Boolean        @default(false)
-  id           String         @id @default(cuid())
-  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-}
-
-model ShareLink {
-  tournamentId String     @unique
-  updatedAt    DateTime   @updatedAt
-  createdAt    DateTime   @default(now())
-  id           String     @id @default(cuid())
-  tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
-}
-
-model Participant {
-  team           Team[]
-  name           String         @db.VarChar(500)
-  tournamentId   String         @db.VarChar(500)
-  group          String
-  games          Games[]
-  playoffgames   PlayoffGames[]
-  updatedAt      DateTime       @updatedAt
-  points         Int            @default(0)
-  smallPoints    Int            @default(0)
-  createdAt      DateTime       @default(now())
-  id             String         @id @default(cuid())
-  gameswinners   Games[]        @relation("winners")
-  playoffwinners PlayoffGames[] @relation("playoffwinners")
-  tournament     Tournament     @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
-
-  @@index([tournamentId])
-}
-
-model Games {
-  gameOrder    Int
-  group        String
-  tournamentId String        @db.VarChar(500)
-  team2Id      String        @db.VarChar(500)
-  team1Id      String        @db.VarChar(500)
-  team1Score   Int?
-  team2Score   Int?
-  participants Participant[]
-  gameSet      Int           @default(1)
-  id           String        @id @default(cuid())
-  winners      Participant[] @relation("winners")
-  tournament   Tournament    @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
-  team1        Team          @relation("participant_team_1", fields: [team1Id], references: [id], onDelete: Cascade)
-  team2        Team          @relation("participant_team_2", fields: [team2Id], references: [id], onDelete: Cascade)
-  gameSets     Json          @default("{}")
-
-  @@index([team1Id])
-  @@index([team2Id])
-  @@index([tournamentId])
-}
-
-model PlayoffGames {
-  tournamentId   String        @db.VarChar(500)
-  team2Id        String?       @db.VarChar(500)
-  team1Id        String?       @db.VarChar(500)
-  bracketNum     Int
-  gameOrder      Int
-  stage          String // <- 1/8, 1/4, 1/2, final
-  team1Score     Int?
-  team2Score     Int?
-  participants   Participant[]
-  gameSet        Int           @default(1)
-  gameSets       Json          @default("{}")
-  id             String        @id @default(cuid())
-  playoffwinners Participant[] @relation("playoffwinners")
-  tournament     Tournament    @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
-  team1          Team?         @relation("playoff_team_1", fields: [team1Id], references: [id], onDelete: Cascade)
-  team2          Team?         @relation("playoff_team_2", fields: [team2Id], references: [id], onDelete: Cascade)
-
-  @@index([team1Id])
-  @@index([team2Id])
-  @@index([tournamentId])
-}
-
-model Team {
-  name         String         @db.VarChar(500)
-  group        String         @db.VarChar(500)
-  tournamentId String         @db.VarChar(500)
-  participants Participant[]
-  updatedAt    DateTime       @updatedAt
-  points       Int            @default(0)
-  smallPoints  Int            @default(0)
-  createdAt    DateTime       @default(now())
-  id           String         @id @default(cuid()) @db.VarChar(500)
-  playoff      PlayoffGames[] @relation("playoff_team_1")
-  playoff2     PlayoffGames[] @relation("playoff_team_2")
-  games        Games[]        @relation("participant_team_1")
-  games2       Games[]        @relation("participant_team_2")
-  tournament   Tournament     @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
-
-  @@index([tournamentId])
-}
-
-// One user can have one password
-model Password {
-  password String @db.VarChar(500)
-  userId   String @unique
-  id       String @id @default(cuid())
-  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-// One user can have many login tokens
-model LoginToken {
-  userId    String   @db.VarChar(500)
-  token     String   @unique() @db.VarChar(500)
-  updatedAt DateTime @updatedAt
-  isActive  Boolean  @default(false)
-  createdAt DateTime @default(now())
-  id        String   @id @default(cuid())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-}
-
-model PasswordReset {
-  userId    String   @db.VarChar(500)
-  isActive  Boolean
-  token     String   @unique() @db.VarChar(500)
-  updatedAt DateTime @updatedAt
-  createdAt DateTime @default(now())
-  id        String   @id @default(cuid())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
+  @@unique([identifier, token])
 }
