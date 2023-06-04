@@ -26,16 +26,14 @@ const Home: NextPage = () => {
         <div className="mb-14 mt-5">
           <ExplanationsSection />
         </div>
-        <BuyProducts />
+        {/* <BuyProducts /> */}
         <div className="mt-14 md:mt-16">
           {/* <WupzyFeatures /> */}
           <Benefits />
         </div>
         {/* <SportExplanationsSection /> */}
 
-        <div className="mt-10 md:mt-20">
-          <BuyProducts />
-        </div>
+        <div className="mt-10 md:mt-20">{/* <BuyProducts /> */}</div>
         {/* <div className="mt-10 md:mt-20">
           <AdditionalInfo />
         </div> */}
