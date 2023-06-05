@@ -29,6 +29,7 @@ const EmailCollector: FC = () => {
             <GradientInput
               value={email}
               inputType="email"
+              placeholder="Your email"
               handleInputChange={setEmail}
             />
           </div>
