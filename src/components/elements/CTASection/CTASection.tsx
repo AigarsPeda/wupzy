@@ -15,16 +15,13 @@ const CTASection: FC = () => {
         <h2 className="mx-auto mb-5 mt-10 max-w-2xl font-primary font-medium text-gray-800 md:text-xl">
           Wupzy is your all-in-one solution for sports competition management.
           Our upcoming revamped platform will empower you to effortlessly create
-          tournaments, track game results, generate playoff brackets, and engage
-          with fellow athletes. Stay organized, save time, and elevate your
-          sports experience with Wupzy.
+          tournaments, track game results and generate playoff brackets. Stay
+          organized, save time, and elevate your sports experience with Wupzy.
         </h2>
 
         <p className="mx-auto my-6 max-w-2xl">
-          * We&apos;re currently revamping our website to enhance your
-          experience. Sign up below to receive a notification when the new and
-          improved page is ready for you! Stay tuned for exciting updates and
-          features.
+          * Sign up to receive a notification when the new and improved page is
+          ready for you! Stay tuned for exciting updates and features.
         </p>
       </div>
     </div>
