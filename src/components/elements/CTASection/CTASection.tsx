@@ -7,9 +7,8 @@ const CTASection: FC = () => {
         <h1 className="max-w-4xl font-primary text-5xl font-extrabold tracking-tight md:text-7xl">
           Create your{" "}
           <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-7xl font-extrabold text-transparent">
-            tournament{" "}
+            Tournament
           </span>
-          !
         </h1>
 
         <h2 className="mx-auto mb-5 mt-10 max-w-2xl font-primary font-medium text-gray-800 md:text-xl">
