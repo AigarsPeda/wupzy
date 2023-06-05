@@ -69,3 +69,8 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model EmailList {
+  id    String @id @default(cuid())
+  email String @unique
+}
