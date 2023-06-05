@@ -22,7 +22,7 @@ const GradientInput = forwardRef<Ref, InputProps>(
         type={inputType}
         placeholder={placeholder || ""}
         onChange={(e) => handleInputChange(e.target.value)}
-        className="h-full w-full rounded border-none bg-white text-center text-xl font-black text-gray-900 outline-none"
+        className="h-full w-full rounded border-none bg-white text-center font-black text-gray-900 outline-none"
       />
     </div>
   )
