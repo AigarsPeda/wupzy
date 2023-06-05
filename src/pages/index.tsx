@@ -1,10 +1,9 @@
 import { type NextPage } from "next";
-import { signIn, signOut, useSession } from "next-auth/react";
 import Benefits from "~/components/elements/Benefits/Benefits";
 import CTASection from "~/components/elements/CTASection/CTASection";
 import DesktopImg from "~/components/elements/DesktopImg/DesktopImg";
 import PageHead from "~/components/elements/PageHead/PageHead";
-import { api } from "~/utils/api";
+import GradientButton from "../components/elements/GradientButton/GradientButton";
 
 // const Home: NextPage = () => {
 //   const hello = api.example.hello.useQuery({ text: "from tRPC" });
@@ -73,6 +72,14 @@ const Home: NextPage = () => {
         <div className="mt-0 md:mt-10">
           <CTASection />
         </div>
+        <div className="flex items-center justify-center">
+          <GradientButton
+            btnTitle="Try Now"
+            handleClick={() => {
+              console.log("Clicked");
+            }}
+          />
+        </div>
         <div className="mt-5">
           <DesktopImg />
         </div>
@@ -81,7 +88,7 @@ const Home: NextPage = () => {
           <Benefits />
         </div>
 
-        <AuthShowcase />
+        {/* <AuthShowcase /> */}
       </main>
     </>
   );
@@ -89,26 +96,26 @@ const Home: NextPage = () => {
 
 export default Home;
 
-const AuthShowcase: React.FC = () => {
-  const { data: sessionData } = useSession();
+// const AuthShowcase: FC = () => {
+//   const { data: sessionData } = useSession();
 
-  const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-    undefined, // no input
-    { enabled: sessionData?.user !== undefined }
-  );
+//   const { data: secretMessage } = api.example.getSecretMessage.useQuery(
+//     undefined, // no input
+//     { enabled: sessionData?.user !== undefined }
+//   );
 
-  return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <p className="text-center text-2xl text-white">
-        {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-        {secretMessage && <span> - {secretMessage}</span>}
-      </p>
-      <button
-        className="rounded-full bg-slate-800 px-10 py-3 font-semibold text-white no-underline transition"
-        onClick={sessionData ? () => void signOut() : () => void signIn()}
-      >
-        {sessionData ? "Sign out" : "Sign in"}
-      </button>
-    </div>
-  );
-};
+//   return (
+//     <div className="flex flex-col items-center justify-center gap-4">
+//       <p className="text-center text-2xl">
+//         {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
+//         {secretMessage && <span> - {secretMessage}</span>}
+//       </p>
+//       <button
+//         className="rounded-full bg-slate-800 px-10 py-3 font-semibold text-white no-underline transition"
+//         onClick={sessionData ? () => void signOut() : () => void signIn()}
+//       >
+//         {sessionData ? "Sign out" : "Sign in"}
+//       </button>
+//     </div>
+//   );
+// };

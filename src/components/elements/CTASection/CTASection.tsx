@@ -4,7 +4,7 @@ const CTASection: FC = () => {
   return (
     <div className="flex w-full flex-col items-center justify-center text-center">
       <div>
-        <h1 className="font-primary max-w-4xl text-5xl font-extrabold tracking-tight md:text-7xl">
+        <h1 className="max-w-4xl font-primary text-5xl font-extrabold tracking-tight md:text-7xl">
           Create your{" "}
           <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-7xl font-extrabold text-transparent">
             tournament{" "}
@@ -12,7 +12,7 @@ const CTASection: FC = () => {
           today!
         </h1>
 
-        <h2 className="font-primary mx-auto mb-5 mt-10 max-w-2xl text-gray-800 md:text-xl">
+        <h2 className="mx-auto mb-5 mt-10 max-w-2xl font-primary font-medium text-gray-800 md:text-xl">
           With Wupzy, you can effortlessly save game scores, access past
           results, and stay updated on upcoming matches. Plus, our user-friendly
           platform allows you to easily share your game tables with fellow

@@ -1,3 +1,55 @@
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    @apply font-primary font-bold tracking-wider;
+  }
+
+  p {
+    @apply font-secondary tracking-wider;
+  }
+
+  a,
+  li,
+  button {
+    @apply font-primary font-medium tracking-wider text-gray-700;
+  }
+
+  html {
+    @apply h-full;
+  }
+
+  body {
+    @apply h-full;
+  }
+
+  div#__next {
+    @apply h-full;
+  }
+
+  main {
+    @apply h-full;
+  }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .highlightLine {
+    color: #f3f4f6;
+    position: relative;
+    background-image: linear-gradient(to right, #6366f1, #a855f7);
+  }
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

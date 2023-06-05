@@ -64,7 +64,7 @@ const Benefits: FC = () => {
             key={id}
             className="rounded-md border border-gray-50 bg-gray-50 px-3 py-3 shadow md:px-8"
           >
-            <h2 className="text-3xl">{title}</h2>
+            <h2 className="font-primary text-3xl">{title}</h2>
             <div className="mb-3 mt-1 h-1 w-40 rounded-full bg-gradient-to-r from-purple-400 to-pink-600"></div>
             <p className="font-primary">{text}</p>
           </div>
