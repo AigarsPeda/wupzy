@@ -20,8 +20,9 @@ const CTASection: FC = () => {
         </h2>
 
         <p className="mx-auto my-6 max-w-2xl">
-          * Sign up to receive a notification when the new and improved page is
-          ready for you! Stay tuned for exciting updates and features.
+          * Sign up now to be notified when the new and improved page is ready,
+          and as a bonus, receive 100 audition credits! Stay tuned for thrilling
+          updates and exciting features coming your way.
         </p>
       </div>
     </div>
