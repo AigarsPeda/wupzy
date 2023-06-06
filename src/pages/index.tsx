@@ -3,7 +3,7 @@ import CTASection from "~/components/elements/CTASection/CTASection";
 import EmailCollector from "~/components/elements/EmailCollector/EmailCollector";
 import PageHead from "~/components/elements/PageHead/PageHead";
 
-const Home: NextPage = () => {
+const HomePage: NextPage = () => {
   return (
     <>
       <PageHead
@@ -25,7 +25,7 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default HomePage;
 
 // const AuthShowcase: FC = () => {
 //   const { data: sessionData } = useSession();

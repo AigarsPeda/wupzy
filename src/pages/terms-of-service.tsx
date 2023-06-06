@@ -1,8 +1,8 @@
-import type { FC } from "react";
+import { type NextPage } from "next";
 import PageHead from "~/components/elements/PageHead/PageHead";
 import TermsOfAgreement from "~/components/elements/TermsOfAgreement/TermsOfAgreement";
 
-const TermsOfService: FC = () => {
+const TermsOfServicePage: NextPage = () => {
   return (
     <>
       <PageHead
@@ -17,4 +17,4 @@ const TermsOfService: FC = () => {
   );
 };
 
-export default TermsOfService;
+export default TermsOfServicePage;
