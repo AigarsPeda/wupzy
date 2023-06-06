@@ -1,27 +1,33 @@
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import type { FC } from "react";
 import AuthenticateUser from "~/components/elements/AuthenticateUser/AuthenticateUser";
 import Logo from "~/components/elements/Logo/Logo";
-import classNames from "../../../utils/classNames";
+import classNames from "~/utils/classNames";
 
-const LINKS = [
+type LinkType = {
+  href: string;
+  label: string;
+  public: boolean;
+};
+
+const LINKS: LinkType[] = [
   {
     href: "/",
+    public: true,
     label: "Home",
   },
   {
+    public: false,
     href: "/tournaments",
     label: "Tournaments",
   },
-  // {
-  //   href: "/terms-of-service",
-  //   label: "Terms of Service",
-  // },
 ];
 
 const NavBar: FC = () => {
   const router = useRouter();
+  const { data: sessionData, status } = useSession();
 
   return (
     <>
@@ -29,26 +35,33 @@ const NavBar: FC = () => {
         <div className="flex">
           <Logo />
           <ul className="ml-8 items-center gap-8 md:flex">
-            {LINKS.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
+            {LINKS.map((link) => {
+              return (
+                <li
+                  key={link.href}
                   className={classNames(
-                    router.pathname === link.href
-                      ? "text-gray-800 underline underline-offset-8"
-                      : "text-gray-500 no-underline",
-                    "font-semibold text-gray-800 transition-all"
+                    !link.public && !sessionData?.user ? "hidden" : "block"
                   )}
                 >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
+                  <Link
+                    href={link.href}
+                    className={classNames(
+                      router.pathname === link.href
+                        ? "text-gray-800 underline underline-offset-8"
+                        : "text-gray-500 no-underline",
+                      "font-semibold text-gray-800 transition-all"
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </div>
 
         <div className="flex">
-          <AuthenticateUser />
+          <AuthenticateUser sessionData={sessionData} status={status} />
         </div>
       </nav>
     </>

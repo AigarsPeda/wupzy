@@ -1,19 +1,28 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+import { type Session } from "next-auth";
+import { signIn, signOut } from "next-auth/react";
 import { type FC } from "react";
 import PrimaryButton from "~/components/elements/PrimaryButton/PrimaryButton";
-import { api } from "~/utils/api";
 
-const AuthenticateUser: FC = () => {
-  const { data: sessionData } = useSession();
+interface AuthenticateUserProps {
+  sessionData: Session | null;
+  status: "authenticated" | "loading" | "unauthenticated";
+}
 
-  const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-    undefined, // no input
-    { enabled: sessionData?.user !== undefined }
-  );
+const AuthenticateUser: FC<AuthenticateUserProps> = ({
+  status,
+  sessionData,
+}) => {
+  // const { data: sessionData } = useSession();
+
+  // const { data: secretMessage } = api.example.getSecretMessage.useQuery(
+  //   undefined, // no input
+  //   { enabled: sessionData?.user !== undefined }
+  // );
 
   return (
-    <div className="">
+    <div>
       <PrimaryButton
+        isLoading={status === "loading"}
         btnTitle={sessionData ? "Sign out" : "Sign in"}
         handleClick={sessionData ? () => void signOut() : () => void signIn()}
       />
