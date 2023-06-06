@@ -2,9 +2,9 @@ import { type FC } from "react";
 import Spinner from "~/components/elements/Spinner/Spinner";
 
 interface PrimaryButtonProps {
-  btnTitle: string;
   isLoading?: boolean;
   handleClick: () => void;
+  btnTitle: string | JSX.Element;
   btnType?: "button" | "submit" | "reset";
 }
 

@@ -9,7 +9,7 @@ const Logo: FC = () => {
   return (
     <Link
       href="/"
-      className="overflow-hidden rounded-md bg-black font-koulen text-4xl text-gray-900"
+      className="rounded-md bg-black font-koulen text-4xl text-gray-900"
     >
       {windowSize.width && windowSize.width <= 700 ? (
         <LogoMark className="h-11" />
