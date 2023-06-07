@@ -3,9 +3,9 @@ import { useState, type FC } from "react";
 import { TiThMenu } from "react-icons/ti";
 import DrawerLayout from "~/components//layout/DrawerLayout/DrawerLayout";
 import AuthenticateUser from "~/components/elements/AuthenticateUser/AuthenticateUser";
-import { type LinkType } from "~/components/elements/NavBar/NavBar";
 import NavLink from "~/components/elements/NavBar/NavLink";
 import PrimaryButton from "~/components/elements/PrimaryButton/PrimaryButton";
+import { type LinkType } from "~/types/utils.types";
 
 interface MobileNavProps {
   links: LinkType[];

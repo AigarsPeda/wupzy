@@ -1,16 +1,17 @@
 import { type NextPage } from "next";
-import { useSession } from "next-auth/react";
 
 const NewTournamentPage: NextPage = () => {
-  const { status } = useSession();
+  // const { redirectToPath } = useRedirect();
 
-  if (status === "loading") {
-    return <p>Loading...</p>;
-  }
+  // useEffect(() => {
+  //   if (status === "unauthenticated") {
+  //     redirectToPath("/");
+  //   }
+  // }, [redirectToPath, status]);
 
-  if (status === "unauthenticated") {
-    return <p>Access Denied</p>;
-  }
+  // if (status === "loading") {
+  //   return <p>Loading...</p>;
+  // }
 
   return (
     <div>

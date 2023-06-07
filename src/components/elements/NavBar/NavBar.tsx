@@ -1,32 +1,9 @@
+import { LINKS } from "hardcoded";
 import type { FC } from "react";
 import Logo from "~/components/elements/Logo/Logo";
 import DesktopNav from "~/components/elements/NavBar/DesktopNav";
 import MobileNav from "~/components/elements/NavBar/MobileNav";
 import useWindowSize from "~/hooks/useWindowSize";
-
-export type LinkType = {
-  href: string;
-  label: string;
-  public: boolean;
-};
-
-const LINKS: LinkType[] = [
-  {
-    href: "/",
-    public: false,
-    label: "Home",
-  },
-  {
-    public: false,
-    href: "/tournaments",
-    label: "Tournaments",
-  },
-  {
-    public: false,
-    href: "/new-tournament",
-    label: "New Tournament",
-  },
-];
 
 const NavBar: FC = () => {
   const { windowSize } = useWindowSize();
