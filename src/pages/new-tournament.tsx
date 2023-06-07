@@ -1,21 +1,11 @@
 import { type NextPage } from "next";
+import NewTournamentForm from "../components/elements/NewTournamentForm/NewTournamentForm";
 
 const NewTournamentPage: NextPage = () => {
-  // const { redirectToPath } = useRedirect();
-
-  // useEffect(() => {
-  //   if (status === "unauthenticated") {
-  //     redirectToPath("/");
-  //   }
-  // }, [redirectToPath, status]);
-
-  // if (status === "loading") {
-  //   return <p>Loading...</p>;
-  // }
-
   return (
     <div>
-      <h1>NewTournamentPage</h1>
+      <h1 className="text-3xl">Create new tournament</h1>
+      <NewTournamentForm />
     </div>
   );
 };
