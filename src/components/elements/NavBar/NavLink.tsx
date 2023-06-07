@@ -2,12 +2,12 @@ import { type Session } from "next-auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { type FC } from "react";
+import { type LinkType } from "~/types/utils.types";
 import classNames from "~/utils/classNames";
-import { type LinkType } from "./NavBar";
 
 interface NavLinkProps {
-  links: LinkType[];
   isFlex?: boolean;
+  links: LinkType[];
   isSpaceY?: boolean;
   onLinkClick?: () => void;
   sessionData: Session | null;
