@@ -1,9 +1,9 @@
-import { type FC } from "react";
-import { type LinkType } from "./NavBar";
-import Link from "next/link";
-import classNames from "~/utils/classNames";
 import { type Session } from "next-auth";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import { type FC } from "react";
+import classNames from "~/utils/classNames";
+import { type LinkType } from "./NavBar";
 
 interface NavLinkProps {
   links: LinkType[];

@@ -2,7 +2,7 @@ import { useSession } from "next-auth/react";
 import { type FC } from "react";
 import AuthenticateUser from "~/components/elements/AuthenticateUser/AuthenticateUser";
 import { type LinkType } from "~/components/elements/NavBar/NavBar";
-import NavLink from "./NavLink";
+import NavLink from "~/components/elements/NavBar/NavLink";
 
 interface DesktopNavProps {
   links: LinkType[];
