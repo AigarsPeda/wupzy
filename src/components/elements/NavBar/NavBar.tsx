@@ -3,19 +3,19 @@ import type { FC } from "react";
 import Logo from "~/components/elements/Logo/Logo";
 import DesktopNav from "~/components/elements/NavBar/DesktopNav";
 import MobileNav from "~/components/elements/NavBar/MobileNav";
-import useWindowSize from "~/hooks/useWindowSize";
 
 const NavBar: FC = () => {
-  const { windowSize } = useWindowSize();
   return (
     <nav className="relative z-20 flex items-center justify-between bg-slate-50 px-4 py-4 shadow-[0_2px_5px_rgba(0,0,0,0.07)] md:px-12 md:py-4">
       <Logo />
 
-      {windowSize.width > 770 ? (
+      <div className="hidden w-full md:block">
         <DesktopNav links={LINKS} />
-      ) : (
+      </div>
+
+      <div className="w-full md:hidden">
         <MobileNav links={LINKS} />
-      )}
+      </div>
     </nav>
   );
 };

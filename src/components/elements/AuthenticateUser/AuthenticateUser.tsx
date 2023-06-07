@@ -1,7 +1,7 @@
 import { type Session } from "next-auth";
 import { signIn, signOut } from "next-auth/react";
-import { type FC } from "react";
-import PrimaryButton from "~/components/elements/PrimaryButton/PrimaryButton";
+import { useEffect, useState, type FC } from "react";
+import Button from "~/components/elements/Button/Button";
 
 interface AuthenticateUserProps {
   sessionData: Session | null;
@@ -12,6 +12,7 @@ const AuthenticateUser: FC<AuthenticateUserProps> = ({
   status,
   sessionData,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
   // const { data: sessionData } = useSession();
 
   // const { data: secretMessage } = api.example.getSecretMessage.useQuery(
@@ -19,12 +20,29 @@ const AuthenticateUser: FC<AuthenticateUserProps> = ({
   //   { enabled: sessionData?.user !== undefined }
   // );
 
+  useEffect(() => {
+    if (status === "loading") {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [status]);
+
   return (
     <div>
-      <PrimaryButton
-        isLoading={status === "loading"}
+      <Button
+        isLoading={isLoading}
         btnTitle={sessionData ? "Sign out" : "Sign in"}
-        handleClick={sessionData ? () => void signOut() : () => void signIn()}
+        handleClick={
+          sessionData
+            ? () => {
+                setIsLoading(true);
+                void signOut({
+                  callbackUrl: "/",
+                });
+              }
+            : () => void signIn()
+        }
       />
     </div>
   );

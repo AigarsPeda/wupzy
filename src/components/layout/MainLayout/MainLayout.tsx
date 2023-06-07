@@ -1,41 +1,33 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useEffect, type FC, type ReactNode } from "react";
+import { type FC, type ReactNode } from "react";
+import LoginModal from "~/components/elements/LoginModal/LoginModal";
 import NavBar from "~/components/elements/NavBar/NavBar";
 import Spinner from "~/components/elements/Spinner/Spinner";
-import useRedirect from "~/hooks/useRedirect";
 import isPrivatePage from "~/utils/isPrivatePage";
-import LoginModal from "../../elements/LoginModal/LoginModal";
 
 interface MainLayoutProps {
   children: ReactNode;
 }
 
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {
-  const router = useRouter();
   const { status } = useSession();
-  const { redirectToPath } = useRedirect();
+  const { pathname } = useRouter();
 
-  const isIndexPage = () => router.pathname === "/";
+  const isIndexPage = () => pathname === "/";
 
-  // useEffect(() => {
-  //   if (status === "unauthenticated" && isPrivatePage(router.pathname)) {
-  //     // redirectToPath("/");
-  //   }
-  // }, [redirectToPath, router.pathname, status]);
+  const isSpinnerVisible = () => !isIndexPage() && status === "loading";
+
+  const isLoginModalVisible = () =>
+    isPrivatePage(pathname) && status === "unauthenticated";
 
   return (
     <div className="max-w-screen-1xl min-h-screen bg-gray-50">
       <NavBar />
       <div className="px-4 py-4 md:px-12 md:py-4">
-        {!isIndexPage() && status === "loading" ? (
-          <Spinner size="small" />
-        ) : (
-          children
-        )}
-        {status === "unauthenticated" && isPrivatePage(router.pathname) && (
-          <LoginModal />
-        )}
+        {isSpinnerVisible() ? <Spinner size="small" /> : children}
+
+        {isLoginModalVisible() && <LoginModal />}
       </div>
 
       {/* {isIndexPage() && <Footer />} */}

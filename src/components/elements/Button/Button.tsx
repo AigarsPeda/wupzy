@@ -2,20 +2,22 @@ import { type FC } from "react";
 import Spinner from "~/components/elements/Spinner/Spinner";
 import classNames from "~/utils/classNames";
 
-interface PrimaryButtonProps {
+interface ButtonProps {
   isLoading?: boolean;
   isDisabled?: boolean;
+  isSecondary?: boolean;
   btnSize?: "sm" | "md";
   handleClick: () => void;
   btnTitle: string | JSX.Element;
   btnType?: "button" | "submit" | "reset";
 }
 
-const PrimaryButton: FC<PrimaryButtonProps> = ({
+const Button: FC<ButtonProps> = ({
   btnTitle,
   isLoading,
   isDisabled,
   handleClick,
+  isSecondary,
   btnSize = "md",
   btnType = "button",
 }) => {
@@ -28,7 +30,10 @@ const PrimaryButton: FC<PrimaryButtonProps> = ({
         btnSize === "sm" && "min-w-[3rem]",
         btnSize === "md" && "min-w-[8rem]",
         isDisabled && "cursor-not-allowed bg-gray-800",
-        "focus:shadow-outline relative inline-flex h-11 items-center justify-center rounded-lg bg-gray-900 px-6 font-medium tracking-wide text-white transition duration-200 hover:bg-gray-800 focus:outline-none"
+        isSecondary
+          ? "border-collapse border-2 border-gray-300 bg-gray-300 text-gray-900 hover:bg-gray-400"
+          : "border-collapse border-2 border-gray-900 bg-gray-900 text-white hover:bg-gray-800",
+        "focus:shadow-outline relative inline-flex h-11 items-center justify-center rounded-lg px-6 font-medium tracking-wide transition duration-200 focus:outline-none"
       )}
     >
       {isLoading ? <Spinner color="light" size="xs" /> : btnTitle}
@@ -36,4 +41,4 @@ const PrimaryButton: FC<PrimaryButtonProps> = ({
   );
 };
 
-export default PrimaryButton;
+export default Button;

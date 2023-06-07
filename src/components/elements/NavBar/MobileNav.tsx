@@ -4,7 +4,7 @@ import { TiThMenu } from "react-icons/ti";
 import DrawerLayout from "~/components//layout/DrawerLayout/DrawerLayout";
 import AuthenticateUser from "~/components/elements/AuthenticateUser/AuthenticateUser";
 import NavLink from "~/components/elements/NavBar/NavLink";
-import PrimaryButton from "~/components/elements/PrimaryButton/PrimaryButton";
+import Button from "~/components/elements/Button/Button";
 import { type LinkType } from "~/types/utils.types";
 
 interface MobileNavProps {
@@ -23,7 +23,7 @@ const MobileNav: FC<MobileNavProps> = ({ links }) => {
       }}
       drawerBtn={
         <div className="flex w-full justify-end">
-          <PrimaryButton
+          <Button
             btnSize="sm"
             btnTitle={<TiThMenu className="h-6 w-6" />}
             handleClick={() => {
