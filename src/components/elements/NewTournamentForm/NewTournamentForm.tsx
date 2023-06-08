@@ -7,6 +7,7 @@ import NewTeamsTournament from "~/components/elements/NewTeamsTournament/NewTeam
 import RadioSelect from "~/components/elements/RadioSelect/RadioSelect";
 import { type NewTournamentType } from "~/types/tournament.types";
 import validatedTournamentKing from "~/utils/validatedTournamentKing";
+import { type HandleInputChangeType } from "~/components/elements/NewKingTournament/NewKingTournamentUtils/types";
 
 const NewTournamentForm: FC = () => {
   const [newTournament, setNewTournament] = useState<NewTournamentType>({
@@ -60,6 +61,40 @@ const NewTournamentForm: FC = () => {
     ],
   });
 
+  const updateKingsPlayerName = ({ id, name }: HandleInputChangeType) => {
+    const players = newTournament.king.players.map((player) => {
+      if (player.id === id) {
+        return {
+          ...player,
+          name,
+        };
+      }
+      return player;
+    });
+
+    setNewTournament({
+      ...newTournament,
+      king: {
+        ...newTournament.king,
+        players,
+      },
+    });
+  };
+
+  const handleAddPlayer = () => {
+    const newPlayer = {
+      id: newTournament.king.players.length + 1,
+      name: "",
+    };
+    setNewTournament({
+      ...newTournament,
+      king: {
+        ...newTournament.king,
+        players: [...newTournament.king.players, newPlayer],
+      },
+    });
+  };
+
   return (
     <form className="mx-auto mt-4 max-w-lg rounded bg-white p-2 md:mt-6">
       <div className="space-y-10">
@@ -80,7 +115,7 @@ const NewTournamentForm: FC = () => {
             </div>
           </div>
         </div>
-
+        {console.log(newTournament)}
         <div className="border-b border-gray-900/10 pb-12">
           <fieldset>
             <legend className="text-base font-semibold leading-7 text-gray-900">
@@ -116,8 +151,10 @@ const NewTournamentForm: FC = () => {
 
         <motion.div className="relative overflow-hidden border-b border-gray-900/10 pb-12">
           <NewKingTournament
+            handleAddPlayer={handleAddPlayer}
             players={newTournament.king.players}
             isVisible={newTournament.kind === "king"}
+            handleInputChange={updateKingsPlayerName}
           />
 
           <NewTeamsTournament
