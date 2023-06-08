@@ -16,15 +16,14 @@ const AddingToListAnimationLayout: FC<AddingToListAnimationLayoutProps> = ({
   children,
 }) => {
   return (
-    <motion.li
+    <motion.div
       initial="initial"
       animate="animate"
       variants={itemVariants}
-      className="sm:col-span-4"
       transition={{ duration: 0.2, delay: index * 0.1 }}
     >
       {children}
-    </motion.li>
+    </motion.div>
   );
 };
 

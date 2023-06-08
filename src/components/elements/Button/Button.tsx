@@ -3,32 +3,32 @@ import Spinner from "~/components/elements/Spinner/Spinner";
 import classNames from "~/utils/classNames";
 
 interface ButtonProps {
+  size?: "sm" | "md";
   isLoading?: boolean;
   isDisabled?: boolean;
   isSecondary?: boolean;
-  btnSize?: "sm" | "md";
   handleClick: () => void;
-  btnTitle: string | JSX.Element;
-  btnType?: "button" | "submit" | "reset";
+  title: string | JSX.Element;
+  type?: "button" | "submit" | "reset";
 }
 
 const Button: FC<ButtonProps> = ({
-  btnTitle,
+  title,
   isLoading,
   isDisabled,
   handleClick,
   isSecondary,
-  btnSize = "md",
-  btnType = "button",
+  size = "md",
+  type = "button",
 }) => {
   return (
     <button
-      type={btnType}
+      type={type}
       onClick={handleClick}
       disabled={isLoading || isDisabled}
       className={classNames(
-        btnSize === "sm" && "min-w-[3rem] px-5 text-sm",
-        btnSize === "md" && "min-w-[8rem] px-6",
+        size === "sm" && "min-w-[3rem] px-5 text-sm",
+        size === "md" && "min-w-[8rem] px-6",
         isDisabled && "cursor-not-allowed bg-gray-800",
         isSecondary
           ? "border-collapse border-2 border-gray-300 bg-gray-300 text-gray-900 hover:bg-gray-400"
@@ -36,7 +36,7 @@ const Button: FC<ButtonProps> = ({
         "focus:shadow-outline relative inline-flex h-11 items-center justify-center rounded-lg  font-medium tracking-wide transition duration-200 focus:outline-none"
       )}
     >
-      {isLoading ? <Spinner color="light" size="xs" /> : btnTitle}
+      {isLoading ? <Spinner color="light" size="xs" /> : title}
     </button>
   );
 };

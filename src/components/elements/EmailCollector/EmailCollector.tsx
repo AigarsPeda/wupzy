@@ -27,16 +27,16 @@ const EmailCollector: FC = () => {
         >
           <div className="mx-3 mb-3 w-full max-w-[24rem] md:mb-0 md:mr-2">
             <GradientInput
+              type="email"
               value={email}
-              inputType="email"
               placeholder="Your email"
               handleInputChange={setEmail}
             />
           </div>
           <div className="flex items-center justify-center md:justify-start">
             <GradientButton
-              btnType="submit"
-              btnTitle="Submit"
+              type="submit"
+              title="Submit"
               isLoading={isLoading}
               isDisabled={!isEmail(email.trim())}
               handleClick={() => {

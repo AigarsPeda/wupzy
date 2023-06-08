@@ -3,25 +3,25 @@ import Spinner from "~/components/elements/Spinner/Spinner";
 import classNames from "~/utils/classNames";
 
 interface GradientButtonProps {
-  btnTitle: string;
+  title: string;
   isLoading?: boolean;
   isDisabled?: boolean;
   handleClick: () => void;
-  btnType?: "button" | "submit" | "reset";
+  type?: "button" | "submit" | "reset";
 }
 
 const GradientButton: FC<GradientButtonProps> = ({
-  btnTitle,
+  title,
   handleClick,
   isLoading = false,
   isDisabled = false,
-  btnType = "button",
+  type = "button",
 }) => {
   const isNotActionable = isLoading || isDisabled;
 
   return (
     <button
-      type={btnType}
+      type={type}
       onClick={handleClick}
       disabled={isNotActionable}
       className={classNames(
@@ -51,7 +51,7 @@ const GradientButton: FC<GradientButtonProps> = ({
               "relative"
             )}
           >
-            {btnTitle}
+            {title}
           </span>
         )}
       </span>

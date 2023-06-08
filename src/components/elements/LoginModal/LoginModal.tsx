@@ -23,14 +23,14 @@ const LoginModal: FC = () => {
         <div className="flex flex-col space-y-4">
           <div className="flex w-full items-center justify-center space-x-4">
             <Button
-              btnTitle="Sign in"
+              title="Sign in"
               isLoading={status === "loading"}
               handleClick={() => void signIn()}
             />
             {status !== "loading" && (
               <Button
                 isSecondary
-                btnTitle="Cancel"
+                title="Cancel"
                 handleClick={() => redirectToPath("/")}
               />
             )}

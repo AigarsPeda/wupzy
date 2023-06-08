@@ -3,14 +3,14 @@ import { forwardRef } from "react";
 interface InputProps {
   value: string;
   placeholder?: string;
-  inputType: "email" | "password" | "text";
+  type: "email" | "password" | "text";
   handleInputChange: (str: string) => void;
 }
 
 type Ref = HTMLInputElement;
 
 const GradientInput = forwardRef<Ref, InputProps>(
-  ({ value, inputType, placeholder, handleInputChange }, ref) => (
+  ({ value, type, placeholder, handleInputChange }, ref) => (
     <div className="h-12 w-full rounded-md bg-gradient-to-r from-[#ff8a05] via-[#ff5478] to-[#ff00c6] p-0.5">
       <input
         ref={(() => {
@@ -18,8 +18,8 @@ const GradientInput = forwardRef<Ref, InputProps>(
           if (ref) return ref;
           return null;
         })()}
+        type={type}
         value={value}
-        type={inputType}
         placeholder={placeholder || ""}
         onChange={(e) => handleInputChange(e.target.value)}
         className="h-full w-full rounded border-none bg-white text-center font-black text-gray-900 outline-none"

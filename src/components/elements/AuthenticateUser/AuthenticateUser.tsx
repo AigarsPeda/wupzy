@@ -32,7 +32,7 @@ const AuthenticateUser: FC<AuthenticateUserProps> = ({
     <div>
       <Button
         isLoading={isLoading}
-        btnTitle={sessionData ? "Sign out" : "Sign in"}
+        title={sessionData ? "Sign out" : "Sign in"}
         handleClick={
           sessionData
             ? () => {
