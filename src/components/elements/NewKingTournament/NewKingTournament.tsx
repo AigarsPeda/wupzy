@@ -24,11 +24,12 @@ const NewKingTournament: FC<NewKingTournamentProps> = ({
             </h2>
             <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               {players.map((player) => {
+                const label = `${player.id}${getOrdinal(player.id)} player`;
                 return (
                   <div className="sm:col-span-4" key={player.id}>
                     <Input
-                      inputLabel={`${player.id}${getOrdinal(player.id)} player`}
-                      inputFor="Tournaments Name"
+                      inputFor={label}
+                      inputLabel={label}
                       inputVal={player.name}
                       handleInputChange={(str) => {
                         console.log(str);
