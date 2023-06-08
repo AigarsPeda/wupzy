@@ -11,9 +11,9 @@ const NewTournamentForm: FC = () => {
   });
 
   return (
-    <form className="mx-auto mt-4 max-w-lg rounded bg-white p-2 md:mt-8">
+    <form className="mx-auto mt-4 max-w-lg rounded bg-white p-2 md:mt-6">
       <div className="space-y-12">
-        <div className="border-b border-gray-900/10 pb-12">
+        <div className="mt-4 border-b border-gray-900/10 pb-12">
           <legend className="text-base font-semibold leading-7 text-gray-900">
             Tournaments name
           </legend>
