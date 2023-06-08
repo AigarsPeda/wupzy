@@ -18,7 +18,7 @@ const LoginModal: FC = () => {
     >
       <div className="w-full max-w-[28rem] px-3 pb-2 text-left md:px-6 md:pb-4">
         <p className="mb-5 font-primary">
-          You need to be login to access this page.
+          You need to be logged in to access this page.
         </p>
         <div className="flex flex-col space-y-4">
           <div className="flex w-full items-center justify-center space-x-4">

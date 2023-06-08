@@ -1,5 +1,9 @@
-export type LinkType = {
-  href: string;
-  label: string;
-  public: boolean;
-};
+import z from "zod";
+
+export const LinkSchema = z.object({
+  public: z.boolean(),
+  href: z.string().url(),
+  label: z.string().min(1).max(50),
+});
+
+export type LinkType = z.infer<typeof LinkSchema>;

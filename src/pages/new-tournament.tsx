@@ -1,10 +1,11 @@
 import { type NextPage } from "next";
-import NewTournamentForm from "../components/elements/NewTournamentForm/NewTournamentForm";
+import NewTournamentForm from "~/components/elements/NewTournamentForm/NewTournamentForm";
+import PageHeadLine from "~/components/elements/PageHeadLine/PageHeadLine";
 
 const NewTournamentPage: NextPage = () => {
   return (
     <div>
-      <h1 className="text-3xl">Create new tournament</h1>
+      <PageHeadLine title="Create new tournament" />
       <NewTournamentForm />
     </div>
   );
