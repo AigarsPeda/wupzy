@@ -1,5 +1,9 @@
+import { motion } from "framer-motion";
 import { useState, type FC } from "react";
+import Button from "~/components/elements/Button/Button";
 import Input from "~/components/elements/Input/Input";
+import NewKingTournament from "~/components/elements/NewKingTournament/NewKingTournament";
+import NewTeamsTournament from "~/components/elements/NewTeamsTournament/NewTeamsTournament";
 import RadioSelect from "~/components/elements/RadioSelect/RadioSelect";
 import { type NewTournamentType } from "~/types/tournament.types";
 import validatedTournamentKing from "~/utils/validatedTournamentKing";
@@ -8,11 +12,57 @@ const NewTournamentForm: FC = () => {
   const [newTournament, setNewTournament] = useState<NewTournamentType>({
     name: "",
     kind: "king",
+    king: {
+      players: [
+        {
+          id: 1,
+          name: "",
+        },
+        {
+          id: 2,
+          name: "",
+        },
+        {
+          id: 3,
+          name: "",
+        },
+      ],
+    },
+    teams: [
+      {
+        id: 1,
+        name: "",
+        players: [
+          {
+            id: 1,
+            name: "",
+          },
+          {
+            id: 2,
+            name: "",
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: "",
+        players: [
+          {
+            id: 1,
+            name: "",
+          },
+          {
+            id: 2,
+            name: "",
+          },
+        ],
+      },
+    ],
   });
 
   return (
     <form className="mx-auto mt-4 max-w-lg rounded bg-white p-2 md:mt-6">
-      <div className="space-y-12">
+      <div className="space-y-10">
         <div className="mt-4 border-b border-gray-900/10 pb-12">
           <legend className="text-base font-semibold leading-7 text-gray-900">
             Tournaments name
@@ -64,7 +114,19 @@ const NewTournamentForm: FC = () => {
           </fieldset>
         </div>
 
-        <div className="border-b border-gray-900/10 pb-12">
+        <motion.div className="relative overflow-hidden border-b border-gray-900/10 pb-12">
+          <NewKingTournament
+            players={newTournament.king.players}
+            isVisible={newTournament.kind === "king"}
+          />
+
+          <NewTeamsTournament
+            teams={newTournament.teams}
+            isVisible={newTournament.kind === "teams"}
+          />
+        </motion.div>
+
+        {/* <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">
             Personal Information
           </h2>
@@ -220,9 +282,9 @@ const NewTournamentForm: FC = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
-        <div className="border-b border-gray-900/10 pb-12">
+        {/* <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">
             Notifications
           </h2>
@@ -303,7 +365,7 @@ const NewTournamentForm: FC = () => {
               </div>
             </fieldset>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="mt-6 flex items-center justify-end gap-x-6">
@@ -313,12 +375,14 @@ const NewTournamentForm: FC = () => {
         >
           Cancel
         </button>
-        <button
-          type="submit"
-          className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Save
-        </button>
+        <Button
+          btnSize="sm"
+          btnTitle="Save"
+          btnType="submit"
+          handleClick={() => {
+            console.log("clicked");
+          }}
+        />
       </div>
     </form>
   );
