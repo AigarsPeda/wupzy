@@ -10,15 +10,31 @@ export const tournamentRouter = createTRPCRouter({
 
   postNewTournament: protectedProcedure
     .input(NewTournamentSchema)
-    .mutation(({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
+      const { prisma } = ctx;
       console.log("input", input);
 
-      // TODO: Create tournament
+      // TODO: Create teams if "King" tournament BEFORE creating tournament
 
-      // TODO: Create players
+      // TODO: How to create games?
 
-      // TODO: Create teams if "King" tournament
-
-      // TODO: Create matches
+      await prisma.tournament.create({
+        data: {
+          type: input.kind,
+          name: input.name,
+          sets: input.sets,
+          userId: ctx.session.user.id,
+          teams: {
+            create: input.teams.map((team) => ({
+              name: team.name,
+              players: {
+                create: team.players.map((player) => ({
+                  name: player.name,
+                })),
+              },
+            })),
+          },
+        },
+      });
     }),
 });

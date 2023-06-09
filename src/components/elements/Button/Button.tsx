@@ -7,7 +7,7 @@ interface ButtonProps {
   isLoading?: boolean;
   isDisabled?: boolean;
   isSecondary?: boolean;
-  handleClick: () => void;
+  handleClick?: () => void;
   title: string | JSX.Element;
   type?: "button" | "submit" | "reset";
 }

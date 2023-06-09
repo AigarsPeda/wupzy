@@ -131,9 +131,9 @@ const NewTournamentForm: FC = () => {
           type="submit"
           isLoading={isLoading}
           isDisabled={newTournament.name.trim() === ""}
-          handleClick={() => {
-            mutate(newTournament);
-          }}
+          // handleClick={() => {
+          //   mutate(newTournament);
+          // }}
         />
       </div>
     </form>

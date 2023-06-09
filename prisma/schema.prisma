@@ -70,14 +70,21 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+enum TournamentType {
+  king
+  teams
+}
+
 model Tournament {
-  id     String   @id @default(cuid())
-  userId String
-  type   String
-  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  team   Team[]
-  match  Match[]
-  player Player[]
+  id      String         @id @default(cuid())
+  userId  String
+  type    TournamentType @default(king)
+  name    String
+  sets    Int
+  user    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teams   Team[]
+  games   Game[]
+  players Player[]
 }
 
 model Team {
@@ -86,8 +93,8 @@ model Team {
   name         String
   tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
   players      Player[]
-  teamOne      Match[]    @relation("teamOne")
-  teamTwo      Match[]    @relation("teamTwo")
+  teamOne      Game[]     @relation("teamOne")
+  teamTwo      Game[]     @relation("teamTwo")
 }
 
 model Player {
@@ -99,7 +106,7 @@ model Player {
   tournamentId String?
 }
 
-model Match {
+model Game {
   id           String      @id @default(cuid())
   score        Int
   gameSets     Json        @default("{}")
