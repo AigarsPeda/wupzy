@@ -12,5 +12,13 @@ export const tournamentRouter = createTRPCRouter({
     .input(NewTournamentSchema)
     .mutation(({ ctx, input }) => {
       console.log("input", input);
+
+      // TODO: Create tournament
+
+      // TODO: Create players
+
+      // TODO: Create teams if "King" tournament
+
+      // TODO: Create matches
     }),
 });
