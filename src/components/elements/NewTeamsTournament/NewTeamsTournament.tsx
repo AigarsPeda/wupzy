@@ -91,7 +91,6 @@ const NewTeamsTournament: FC<NewTeamsTournamentProps> = ({
                       <div className="mt-6">
                         <SecondaryButton
                           btnTitle="Add player"
-                          // btnIcon={<BiPlus className="mr-2 h-5 w-5" />}
                           handleClick={() =>
                             addPlayerToTeam({ teamId: team.id })
                           }

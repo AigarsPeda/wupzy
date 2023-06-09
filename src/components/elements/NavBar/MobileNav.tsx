@@ -3,8 +3,8 @@ import { useState, type FC } from "react";
 import { TiThMenu } from "react-icons/ti";
 import DrawerLayout from "~/components//layout/DrawerLayout/DrawerLayout";
 import AuthenticateUser from "~/components/elements/AuthenticateUser/AuthenticateUser";
-import NavLink from "~/components/elements/NavBar/NavLink";
 import Button from "~/components/elements/Button/Button";
+import NavLink from "~/components/elements/NavBar/NavLink";
 import { type LinkType } from "~/types/utils.types";
 
 interface MobileNavProps {

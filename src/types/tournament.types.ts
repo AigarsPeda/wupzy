@@ -2,17 +2,18 @@ import z from "zod";
 
 export const NewPlayerSchema = z.object({
   id: z.number(),
-  name: z.string().min(1).max(50),
+  name: z.string(),
 });
 
 export const NewTeamsSchema = z.object({
   id: z.number(),
-  name: z.string().min(1).max(50),
+  name: z.string(),
   players: z.array(NewPlayerSchema),
 });
 
 export const NewTournamentSchema = z.object({
-  name: z.string().min(1).max(50),
+  name: z.string(),
+  sets: z.number(),
   kind: z.enum(["king", "teams"]),
   king: z.object({
     players: z.array(NewPlayerSchema),

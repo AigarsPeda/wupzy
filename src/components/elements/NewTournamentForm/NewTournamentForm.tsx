@@ -1,202 +1,41 @@
-import { useState, type FC } from "react";
+import { type FC } from "react";
 import Button from "~/components/elements/Button/Button";
 import Input from "~/components/elements/Input/Input";
 import NewKingTournament from "~/components/elements/NewKingTournament/NewKingTournament";
-import {
-  type AddPlayerToTeamType,
-  type HandleInputChangeType,
-  type HandleTeamsPlayerNameUpdateType,
-} from "~/components/elements/NewKingTournament/NewKingTournamentUtils/types";
 import NewTeamsTournament from "~/components/elements/NewTeamsTournament/NewTeamsTournament";
+import useCreateNewTournament from "~/components/elements/NewTournamentForm/useCreateNewTournament";
 import RadioSelect from "~/components/elements/RadioSelect/RadioSelect";
-import {
-  type NewPlayerType,
-  type NewTeamsType,
-  type NewTournamentType,
-} from "~/types/tournament.types";
-import validatedTournamentKing from "~/utils/validatedTournamentKing";
+import SetSelect from "~/components/elements/SetSelect/SetSelect";
+import { api } from "~/utils/api";
 
 const NewTournamentForm: FC = () => {
-  const [newTournament, setNewTournament] = useState<NewTournamentType>({
-    name: "",
-    kind: "king",
-    king: {
-      players: [
-        {
-          id: 1,
-          name: "",
-        },
-        {
-          id: 2,
-          name: "",
-        },
-        {
-          id: 3,
-          name: "",
-        },
-      ],
-    },
-    teams: [
-      {
-        id: 1,
-        name: "",
-        players: [
-          {
-            id: 1,
-            name: "",
-          },
-          {
-            id: 2,
-            name: "",
-          },
-        ],
-      },
-      {
-        id: 2,
-        name: "",
-        players: [
-          {
-            id: 1,
-            name: "",
-          },
-          {
-            id: 2,
-            name: "",
-          },
-        ],
-      },
-    ],
-  });
+  const {
+    newTournament,
+    handleAddTeam,
+    handleAddPlayer,
+    addPlayerToTeam,
+    handleSetSelect,
+    updateTeamsTeamName,
+    changeTournamentName,
+    changeTournamentKind,
+    updateKingsPlayerName,
+    updateTeamsPlayerName,
+  } = useCreateNewTournament();
 
-  const updateKingsPlayerName = ({ id, name }: HandleInputChangeType) => {
-    const players = newTournament.king.players.map((player) => {
-      if (player.id === id) {
-        return {
-          ...player,
-          name,
-        };
-      }
-      return player;
-    });
+  // const { data: sessionData } = useSession();
 
-    setNewTournament({
-      ...newTournament,
-      king: {
-        ...newTournament.king,
-        players,
-      },
-    });
-  };
+  const { mutate, isLoading } = api.tournament.postNewTournament.useMutation();
 
-  const handleAddPlayer = () => {
-    const newPlayer: NewPlayerType = {
-      id: newTournament.king.players.length + 1,
-      name: "",
-    };
-    setNewTournament({
-      ...newTournament,
-      king: {
-        ...newTournament.king,
-        players: [...newTournament.king.players, newPlayer],
-      },
-    });
-  };
-
-  const handleAddTeam = () => {
-    const newTeam: NewTeamsType = {
-      id: newTournament.teams.length + 1,
-      name: "",
-      players: [
-        {
-          id: 1,
-          name: "",
-        },
-        {
-          id: 2,
-          name: "",
-        },
-      ],
-    };
-    setNewTournament({
-      ...newTournament,
-      teams: [...newTournament.teams, newTeam],
-    });
-  };
-
-  const updateTeamsTeamName = ({ id, name }: HandleInputChangeType) => {
-    const teams = newTournament.teams.map((team) => {
-      if (team.id === id) {
-        return {
-          ...team,
-          name,
-        };
-      }
-      return team;
-    });
-
-    setNewTournament({
-      ...newTournament,
-      teams,
-    });
-  };
-
-  const updateTeamsPlayerName = ({
-    id,
-    name,
-    teamId,
-  }: HandleTeamsPlayerNameUpdateType) => {
-    const teams = newTournament.teams.map((team) => {
-      if (team.id === teamId) {
-        const players = team.players.map((player) => {
-          if (player.id === id) {
-            return {
-              ...player,
-              name,
-            };
-          }
-          return player;
-        });
-        return {
-          ...team,
-          players,
-        };
-      }
-      return team;
-    });
-
-    setNewTournament({
-      ...newTournament,
-      teams,
-    });
-  };
-
-  const addPlayerToTeam = ({ teamId }: AddPlayerToTeamType) => {
-    const teams = newTournament.teams.map((team) => {
-      if (team.id === teamId) {
-        const newPlayer: NewPlayerType = {
-          id: team.players.length + 1,
-          name: "",
-        };
-        return {
-          ...team,
-          players: [...team.players, newPlayer],
-        };
-      }
-      return team;
-    });
-
-    setNewTournament({
-      ...newTournament,
-      teams,
-    });
-  };
+  // const { data } = api.tournament.getTournament.useQuery(undefined, {
+  //   enabled: sessionData?.user !== undefined,
+  // });
 
   return (
     <form
       className="mx-auto mt-4 max-w-lg rounded bg-white p-2 md:mt-6"
       onSubmit={(e) => {
         e.preventDefault();
-        console.log("newTournament", newTournament);
+        mutate(newTournament);
       }}
     >
       <div className="space-y-10">
@@ -210,9 +49,7 @@ const NewTournamentForm: FC = () => {
                 inputLabel=""
                 inputFor="Tournaments Name"
                 inputVal={newTournament.name}
-                handleInputChange={(str) => {
-                  setNewTournament({ ...newTournament, name: str });
-                }}
+                handleInputChange={changeTournamentName}
               />
             </div>
           </div>
@@ -232,20 +69,31 @@ const NewTournamentForm: FC = () => {
                 radioValue="king"
                 radioName="tournament-kind"
                 radioSelectedValue={newTournament.kind}
-                handleRadioChange={(str) => {
-                  const kind = validatedTournamentKing(str);
-                  setNewTournament({ ...newTournament, kind });
-                }}
+                handleRadioChange={changeTournamentKind}
               />
               <RadioSelect
                 radioTitle="Teams"
                 radioValue="teams"
                 radioName="tournament-kind"
                 radioSelectedValue={newTournament.kind}
-                handleRadioChange={(str) => {
-                  const kind = validatedTournamentKing(str);
-                  setNewTournament({ ...newTournament, kind });
-                }}
+                handleRadioChange={changeTournamentKind}
+              />
+            </div>
+          </fieldset>
+        </div>
+
+        <div className="border-b border-gray-900/10 pb-12">
+          <fieldset>
+            <legend className="text-base font-semibold leading-7 text-gray-900">
+              Set count
+            </legend>
+            <p className="mt-1 text-sm leading-6 text-gray-600">
+              Select sets count to win game.
+            </p>
+            <div className="mt-4 grid grid-cols-2 sm:grid-cols-4">
+              <SetSelect
+                handleSetSelect={handleSetSelect}
+                selectedSetCount={newTournament.sets}
               />
             </div>
           </fieldset>
@@ -281,8 +129,10 @@ const NewTournamentForm: FC = () => {
           size="sm"
           title="Save"
           type="submit"
+          isLoading={isLoading}
+          isDisabled={newTournament.name.trim() === ""}
           handleClick={() => {
-            console.log("clicked", newTournament);
+            mutate(newTournament);
           }}
         />
       </div>

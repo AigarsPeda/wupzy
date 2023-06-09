@@ -27,8 +27,8 @@ const Button: FC<ButtonProps> = ({
       onClick={handleClick}
       disabled={isLoading || isDisabled}
       className={classNames(
-        size === "sm" && "min-w-[3rem] px-5 text-sm",
         size === "md" && "min-w-[8rem] px-6",
+        size === "sm" && "min-w-[5rem] px-5 text-sm",
         isDisabled && "cursor-not-allowed bg-gray-800",
         isSecondary
           ? "border-collapse border-2 border-gray-300 bg-gray-300 text-gray-900 hover:bg-gray-400"
