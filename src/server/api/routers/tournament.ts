@@ -1,4 +1,5 @@
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import createGames from "~/server/api/utils/createGames";
 import { NewTournamentSchema } from "~/types/tournament.types";
 
 export const tournamentRouter = createTRPCRouter({
@@ -18,7 +19,7 @@ export const tournamentRouter = createTRPCRouter({
 
       // TODO: How to create games?
 
-      await prisma.tournament.create({
+      const { teams } = await prisma.tournament.create({
         data: {
           type: input.kind,
           name: input.name,
@@ -35,6 +36,13 @@ export const tournamentRouter = createTRPCRouter({
             })),
           },
         },
+        include: {
+          teams: true,
+        },
+      });
+
+      await prisma.game.createMany({
+        data: createGames(teams),
       });
     }),
 });

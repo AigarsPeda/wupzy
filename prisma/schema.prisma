@@ -108,7 +108,7 @@ model Player {
 
 model Game {
   id           String      @id @default(cuid())
-  score        Int
+  score        Int         @default(0)
   gameSets     Json        @default("{}")
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt

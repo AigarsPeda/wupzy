@@ -1,5 +1,6 @@
 import z from "zod";
 
+// Creating tournament
 export const NewPlayerSchema = z.object({
   id: z.number(),
   name: z.string(),
@@ -24,3 +25,12 @@ export const NewTournamentSchema = z.object({
 export type NewTeamsType = z.infer<typeof NewTeamsSchema>;
 export type NewPlayerType = z.infer<typeof NewPlayerSchema>;
 export type NewTournamentType = z.infer<typeof NewTournamentSchema>;
+
+// Tournament DB
+export const TeamSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  tournamentId: z.string(),
+});
+
+export type TeamType = z.infer<typeof TeamSchema>;
