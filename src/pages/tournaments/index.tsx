@@ -1,12 +1,15 @@
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
-import PageHeadLine from "~/components/elements/PageHeadLine/PageHeadLine";
 import Spinner from "~/components/elements/Spinner/Spinner";
-import { api } from "~/utils/api";
 import GridLayout from "~/components/layout/GridLayout/GridLayout";
+import { api } from "~/utils/api";
+import formatDate from "~/utils/formatDate";
+import useRedirect from "~/hooks/useRedirect";
 
 const TournamentsPage: NextPage = () => {
+  const { redirectToPath } = useRedirect();
   const { data: sessionData } = useSession();
+
   const { data, isLoading } = api.tournament.getAllTournaments.useQuery(
     undefined, // no input
     { enabled: sessionData?.user !== undefined }
@@ -20,16 +23,31 @@ const TournamentsPage: NextPage = () => {
     <GridLayout isGap minWith="250">
       {data?.tournaments?.map((tournament) => {
         return (
-          <div
+          <button
             key={tournament.id}
-            className="h-full w-full rounded-md bg-gray-100 p-2"
+            onClick={() => redirectToPath(`/tournaments/${tournament.id}`)}
+            className="flex h-28 w-full items-start justify-start rounded-md border border-gray-300 p-4 text-left transition duration-300 ease-in-out hover:shadow-md"
           >
-            <div className="">
-              <span className="rounded-md bg-gray-300 px-2 py-1 font-primary text-sm font-semibold capitalize text-gray-700">
-                {tournament.type}
-              </span>
+            <div className="flex h-full w-full flex-col justify-between">
+              <div>
+                <h1 className="font-primary text-lg font-medium text-gray-900">
+                  {tournament.name}
+                </h1>
+              </div>
+
+              <div className="mt-2 flex space-x-3">
+                <p className="rounded-md bg-gray-800 px-2 py-1 font-primary text-xs font-normal capitalize text-gray-50">
+                  {tournament.type}
+                </p>
+                <p className="rounded-md bg-gray-800 px-2 py-1 font-primary text-xs font-normal capitalize text-gray-50">
+                  {tournament.sets} sets
+                </p>
+                <p className="rounded-md bg-gray-800 px-2 py-1 font-primary text-xs font-normal capitalize text-gray-50">
+                  {formatDate(tournament.createdAt)}
+                </p>
+              </div>
             </div>
-          </div>
+          </button>
         );
       })}
     </GridLayout>

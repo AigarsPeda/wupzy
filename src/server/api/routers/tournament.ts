@@ -5,23 +5,17 @@ import createTeams from "~/server/api/utils/createTeams";
 import { NewTournamentSchema } from "~/types/tournament.types";
 
 export const tournamentRouter = createTRPCRouter({
-  getAllTournaments: protectedProcedure
-    // .input(
-    //   z.object({
-    //     userId: z.string(),
-    //   })
-    // )
-    .query(async ({ ctx }) => {
-      const { prisma } = ctx;
+  getAllTournaments: protectedProcedure.query(async ({ ctx }) => {
+    const { prisma } = ctx;
 
-      const tournaments = await prisma.tournament.findMany({
-        where: {
-          userId: ctx.session.user.id,
-        },
-      });
+    const tournaments = await prisma.tournament.findMany({
+      where: {
+        userId: ctx.session.user.id,
+      },
+    });
 
-      return { tournaments };
-    }),
+    return { tournaments };
+  }),
 
   getTournament: protectedProcedure
     .input(

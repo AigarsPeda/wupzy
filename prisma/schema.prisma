@@ -17,12 +17,6 @@ datasource db {
   shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
 }
 
-model Example {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 // Necessary for Next auth
 model Account {
   id                String  @id @default(cuid())
@@ -76,15 +70,17 @@ enum TournamentType {
 }
 
 model Tournament {
-  id      String         @id @default(cuid())
-  userId  String
-  type    TournamentType @default(king)
-  name    String
-  sets    Int
-  user    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  teams   Team[]
-  games   Game[]
-  players Player[]
+  id        String         @id @default(cuid())
+  userId    String
+  type      TournamentType @default(king)
+  name      String
+  sets      Int
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teams     Team[]
+  games     Game[]
+  players   Player[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
 }
 
 model Team {
@@ -95,6 +91,8 @@ model Team {
   players      Player[]
   teamOne      Game[]     @relation("teamOne")
   teamTwo      Game[]     @relation("teamTwo")
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 }
 
 model Player {
@@ -104,6 +102,8 @@ model Player {
   team         Team        @relation(fields: [teamId], references: [id], onDelete: Cascade)
   tournament   Tournament? @relation(fields: [tournamentId], references: [id])
   tournamentId String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 }
 
 model Game {
@@ -121,6 +121,8 @@ model Game {
 }
 
 model EmailList {
-  id    String @id @default(cuid())
-  email String @unique
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
