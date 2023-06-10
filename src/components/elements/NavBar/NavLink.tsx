@@ -45,7 +45,7 @@ const NavLink: FC<NavLinkProps> = ({
                   router.pathname === link.href
                     ? "text-gray-900 underline underline-offset-8"
                     : "text-slate-500 no-underline",
-                  "font-semibold text-gray-800 transition-all hover:text-gray-900"
+                  "font-semibold text-gray-800 transition-all hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-800"
                 )}
               >
                 {link.label}

@@ -26,7 +26,7 @@ const TournamentsPage: NextPage = () => {
           <button
             key={tournament.id}
             onClick={() => redirectToPath(`/tournaments/${tournament.id}`)}
-            className="flex h-28 w-full items-start justify-start rounded-md border border-gray-300 p-4 text-left transition duration-300 ease-in-out hover:shadow-md"
+            className="flex h-32 w-full items-start justify-start rounded-md border border-gray-300 p-4 text-left transition duration-300 ease-in-out hover:shadow-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-800"
           >
             <div className="flex h-full w-full flex-col justify-between">
               <div>

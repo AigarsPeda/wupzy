@@ -20,7 +20,7 @@ const SecondaryButton: FC<SecondaryButtonProps> = ({
       type={type}
       onClick={handleClick}
       disabled={isBtnDisabled}
-      className="inline-flex items-center rounded-md bg-gray-200 px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-300"
+      className="inline-flex items-center rounded-md bg-gray-200 px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-800"
     >
       {btnIcon}
       {btnTitle}
