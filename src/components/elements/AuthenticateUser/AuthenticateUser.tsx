@@ -13,12 +13,6 @@ const AuthenticateUser: FC<AuthenticateUserProps> = ({
   sessionData,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-  // const { data: sessionData } = useSession();
-
-  // const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-  //   undefined, // no input
-  //   { enabled: sessionData?.user !== undefined }
-  // );
 
   useEffect(() => {
     if (status === "loading") {

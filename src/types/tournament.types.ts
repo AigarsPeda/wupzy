@@ -1,5 +1,7 @@
 import z from "zod";
 
+export const TournamentTypeEnum = z.enum(["king", "teams"]);
+
 // Creating tournament
 export const NewPlayerSchema = z.object({
   id: z.number(),
@@ -15,11 +17,11 @@ export const NewTeamsSchema = z.object({
 export const NewTournamentSchema = z.object({
   name: z.string(),
   sets: z.number(),
-  kind: z.enum(["king", "teams"]),
+  kind: TournamentTypeEnum,
+  teams: z.array(NewTeamsSchema),
   king: z.object({
     players: z.array(NewPlayerSchema),
   }),
-  teams: z.array(NewTeamsSchema),
 });
 
 export type NewTeamsType = z.infer<typeof NewTeamsSchema>;
@@ -33,4 +35,14 @@ export const TeamSchema = z.object({
   tournamentId: z.string(),
 });
 
+export const TournamentSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  sets: z.number(),
+  userId: z.string(),
+  type: TournamentTypeEnum,
+  teams: z.array(TeamSchema),
+});
+
 export type TeamType = z.infer<typeof TeamSchema>;
+export type TournamentType = z.infer<typeof TournamentSchema>;

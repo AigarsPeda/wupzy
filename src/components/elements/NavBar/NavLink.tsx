@@ -30,27 +30,29 @@ const NavLink: FC<NavLinkProps> = ({
       )}
     >
       {links.map((link) => {
-        return (
-          <li
-            key={link.href}
-            className={classNames(
-              !link.public && !sessionData?.user ? "hidden" : "block"
-            )}
-          >
-            <Link
-              href={link.href}
-              onClick={onLinkClick}
+        if (link.label) {
+          return (
+            <li
+              key={link.href}
               className={classNames(
-                router.pathname === link.href
-                  ? "text-gray-900 underline underline-offset-8"
-                  : "text-slate-500 no-underline",
-                "font-semibold text-gray-800 transition-all hover:text-gray-900"
+                !link.public && !sessionData?.user ? "hidden" : "block"
               )}
             >
-              {link.label}
-            </Link>
-          </li>
-        );
+              <Link
+                href={link.href}
+                onClick={onLinkClick}
+                className={classNames(
+                  router.pathname === link.href
+                    ? "text-gray-900 underline underline-offset-8"
+                    : "text-slate-500 no-underline",
+                  "font-semibold text-gray-800 transition-all hover:text-gray-900"
+                )}
+              >
+                {link.label}
+              </Link>
+            </li>
+          );
+        }
       })}
     </ul>
   );

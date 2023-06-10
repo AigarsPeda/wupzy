@@ -1,32 +1,71 @@
+import z from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import createGames from "~/server/api/utils/createGames";
+import createTeams from "~/server/api/utils/createTeams";
 import { NewTournamentSchema } from "~/types/tournament.types";
 
 export const tournamentRouter = createTRPCRouter({
-  getTournament: protectedProcedure.query(({ ctx }) => {
-    return `You can now see this secret message! ${
-      ctx.session.user.name || "No name"
-    }`;
-  }),
+  getAllTournaments: protectedProcedure
+    // .input(
+    //   z.object({
+    //     userId: z.string(),
+    //   })
+    // )
+    .query(async ({ ctx }) => {
+      const { prisma } = ctx;
+
+      const tournaments = await prisma.tournament.findMany({
+        where: {
+          userId: ctx.session.user.id,
+        },
+      });
+
+      return { tournaments };
+    }),
+
+  getTournament: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { prisma } = ctx;
+
+      const tournament = await prisma.tournament.findUnique({
+        where: {
+          id: input.id,
+        },
+        include: {
+          teams: {
+            include: {
+              players: true,
+            },
+          },
+        },
+      });
+
+      return { tournament };
+    }),
 
   postNewTournament: protectedProcedure
     .input(NewTournamentSchema)
     .mutation(async ({ ctx, input }) => {
       const { prisma } = ctx;
-      console.log("input", input);
+      let newTeams = input.teams;
 
-      // TODO: Create teams if "King" tournament BEFORE creating tournament
+      if (input.kind === "king") {
+        newTeams = createTeams(input.king.players);
+      }
 
-      // TODO: How to create games?
-
-      const { teams } = await prisma.tournament.create({
+      const { teams, id } = await prisma.tournament.create({
         data: {
           type: input.kind,
           name: input.name,
           sets: input.sets,
           userId: ctx.session.user.id,
           teams: {
-            create: input.teams.map((team) => ({
+            create: newTeams.map((team) => ({
               name: team.name,
               players: {
                 create: team.players.map((player) => ({
@@ -44,5 +83,7 @@ export const tournamentRouter = createTRPCRouter({
       await prisma.game.createMany({
         data: createGames(teams),
       });
+
+      return { id };
     }),
 });

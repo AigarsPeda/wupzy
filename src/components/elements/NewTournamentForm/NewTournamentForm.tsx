@@ -6,6 +6,7 @@ import NewTeamsTournament from "~/components/elements/NewTeamsTournament/NewTeam
 import useCreateNewTournament from "~/components/elements/NewTournamentForm/useCreateNewTournament";
 import RadioSelect from "~/components/elements/RadioSelect/RadioSelect";
 import SetSelect from "~/components/elements/SetSelect/SetSelect";
+import useRedirect from "~/hooks/useRedirect";
 import { api } from "~/utils/api";
 
 const NewTournamentForm: FC = () => {
@@ -22,13 +23,12 @@ const NewTournamentForm: FC = () => {
     updateTeamsPlayerName,
   } = useCreateNewTournament();
 
-  // const { data: sessionData } = useSession();
-
-  const { mutate, isLoading } = api.tournament.postNewTournament.useMutation();
-
-  // const { data } = api.tournament.getTournament.useQuery(undefined, {
-  //   enabled: sessionData?.user !== undefined,
-  // });
+  const { redirectToPath } = useRedirect();
+  const { mutate, isLoading } = api.tournament.postNewTournament.useMutation({
+    onSuccess: (data) => {
+      redirectToPath(`/tournaments/${data.id}`);
+    },
+  });
 
   return (
     <form
@@ -118,6 +118,12 @@ const NewTournamentForm: FC = () => {
         </div>
       </div>
 
+      <div className="mt-4">
+        <p className="mt-1 text-sm leading-6 text-gray-600">
+          Creating a tournament may take a few seconds for setup.
+        </p>
+      </div>
+
       <div className="mt-6 flex items-center justify-end gap-x-6">
         <button
           type="button"
@@ -131,9 +137,6 @@ const NewTournamentForm: FC = () => {
           type="submit"
           isLoading={isLoading}
           isDisabled={newTournament.name.trim() === ""}
-          // handleClick={() => {
-          //   mutate(newTournament);
-          // }}
         />
       </div>
     </form>

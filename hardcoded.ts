@@ -11,4 +11,8 @@ export const LINKS: LinkType[] = [
     href: "/new-tournament",
     label: "New Tournament",
   },
+  {
+    public: false,
+    href: "/tournaments/[id]",
+  },
 ];
