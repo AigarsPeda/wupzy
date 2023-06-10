@@ -35,7 +35,7 @@ const NewTournamentForm: FC = () => {
       className="mx-auto mt-4 max-w-lg rounded bg-white p-2 md:mt-6"
       onSubmit={(e) => {
         e.preventDefault();
-        mutate(newTournament);
+        // mutate(newTournament);
       }}
     >
       <div className="space-y-10">
@@ -134,7 +134,8 @@ const NewTournamentForm: FC = () => {
         <Button
           size="sm"
           title="Save"
-          type="submit"
+          type="button"
+          handleClick={() => mutate(newTournament)}
           isLoading={isLoading}
           isDisabled={newTournament.name.trim() === ""}
         />

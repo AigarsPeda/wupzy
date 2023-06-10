@@ -54,6 +54,7 @@ const NewKingTournament: FC<NewKingTournamentProps> = ({
             </ul>
             <div className="mt-6">
               <SecondaryButton
+                type="button"
                 btnTitle="Add Team"
                 btnIcon={<BiPlus className="mr-2 h-5 w-5" />}
                 handleClick={handleAddPlayer}
