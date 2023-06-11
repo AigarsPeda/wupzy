@@ -1,6 +1,6 @@
 import { type TeamType } from "~/types/tournament.types";
 
-const createGames = (teams: TeamType[]) => {
+const createGames = (teams: TeamType[], tournamentId: string) => {
   let order = 1;
   const games = [];
   for (let i = 0; i < teams.length; i++) {
@@ -12,6 +12,7 @@ const createGames = (teams: TeamType[]) => {
         games.push({
           teamOneId,
           teamTwoId,
+          tournamentId,
           order: order++,
         });
       }

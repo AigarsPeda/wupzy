@@ -117,7 +117,7 @@ model Game {
   teamOne      Team        @relation("teamOne", fields: [teamOneId], references: [id])
   teamTwoId    String
   teamTwo      Team        @relation("teamTwo", fields: [teamTwoId], references: [id])
-  tournamentId String?
+  tournamentId String
   tournament   Tournament? @relation(fields: [tournamentId], references: [id])
   order        Int
 }

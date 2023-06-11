@@ -39,6 +39,20 @@ export const tournamentRouter = createTRPCRouter({
               players: true,
             },
           },
+          games: {
+            include: {
+              teamOne: {
+                include: {
+                  players: true,
+                },
+              },
+              teamTwo: {
+                include: {
+                  players: true,
+                },
+              },
+            },
+          },
         },
       });
 
@@ -78,7 +92,7 @@ export const tournamentRouter = createTRPCRouter({
       });
 
       await prisma.game.createMany({
-        data: createGames(teams),
+        data: createGames(teams, id),
       });
 
       return { id };

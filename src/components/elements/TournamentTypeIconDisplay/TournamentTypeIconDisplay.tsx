@@ -1,7 +1,6 @@
 import { type FC } from "react";
 import { BiCrown } from "react-icons/bi";
 import { RiTeamLine } from "react-icons/ri";
-import Tooltip from "~/components/elements/Tooltip/Tooltip";
 import { type TournamentTypeType } from "~/types/tournament.types";
 
 interface TournamentTypeIconDisplayProps {
@@ -14,13 +13,13 @@ const TournamentTypeIconDisplay: FC<TournamentTypeIconDisplayProps> = ({
   return (
     <>
       {tournamentType === "king" ? (
-        <Tooltip isNowrap content="King tournament">
-          <BiCrown className="h-6 w-6 text-pink-500" />
-        </Tooltip>
+        // <Tooltip isNowrap content="King tournament">
+        <BiCrown className="h-6 w-6 text-pink-500" />
       ) : (
-        <Tooltip isNowrap content="Team tournament">
-          <RiTeamLine className="h-6 w-6 text-pink-500" />
-        </Tooltip>
+        // </Tooltip>
+        // <Tooltip isNowrap content="Team tournament">
+        <RiTeamLine className="h-6 w-6 text-pink-500" />
+        // </Tooltip>
       )}
     </>
   );
