@@ -1,25 +1,19 @@
 import { type NextPage } from "next";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import PageHeadLine from "~/components/elements/PageHeadLine/PageHeadLine";
 import Spinner from "~/components/elements/Spinner/Spinner";
-import { api } from "~/utils/api";
+import useTournament from "~/hooks/useTournament";
 
 const TournamentPage: NextPage = () => {
   const router = useRouter();
-  const { data: sessionData } = useSession();
-  const [tournamentId, setTournamentId] = useState("");
-  const { data, isLoading } = api.tournament.getTournament.useQuery(
-    { id: tournamentId },
-    { enabled: Boolean(tournamentId) && sessionData?.user !== undefined }
-  );
+  const { isLoading, tournament, setTournamentId } = useTournament();
 
   useEffect(() => {
     if (router.query.id && typeof router.query.id === "string") {
       setTournamentId(router.query.id);
     }
-  }, [router.query.id]);
+  }, [router.query.id, setTournamentId]);
 
   if (isLoading) {
     return <Spinner size="small" />;
@@ -27,7 +21,7 @@ const TournamentPage: NextPage = () => {
 
   return (
     <div>
-      <PageHeadLine title={data?.tournament?.name} />
+      <PageHeadLine title={tournament?.name} />
     </div>
   );
 };
