@@ -98,9 +98,9 @@ model Team {
 
 model Player {
   id           String      @id @default(cuid())
-  teamId       String
+  teamId       String?
   name         String
-  team         Team        @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  team         Team?       @relation(fields: [teamId], references: [id], onDelete: Cascade)
   tournament   Tournament? @relation(fields: [tournamentId], references: [id])
   tournamentId String?
   createdAt    DateTime    @default(now())

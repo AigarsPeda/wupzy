@@ -1,9 +1,10 @@
+import { type Player } from "@prisma/client";
 import {
   type NewTeamsType,
   type NewPlayerType,
 } from "~/types/tournament.types";
 
-const createTeams = (players: NewPlayerType[]) => {
+const createTeams = (players: NewPlayerType[] | Player[]) => {
   const newTeams: NewTeamsType[] = [];
 
   let id = 1;
@@ -18,16 +19,25 @@ const createTeams = (players: NewPlayerType[]) => {
         playerOne?.name.trim() !== "" &&
         playerTwo.name.trim() !== ""
       ) {
+        const playerOneId =
+          typeof playerOne.id === "number"
+            ? playerOne.id
+            : parseInt(playerOne.id);
+        const playerTwoId =
+          typeof playerTwo.id === "number"
+            ? playerTwo.id
+            : parseInt(playerTwo.id);
+
         newTeams.push({
           id: id++,
           name: `${playerOne.name}  ${playerTwo.name}`,
           players: [
             {
-              id: playerOne.id,
+              id: playerOneId,
               name: playerOne.name,
             },
             {
-              id: playerTwo.id,
+              id: playerTwoId,
               name: playerTwo.name,
             },
           ],
