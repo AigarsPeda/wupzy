@@ -11,6 +11,14 @@ const TournamentsPage: NextPage = () => {
     return <Spinner size="small" />;
   }
 
+  if (tournaments?.length === 0) {
+    return (
+      <div className="text-center">
+        <h1 className="mt-10 text-3xl text-gray-400">No tournaments found </h1>
+      </div>
+    );
+  }
+
   return (
     <GridLayout isGap minWith="250">
       {tournaments?.map((tournament) => {

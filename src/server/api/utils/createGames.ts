@@ -1,6 +1,6 @@
-import { type TeamType } from "~/types/tournament.types";
+import { type Team } from "@prisma/client";
 
-const createGames = (teams: TeamType[], tournamentId: string) => {
+const createGames = (teams: Team[], tournamentId: string) => {
   let order = 1;
   const games = [];
   for (let i = 0; i < teams.length; i++) {

@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import PageHeadLine from "~/components/elements/PageHeadLine/PageHeadLine";
 import Spinner from "~/components/elements/Spinner/Spinner";
 import useTournament from "~/hooks/useTournament";
+import DisplayGames from "~/components/elements/DisplayGames/DisplayGames";
 
 const TournamentPage: NextPage = () => {
   const router = useRouter();
@@ -21,8 +22,26 @@ const TournamentPage: NextPage = () => {
 
   return (
     <div>
-      {console.log(tournament)}
       <PageHeadLine title={tournament?.name} />
+      <DisplayGames games={tournament?.games} />
+      {/* <div>
+        {tournament?.games.map((game) => {
+          return (
+            <div key={game.id}>
+              <div className="flex space-x-1">
+                <p>{game.teamOne.name}</p>
+                <p>VS</p>
+                <p>{game.teamTwo.name}</p>
+              </div>
+              <div className="flex space-x-1">
+                <p>{game.teamOneScore}</p>
+                <p>VS</p>
+                <p>{game.teamTwoScore}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div> */}
     </div>
   );
 };

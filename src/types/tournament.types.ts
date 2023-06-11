@@ -30,9 +30,12 @@ export type NewPlayerType = z.infer<typeof NewPlayerSchema>;
 export type NewTournamentType = z.infer<typeof NewTournamentSchema>;
 
 // Tournament DB
-export const TeamSchema = z.object({
+export const PlayerSchema = z.object({
   id: z.string(),
   name: z.string(),
+  teamId: z.string(),
+  updatedAt: z.date(),
+  createdAt: z.date(),
   tournamentId: z.string(),
 });
 
@@ -44,8 +47,34 @@ export const TournamentSchema = z.object({
   createdAt: z.date(),
   updatedAt: z.date(),
   type: TournamentTypeEnum,
-  // teams: z.array(TeamSchema),
 });
 
+export const TeamSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  group: z.string(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  players: z.array(PlayerSchema),
+  tournamentId: z.string().nullish(),
+});
+
+export const GameSchema = z.object({
+  id: z.string(),
+  order: z.number(),
+  gameSets: z.any(),
+  teamOne: TeamSchema,
+  teamTwo: TeamSchema,
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  teamOneId: z.string(),
+  teamTwoId: z.string(),
+  teamOneScore: z.number(),
+  teamTwoScore: z.number(),
+  tournamentId: z.string().nullish(),
+});
+
+export type GameType = z.infer<typeof GameSchema>;
 export type TeamType = z.infer<typeof TeamSchema>;
+export type PlayerType = z.infer<typeof PlayerSchema>;
 export type TournamentType = z.infer<typeof TournamentSchema>;
