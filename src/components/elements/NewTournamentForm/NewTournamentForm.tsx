@@ -1,4 +1,4 @@
-import { type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import Button from "~/components/elements/Button/Button";
 import Input from "~/components/elements/Input/Input";
 import NewKingTournament from "~/components/elements/NewKingTournament/NewKingTournament";
@@ -8,6 +8,9 @@ import RadioSelect from "~/components/elements/RadioSelect/RadioSelect";
 import SetSelect from "~/components/elements/SetSelect/SetSelect";
 import useRedirect from "~/hooks/useRedirect";
 import { api } from "~/utils/api";
+import classNames from "~/utils/classNames";
+import countNewGames from "~/utils/countNewGames";
+import createTeams from "~/utils/createTeams";
 
 const NewTournamentForm: FC = () => {
   const {
@@ -24,18 +27,26 @@ const NewTournamentForm: FC = () => {
   } = useCreateNewTournament();
 
   const { redirectToPath } = useRedirect();
+  const [gameCount, setGameCount] = useState(0);
   const { mutate, isLoading } = api.tournament.postNewTournament.useMutation({
     onSuccess: (data) => {
       redirectToPath(`/tournaments/${data.id}`);
     },
   });
 
+  useEffect(() => {
+    if (newTournament.kind === "king") {
+      setGameCount(countNewGames(createTeams(newTournament.king.players)));
+    } else if (newTournament.kind === "teams") {
+      setGameCount(countNewGames(newTournament.teams));
+    }
+  }, [newTournament.kind, newTournament.king.players, newTournament.teams]);
+
   return (
     <form
       className="mx-auto mt-4 max-w-lg rounded bg-white p-2 md:mt-6"
       onSubmit={(e) => {
         e.preventDefault();
-        // mutate(newTournament);
       }}
     >
       <div className="space-y-10">
@@ -119,9 +130,21 @@ const NewTournamentForm: FC = () => {
       </div>
 
       <div className="mt-4">
-        <p className="mt-1 text-sm leading-6 text-gray-600">
-          Creating a tournament may take a few seconds for setup.
-        </p>
+        {gameCount !== 0 && (
+          <p className="mt-1 text-sm leading-6 text-gray-600">
+            Setting up{" "}
+            <span
+              className={classNames(
+                gameCount <= 10 && "text-gray-800",
+                gameCount > 10 && gameCount < 20 && "text-orange-500",
+                gameCount > 20 && "text-red-600"
+              )}
+            >
+              {gameCount}
+            </span>{" "}
+            games may take a few seconds when creating a tournament.
+          </p>
+        )}
       </div>
 
       <div className="mt-6 flex items-center justify-end gap-x-6">

@@ -23,47 +23,45 @@ const NewKingTournament: FC<NewKingTournamentProps> = ({
   handleKingsPlayerName,
 }) => {
   return (
-    <>
-      <AnimatePresence>
-        {isVisible && (
-          <SlidingAnimationLayout>
-            <h2 className="mb-4 text-base font-semibold leading-7 text-gray-900">
-              King players
-            </h2>
-            <ul className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-              {players.map((player, i) => {
-                const label = `${player.id}${getOrdinal(player.id)} player`;
-                return (
-                  <li className="font-normal sm:col-span-4" key={player.id}>
-                    <AddingToListAnimationLayout index={i}>
-                      <Input
-                        inputFor={label}
-                        inputLabel={label}
-                        inputVal={player.name}
-                        handleInputChange={(str) => {
-                          handleKingsPlayerName({
-                            name: str,
-                            id: player.id,
-                          });
-                        }}
-                      />
-                    </AddingToListAnimationLayout>
-                  </li>
-                );
-              })}
-            </ul>
-            <div className="mt-6">
-              <SecondaryButton
-                type="button"
-                btnTitle="Add Team"
-                btnIcon={<BiPlus className="mr-2 h-5 w-5" />}
-                handleClick={handleAddPlayer}
-              />
-            </div>
-          </SlidingAnimationLayout>
-        )}
-      </AnimatePresence>
-    </>
+    <AnimatePresence>
+      {isVisible && (
+        <SlidingAnimationLayout>
+          <h2 className="mb-4 text-base font-semibold leading-7 text-gray-900">
+            King players
+          </h2>
+          <ul className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            {players.map((player, i) => {
+              const label = `${player.id}${getOrdinal(player.id)} player`;
+              return (
+                <li className="font-normal sm:col-span-4" key={player.id}>
+                  <AddingToListAnimationLayout index={i}>
+                    <Input
+                      inputFor={label}
+                      inputLabel={label}
+                      inputVal={player.name}
+                      handleInputChange={(str) => {
+                        handleKingsPlayerName({
+                          name: str,
+                          id: player.id,
+                        });
+                      }}
+                    />
+                  </AddingToListAnimationLayout>
+                </li>
+              );
+            })}
+          </ul>
+          <div className="mt-6">
+            <SecondaryButton
+              type="button"
+              btnTitle="Add Team"
+              btnIcon={<BiPlus className="mr-2 h-5 w-5" />}
+              handleClick={handleAddPlayer}
+            />
+          </div>
+        </SlidingAnimationLayout>
+      )}
+    </AnimatePresence>
   );
 };
 

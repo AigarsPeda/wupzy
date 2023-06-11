@@ -93,6 +93,7 @@ model Team {
   teamTwo      Game[]     @relation("teamTwo")
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
+  group        String     @default("A")
 }
 
 model Player {
@@ -118,6 +119,7 @@ model Game {
   teamTwo      Team        @relation("teamTwo", fields: [teamTwoId], references: [id])
   tournamentId String?
   tournament   Tournament? @relation(fields: [tournamentId], references: [id])
+  order        Int
 }
 
 model EmailList {

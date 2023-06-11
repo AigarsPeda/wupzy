@@ -12,7 +12,12 @@ const createTeams = (players: NewPlayerType[]) => {
       const playerOne = players[i];
       const playerTwo = players[j];
 
-      if (playerOne && playerTwo) {
+      if (
+        playerOne &&
+        playerTwo &&
+        playerOne?.name.trim() !== "" &&
+        playerTwo.name.trim() !== ""
+      ) {
         newTeams.push({
           id: id++,
           name: `${playerOne.name}  ${playerTwo.name}`,

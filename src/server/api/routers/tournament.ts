@@ -1,7 +1,7 @@
 import z from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import createGames from "~/server/api/utils/createGames";
-import createTeams from "~/server/api/utils/createTeams";
+import createTeams from "~/utils/createTeams";
 import { NewTournamentSchema } from "~/types/tournament.types";
 
 export const tournamentRouter = createTRPCRouter({
@@ -11,6 +11,9 @@ export const tournamentRouter = createTRPCRouter({
     const tournaments = await prisma.tournament.findMany({
       where: {
         userId: ctx.session.user.id,
+      },
+      orderBy: {
+        createdAt: "desc",
       },
     });
 
