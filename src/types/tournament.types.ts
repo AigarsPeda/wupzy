@@ -36,7 +36,7 @@ export const PlayerSchema = z.object({
   teamId: z.string(),
   updatedAt: z.date(),
   createdAt: z.date(),
-  tournamentId: z.string(),
+  tournamentId: z.string().nullish(),
 });
 
 export const TournamentSchema = z.object({
