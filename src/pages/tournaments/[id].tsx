@@ -22,7 +22,6 @@ const TournamentPage: NextPage = () => {
 
   return (
     <div>
-      {console.log(tournament)}
       <PageHeadLine title={tournament?.name} />
       <DisplayGames games={tournament?.games} />
       {/* <div>
