@@ -83,12 +83,36 @@ model Tournament {
   updatedAt DateTime       @updatedAt
 }
 
+// model Team {
+//   id           String     @id @default(cuid())
+//   tournamentId String
+//   name         String
+//   tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+//   players      Player[]
+//   teamOne      Game[]     @relation("teamOne")
+//   teamTwo      Game[]     @relation("teamTwo")
+//   createdAt    DateTime   @default(now())
+//   updatedAt    DateTime   @updatedAt
+//   group        String     @default("A")
+// }
+
+// model Player {
+//   id           String      @id @default(cuid())
+//   teamId       String
+//   name         String
+//   team         Team        @relation(fields: [teamId], references: [id], onDelete: Cascade)
+//   tournament   Tournament? @relation(fields: [tournamentId], references: [id])
+//   tournamentId String?
+//   createdAt    DateTime    @default(now())
+//   updatedAt    DateTime    @updatedAt
+// }
+
 model Team {
   id           String     @id @default(cuid())
   tournamentId String
   name         String
   tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
-  players      Player[]
+  players      Player[]   @relation("TeamPlayers")
   teamOne      Game[]     @relation("teamOne")
   teamTwo      Game[]     @relation("teamTwo")
   createdAt    DateTime   @default(now())
@@ -98,9 +122,9 @@ model Team {
 
 model Player {
   id           String      @id @default(cuid())
-  teamId       String
   name         String
-  team         Team        @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teams        Team[]      @relation("TeamPlayers")
+  // tournaments Tournament[]
   tournament   Tournament? @relation(fields: [tournamentId], references: [id])
   tournamentId String?
   createdAt    DateTime    @default(now())

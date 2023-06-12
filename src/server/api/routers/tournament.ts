@@ -63,38 +63,85 @@ export const tournamentRouter = createTRPCRouter({
     .input(NewTournamentSchema)
     .mutation(async ({ ctx, input }) => {
       const { prisma } = ctx;
-      let newTeams = input.teams;
+      // let newTeams = input.teams;
 
       if (input.kind === "king") {
-        newTeams = createTeams(input.king.players);
-      }
-
-      const { teams, id } = await prisma.tournament.create({
-        data: {
-          type: input.kind,
-          name: input.name,
-          sets: input.sets,
-          userId: ctx.session.user.id,
-          teams: {
-            create: newTeams.map((team) => ({
-              name: team.name,
-              players: {
-                create: team.players.map((player) => ({
-                  name: player.name,
-                })),
-              },
-            })),
+        const { players, id } = await prisma.tournament.create({
+          data: {
+            type: input.kind,
+            name: input.name,
+            sets: input.sets,
+            userId: ctx.session.user.id,
+            players: {
+              create: input.king.players.map((player) => ({
+                name: player.name,
+              })),
+            },
           },
-        },
-        include: {
-          teams: true,
-        },
-      });
+          include: {
+            players: true,
+          },
+        });
 
-      await prisma.game.createMany({
-        data: createGames(teams, id),
-      });
+        const newTeams = createTeams(players);
 
-      return { id };
+        for (let i = 0; i < newTeams.length; i++) {
+          const element = newTeams[i];
+
+          if (element) {
+            await prisma.team.create({
+              data: {
+                name: element.name,
+                tournamentId: id,
+                players: {
+                  connect: element.players.map((player) => ({
+                    id: player.id,
+                  })),
+                },
+              },
+            });
+          }
+        }
+
+        const teams = await prisma.team.findMany({
+          where: {
+            tournamentId: id,
+          },
+        });
+
+        await prisma.game.createMany({
+          data: createGames(teams, id),
+        });
+
+        return { id };
+      } else {
+        const { teams, id } = await prisma.tournament.create({
+          data: {
+            type: input.kind,
+            name: input.name,
+            sets: input.sets,
+            userId: ctx.session.user.id,
+            teams: {
+              create: input.teams.map((team) => ({
+                name: team.name,
+                players: {
+                  create: team.players.map((player) => ({
+                    name: player.name,
+                  })),
+                },
+              })),
+            },
+          },
+          include: {
+            teams: true,
+          },
+        });
+
+        await prisma.game.createMany({
+          data: createGames(teams, id),
+        });
+
+        return { id };
+      }
     }),
 });

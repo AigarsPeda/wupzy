@@ -19,44 +19,44 @@ const useCreateNewTournament = () => {
     king: {
       players: [
         {
-          id: 1,
+          id: "1",
           name: "",
         },
         {
-          id: 2,
+          id: "2",
           name: "",
         },
         {
-          id: 3,
+          id: "3",
           name: "",
         },
       ],
     },
     teams: [
       {
-        id: 1,
+        id: "1",
         name: "",
         players: [
           {
-            id: 1,
+            id: "1",
             name: "",
           },
           {
-            id: 2,
+            id: "2",
             name: "",
           },
         ],
       },
       {
-        id: 2,
+        id: "2",
         name: "",
         players: [
           {
-            id: 1,
+            id: "1",
             name: "",
           },
           {
-            id: 2,
+            id: "2",
             name: "",
           },
         ],
@@ -86,7 +86,7 @@ const useCreateNewTournament = () => {
 
   const handleAddPlayer = () => {
     const newPlayer: NewPlayerType = {
-      id: newTournament.king.players.length + 1,
+      id: (newTournament.king.players.length + 1).toString(),
       name: "",
     };
     setNewTournament({
@@ -100,15 +100,15 @@ const useCreateNewTournament = () => {
 
   const handleAddTeam = () => {
     const newTeam: NewTeamsType = {
-      id: newTournament.teams.length + 1,
+      id: (newTournament.teams.length + 1).toString(),
       name: "",
       players: [
         {
-          id: 1,
+          id: "1",
           name: "",
         },
         {
-          id: 2,
+          id: "2",
           name: "",
         },
       ],
@@ -170,7 +170,7 @@ const useCreateNewTournament = () => {
     const teams = newTournament.teams.map((team) => {
       if (team.id === teamId) {
         const newPlayer: NewPlayerType = {
-          id: team.players.length + 1,
+          id: (team.players.length + 1).toString(),
           name: "",
         };
         return {

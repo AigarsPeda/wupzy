@@ -44,7 +44,9 @@ const NewTeamsTournament: FC<NewTeamsTournamentProps> = ({
             </h2>
             <ul className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               {teams.map((team, index) => {
-                const label = `${team.id}${getOrdinal(team.id)} team`;
+                const label = `${team.id}${getOrdinal(
+                  parseInt(team.id, 10)
+                )} team`;
                 return (
                   <li className="font-normal sm:col-span-4" key={team.id}>
                     <AddingToListAnimationLayout index={index}>
@@ -63,12 +65,12 @@ const NewTeamsTournament: FC<NewTeamsTournamentProps> = ({
                       <ul className="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-4">
                         {team.players.map((player, i) => {
                           const label = `${player.id}${getOrdinal(
-                            player.id
+                            parseInt(player.id, 10)
                           )} player`;
                           return (
                             <li
                               className="font-normal sm:col-span-2"
-                              key={team.id + i}
+                              key={`${team.id}${i}`}
                             >
                               <AddingToListAnimationLayout index={i}>
                                 <Input

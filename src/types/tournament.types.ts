@@ -5,12 +5,12 @@ export type TournamentTypeType = z.infer<typeof TournamentTypeEnum>;
 
 // Creating tournament
 export const NewPlayerSchema = z.object({
-  id: z.number(),
+  id: z.string(),
   name: z.string(),
 });
 
 export const NewTeamsSchema = z.object({
-  id: z.number(),
+  id: z.string(),
   name: z.string(),
   players: z.array(NewPlayerSchema),
 });

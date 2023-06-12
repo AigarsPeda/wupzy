@@ -1,14 +1,14 @@
 export type HandleInputChangeType = {
-  id: number;
+  id: string;
   name: string;
 };
 
 export type HandleTeamsPlayerNameUpdateType = {
-  id: number;
+  id: string;
   name: string;
-  teamId: number;
+  teamId: string;
 };
 
 export type AddPlayerToTeamType = {
-  teamId: number;
+  teamId: string;
 };
