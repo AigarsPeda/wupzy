@@ -13,16 +13,16 @@ interface DisplayGamesProps {
 const DisplayGames: FC<DisplayGamesProps> = ({ games }) => {
   return (
     <div>
-      <div className="mb-2 mt-6">
-        <p className="font-primary font-medium text-gray-500">Games</p>
+      <div className="mb-2 mt-4">
+        <p className="font-primary text-gray-500">Games</p>
       </div>
       <div className="relative flex overflow-x-auto">
-        <div className="ml-4 flex w-full space-x-3 overflow-x-auto py-5 md:ml-0">
+        <div className="ml-4 flex w-full space-x-3 overflow-x-auto pb-5 md:ml-0">
           {games?.map((game) => {
             return (
               <div
                 key={game.id}
-                className="rounded-md border border-gray-300 bg-white p-3"
+                className="rounded-md border border-gray-300 bg-gradient-to-br from-gray-100 to-white p-3"
               >
                 <div className="w-72">
                   <div className="mb-2">
@@ -33,7 +33,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({ games }) => {
                         </p>
                       </div>
                       <div className="col-span-2 text-center">
-                        <p className="text-gray-400 ">vs</p>
+                        <p className="text-gray-300">vs</p>
                       </div>
                       <div className="col-span-5 text-left">
                         <p className="truncate whitespace-nowrap font-primary text-lg  uppercase">
@@ -56,11 +56,10 @@ const DisplayGames: FC<DisplayGamesProps> = ({ games }) => {
                       }}
                     />
                   </div>
-                  <div>
+                  <div className="flex items-center justify-center">
                     <SecondaryButton
                       type="button"
                       color="dark"
-                      isFullWidth
                       title="Save Score"
                       handleClick={() => console.log("hello")}
                     />

@@ -18,7 +18,7 @@ const NumberInput: FC<NumberInputProps> = ({ value, height, onChange }) => {
     >
       <button
         data-action="decrement"
-        className="flex h-full w-20 cursor-pointer items-center justify-center rounded-l bg-gray-300 text-gray-800 outline-none transition-all hover:bg-gray-400 hover:text-gray-700"
+        className="flex h-full w-20 cursor-pointer items-center justify-center rounded-l bg-gray-200 text-gray-800 outline-none transition-all hover:bg-gray-400 hover:text-white"
         onClick={() => {
           if (value > 0) {
             onChange(value - 1);
@@ -41,11 +41,11 @@ const NumberInput: FC<NumberInputProps> = ({ value, height, onChange }) => {
           const num = parseInt(e.target.value);
           onChange(num);
         }}
-        className="text-md md:text-basecursor-default flex w-full items-center bg-gray-300 text-center font-primary font-semibold text-gray-700 outline-none hover:text-black focus:text-black focus:outline-none"
+        className="text-md md:text-basecursor-default flex w-full items-center bg-gray-200 text-center font-primary text-lg font-semibold text-gray-700 outline-none hover:text-black focus:text-black focus:outline-none"
       ></input>
       <button
         data-action="increment"
-        className="flex h-full w-20 cursor-pointer items-center justify-center rounded-r bg-gray-300 text-gray-800 transition-all hover:bg-gray-400 hover:text-gray-700"
+        className="flex h-full w-20 cursor-pointer items-center justify-center rounded-r bg-gray-200 text-gray-800 transition-all hover:bg-gray-400 hover:text-white"
         onClick={() => {
           onChange(value + 1);
         }}
