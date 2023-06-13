@@ -1,6 +1,6 @@
 import type { FC } from "react";
+import { HiMinus, HiPlusSm } from "react-icons/hi";
 import classNames from "~/utils/classNames";
-import { BiPlus, BiMinus } from "react-icons/bi";
 
 interface NumberInputProps {
   value: number;
@@ -12,8 +12,8 @@ const NumberInput: FC<NumberInputProps> = ({ value, height, onChange }) => {
   return (
     <div
       className={classNames(
-        height ? height : "h-10",
-        "relative flex w-28 flex-row rounded-lg border-2 border-transparent bg-transparent"
+        height ? height : "h-11",
+        "relative flex w-32 flex-row rounded-lg border-2 border-transparent bg-transparent"
       )}
     >
       <button
@@ -25,8 +25,7 @@ const NumberInput: FC<NumberInputProps> = ({ value, height, onChange }) => {
           }
         }}
       >
-        {/* <span className="m-auto text-2xl font-thin">−</span> */}
-        <BiMinus className="h-4 w-4" />
+        <HiMinus className="h-4 w-4" />
       </button>
       <input
         type="text"
@@ -42,7 +41,7 @@ const NumberInput: FC<NumberInputProps> = ({ value, height, onChange }) => {
           const num = parseInt(e.target.value);
           onChange(num);
         }}
-        className="text-md md:text-basecursor-default flex w-full items-center bg-gray-300 text-center font-semibold text-gray-700 outline-none hover:text-black focus:text-black focus:outline-none"
+        className="text-md md:text-basecursor-default flex w-full items-center bg-gray-300 text-center font-primary font-semibold text-gray-700 outline-none hover:text-black focus:text-black focus:outline-none"
       ></input>
       <button
         data-action="increment"
@@ -51,8 +50,7 @@ const NumberInput: FC<NumberInputProps> = ({ value, height, onChange }) => {
           onChange(value + 1);
         }}
       >
-        {/* <span className="m-auto text-2xl font-thin">+</span> */}
-        <BiPlus className="h-4 w-4" />
+        <HiPlusSm className="h-5 w-5" />
       </button>
     </div>
   );

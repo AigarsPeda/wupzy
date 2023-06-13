@@ -1,18 +1,23 @@
-import { type ReactNode, type FC } from "react";
+import { type FC, type ReactNode } from "react";
+import classNames from "~/utils/classNames";
 
 interface SecondaryButtonProps {
-  btnTitle: string;
-  btnIcon?: ReactNode;
+  title: string;
+  icon?: ReactNode;
+  isFullWidth?: boolean;
+  color?: "dark" | "gray";
   isBtnDisabled?: boolean;
   handleClick: () => void;
   type?: "button" | "submit" | "reset";
 }
 
 const SecondaryButton: FC<SecondaryButtonProps> = ({
-  btnIcon,
-  btnTitle,
+  icon,
+  title,
   handleClick,
+  color = "gray",
   type = "button",
+  isFullWidth = false,
   isBtnDisabled = false,
 }) => {
   return (
@@ -20,10 +25,16 @@ const SecondaryButton: FC<SecondaryButtonProps> = ({
       type={type}
       onClick={handleClick}
       disabled={isBtnDisabled}
-      className="inline-flex items-center rounded-md bg-gray-200 px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-800"
+      className={classNames(
+        color === "gray" &&
+          "bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-800",
+        color === "dark" && "bg-gray-800 text-gray-100 hover:bg-gray-700",
+        isFullWidth && "w-full",
+        "inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-inset"
+      )}
     >
-      {btnIcon}
-      {btnTitle}
+      {icon}
+      {title}
     </button>
   );
 };
