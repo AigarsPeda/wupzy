@@ -53,6 +53,7 @@ export const tournamentRouter = createTRPCRouter({
               },
             },
           },
+          players: true,
         },
       });
 
