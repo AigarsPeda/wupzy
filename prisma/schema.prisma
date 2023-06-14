@@ -108,19 +108,19 @@ model Player {
 }
 
 model Game {
-  id           String     @id @default(cuid())
-  teamOneScore Int        @default(0)
-  teamTwoScore Int        @default(0)
-  gameSets     Json       @default("{}")
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-  teamOneId    String
-  teamOne      Team       @relation("teamOne", fields: [teamOneId], references: [id])
-  teamTwoId    String
-  teamTwo      Team       @relation("teamTwo", fields: [teamTwoId], references: [id])
-  tournamentId String
-  tournament   Tournament @relation(fields: [tournamentId], references: [id])
-  order        Int
+  id              String     @id @default(cuid())
+  teamOneSetScore Int        @default(0)
+  teamTwoSetScore Int        @default(0)
+  gameSets        Json       @default("{}")
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  teamOneId       String
+  teamOne         Team       @relation("teamOne", fields: [teamOneId], references: [id])
+  teamTwoId       String
+  teamTwo         Team       @relation("teamTwo", fields: [teamTwoId], references: [id])
+  tournamentId    String
+  tournament      Tournament @relation(fields: [tournamentId], references: [id])
+  order           Int
 }
 
 model EmailList {

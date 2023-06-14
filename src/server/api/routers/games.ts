@@ -1,16 +1,27 @@
-import z from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { GameSchema, GameSets } from "~/types/tournament.types";
+import { GameSets } from "~/types/tournament.types";
+import { GamesScoresSchema } from "~/types/utils.types";
+import getWinsPerTeam from "~/utils/getWinsPerTeam";
 
 export const gameRouter = createTRPCRouter({
   updateGame: protectedProcedure
-    .input(GameSchema)
-    .query(async ({ ctx, input }) => {
+    .input(GamesScoresSchema)
+    .mutation(async ({ ctx, input }) => {
       const { prisma } = ctx;
 
-      const finishedGames = input.gameSets
-        ? GameSets.parse(input.gameSets)
-        : {};
+      const game = await prisma.game.findUnique({
+        where: {
+          id: input.gameId,
+        },
+      });
+
+      if (!game) {
+        throw new Error("Game not found");
+      }
+
+      const finishedGames = game.gameSets ? GameSets.parse(game.gameSets) : {};
+
+      console.log("finishedGames 11 --->", finishedGames);
 
       const keys = Object.keys(finishedGames);
 
@@ -19,17 +30,23 @@ export const gameRouter = createTRPCRouter({
         teamTwo: input.teamTwoScore,
       };
 
-      const game = await prisma.game.update({
+      const { firstTeamWins, secondTeamWins } = getWinsPerTeam(
+        finishedGames,
+        input.teamOneScore,
+        input.teamTwoScore
+      );
+
+      const updateGame = await prisma.game.update({
         where: {
-          id: input.id,
+          id: input.gameId,
         },
         data: {
           gameSets: finishedGames,
-          teamOneScore: input.teamOneScore,
-          teamTwoScore: input.teamTwoScore,
+          teamOneSetScore: firstTeamWins,
+          teamTwoSetScore: secondTeamWins,
         },
       });
 
-      return { game };
+      return { game: updateGame };
     }),
 });

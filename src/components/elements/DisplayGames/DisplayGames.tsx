@@ -4,12 +4,14 @@ import SecondaryButton from "~/components/elements/SecondaryButton/SecondaryButt
 import TeamName from "~/components/elements/TeamName/TeamName";
 import { type GameType } from "~/types/tournament.types";
 import {
+  type GamesScoresType,
   type HandleScoreChangTypeArgs,
   type HandleScoreSaveTypeArgs,
 } from "~/types/utils.types";
 
 interface DisplayGamesProps {
   games: GameType[] | undefined;
+  gamesScores: GamesScoresType[];
   handleScoreSave: ({ game }: HandleScoreSaveTypeArgs) => void;
   handleScoreChange: ({
     num,
@@ -20,6 +22,7 @@ interface DisplayGamesProps {
 
 const DisplayGames: FC<DisplayGamesProps> = ({
   games,
+  gamesScores,
   handleScoreSave,
   handleScoreChange,
 }) => {
@@ -31,6 +34,10 @@ const DisplayGames: FC<DisplayGamesProps> = ({
       <div className="relative flex overflow-x-auto">
         <div className="ml-4 flex w-full space-x-3 overflow-x-auto pb-5 md:ml-0">
           {games?.map((game) => {
+            const gameScore = gamesScores.find(
+              (gameScore) => gameScore.gameId === game.id
+            );
+
             return (
               <div
                 key={game.id}
@@ -50,18 +57,17 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                   </div>
                   <div className="flex justify-between pb-4">
                     <NumberInput
-                      value={game?.teamOneScore}
+                      value={gameScore?.teamOneScore || 0}
                       onChange={(num) => {
                         handleScoreChange({
                           num,
                           gameId: game?.id,
                           teamId: game?.teamOne?.id,
                         });
-                        // console.log("hello", n);
                       }}
                     />
                     <NumberInput
-                      value={game?.teamTwoScore}
+                      value={gameScore?.teamTwoScore || 0}
                       onChange={(num) => {
                         handleScoreChange({
                           num,
@@ -71,6 +77,9 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                       }}
                     />
                   </div>
+                  <code className="text-xs text-gray-500">
+                    {JSON.stringify(game.gameSets)}
+                  </code>
                   <div className="flex items-center justify-end">
                     <SecondaryButton
                       type="button"

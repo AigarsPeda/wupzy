@@ -8,6 +8,7 @@ const TournamentPage: NextPage = () => {
   const {
     games,
     isLoading,
+    gamesScores,
     tournamentName,
     handleScoreSave,
     handleScoreChange,
@@ -22,6 +23,7 @@ const TournamentPage: NextPage = () => {
       <PageHeadLine title={tournamentName} />
       <DisplayGames
         games={games}
+        gamesScores={gamesScores}
         handleScoreSave={handleScoreSave}
         handleScoreChange={handleScoreChange}
       />

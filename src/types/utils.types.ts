@@ -18,3 +18,13 @@ export type HandleScoreSaveTypeArgs = {
 };
 
 export type LinkType = z.infer<typeof LinkSchema>;
+
+export const GamesScoresSchema = z.object({
+  gameId: z.string(),
+  teamOneId: z.string(),
+  teamTwoId: z.string(),
+  teamOneScore: z.number(),
+  teamTwoScore: z.number(),
+});
+
+export type GamesScoresType = z.infer<typeof GamesScoresSchema>;

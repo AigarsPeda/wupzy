@@ -33,6 +33,7 @@ export const tournamentRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
+
         include: {
           teams: {
             include: {
@@ -51,6 +52,9 @@ export const tournamentRouter = createTRPCRouter({
                   players: true,
                 },
               },
+            },
+            orderBy: {
+              order: "asc",
             },
           },
           players: true,

@@ -1,3 +1,4 @@
+import { type } from "os";
 import z from "zod";
 
 export const TournamentTypeEnum = z.enum(["king", "teams"]);
@@ -78,8 +79,8 @@ export const GameSchema = z.object({
   updatedAt: z.date(),
   teamOneId: z.string(),
   teamTwoId: z.string(),
-  teamOneScore: z.number(),
-  teamTwoScore: z.number(),
+  teamOneSetScore: z.number(),
+  teamTwoSetScore: z.number(),
   gameSets: GamesStatsUnion, // How to make JSON type?
   tournamentId: z.string().nullish(),
 });
