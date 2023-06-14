@@ -59,10 +59,19 @@ export const TeamSchema = z.object({
   tournamentId: z.string().nullish(),
 });
 
+export const GameSets = z.record(
+  z.string(),
+  z.object({
+    teamOne: z.number(),
+    teamTwo: z.number(),
+  })
+);
+
+const GamesStatsUnion = z.union([GameSets, z.unknown()]);
+
 export const GameSchema = z.object({
   id: z.string(),
   order: z.number(),
-  gameSets: z.any(),
   teamOne: TeamSchema,
   teamTwo: TeamSchema,
   createdAt: z.date(),
@@ -71,8 +80,20 @@ export const GameSchema = z.object({
   teamTwoId: z.string(),
   teamOneScore: z.number(),
   teamTwoScore: z.number(),
+  gameSets: GamesStatsUnion, // How to make JSON type?
   tournamentId: z.string().nullish(),
 });
+
+// export const GameScoreSchema = z.object(
+//   z.string(),
+//   z.object({
+//     gameId : z.string(),
+//     teamOneScore: z.number(),
+//     teamTwoScore: z.number(),
+//   })
+// );
+
+export type GameSetsType = z.infer<typeof GameSets>;
 
 export type GameType = z.infer<typeof GameSchema>;
 export type TeamType = z.infer<typeof TeamSchema>;
