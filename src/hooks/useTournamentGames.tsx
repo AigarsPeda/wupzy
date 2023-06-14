@@ -1,16 +1,23 @@
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import useTournament from "~/hooks/useTournament";
 import { type GameType } from "~/types/tournament.types";
 import {
-  type HandleScoreSaveTypeArgs,
-  type HandleScoreChangTypeArgs,
   type GamesScoresType,
+  type HandleScoreChangTypeArgs,
+  type HandleScoreSaveTypeArgs,
 } from "~/types/utils.types";
-import { api } from "../utils/api";
+import { api } from "~/utils/api";
 
 const useTournamentGames = () => {
-  const router = useRouter();
+  const getTournament = api.useContext().tournament.getTournament;
+  const { isLoading, tournament } = useTournament();
+  const [games, setGames] = useState<GameType[]>([]);
+  const { mutate } = api.game.updateGame.useMutation({
+    onSuccess: () => {
+      void getTournament.invalidate();
+    },
+  });
+
   const [gamesScores, setGamesScores] = useState<GamesScoresType[]>([
     {
       gameId: "",
@@ -20,9 +27,6 @@ const useTournamentGames = () => {
       teamTwoScore: 0,
     },
   ]);
-  const [games, setGames] = useState<GameType[]>([]);
-  const { mutate } = api.game.updateGame.useMutation();
-  const { isLoading, tournament, setTournamentId } = useTournament();
 
   const handleScoreChange = ({
     num,
@@ -51,26 +55,14 @@ const useTournamentGames = () => {
   };
 
   const handleScoreSave = ({ game }: HandleScoreSaveTypeArgs) => {
-    // TODO: Create json file with games set
-    // TODO: save score to db
-    console.log("game", game);
-
     const gameScore = gamesScores.find(
       (gameScore) => gameScore.gameId === game.id
     );
-
-    console.log("gameScore", gameScore);
 
     if (gameScore) {
       mutate(gameScore);
     }
   };
-
-  useEffect(() => {
-    if (router.query.id && typeof router.query.id === "string") {
-      setTournamentId(router.query.id);
-    }
-  }, [router.query.id, setTournamentId]);
 
   useEffect(() => {
     if (tournament?.games) {
@@ -79,10 +71,10 @@ const useTournamentGames = () => {
         tournament.games.map((game) => {
           return {
             gameId: game.id,
-            teamOneId: game.teamOneId,
-            teamTwoId: game.teamTwoId,
             teamOneScore: 0,
             teamTwoScore: 0,
+            teamOneId: game.teamOneId,
+            teamTwoId: game.teamTwoId,
           };
         })
       );

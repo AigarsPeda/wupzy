@@ -2,6 +2,7 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { GameSets } from "~/types/tournament.types";
 import { GamesScoresSchema } from "~/types/utils.types";
 import getWinsPerTeam from "~/utils/getWinsPerTeam";
+import z from "zod";
 
 export const gameRouter = createTRPCRouter({
   updateGame: protectedProcedure
@@ -48,5 +49,58 @@ export const gameRouter = createTRPCRouter({
       });
 
       return { game: updateGame };
+    }),
+
+  getGames: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { prisma } = ctx;
+
+      const games = await prisma.game.findMany({
+        where: {
+          tournamentId: input.id,
+        },
+        orderBy: {
+          order: "asc",
+        },
+      });
+
+      // const tournament = await prisma.tournament.findUnique({
+      //   where: {
+      //     id: input.id,
+      //   },
+
+      //   include: {
+      //     teams: {
+      //       include: {
+      //         players: true,
+      //       },
+      //     },
+      //     games: {
+      //       include: {
+      //         teamOne: {
+      //           include: {
+      //             players: true,
+      //           },
+      //         },
+      //         teamTwo: {
+      //           include: {
+      //             players: true,
+      //           },
+      //         },
+      //       },
+      //       orderBy: {
+      //         order: "asc",
+      //       },
+      //     },
+      //     players: true,
+      //   },
+      // });
+
+      return { games };
     }),
 });
