@@ -1,8 +1,8 @@
 import z from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import createGames from "~/server/api/utils/createGames";
-import createTeams from "~/utils/createTeams";
 import { NewTournamentSchema } from "~/types/tournament.types";
+import createTeams from "~/utils/createTeams";
 
 export const tournamentRouter = createTRPCRouter({
   getAllTournaments: protectedProcedure.query(async ({ ctx }) => {
@@ -32,32 +32,6 @@ export const tournamentRouter = createTRPCRouter({
       const tournament = await prisma.tournament.findUnique({
         where: {
           id: input.id,
-        },
-
-        include: {
-          teams: {
-            include: {
-              players: true,
-            },
-          },
-          games: {
-            include: {
-              teamOne: {
-                include: {
-                  players: true,
-                },
-              },
-              teamTwo: {
-                include: {
-                  players: true,
-                },
-              },
-            },
-            orderBy: {
-              order: "asc",
-            },
-          },
-          players: true,
         },
       });
 

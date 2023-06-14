@@ -64,42 +64,22 @@ export const gameRouter = createTRPCRouter({
         where: {
           tournamentId: input.id,
         },
+        include: {
+          teamOne: {
+            include: {
+              players: true,
+            },
+          },
+          teamTwo: {
+            include: {
+              players: true,
+            },
+          },
+        },
         orderBy: {
           order: "asc",
         },
       });
-
-      // const tournament = await prisma.tournament.findUnique({
-      //   where: {
-      //     id: input.id,
-      //   },
-
-      //   include: {
-      //     teams: {
-      //       include: {
-      //         players: true,
-      //       },
-      //     },
-      //     games: {
-      //       include: {
-      //         teamOne: {
-      //           include: {
-      //             players: true,
-      //           },
-      //         },
-      //         teamTwo: {
-      //           include: {
-      //             players: true,
-      //           },
-      //         },
-      //       },
-      //       orderBy: {
-      //         order: "asc",
-      //       },
-      //     },
-      //     players: true,
-      //   },
-      // });
 
       return { games };
     }),

@@ -10,7 +10,7 @@ import {
 } from "~/types/utils.types";
 
 interface DisplayGamesProps {
-  games: GameType[] | undefined;
+  games: GameType[];
   gamesScores: GamesScoresType[];
   handleScoreSave: ({ game }: HandleScoreSaveTypeArgs) => void;
   handleScoreChange: ({
@@ -43,7 +43,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                 key={game.id}
                 className="rounded-md border border-gray-300 bg-gradient-to-br from-gray-100 to-white p-3 shadow-sm"
               >
-                <div className="w-72">
+                <div className="flex h-full w-72 flex-col justify-between">
                   <div className="mb-2">
                     <div className="grid grid-cols-12">
                       <TeamName name={game?.teamOne?.name} />

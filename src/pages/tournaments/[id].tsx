@@ -3,16 +3,13 @@ import DisplayGames from "~/components/elements/DisplayGames/DisplayGames";
 import PageHeadLine from "~/components/elements/PageHeadLine/PageHeadLine";
 import Spinner from "~/components/elements/Spinner/Spinner";
 import useTournamentGames from "~/hooks/useTournamentGames";
+import useTournament from "../../hooks/useTournament";
 
 const TournamentPage: NextPage = () => {
-  const {
-    games,
-    isLoading,
-    gamesScores,
-    tournamentName,
-    handleScoreSave,
-    handleScoreChange,
-  } = useTournamentGames();
+  const { tournament } = useTournament();
+
+  const { games, isLoading, gamesScores, handleScoreSave, handleScoreChange } =
+    useTournamentGames();
 
   if (isLoading) {
     return <Spinner size="small" />;
@@ -20,7 +17,7 @@ const TournamentPage: NextPage = () => {
 
   return (
     <div>
-      <PageHeadLine title={tournamentName} />
+      <PageHeadLine title={tournament?.name} />
       <DisplayGames
         games={games}
         gamesScores={gamesScores}
