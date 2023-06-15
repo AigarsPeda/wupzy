@@ -1,6 +1,6 @@
 import { type Team } from "@prisma/client";
 
-const createGames = (teams: Team[], tournamentId: string) => {
+const createGames = (teams: Team[], tournamentId: string, round: number) => {
   let order = 1;
   const games = [];
   for (let i = 0; i < teams.length; i++) {
@@ -10,6 +10,7 @@ const createGames = (teams: Team[], tournamentId: string) => {
 
       if (teamOneId && teamTwoId) {
         games.push({
+          round,
           teamOneId,
           teamTwoId,
           tournamentId,

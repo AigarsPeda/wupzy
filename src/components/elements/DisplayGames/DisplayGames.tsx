@@ -49,6 +49,14 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                   className="rounded-md border border-gray-300 bg-gradient-to-br from-gray-100 to-white p-3 shadow-sm"
                 >
                   <div className="flex h-full w-72 flex-col justify-between">
+                    <div className="mb-4 flex space-x-1">
+                      <p className="rounded-md bg-gray-400 px-1 py-0.5 font-primary text-xs font-normal capitalize text-gray-50">
+                        Game {game?.order}
+                      </p>
+                      <p className="rounded-md bg-gray-400 p-1 py-0.5 font-primary text-xs font-normal capitalize text-gray-50">
+                        Round {game?.round}
+                      </p>
+                    </div>
                     <div className="mb-2">
                       <div className="grid grid-cols-12">
                         <TeamName name={game?.teamOne?.name} />

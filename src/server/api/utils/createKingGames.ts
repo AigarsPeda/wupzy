@@ -5,7 +5,8 @@ const createKingGames = (
   teams: (Team & {
     players: Player[];
   })[],
-  tournamentId: string
+  tournamentId: string,
+  round: number
 ) => {
   let order = 1;
   const games = [];
@@ -23,6 +24,7 @@ const createKingGames = (
         !isAnyIdTheSame(firstTeamsIds, secondTeamsIds)
       ) {
         games.push({
+          round,
           teamOneId,
           teamTwoId,
           tournamentId,

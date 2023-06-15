@@ -1,7 +1,7 @@
 import z from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import createGames from "~/server/api/utils/createGames";
-import createKingGames from "~/server/api/utils/createKingGames";
+import createGamesNTimes from "~/server/api/utils/createGamesNTimes";
+import createKingGamesNTimes from "~/server/api/utils/createKingGamesNTimes";
 import { NewTournamentSchema } from "~/types/tournament.types";
 import createTeams from "~/utils/createTeams";
 
@@ -43,7 +43,6 @@ export const tournamentRouter = createTRPCRouter({
     .input(NewTournamentSchema)
     .mutation(async ({ ctx, input }) => {
       const { prisma } = ctx;
-      // let newTeams = input.teams;
 
       if (input.kind === "king") {
         const { players, id } = await prisma.tournament.create({
@@ -71,8 +70,8 @@ export const tournamentRouter = createTRPCRouter({
           if (element) {
             await prisma.team.create({
               data: {
-                name: element.name,
                 tournamentId: id,
+                name: element.name,
                 players: {
                   connect: element.players.map((player) => ({
                     id: player.id,
@@ -92,10 +91,8 @@ export const tournamentRouter = createTRPCRouter({
           },
         });
 
-        // const unfilteredGames = createKingGames(teams, id);
-
         await prisma.game.createMany({
-          data: createKingGames(teams, id),
+          data: createKingGamesNTimes(teams, id, input.rounds),
         });
 
         return { id };
@@ -123,7 +120,7 @@ export const tournamentRouter = createTRPCRouter({
         });
 
         await prisma.game.createMany({
-          data: createGames(teams, id),
+          data: createGamesNTimes(teams, id, input.rounds),
         });
 
         return { id };

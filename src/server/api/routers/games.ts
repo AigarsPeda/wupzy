@@ -1,9 +1,8 @@
 import z from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import updatePlayerScores from "~/server/api/utils/updatePlayerScores";
-import { GameSets } from "~/types/tournament.types";
 import { GamesScoresSchema } from "~/types/utils.types";
-import getGameWinner from "~/utils/getGameWinner";
+import createGameSetJson from "~/utils/createGameSetJson";
 
 export const gameRouter = createTRPCRouter({
   updateGame: protectedProcedure
@@ -48,32 +47,22 @@ export const gameRouter = createTRPCRouter({
         throw new Error("Game not found");
       }
 
-      let finishedGames = game.gameSets ? GameSets.parse(game.gameSets) : {};
-      const keys = Object.keys(finishedGames);
-
-      const { winner, firstTeamWins, secondTeamWins } = getGameWinner({
-        finishedGames,
-        scores: input.scores,
-        setToWin: tournament.sets,
-      });
-
-      finishedGames = {
-        ...finishedGames,
-        [keys.length + 1]: {
-          teamOne: input.scores.teamOneScore,
-          teamTwo: input.scores.teamTwoScore,
-        },
-      };
+      const { winner, finishedGames, firstTeamWins, secondTeamWins } =
+        createGameSetJson({
+          json: game.gameSets,
+          scores: input.scores,
+          setToWin: tournament.sets,
+        });
 
       const updateGame = await prisma.game.update({
         where: {
           id: input.scores.gameId,
         },
         data: {
+          winnerId: winner,
           gameSets: finishedGames,
           teamOneSetScore: firstTeamWins,
           teamTwoSetScore: secondTeamWins,
-          winnerId: winner,
         },
       });
 
@@ -123,9 +112,7 @@ export const gameRouter = createTRPCRouter({
             },
           },
         },
-        orderBy: {
-          order: "asc",
-        },
+        orderBy: [{ round: "asc" }, { order: "asc" }],
       });
 
       return { games };

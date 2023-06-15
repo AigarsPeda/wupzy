@@ -20,6 +20,7 @@ const NewTournamentForm: FC = () => {
     handleAddPlayer,
     addPlayerToTeam,
     handleSetSelect,
+    handleSetRounds,
     updateTeamsTeamName,
     changeTournamentName,
     changeTournamentKind,
@@ -37,11 +38,19 @@ const NewTournamentForm: FC = () => {
 
   useEffect(() => {
     if (newTournament.kind === "king") {
-      setGameCount(kingGameCount(createTeams(newTournament.king.players)));
+      setGameCount(
+        kingGameCount(createTeams(newTournament.king.players)) *
+          newTournament.rounds
+      );
     } else if (newTournament.kind === "teams") {
-      setGameCount(countNewGames(newTournament.teams));
+      setGameCount(countNewGames(newTournament.teams) * newTournament.rounds);
     }
-  }, [newTournament.kind, newTournament.king.players, newTournament.teams]);
+  }, [
+    newTournament.kind,
+    newTournament.teams,
+    newTournament.rounds,
+    newTournament.king.players,
+  ]);
 
   return (
     <form
@@ -95,20 +104,36 @@ const NewTournamentForm: FC = () => {
         </div>
 
         <div className="border-b border-gray-900/10 pb-12">
-          <fieldset>
-            <legend className="text-base font-semibold leading-7 text-gray-900">
-              Set count
-            </legend>
-            <p className="mt-1 text-sm leading-6 text-gray-600">
-              Select sets count to win game.
-            </p>
-            <div className="mt-4 grid grid-cols-2 sm:grid-cols-4">
-              <SetSelect
-                handleSetSelect={handleSetSelect}
-                selectedSetCount={newTournament.sets}
-              />
-            </div>
-          </fieldset>
+          <div className="flex">
+            <fieldset>
+              <legend className="text-base font-semibold leading-7 text-gray-900">
+                Set count
+              </legend>
+              <p className="mt-1 text-sm leading-6 text-gray-600">
+                Select sets count to win game.
+              </p>
+              <div className="mt-4 grid grid-cols-2 sm:grid-cols-4">
+                <SetSelect
+                  handleSetSelect={handleSetSelect}
+                  selectedSetCount={newTournament.sets}
+                />
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend className="text-base font-semibold leading-7 text-gray-900">
+                Rounds
+              </legend>
+              <p className="mt-1 text-sm leading-6 text-gray-600">
+                Choose rounds for game play.
+              </p>
+              <div className="mt-4 grid grid-cols-2 sm:grid-cols-4">
+                <SetSelect
+                  handleSetSelect={handleSetRounds}
+                  selectedSetCount={newTournament.rounds}
+                />
+              </div>
+            </fieldset>
+          </div>
         </div>
 
         <div className="relative overflow-hidden border-b border-gray-900/10 pb-12">

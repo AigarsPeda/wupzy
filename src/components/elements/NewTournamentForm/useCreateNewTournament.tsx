@@ -13,9 +13,10 @@ import validatedTournamentKing from "~/utils/validatedTournamentKing";
 
 const useCreateNewTournament = () => {
   const [newTournament, setNewTournament] = useState<NewTournamentType>({
-    name: "",
-    kind: "king",
     sets: 1,
+    name: "",
+    rounds: 1,
+    kind: "king",
     king: {
       players: [
         {
@@ -209,12 +210,20 @@ const useCreateNewTournament = () => {
     });
   };
 
+  const handleSetRounds = (rounds: number) => {
+    setNewTournament({
+      ...newTournament,
+      rounds,
+    });
+  };
+
   return {
     newTournament,
     handleAddTeam,
     handleAddPlayer,
     addPlayerToTeam,
     handleSetSelect,
+    handleSetRounds,
     updateTeamsTeamName,
     changeTournamentKind,
     changeTournamentName,

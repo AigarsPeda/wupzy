@@ -17,6 +17,7 @@ const TournamentPage: NextPage = () => {
       ) : (
         <PageHeadLine title={tournament?.name} />
       )}
+
       <DisplayGames
         games={games}
         gamesScores={gamesScores}

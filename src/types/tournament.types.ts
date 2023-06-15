@@ -18,6 +18,7 @@ export const NewTeamsSchema = z.object({
 export const NewTournamentSchema = z.object({
   name: z.string(),
   sets: z.number(),
+  rounds: z.number(),
   kind: TournamentTypeEnum,
   teams: z.array(NewTeamsSchema),
   king: z.object({
@@ -72,6 +73,7 @@ const GamesStatsUnion = z.union([GameSets, z.unknown()]);
 export const GameSchema = z.object({
   id: z.string(),
   order: z.number(),
+  round: z.number(),
   teamOne: TeamSchema,
   teamTwo: TeamSchema,
   createdAt: z.date(),
