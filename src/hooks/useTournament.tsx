@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import { api } from "../utils/api";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { api } from "~/utils/api";
 
 const useTournament = () => {
   const router = useRouter();

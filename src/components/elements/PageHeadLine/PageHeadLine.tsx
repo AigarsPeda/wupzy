@@ -5,7 +5,11 @@ interface PageHeadLineProps {
 }
 
 const PageHeadLine: FC<PageHeadLineProps> = ({ title }) => {
-  return <h1 className="mt-2 text-3xl">{title || ""}</h1>;
+  return (
+    <div className=" max-w-md">
+      <h1 className="mt-2 truncate text-3xl">{title || ""}</h1>
+    </div>
+  );
 };
 
 export default PageHeadLine;

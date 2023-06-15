@@ -1,8 +1,8 @@
 import { type FC } from "react";
+import TournamentTypeIconDisplay from "~/components/elements/TournamentTypeIconDisplay/TournamentTypeIconDisplay";
 import useRedirect from "~/hooks/useRedirect";
 import { type TournamentType } from "~/types/tournament.types";
 import formatDate from "~/utils/formatDate";
-import TournamentTypeIconDisplay from "../TournamentTypeIconDisplay/TournamentTypeIconDisplay";
 
 interface TournamentCardProps {
   tournament: TournamentType;
@@ -22,7 +22,7 @@ const TournamentCard: FC<TournamentCardProps> = ({ tournament }) => {
             {tournament.type}
           </p>
         </div>
-        <h1 className="py-5 font-primary text-xl font-medium text-gray-900">
+        <h1 className="truncate py-5 font-primary text-xl font-medium text-gray-900">
           {tournament.name}
         </h1>
 

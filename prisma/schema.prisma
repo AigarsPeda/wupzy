@@ -91,6 +91,7 @@ model Team {
   players      Player[]   @relation("TeamPlayers")
   teamOne      Game[]     @relation("teamOne")
   teamTwo      Game[]     @relation("teamTwo")
+  winnerTeam   Game[]     @relation("winnerTeam")
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
   group        String     @default("A")
@@ -100,11 +101,13 @@ model Player {
   id           String      @id @default(cuid())
   name         String
   teams        Team[]      @relation("TeamPlayers")
-  // tournaments Tournament[]
   tournament   Tournament? @relation(fields: [tournamentId], references: [id])
   tournamentId String?
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
+  points       Int         @default(0)
+  setsWon      Int         @default(0)
+  gamesWon     Int         @default(0)
 }
 
 model Game {
@@ -121,6 +124,8 @@ model Game {
   tournamentId    String
   tournament      Tournament @relation(fields: [tournamentId], references: [id])
   order           Int
+  winnerId        String?
+  winnerTeamId    Team?      @relation("winnerTeam", fields: [winnerId], references: [id])
 }
 
 model EmailList {

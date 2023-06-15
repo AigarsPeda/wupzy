@@ -84,18 +84,8 @@ export const GameSchema = z.object({
   tournamentId: z.string().nullish(),
 });
 
-// export const GameScoreSchema = z.object(
-//   z.string(),
-//   z.object({
-//     gameId : z.string(),
-//     teamOneScore: z.number(),
-//     teamTwoScore: z.number(),
-//   })
-// );
-
-export type GameSetsType = z.infer<typeof GameSets>;
-
 export type GameType = z.infer<typeof GameSchema>;
 export type TeamType = z.infer<typeof TeamSchema>;
+export type GameSetsType = z.infer<typeof GameSets>;
 export type PlayerType = z.infer<typeof PlayerSchema>;
 export type TournamentType = z.infer<typeof TournamentSchema>;

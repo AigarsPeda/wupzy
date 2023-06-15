@@ -6,13 +6,13 @@ import {
   type HandleScoreSaveTypeArgs,
 } from "~/types/utils.types";
 import { api } from "~/utils/api";
-import validateIsString from "~/utils/validateIsString";
 
 const useTournamentGames = () => {
-  const { isReady, query } = useRouter();
+  const { query } = useRouter();
+  const [tournamentId, setTournamentId] = useState("");
   const { data, isLoading, refetch } = api.game.getGames.useQuery(
-    { id: validateIsString(query.id) ? query.id : "" },
-    { enabled: isReady && validateIsString(query.id) }
+    { id: tournamentId },
+    { enabled: Boolean(tournamentId) }
   );
 
   const { mutate } = api.game.updateGame.useMutation({
@@ -28,6 +28,7 @@ const useTournamentGames = () => {
       teamTwoId: "",
       teamOneScore: 0,
       teamTwoScore: 0,
+      isSaving: false,
     },
   ]);
 
@@ -63,9 +64,30 @@ const useTournamentGames = () => {
     );
 
     if (gameScore) {
-      mutate(gameScore);
+      setGamesScores(
+        gamesScores.map((gameScore) => {
+          if (gameScore.gameId === game.id) {
+            return {
+              ...gameScore,
+              isSaving: true,
+            };
+          }
+          return gameScore;
+        })
+      );
+
+      mutate({
+        tournamentId,
+        scores: gameScore,
+      });
     }
   };
+
+  useEffect(() => {
+    if (query.id && typeof query.id === "string") {
+      setTournamentId(query.id);
+    }
+  }, [query.id, setTournamentId]);
 
   useEffect(() => {
     if (data?.games) {
@@ -75,6 +97,7 @@ const useTournamentGames = () => {
             gameId: game.id,
             teamOneScore: 0,
             teamTwoScore: 0,
+            isSaving: false,
             teamOneId: game.teamOneId,
             teamTwoId: game.teamTwoId,
           };

@@ -20,28 +20,24 @@ const createTeams = (players: Player[] | NewPlayerType[]) => {
         playerTwo.name.trim() !== ""
       ) {
         const playerOneId = playerOne.id;
-        // typeof playerOne.id === "number"
-        //   ? playerOne.id
-        //   : parseInt(playerOne.id);
         const playerTwoId = playerTwo.id;
-        // typeof playerTwo.id === "number"
-        //   ? playerTwo.id
-        //   : parseInt(playerTwo.id);
 
-        newTeams.push({
-          id: (id++).toString(),
-          name: `${playerOne.name}  ${playerTwo.name}`,
-          players: [
-            {
-              id: playerOneId,
-              name: playerOne.name,
-            },
-            {
-              id: playerTwoId,
-              name: playerTwo.name,
-            },
-          ],
-        });
+        if (playerOneId !== playerTwoId) {
+          newTeams.push({
+            id: (id++).toString(),
+            name: `${playerOne.name}  ${playerTwo.name}`,
+            players: [
+              {
+                id: playerOneId,
+                name: playerOne.name,
+              },
+              {
+                id: playerTwoId,
+                name: playerTwo.name,
+              },
+            ],
+          });
+        }
       }
     }
   }

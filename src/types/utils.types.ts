@@ -23,6 +23,7 @@ export const GamesScoresSchema = z.object({
   gameId: z.string(),
   teamOneId: z.string(),
   teamTwoId: z.string(),
+  isSaving: z.boolean(),
   teamOneScore: z.number(),
   teamTwoScore: z.number(),
 });

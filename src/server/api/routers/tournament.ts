@@ -1,6 +1,7 @@
 import z from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import createGames from "~/server/api/utils/createGames";
+import createKingGames from "~/server/api/utils/createKingGames";
 import { NewTournamentSchema } from "~/types/tournament.types";
 import createTeams from "~/utils/createTeams";
 
@@ -86,10 +87,15 @@ export const tournamentRouter = createTRPCRouter({
           where: {
             tournamentId: id,
           },
+          include: {
+            players: true,
+          },
         });
 
+        // const unfilteredGames = createKingGames(teams, id);
+
         await prisma.game.createMany({
-          data: createGames(teams, id),
+          data: createKingGames(teams, id),
         });
 
         return { id };

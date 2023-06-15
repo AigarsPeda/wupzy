@@ -11,6 +11,7 @@ import { api } from "~/utils/api";
 import classNames from "~/utils/classNames";
 import countNewGames from "~/utils/countNewGames";
 import createTeams from "~/utils/createTeams";
+import kingGameCount from "~/utils/kingGameCount";
 
 const NewTournamentForm: FC = () => {
   const {
@@ -36,7 +37,7 @@ const NewTournamentForm: FC = () => {
 
   useEffect(() => {
     if (newTournament.kind === "king") {
-      setGameCount(countNewGames(createTeams(newTournament.king.players)));
+      setGameCount(kingGameCount(createTeams(newTournament.king.players)));
     } else if (newTournament.kind === "teams") {
       setGameCount(countNewGames(newTournament.teams));
     }
