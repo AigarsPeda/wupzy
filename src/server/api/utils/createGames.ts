@@ -1,4 +1,5 @@
 import { type Team } from "@prisma/client";
+import shuffleArray from "~/utils/shuffleArray";
 
 const createGames = (teams: Team[], tournamentId: string, round: number) => {
   let order = 1;
@@ -20,7 +21,9 @@ const createGames = (teams: Team[], tournamentId: string, round: number) => {
     }
   }
 
-  return games;
+  const gamesShuffle = shuffleArray(games);
+
+  return gamesShuffle;
 };
 
 export default createGames;

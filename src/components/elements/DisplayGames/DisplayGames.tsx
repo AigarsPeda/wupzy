@@ -71,21 +71,20 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                         </div>
                         <TeamName name={game?.teamTwo?.name} />
                       </div>
-
-                      {isWinnerFound && (
-                        <div className="flex justify-around">
-                          <DisplayScore
-                            score={game.teamOneSetScore}
-                            isWinner={game.teamOneId === game.winnerId}
-                          />
-                          <DisplayScore
-                            score={game.teamTwoSetScore}
-                            isWinner={game.teamTwoId === game.winnerId}
-                          />
-                        </div>
-                      )}
                     </div>
-                    {!isWinnerFound && (
+
+                    {isWinnerFound ? (
+                      <div className="mb-3 flex h-11 justify-around">
+                        <DisplayScore
+                          score={game.teamOneSetScore}
+                          isWinner={game.teamOneId === game.winnerId}
+                        />
+                        <DisplayScore
+                          score={game.teamTwoSetScore}
+                          isWinner={game.teamTwoId === game.winnerId}
+                        />
+                      </div>
+                    ) : (
                       <div className="flex justify-between pb-4">
                         <NumberInput
                           value={gameScore?.teamOneScore || 0}
@@ -112,7 +111,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
 
                     <DisplaySetScore game={game} />
 
-                    <div className="flex items-center justify-end">
+                    <div className="flex min-h-[2.5rem] items-center justify-end">
                       {!isWinnerFound && (
                         <SecondaryButton
                           type="button"
@@ -139,8 +138,8 @@ const DisplayGames: FC<DisplayGamesProps> = ({
             </>
           )}
         </div>
-        <div className="z-1 absolute left-1 top-0 h-full w-5 bg-gradient-to-r from-gray-50 to-transparent md:-left-2" />
-        <div className="z-1 absolute right-0 top-0 h-full w-5 bg-gradient-to-r from-transparent to-gray-50 md:w-14" />
+        <div className="z-1 absolute -left-2 top-0 h-full w-5 bg-gradient-to-r from-gray-50 to-transparent" />
+        <div className="z-1 absolute -right-2 top-0 h-full w-5 bg-gradient-to-r from-transparent to-gray-50" />
       </div>
     </div>
   );

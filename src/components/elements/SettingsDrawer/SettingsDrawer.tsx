@@ -11,7 +11,7 @@ const SettingsDrawer: FC = () => {
         )}
       >
         <h1>Tournament setting</h1>
-        <p>Randomize game order</p>
+        <p className="text-pink-500">Coming soon...</p>
       </div>
     </TopDrawerLayout>
   );
