@@ -1,4 +1,6 @@
 import { type FC } from "react";
+import DisplayScore from "~/components/elements/DisplayScore/DisplayScore";
+import DisplaySetScore from "~/components/elements/DisplaySetScore/DisplaySetScore";
 import LoadingSkeleton from "~/components/elements/LoadingSkeleton/LoadingSkeleton";
 import NumberInput from "~/components/elements/NumberInput/NumberInput";
 import SecondaryButton from "~/components/elements/SecondaryButton/SecondaryButton";
@@ -43,6 +45,8 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                 (gameScore) => gameScore.gameId === game.id
               );
 
+              const isWinnerFound = Boolean(game.winnerId);
+
               return (
                 <div
                   key={game.id}
@@ -67,44 +71,61 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                         </div>
                         <TeamName name={game?.teamTwo?.name} />
                       </div>
+
+                      {isWinnerFound && (
+                        <div className="flex justify-around">
+                          <DisplayScore
+                            score={game.teamOneSetScore}
+                            isWinner={game.teamOneId === game.winnerId}
+                          />
+                          <DisplayScore
+                            score={game.teamTwoSetScore}
+                            isWinner={game.teamTwoId === game.winnerId}
+                          />
+                        </div>
+                      )}
                     </div>
-                    <div className="flex justify-between pb-4">
-                      <NumberInput
-                        value={gameScore?.teamOneScore || 0}
-                        onChange={(num) => {
-                          handleScoreChange({
-                            num,
-                            gameId: game?.id,
-                            teamId: game?.teamOne?.id,
-                          });
-                        }}
-                      />
-                      <NumberInput
-                        value={gameScore?.teamTwoScore || 0}
-                        onChange={(num) => {
-                          handleScoreChange({
-                            num,
-                            gameId: game?.id,
-                            teamId: game?.teamTwo?.id,
-                          });
-                        }}
-                      />
-                    </div>
-                    <code className="text-xs text-gray-500">
-                      {JSON.stringify(game.gameSets)}
-                    </code>
+                    {!isWinnerFound && (
+                      <div className="flex justify-between pb-4">
+                        <NumberInput
+                          value={gameScore?.teamOneScore || 0}
+                          onChange={(num) => {
+                            handleScoreChange({
+                              num,
+                              gameId: game?.id,
+                              teamId: game?.teamOne?.id,
+                            });
+                          }}
+                        />
+                        <NumberInput
+                          value={gameScore?.teamTwoScore || 0}
+                          onChange={(num) => {
+                            handleScoreChange({
+                              num,
+                              gameId: game?.id,
+                              teamId: game?.teamTwo?.id,
+                            });
+                          }}
+                        />
+                      </div>
+                    )}
+
+                    <DisplaySetScore game={game} />
+
                     <div className="flex items-center justify-end">
-                      <SecondaryButton
-                        type="button"
-                        color="dark"
-                        title="Save"
-                        isLoading={gameScore?.isSaving}
-                        handleClick={() =>
-                          handleScoreSave({
-                            game,
-                          })
-                        }
-                      />
+                      {!isWinnerFound && (
+                        <SecondaryButton
+                          type="button"
+                          color="dark"
+                          title="Save"
+                          isLoading={gameScore?.isSaving}
+                          handleClick={() =>
+                            handleScoreSave({
+                              game,
+                            })
+                          }
+                        />
+                      )}
                     </div>
                   </div>
                 </div>

@@ -83,6 +83,7 @@ export const GameSchema = z.object({
   teamOneSetScore: z.number(),
   teamTwoSetScore: z.number(),
   gameSets: GamesStatsUnion, // How to make JSON type?
+  winnerId: z.string().nullish(),
   tournamentId: z.string().nullish(),
 });
 
