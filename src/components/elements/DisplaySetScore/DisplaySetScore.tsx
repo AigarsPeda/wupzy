@@ -8,18 +8,18 @@ interface DisplaySetScoreProps {
 
 const DisplaySetScore: FC<DisplaySetScoreProps> = ({ game }) => {
   return (
-    <div className="mx-auto min-h-[5rem] w-52">
+    <div className="mx-auto min-h-[5rem] w-56 md:w-52">
       <div className="grid grid-cols-12 gap-x-3">
-        <div className="col-span-2 text-center">
-          <p className="font-primary text-xs text-gray-300">Sets</p>
+        <div className="col-span-4 text-center">
+          <p className="font-primary text-xs text-gray-900">Sets</p>
         </div>
-        <div className="col-span-5 text-center">
-          <p className="truncate font-primary text-xs text-gray-300">
+        <div className="col-span-4 text-center">
+          <p className="truncate font-primary text-xs text-gray-900">
             {game?.teamOne?.name}
           </p>
         </div>
-        <div className="col-span-5 text-center">
-          <p className="truncate font-primary text-xs text-gray-300">
+        <div className="col-span-4 text-center">
+          <p className="truncate font-primary text-xs text-gray-900">
             {game?.teamTwo?.name}
           </p>
         </div>
@@ -30,27 +30,27 @@ const DisplaySetScore: FC<DisplaySetScoreProps> = ({ game }) => {
           ([key, value], i) => {
             return (
               <Fragment key={i}>
-                <div className="col-span-2 text-center">
-                  <p className="font-primary text-xs text-gray-300">{key}</p>
+                <div className="col-span-4 text-center">
+                  <p className="font-primary text-xs text-gray-900">{key}</p>
                 </div>
-                <div className="col-span-5 text-center">
+                <div className="col-span-4 text-center">
                   <p
                     className={classNames(
                       value.teamOne > value.teamTwo
-                        ? "text-gray-300"
-                        : "text-gray-200",
+                        ? "text-gray-900"
+                        : "text-gray-900",
                       "font-primary text-xs"
                     )}
                   >
                     {value.teamOne}
                   </p>
                 </div>
-                <div className="col-span-5 text-center">
+                <div className="col-span-4 text-center">
                   <p
                     className={classNames(
                       value.teamOne < value.teamTwo
-                        ? "text-gray-300"
-                        : "text-gray-200",
+                        ? "text-gray-900"
+                        : "text-gray-900",
                       "font-primary text-xs"
                     )}
                   >

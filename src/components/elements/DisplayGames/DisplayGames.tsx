@@ -71,7 +71,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
               return (
                 <div
                   key={game.id}
-                  className="rounded-md border border-gray-900 bg-gradient-to-br from-gray-900 to-gray-800 p-3 shadow shadow-gray-700"
+                  className="m-2 rounded-md border border-gray-200 bg-gradient-to-br from-gray-200 via-gray-200 to-gray-200 p-3 shadow shadow-gray-200"
                 >
                   <div
                     className={classNames(
@@ -90,8 +90,8 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                     <div className="mb-2 mt-4">
                       <div className="grid grid-cols-12">
                         <TeamName name={game?.teamOne?.name} />
-                        <div className="col-span-2 place-items-center text-center">
-                          <p className="text-sm text-gray-300">vs</p>
+                        <div className="col-span-2 text-center">
+                          <p className="text-sm text-gray-900"></p>
                         </div>
                         <TeamName name={game?.teamTwo?.name} />
                       </div>
@@ -118,8 +118,8 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                         </div>
                       </div>
                     ) : (
-                      <div className="mx-auto mb-6 grid grid-cols-12">
-                        <div className="col-span-5">
+                      <div className="mx-auto mb-6 grid grid-cols-10">
+                        <div className="col-span-4">
                           <NumberInput
                             value={gameScore?.teamOneScore || 0}
                             onChange={(num) => {
@@ -131,13 +131,11 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                             }}
                           />
                         </div>
-                        <div className="col-span-2 text-center">
-                          <p className="content-center text-sm text-gray-300">
-                            {""}
-                          </p>
+                        <div className="col-span-2 flex items-center justify-center text-center">
+                          <p className="text-sm text-gray-800">vs</p>
                         </div>
 
-                        <div className="col-span-5">
+                        <div className="col-span-4">
                           <NumberInput
                             value={gameScore?.teamTwoScore || 0}
                             onChange={(num) => {
@@ -158,7 +156,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                       {!isWinnerFound && (
                         <SecondaryButton
                           type="button"
-                          color="gray"
+                          color="dark"
                           title="Save"
                           isLoading={gameScore?.isSaving}
                           handleClick={() =>

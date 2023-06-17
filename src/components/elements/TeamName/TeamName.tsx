@@ -7,7 +7,7 @@ interface TeamNameProps {
 const TeamName: FC<TeamNameProps> = ({ name }) => {
   return (
     <div className="col-span-5 text-center">
-      <p className="truncate whitespace-nowrap font-primary text-lg font-medium tracking-wider text-gray-50">
+      <p className="truncate whitespace-nowrap font-primary text-lg font-medium tracking-wider text-gray-900">
         {name}
       </p>
     </div>

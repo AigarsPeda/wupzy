@@ -13,12 +13,12 @@ const NumberInput: FC<NumberInputProps> = ({ value, height, onChange }) => {
     <div
       className={classNames(
         height ? height : "h-11",
-        "relative flex w-[7.5rem] border-collapse flex-row rounded-lg border-transparent bg-transparent"
+        "relative flex w-[7.5rem] border-collapse flex-row rounded-lg border border-gray-400 border-transparent bg-transparent"
       )}
     >
       <button
         data-action="decrement"
-        className="flex h-full w-20 cursor-pointer items-center justify-center rounded-l bg-gray-200 text-gray-800 outline-none transition-all hover:bg-gray-700 hover:text-pink-500"
+        className="flex h-full w-20 cursor-pointer items-center justify-center rounded-l-[0.45rem] bg-gray-200 text-gray-800 outline-none transition-all hover:bg-gray-700 hover:text-gray-100"
         onClick={() => {
           if (value > 0) {
             onChange(value - 1);
@@ -45,7 +45,7 @@ const NumberInput: FC<NumberInputProps> = ({ value, height, onChange }) => {
       ></input>
       <button
         data-action="increment"
-        className="flex h-full w-20 cursor-pointer items-center justify-center rounded-r bg-gray-200 text-gray-800 transition-all hover:bg-gray-700 hover:text-pink-500"
+        className="flex h-full w-20 cursor-pointer items-center justify-center rounded-r-[0.45rem] bg-gray-200 text-gray-800 transition-all hover:bg-gray-700 hover:text-gray-100"
         onClick={() => {
           onChange(value + 1);
         }}
