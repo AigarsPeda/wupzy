@@ -12,7 +12,6 @@ import {
   type HandleScoreChangTypeArgs,
   type HandleScoreSaveTypeArgs,
 } from "~/types/utils.types";
-import classNames from "~/utils/classNames";
 
 interface DisplayGamesProps {
   games: GameType[];
@@ -38,7 +37,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
   // calculate the width of the one game card based on the window size so that the last card is cut off
   const cardsWidth = (wind: number) => {
     if (wind > 1100) {
-      return 30;
+      return 25;
     }
 
     if (wind > 805) {
@@ -59,7 +58,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
       </div>
 
       <div className="relative flex overflow-x-auto">
-        <div className="ml-4 flex w-full space-x-3 overflow-x-auto  md:ml-0">
+        <div className="ml-4 flex w-full space-x-3 overflow-x-auto md:ml-0">
           {!isGamesLoading ? (
             games.map((game) => {
               const gameScore = gamesScores.find(
@@ -71,15 +70,13 @@ const DisplayGames: FC<DisplayGamesProps> = ({
               return (
                 <div
                   key={game.id}
-                  className="m-2 rounded-md border border-gray-200 bg-gradient-to-br from-gray-200 via-gray-200 to-gray-200 p-3 shadow shadow-gray-200"
+                  // className="rounded-md border border-gray-200 bg-gradient-to-br from-gray-200 via-gray-200 to-gray-200 p-2 shadow shadow-gray-200"
                 >
                   <div
-                    className={classNames(
-                      "flex h-full flex-col justify-between"
-                    )}
+                    className="h-full rounded-md border border-gray-200 bg-gradient-to-br from-gray-200 via-gray-200 to-gray-200 p-2 shadow shadow-gray-200"
                     style={{ width: `${cardsWidth(windowSize.width)}vw` }}
                   >
-                    <div className="mb-4 flex space-x-1">
+                    <div className="flex space-x-1">
                       <p className="rounded-md px-1 py-0.5 font-primary text-xs font-normal capitalize text-pink-500">
                         Game {game?.order}
                       </p>
@@ -93,34 +90,32 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                         <div className="col-span-2 text-center">
                           <p className="text-sm text-gray-900"></p>
                         </div>
-                        <TeamName name={game?.teamTwo?.name} />
+                        <TeamName isTextLeft name={game?.teamTwo?.name} />
                       </div>
                     </div>
 
                     {isWinnerFound ? (
-                      <div className="mb-4 grid grid-cols-12 ">
+                      <div className="mb-5 grid grid-cols-12">
                         <div className="col-span-5 text-center">
                           <DisplayScore
                             score={game.teamOneSetScore}
                             isWinner={game.teamOneId === game.winnerId}
                           />
                         </div>
-                        <div className="col-span-2 text-center">
-                          <p className="content-center text-sm text-gray-300">
-                            {""}
-                          </p>
-                        </div>
+                        <div className="col-span-2 text-center" />
                         <div className="col-span-5 text-center">
                           <DisplayScore
+                            isTextLeft
                             score={game.teamTwoSetScore}
                             isWinner={game.teamTwoId === game.winnerId}
                           />
                         </div>
                       </div>
                     ) : (
-                      <div className="mx-auto mb-6 grid grid-cols-10">
+                      <div className="mx-auto mb-4 grid grid-cols-10">
                         <div className="col-span-4">
                           <NumberInput
+                            isFullWidth
                             value={gameScore?.teamOneScore || 0}
                             onChange={(num) => {
                               handleScoreChange({
@@ -137,6 +132,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
 
                         <div className="col-span-4">
                           <NumberInput
+                            isFullWidth
                             value={gameScore?.teamTwoScore || 0}
                             onChange={(num) => {
                               handleScoreChange({
@@ -152,8 +148,8 @@ const DisplayGames: FC<DisplayGamesProps> = ({
 
                     <DisplaySetScore game={game} />
 
-                    <div className="flex min-h-[2.5rem] items-center justify-end">
-                      {!isWinnerFound && (
+                    {!isWinnerFound && (
+                      <div className="mt-2 flex min-h-[2.5rem] items-center justify-end">
                         <SecondaryButton
                           type="button"
                           color="dark"
@@ -165,8 +161,8 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                             })
                           }
                         />
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               );

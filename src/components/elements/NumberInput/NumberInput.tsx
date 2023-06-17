@@ -5,15 +5,22 @@ import classNames from "~/utils/classNames";
 interface NumberInputProps {
   value: number;
   height?: string;
+  isFullWidth?: boolean;
   onChange: (value: number) => void;
 }
 
-const NumberInput: FC<NumberInputProps> = ({ value, height, onChange }) => {
+const NumberInput: FC<NumberInputProps> = ({
+  value,
+  height,
+  onChange,
+  isFullWidth,
+}) => {
   return (
     <div
       className={classNames(
         height ? height : "h-11",
-        "relative flex w-[7.5rem] border-collapse flex-row rounded-lg border border-gray-400 border-transparent bg-transparent"
+        isFullWidth ? "w-full" : "w-[7.5rem]",
+        "relative flex border-collapse flex-row rounded-lg border border-gray-600 border-transparent bg-transparent"
       )}
     >
       <button
