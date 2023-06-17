@@ -38,18 +38,18 @@ const DisplayGames: FC<DisplayGamesProps> = ({
   // calculate the width of the one game card based on the window size so that the last card is cut off
   const cardsWidth = (wind: number) => {
     if (wind > 1100) {
-      return 25;
+      return 30;
     }
 
     if (wind > 805) {
-      return 32;
+      return 35;
     }
 
     if (wind > 668) {
       return 50;
     }
 
-    return 70;
+    return 75;
   };
 
   return (
@@ -59,7 +59,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
       </div>
 
       <div className="relative flex overflow-x-auto">
-        <div className="ml-4 flex w-full space-x-3 overflow-x-auto pb-5 md:ml-0">
+        <div className="ml-4 flex w-full space-x-3 overflow-x-auto  md:ml-0">
           {!isGamesLoading ? (
             games.map((game) => {
               const gameScore = gamesScores.find(
@@ -71,7 +71,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
               return (
                 <div
                   key={game.id}
-                  className="rounded-md border border-gray-300 bg-gradient-to-br from-gray-100 to-white p-3 shadow-sm"
+                  className="rounded-md border border-gray-900 bg-gradient-to-br from-gray-900 to-gray-800 p-3 shadow shadow-gray-700"
                 >
                   <div
                     className={classNames(
@@ -80,20 +80,18 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                     style={{ width: `${cardsWidth(windowSize.width)}vw` }}
                   >
                     <div className="mb-4 flex space-x-1">
-                      <p className="rounded-md bg-gray-400 px-1 py-0.5 font-primary text-xs font-normal capitalize text-gray-50">
+                      <p className="rounded-md px-1 py-0.5 font-primary text-xs font-normal capitalize text-pink-500">
                         Game {game?.order}
                       </p>
-                      <p className="rounded-md bg-gray-400 p-1 py-0.5 font-primary text-xs font-normal capitalize text-gray-50">
+                      <p className="rounded-md p-1 py-0.5 font-primary text-xs font-normal capitalize text-pink-500">
                         Round {game?.round}
                       </p>
                     </div>
                     <div className="mb-2 mt-4">
                       <div className="grid grid-cols-12">
                         <TeamName name={game?.teamOne?.name} />
-                        <div className="col-span-2 text-center">
-                          <p className="content-center text-sm text-gray-300">
-                            vs
-                          </p>
+                        <div className="col-span-2 place-items-center text-center">
+                          <p className="text-sm text-gray-300">vs</p>
                         </div>
                         <TeamName name={game?.teamTwo?.name} />
                       </div>
@@ -120,7 +118,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                         </div>
                       </div>
                     ) : (
-                      <div className="mx-auto mb-4 grid grid-cols-12">
+                      <div className="mx-auto mb-6 grid grid-cols-12">
                         <div className="col-span-5">
                           <NumberInput
                             value={gameScore?.teamOneScore || 0}
@@ -160,7 +158,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                       {!isWinnerFound && (
                         <SecondaryButton
                           type="button"
-                          color="dark"
+                          color="gray"
                           title="Save"
                           isLoading={gameScore?.isSaving}
                           handleClick={() =>
@@ -183,8 +181,8 @@ const DisplayGames: FC<DisplayGamesProps> = ({
             </>
           )}
         </div>
-        <div className="z-1 absolute -left-2 top-0 h-full w-5 bg-gradient-to-r from-gray-50 to-transparent" />
-        <div className="z-1 absolute -right-2 top-0 h-full w-5 bg-gradient-to-r from-transparent to-gray-50" />
+        {/* <div className="z-1 absolute -left-2 top-0 h-full w-5 bg-gradient-to-r from-gray-900 to-transparent" />
+        <div className="z-1 absolute -right-2 top-0 h-full w-5 bg-gradient-to-r from-transparent to-gray-900" /> */}
       </div>
     </div>
   );

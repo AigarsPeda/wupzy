@@ -10,7 +10,7 @@ const DisplayScore: FC<DisplayScoreProps> = ({ score, isWinner }) => {
   return (
     <p
       className={classNames(
-        isWinner ? "text-gray-800" : "text-gray-500",
+        isWinner ? "text-gray-100" : "text-gray-100",
         "text-2xl"
       )}
     >
