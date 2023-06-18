@@ -2,6 +2,7 @@ import { type NextPage } from "next";
 import DisplayGames from "~/components/elements/DisplayGames/DisplayGames";
 import LoadingSkeleton from "~/components/elements/LoadingSkeleton/LoadingSkeleton";
 import PageHeadLine from "~/components/elements/PageHeadLine/PageHeadLine";
+import PlayerTable from "~/components/elements/PlayerTable/PlayerTable";
 import TeamTable from "~/components/elements/TeamTable/TeamTable";
 import useTournament from "~/hooks/useTournament";
 import useTournamentGames from "~/hooks/useTournamentGames";
@@ -28,7 +29,7 @@ const TournamentPage: NextPage = () => {
       />
 
       <div className="mt-5">
-        <TeamTable />
+        {tournament?.type === "king" ? <PlayerTable /> : <TeamTable />}
       </div>
     </div>
   );

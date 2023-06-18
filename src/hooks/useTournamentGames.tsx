@@ -9,7 +9,8 @@ import { api } from "~/utils/api";
 
 const useTournamentGames = () => {
   const { query } = useRouter();
-  const { teams } = api.useContext();
+  const { teams, player } = api.useContext();
+
   const [tournamentId, setTournamentId] = useState("");
   const { data, isLoading, refetch } = api.game.getGames.useQuery(
     { id: tournamentId },
@@ -20,6 +21,7 @@ const useTournamentGames = () => {
     onSuccess: async () => {
       void refetch();
       await teams.invalidate();
+      await player.invalidate();
     },
   });
 
