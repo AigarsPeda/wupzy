@@ -27,7 +27,9 @@ const TournamentPage: NextPage = () => {
         handleScoreChange={handleScoreChange}
       />
 
-      <TeamTable />
+      <div className="mt-5">
+        <TeamTable />
+      </div>
     </div>
   );
 };

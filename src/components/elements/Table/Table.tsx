@@ -67,41 +67,168 @@ const Table: FC<TableProps> = ({ exclude, tableContents }) => {
   }, [exclude, tableContents]);
 
   return (
-    <div className="flex items-center justify-center">
-      <div className="container">
-        <table className="flex-no-wrap my-5 flex w-full flex-row overflow-hidden rounded-lg sm:bg-white sm:shadow-lg">
-          <thead className="text-white">
-            <tr className="flex-no wrap mb-2 flex flex-col rounded-l-lg bg-gray-400 capitalize sm:mb-0 sm:table-row sm:rounded-none">
-              {tableHead &&
-                formatKey(tableHead).map((key) => (
-                  <th className="p-3 text-left" key={key}>
-                    {key}
-                  </th>
-                ))}
-            </tr>
-          </thead>
-          <tbody className="flex-1 sm:flex-none">
-            {tableBody &&
-              tableBody.map((values, i) => (
-                <tr
-                  className="flex-no wrap mb-2 flex flex-col sm:mb-0 sm:table-row"
-                  key={i}
+    <div className="inline-block min-w-full overflow-hidden rounded-lg shadow">
+      <table className="min-w-full rounded leading-normal">
+        <thead>
+          <tr>
+            {tableHead &&
+              formatKey(tableHead).map((key) => (
+                <th
+                  className="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                  key={key}
                 >
-                  {values.map((value, j) => (
-                    <td
-                      key={`${i}-${j}`}
-                      className="border-grey-light border p-3 hover:bg-gray-100"
-                    >
-                      {value && typeof value === "object"
-                        ? JSON.stringify(value)
-                        : value}
-                    </td>
-                  ))}
-                </tr>
+                  {key}
+                </th>
               ))}
-          </tbody>
-        </table>
-      </div>
+          </tr>
+        </thead>
+        <tbody>
+          {tableBody &&
+            tableBody.map((values, i) => (
+              <tr key={i}>
+                {values.map((value, j) => (
+                  <td
+                    key={`${i}-${j}`}
+                    className="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                  >
+                    {value && typeof value === "object"
+                      ? JSON.stringify(value)
+                      : value}
+                  </td>
+                ))}
+              </tr>
+            ))}
+
+          {/* <tr>
+            <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+              <div className="flex items-center">
+                <div className="h-10 w-10 flex-shrink-0">
+                  <img
+                  className="h-full w-full rounded-full"
+                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                  alt=""
+                />
+                </div>
+                <div className="ml-3">
+                  <p className="whitespace-no-wrap text-gray-900">
+                    Vera Carpenter
+                  </p>
+                </div>
+              </div>
+            </td>
+            <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+              <p className="whitespace-no-wrap text-gray-900">Admin</p>
+            </td>
+            <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+              <p className="whitespace-no-wrap text-gray-900">Jan 21, 2020</p>
+            </td>
+            <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+              <span className="relative inline-block px-3 py-1 font-semibold leading-tight text-green-900">
+                <span
+                  aria-hidden
+                  className="absolute inset-0 rounded-full bg-green-200 opacity-50"
+                ></span>
+                <span className="relative">Activo</span>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+              <div className="flex items-center">
+                <div className="h-10 w-10 flex-shrink-0">
+                  <img
+                  className="h-full w-full rounded-full"
+                  src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                  alt=""
+                />
+                </div>
+                <div className="ml-3">
+                  <p className="whitespace-no-wrap text-gray-900">
+                    Blake Bowman
+                  </p>
+                </div>
+              </div>
+            </td>
+            <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+              <p className="whitespace-no-wrap text-gray-900">Editor</p>
+            </td>
+            <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+              <p className="whitespace-no-wrap text-gray-900">Jan 01, 2020</p>
+            </td>
+            <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+              <span className="relative inline-block px-3 py-1 font-semibold leading-tight text-green-900">
+                <span
+                  aria-hidden
+                  className="absolute inset-0 rounded-full bg-green-200 opacity-50"
+                ></span>
+                <span className="relative">Activo</span>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+              <div className="flex items-center">
+                <div className="h-10 w-10 flex-shrink-0">
+                  <img
+                  className="h-full w-full rounded-full"
+                  src="https://images.unsplash.com/photo-1540845511934-7721dd7adec3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                  alt=""
+                />
+                </div>
+                <div className="ml-3">
+                  <p className="whitespace-no-wrap text-gray-900">Dana Moore</p>
+                </div>
+              </div>
+            </td>
+            <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+              <p className="whitespace-no-wrap text-gray-900">Editor</p>
+            </td>
+            <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+              <p className="whitespace-no-wrap text-gray-900">Jan 10, 2020</p>
+            </td>
+            <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+              <span className="relative inline-block px-3 py-1 font-semibold leading-tight text-orange-900">
+                <span
+                  aria-hidden
+                  className="absolute inset-0 rounded-full bg-orange-200 opacity-50"
+                ></span>
+                <span className="relative">Suspended</span>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td className="bg-white px-5 py-5 text-sm">
+              <div className="flex items-center">
+                <div className="h-10 w-10 flex-shrink-0">
+                  <img
+                    className="h-full w-full rounded-full"
+                    src="https://images.unsplash.com/photo-1522609925277-66fea332c575?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&h=160&w=160&q=80"
+                    alt=""
+                  />
+                </div>
+                <div className="ml-3">
+                  <p className="whitespace-no-wrap text-gray-900">Alonzo Cox</p>
+                </div>
+              </div>
+            </td>
+            <td className="bg-white px-5 py-5 text-sm">
+              <p className="whitespace-no-wrap text-gray-900">Admin</p>
+            </td>
+            <td className="bg-white px-5 py-5 text-sm">
+              <p className="whitespace-no-wrap text-gray-900">Jan 18, 2020</p>
+            </td>
+            <td className="bg-white px-5 py-5 text-sm">
+              <span className="relative inline-block px-3 py-1 font-semibold leading-tight text-red-900">
+                <span
+                  aria-hidden
+                  className="absolute inset-0 rounded-full bg-red-200 opacity-50"
+                ></span>
+                <span className="relative">Inactive</span>
+              </span>
+            </td>
+          </tr> */}
+        </tbody>
+      </table>
     </div>
   );
 };

@@ -18,6 +18,17 @@ export const teamRouter = createTRPCRouter({
         include: {
           players: true,
         },
+        orderBy: [
+          {
+            gamesWon: "desc",
+          },
+          {
+            setsWon: "desc",
+          },
+          {
+            points: "desc",
+          },
+        ],
       });
 
       return { teams };

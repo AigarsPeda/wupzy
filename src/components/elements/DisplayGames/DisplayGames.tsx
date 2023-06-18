@@ -37,7 +37,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
   // calculate the width of the one game card based on the window size so that the last card is cut off
   const cardsWidth = (wind: number) => {
     if (wind > 1100) {
-      return 25;
+      return 35;
     }
 
     if (wind > 805) {
@@ -58,7 +58,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
       </div>
 
       <div className="relative flex overflow-x-auto">
-        <div className="ml-4 flex w-full space-x-3 overflow-x-auto md:ml-0">
+        <div className="flex w-full space-x-3 overflow-x-auto">
           {!isGamesLoading ? (
             games.map((game) => {
               const gameScore = gamesScores.find(
@@ -74,7 +74,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                   // className="rounded-md border border-gray-200 bg-gradient-to-br from-gray-200 via-gray-200 to-gray-200 p-2 shadow shadow-gray-200"
                 >
                   <div
-                    className="h-full rounded-md border border-gray-200 bg-gradient-to-br from-gray-200 via-gray-200 to-gray-200 p-2 shadow shadow-gray-300"
+                    className="h-full rounded-md border border-gray-200 bg-gradient-to-br from-gray-100 via-gray-100 to-gray-100 p-2 shadow shadow-gray-300"
                     style={{ width: `${cardsWidth(windowSize.width)}vw` }}
                   >
                     <div className="flex space-x-1">
