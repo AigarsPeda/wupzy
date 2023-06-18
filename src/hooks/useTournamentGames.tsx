@@ -9,6 +9,7 @@ import { api } from "~/utils/api";
 
 const useTournamentGames = () => {
   const { query } = useRouter();
+  const { teams } = api.useContext();
   const [tournamentId, setTournamentId] = useState("");
   const { data, isLoading, refetch } = api.game.getGames.useQuery(
     { id: tournamentId },
@@ -16,8 +17,9 @@ const useTournamentGames = () => {
   );
 
   const { mutate } = api.game.updateGame.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
       void refetch();
+      await teams.invalidate();
     },
   });
 

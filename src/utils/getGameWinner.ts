@@ -26,7 +26,7 @@ const getGameWinner = ({
   }
 
   if (secondTeamWins >= setToWin) {
-    winner = scores.teamOneId;
+    winner = scores.teamTwoId;
   }
 
   return {

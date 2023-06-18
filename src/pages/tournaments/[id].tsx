@@ -2,12 +2,11 @@ import { type NextPage } from "next";
 import DisplayGames from "~/components/elements/DisplayGames/DisplayGames";
 import LoadingSkeleton from "~/components/elements/LoadingSkeleton/LoadingSkeleton";
 import PageHeadLine from "~/components/elements/PageHeadLine/PageHeadLine";
-import useTeams from "~/hooks/useTeams";
+import TeamTable from "~/components/elements/TeamTable/TeamTable";
 import useTournament from "~/hooks/useTournament";
 import useTournamentGames from "~/hooks/useTournamentGames";
 
 const TournamentPage: NextPage = () => {
-  const { teams } = useTeams();
   const { tournament, isLoading: isTournamentLoading } = useTournament();
   const { games, isLoading, gamesScores, handleScoreSave, handleScoreChange } =
     useTournamentGames();
@@ -20,8 +19,6 @@ const TournamentPage: NextPage = () => {
         <PageHeadLine title={tournament?.name} />
       )}
 
-      {console.log(teams)}
-
       <DisplayGames
         games={games}
         gamesScores={gamesScores}
@@ -29,6 +26,8 @@ const TournamentPage: NextPage = () => {
         handleScoreSave={handleScoreSave}
         handleScoreChange={handleScoreChange}
       />
+
+      <TeamTable />
     </div>
   );
 };

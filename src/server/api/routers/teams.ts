@@ -15,31 +15,10 @@ export const teamRouter = createTRPCRouter({
         where: {
           tournamentId: input.id,
         },
-        // include: {
-        //   players: true,
-        // },
+        include: {
+          players: true,
+        },
       });
-
-      // const games = await prisma.game.findMany({
-      //   where: {
-      //     tournamentId: input.id,
-      //   },
-      //   include: {
-      //     teamOne: {
-      //       include: {
-      //         players: true,
-      //       },
-      //     },
-      //     teamTwo: {
-      //       include: {
-      //         players: true,
-      //       },
-      //     },
-      //   },
-      //   orderBy: [{ round: "asc" }, { order: "asc" }],
-      // });
-
-      // return { games };
 
       return { teams };
     }),

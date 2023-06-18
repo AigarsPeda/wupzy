@@ -1,7 +1,7 @@
 import { type Player, type PrismaClient, type Team } from "@prisma/client";
 
 type UpdatePlayerScoresArgsType = {
-  teamWins: number;
+  setsWon: number;
   teamScore: number;
   prisma: PrismaClient;
   winner: string | null;
@@ -14,7 +14,7 @@ const updatePlayerScores = async ({
   team,
   prisma,
   winner,
-  teamWins,
+  setsWon,
   teamScore,
 }: UpdatePlayerScoresArgsType) => {
   for (const player of team.players) {
@@ -26,8 +26,8 @@ const updatePlayerScores = async ({
         id: player.id,
       },
       data: {
+        setsWon,
         points: newPoints,
-        setsWon: teamWins,
         gamesWon: isWinner ? player.gamesWon + 1 : player.gamesWon,
       },
     });

@@ -1,6 +1,7 @@
 import z from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import updatePlayerScores from "~/server/api/utils/updatePlayerScores";
+import updateTeamsScore from "~/server/api/utils/updateTeamsScore";
 import { GamesScoresSchema } from "~/types/utils.types";
 import createGameSetJson from "~/utils/createGameSetJson";
 
@@ -68,11 +69,27 @@ export const gameRouter = createTRPCRouter({
 
       const { teamOne, teamTwo } = game;
 
+      await updateTeamsScore({
+        prisma,
+        team: teamOne,
+        winnerId: winner,
+        setsWon: firstTeamWins,
+        teamScore: input.scores.teamOneScore,
+      });
+
+      await updateTeamsScore({
+        prisma,
+        team: teamTwo,
+        winnerId: winner,
+        setsWon: secondTeamWins,
+        teamScore: input.scores.teamTwoScore,
+      });
+
       await updatePlayerScores({
         prisma,
         winner,
         team: teamOne,
-        teamWins: firstTeamWins,
+        setsWon: firstTeamWins,
         teamScore: input.scores.teamOneScore,
       });
 
@@ -80,7 +97,7 @@ export const gameRouter = createTRPCRouter({
         prisma,
         winner,
         team: teamTwo,
-        teamWins: secondTeamWins,
+        setsWon: secondTeamWins,
         teamScore: input.scores.teamTwoScore,
       });
 

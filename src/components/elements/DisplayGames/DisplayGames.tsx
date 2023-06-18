@@ -70,10 +70,11 @@ const DisplayGames: FC<DisplayGamesProps> = ({
               return (
                 <div
                   key={game.id}
+                  className="relative m-2"
                   // className="rounded-md border border-gray-200 bg-gradient-to-br from-gray-200 via-gray-200 to-gray-200 p-2 shadow shadow-gray-200"
                 >
                   <div
-                    className="h-full rounded-md border border-gray-200 bg-gradient-to-br from-gray-200 via-gray-200 to-gray-200 p-2 shadow shadow-gray-200"
+                    className="h-full rounded-md border border-gray-200 bg-gradient-to-br from-gray-200 via-gray-200 to-gray-200 p-2 shadow shadow-gray-300"
                     style={{ width: `${cardsWidth(windowSize.width)}vw` }}
                   >
                     <div className="flex space-x-1">
@@ -149,11 +150,12 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                     <DisplaySetScore game={game} />
 
                     {!isWinnerFound && (
-                      <div className="mt-2 flex min-h-[2.5rem] items-center justify-end">
+                      <div className="absolute bottom-2 right-2 mt-2 flex min-h-[2.5rem] items-center justify-end">
                         <SecondaryButton
                           type="button"
                           color="dark"
                           title="Save"
+                          isSmallTitle
                           isLoading={gameScore?.isSaving}
                           handleClick={() =>
                             handleScoreSave({
