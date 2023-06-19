@@ -1,4 +1,5 @@
 import { useEffect, useState, type FC, type ReactNode } from "react";
+import LoadingSkeleton from "~/components/elements/LoadingSkeleton/LoadingSkeleton";
 
 type TableValueType =
   | null
@@ -11,10 +12,11 @@ type TableValueType =
 
 interface TableProps {
   exclude?: string[];
+  isLoading?: boolean;
   tableContents: { [key: string]: TableValueType }[] | undefined;
 }
 
-const Table: FC<TableProps> = ({ exclude, tableContents }) => {
+const Table: FC<TableProps> = ({ exclude, isLoading, tableContents }) => {
   const [tableHead, setTableHead] = useState<string[]>([]);
   const [tableBody, setTableBody] = useState<TableValueType[][]>([]);
 
@@ -68,23 +70,41 @@ const Table: FC<TableProps> = ({ exclude, tableContents }) => {
 
   return (
     <div className="inline-block min-w-full overflow-hidden rounded-lg shadow">
-      <table className="min-w-full rounded leading-normal">
-        <thead>
-          <tr>
-            {tableHead &&
-              formatKey(tableHead).map((key) => (
+      {!tableContents || isLoading ? (
+        <table className="min-w-full rounded leading-normal">
+          <thead>
+            <tr>
+              <th className="border-b-2 border-gray-200 bg-gray-200 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-200">
+                Loading...
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {[...Array(6).keys()].map((_, index) => (
+              <tr key={index}>
+                <td className="border-b border-gray-200 bg-white px-5 py-3 text-sm">
+                  <LoadingSkeleton key={index} classes="h-6 w-full" />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <table className="min-w-full rounded leading-normal">
+          <thead>
+            <tr>
+              {formatKey(tableHead).map((key) => (
                 <th
-                  className="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-800"
+                  className="border-b-2 border-gray-200 bg-gray-900 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                   key={key}
                 >
                   {key}
                 </th>
               ))}
-          </tr>
-        </thead>
-        <tbody>
-          {tableBody &&
-            tableBody.map((values, i) => (
+            </tr>
+          </thead>
+          <tbody>
+            {tableBody.map((values, i) => (
               <tr key={i}>
                 {values.map((value, j) => (
                   <td
@@ -99,7 +119,7 @@ const Table: FC<TableProps> = ({ exclude, tableContents }) => {
               </tr>
             ))}
 
-          {/* <tr>
+            {/* <tr>
             <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
               <div className="flex items-center">
                 <div className="h-10 w-10 flex-shrink-0">
@@ -128,7 +148,7 @@ const Table: FC<TableProps> = ({ exclude, tableContents }) => {
                   aria-hidden
                   className="absolute inset-0 rounded-full bg-green-200 opacity-50"
                 ></span>
-                <span className="relative">Activo</span>
+                <span className="relative">Active</span>
               </span>
             </td>
           </tr>
@@ -161,7 +181,7 @@ const Table: FC<TableProps> = ({ exclude, tableContents }) => {
                   aria-hidden
                   className="absolute inset-0 rounded-full bg-green-200 opacity-50"
                 ></span>
-                <span className="relative">Activo</span>
+                <span className="relative">Active</span>
               </span>
             </td>
           </tr>
@@ -227,8 +247,9 @@ const Table: FC<TableProps> = ({ exclude, tableContents }) => {
               </span>
             </td>
           </tr> */}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };

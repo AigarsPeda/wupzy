@@ -5,20 +5,17 @@ const PlayerTable = () => {
   const { players } = usePlayers();
 
   return (
-    <>
-      {console.log(players)}
-      <Table
-        tableContents={players}
-        exclude={[
-          "id",
-          "group",
-          "players",
-          "createdAt",
-          "updatedAt",
-          "tournamentId",
-        ]}
-      />
-    </>
+    <Table
+      tableContents={players}
+      exclude={[
+        "id",
+        "group",
+        "players",
+        "createdAt",
+        "updatedAt",
+        "tournamentId",
+      ]}
+    />
   );
 };
 
