@@ -1,7 +1,7 @@
 import { signIn, useSession } from "next-auth/react";
 import type { FC } from "react";
 import GradientButton from "~/components/elements/GradientButton/GradientButton";
-import useRedirect from "../../../hooks/useRedirect";
+import useRedirect from "~/hooks/useRedirect";
 
 const CTASection: FC = () => {
   const { data: sessionData } = useSession();

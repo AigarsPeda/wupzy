@@ -3,6 +3,7 @@ import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import { Cabin, Koulen, Roboto } from "next/font/google";
+import CookieConsentModal from "~/components/elements/CookieConsentModal/CookieConsentModal";
 import MainLayout from "~/components/layout/MainLayout/MainLayout";
 import "~/styles/globals.css";
 import { api } from "~/utils/api";
@@ -49,6 +50,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <SessionProvider session={session}>
         <MainLayout>
           <Component {...pageProps} />
+          <CookieConsentModal />
           <Analytics />
         </MainLayout>
       </SessionProvider>
