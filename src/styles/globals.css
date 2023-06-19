@@ -12,7 +12,7 @@
   }
 
   p {
-    @apply font-secondary tracking-wider;
+    @apply font-primary tracking-wider;
   }
 
   a,

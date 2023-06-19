@@ -3,7 +3,6 @@ import CookieConsent from "~/components/elements/CookieConsent/CookieConsent";
 import PageHead from "~/components/elements/PageHead/PageHead";
 
 const CookieConsentPage: NextPage = () => {
-  // If the user has already accepted the cookie consent, don't show it again
   return (
     <>
       <PageHead
