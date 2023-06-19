@@ -15,8 +15,8 @@ const TermsOfAgreement: FC = () => {
         thereof.
       </p>
       <p className="mb-2 mt-5 text-lg font-bold text-gray-900">Cookies</p>
-      <ul className="text-gray-900">
-        <li className="my-2 text-gray-900">
+      <ul className=" text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           Wupzy may use cookies to enhance user experience and provide
           personalized services. A cookie is a small text file that is stored on
           a user&apos;s computer or mobile device when they visit a website.
@@ -24,13 +24,13 @@ const TermsOfAgreement: FC = () => {
           login information or language preference, and to track user behavior
           and interactions with the website.
         </li>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           By using the Wupzy platform, users consent to the use of cookies as
           described in this section. Users may choose to disable cookies in
           their web browser settings, but doing so may affect the functionality
           of the website.
         </li>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           Wupzy may also use third-party cookies for analytics and advertising
           purposes. These cookies may be set by third-party service providers
           and may be subject to their own privacy policies.
@@ -38,39 +38,39 @@ const TermsOfAgreement: FC = () => {
       </ul>
       <p className="mb-2 mt-5 text-lg font-bold text-gray-900">Payment Terms</p>
       <ul>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           Fees: The use of certain features of the Wupzy platform may require
           payment of fees. You agree to pay all fees and charges incurred by you
           or on your behalf through the Wupzy platform, at the prices in effect
           when such charges are incurred, including all applicable taxes. All
           fees and charges are non-refundable.
         </li>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           Payment Processing: Wupzy uses a third-party payment processor to
           facilitate payments. You agree to provide Wupzy with accurate and
           complete information about you and your payment information, and you
           authorize Wupzy to share any information related to your payment
           information with the third-party payment processor.
         </li>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           Automatic Renewal: For services that require payment of a fee, Wupzy
           may offer an automatic renewal option. If you choose this option, your
           subscription will be automatically renewed for the same term and at
           the same price as the original subscription, unless you cancel before
           the renewal date.
         </li>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           Changes to Fees: Wupzy may change its fees and payment policies for
           the Wupzy platform at any time in its sole discretion. Any changes
           will be effective immediately upon posting on the Wupzy platform.
         </li>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           Failure to Pay: Wupzy reserves the right to suspend or terminate your
           access to the Wupzy platform if any fees or charges are past due or if
           the payment method used to pay for the Wupzy platform is declined or
           fails.
         </li>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           Refunds: Wupzy does not provide refunds for any fees or charges,
           except as required by law.
         </li>
@@ -78,12 +78,12 @@ const TermsOfAgreement: FC = () => {
       <p className="mb-2 mt-5 text-lg font-bold text-gray-900">User Conduct</p>
 
       <ul>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           General Use: You agree to use the Wupzy platform only for lawful
           purposes and in accordance with these terms and conditions. You agree
           not to use the Wupzy platform:
         </li>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           a. In any way that violates any applicable federal, state, local, or
           international law or regulation. b. To engage in any conduct that is
           harmful, threatening, abusive, harassing, tortious, defamatory,
@@ -105,7 +105,7 @@ const TermsOfAgreement: FC = () => {
           purpose, including monitoring or copying any of the material on the
           Wupzy platform.
         </li>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           Consequences of Violation: We reserve the right to take any action we
           deem appropriate if we believe that your use of the Wupzy platform
           violates these terms and conditions, including, without limitation,
@@ -120,7 +120,7 @@ const TermsOfAgreement: FC = () => {
         Account Creation and Management
       </p>
       <ul>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           Account Creation: To use certain features of the Wupzy platform, you
           may be required to create an account. You agree to provide accurate,
           current, and complete information during the account registration
@@ -132,7 +132,7 @@ const TermsOfAgreement: FC = () => {
           to any third party, and to notify us immediately if you become aware
           of any unauthorized use of your account.
         </li>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           Account Termination: We reserve the right to terminate or suspend your
           account at any time for any reason without notice or liability to you.
           If we terminate your account, you may lose access to any content or
@@ -140,7 +140,7 @@ const TermsOfAgreement: FC = () => {
           discontinue or modify the Wupzy platform, or any part thereof, at any
           time without notice or liability to you.
         </li>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           User Responsibilities: You agree to use the Wupzy platform in
           accordance with these terms and conditions and to comply with all
           applicable laws and regulations. You are responsible for all activity
@@ -148,7 +148,7 @@ const TermsOfAgreement: FC = () => {
           post, or transmit through the Wupzy platform. You agree not to use the
           Wupzy platform for any illegal, harmful, or inappropriate purpose.
         </li>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           Consequences of Violation: We reserve the right to take any action we
           deem appropriate if we believe that your use of the Wupzy platform
           violates these terms and conditions, including, without limitation,
@@ -163,14 +163,14 @@ const TermsOfAgreement: FC = () => {
         Intellectual Property
       </p>
       <ul>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           Ownership of Content: All content, including but not limited to text,
           graphics, logos, images, audio clips, video clips, data compilations,
           software, and the compilation thereof (collectively referred to as
           &quot;Content&quot;) is the property of Wupzy or its licensors and is
           protected by international copyright laws.
         </li>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           Use of Content: Users are granted a limited, non-exclusive,
           non-transferable, revocable license to access and use the Content
           solely for personal, non-commercial purposes. Users may not reproduce,
@@ -178,14 +178,14 @@ const TermsOfAgreement: FC = () => {
           publicly perform, republish, download, store, or transmit any of the
           Content except as explicitly permitted in writing by Wupzy.
         </li>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           Trademarks: The trademarks, service marks, and logos (collectively
           referred to as &quot;Trademarks&quot;) displayed on the Wupzy platform
           are registered and unregistered trademarks of Wupzy and its licensors.
           Users may not use any Trademarks without the prior written permission
           of Wupzy or the respective owners of such Trademarks.
         </li>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           User Content: Users retain all ownership rights in any content they
           submit, post, or transmit through the Wupzy platform (&quot;User
           Content&quot;). By submitting User Content to the Wupzy platform,
@@ -199,7 +199,7 @@ const TermsOfAgreement: FC = () => {
           notice to or consent from the user, and without the requirement of
           payment to the user or any other person or entity.
         </li>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           DMCA Notice and Takedown: Wupzy respects the intellectual property
           rights of others and expects its users to do the same. If you believe
           that any content on the Wupzy platform infringes your copyright,
@@ -211,7 +211,7 @@ const TermsOfAgreement: FC = () => {
         Disclaimers and Limitations of Liability
       </p>
       <ul>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           No Warranty: The Wupzy platform is provided on an &quot;as is&quot;
           and &quot;as available&quot; basis without warranties of any kind,
           whether express or implied, including but not limited to warranties of
@@ -221,7 +221,7 @@ const TermsOfAgreement: FC = () => {
           from viruses or other harmful components. Users use the Wupzy platform
           at their own risk.
         </li>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           Limitation of Liability: In no event shall Wupzy, its directors,
           officers, employees, agents, or affiliates be liable for any indirect,
           incidental, special, punitive, or consequential damages, including but
@@ -231,7 +231,7 @@ const TermsOfAgreement: FC = () => {
           use or inability to use the Wupzy platform or any content on the
           platform.
         </li>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           Indemnification: Users agree to indemnify and hold harmless Wupzy, its
           directors, officers, employees, agents, and affiliates from and
           against any and all claims, liabilities, damages, losses, costs, and
@@ -239,12 +239,12 @@ const TermsOfAgreement: FC = () => {
           in connection with the user&apos;s use of the Wupzy platform or any
           violation of these Terms and Conditions.
         </li>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           Third-Party Providers: Wupzy may use third-party providers to provide
           some of the services on the platform. Wupzy is not responsible for the
           acts or omissions of any third-party providers.
         </li>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           Modification and Termination: Wupzy reserves the right to modify,
           suspend, or terminate the Wupzy platform at any time without notice.
           Wupzy shall not be liable to any user or third party for any
@@ -253,20 +253,20 @@ const TermsOfAgreement: FC = () => {
       </ul>
       <p className="mb-2 mt-5 text-lg font-bold text-gray-900">Termination</p>
       <ul>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           Termination by User: Users may terminate their use of the Wupzy
           platform at any time by providing written notice to Wupzy. Upon
           termination, the user&apos;s access to the platform will be terminated
           immediately.
         </li>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           Termination by Wupzy: Wupzy may terminate a user&apos;s access to the
           platform at any time, with or without cause, in its sole discretion.
           If Wupzy terminates a user&apos;s access to the platform due to a
           breach of these Terms and Conditions, the user will not be entitled to
           any refund or compensation.
         </li>
-        <li className="my-2 text-gray-900">
+        <li className="my-2 font-normal text-gray-900">
           Effect of Termination: Upon termination of the agreement, the
           user&apos;s access to the Wupzy platform will be terminated
           immediately. All provisions of the Terms and Conditions that by their

@@ -4,9 +4,9 @@ import useOnClickOutside from "~/hooks/useOnClickOutside";
 import classNames from "~/utils/classNames";
 
 interface DrawerLayoutProps {
-  header?: string;
   isDrawerOpen: boolean;
   drawerBtn: JSX.Element;
+  header?: string | JSX.Element;
   drawerSide?: "left" | "right";
   handleDropdownClose: () => void;
   children: JSX.Element | JSX.Element[] | ReactNode;

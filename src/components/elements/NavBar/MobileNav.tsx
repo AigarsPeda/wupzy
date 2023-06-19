@@ -6,6 +6,7 @@ import AuthenticateUser from "~/components/elements/AuthenticateUser/Authenticat
 import Button from "~/components/elements/Button/Button";
 import NavLink from "~/components/elements/NavBar/NavLink";
 import { type LinkType } from "~/types/utils.types";
+import { IoCloseSharp } from "react-icons/io5";
 
 interface MobileNavProps {
   links: LinkType[];
@@ -31,6 +32,16 @@ const MobileNav: FC<MobileNavProps> = ({ links }) => {
             }}
           />
         </div>
+      }
+      header={
+        <button
+          className="flex h-10 w-10 items-center"
+          onClick={() => {
+            setIsDrawerOpen(false);
+          }}
+        >
+          <IoCloseSharp className="h-10 w-10 text-gray-900" />
+        </button>
       }
     >
       <div className="px-5">

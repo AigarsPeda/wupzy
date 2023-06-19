@@ -14,6 +14,9 @@ const Footer = () => {
           <Link href="/terms-of-service" className="font-normal text-gray-800">
             Terms of Service
           </Link>
+          <Link href="/privacy-policy" className="font-normal text-gray-800">
+            Privacy Policy
+          </Link>
         </div>
       </div>
     </footer>
