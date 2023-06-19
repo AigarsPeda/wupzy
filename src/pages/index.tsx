@@ -17,9 +17,9 @@ const HomePage: NextPage = () => {
         <div className="mt-0 md:mt-10">
           <CTASection />
         </div>
-        <div className="flex items-center justify-center">
+        {/* <div className="flex items-center justify-center">
           <EmailCollector />
-        </div>
+        </div> */}
       </main>
     </>
   );
