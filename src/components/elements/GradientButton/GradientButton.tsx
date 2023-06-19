@@ -26,7 +26,7 @@ const GradientButton: FC<GradientButtonProps> = ({
       disabled={isNotActionable}
       className={classNames(
         isNotActionable && "cursor-not-allowed",
-        "group relative inline-flex items-center justify-center overflow-hidden rounded-md p-0.5 font-bold"
+        "group relative inline-flex items-center justify-center overflow-hidden rounded-md p-0.5 font-medium tracking-[0.06em] transition duration-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-pink-500"
       )}
     >
       <span

@@ -27,13 +27,13 @@ const Button: FC<ButtonProps> = ({
       onClick={handleClick}
       disabled={isLoading || isDisabled}
       className={classNames(
-        size === "md" && "min-w-[8rem] px-6",
+        size === "md" && "min-w-[7rem] px-6 text-sm",
         size === "sm" && "min-w-[5rem] px-5 text-sm",
         isDisabled && "cursor-not-allowed bg-gray-800",
         isSecondary
           ? "border-collapse border-2 border-gray-300 bg-gray-300 text-gray-900 hover:bg-gray-400"
           : "border-collapse border-2 border-gray-900 bg-gray-900 text-white hover:bg-gray-700",
-        "focus:shadow-outline relative inline-flex h-11 items-center justify-center rounded-lg font-medium tracking-wide transition duration-200  focus:outline-none focus:ring-2 focus:ring-inset focus:ring-pink-500"
+        "focus:shadow-outline relative inline-flex h-11 items-center justify-center whitespace-nowrap rounded-lg font-medium tracking-[0.055em] transition duration-200  focus:outline-none focus:ring-2 focus:ring-inset focus:ring-pink-500"
       )}
     >
       {isLoading ? <Spinner color="light" size="xs" /> : title}

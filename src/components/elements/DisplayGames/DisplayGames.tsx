@@ -142,10 +142,9 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                 {!isWinnerFound && (
                   <div className="absolute bottom-2 right-2 mt-2 flex min-h-[2.5rem] items-center justify-end">
                     <SecondaryButton
-                      type="button"
                       color="dark"
                       title="Save"
-                      isSmallTitle
+                      type="button"
                       isLoading={gameScore?.isSaving}
                       handleClick={() =>
                         handleScoreSave({
