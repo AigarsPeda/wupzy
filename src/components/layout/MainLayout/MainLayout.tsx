@@ -6,6 +6,7 @@ import LoginModal from "~/components/elements/LoginModal/LoginModal";
 import NavBar from "~/components/elements/NavBar/NavBar";
 import Spinner from "~/components/elements/Spinner/Spinner";
 import isPrivatePage from "~/utils/isPrivatePage";
+import classNames from "../../../utils/classNames";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -23,7 +24,12 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     isPrivatePage(pathname) && status === "unauthenticated";
 
   return (
-    <div className="max-w-screen-1xl flex min-h-screen flex-col justify-between bg-gray-50">
+    <div
+      className={classNames(
+        isIndexPage() && "flex flex-col justify-between",
+        "max-w-screen-1xl min-h-screen  bg-gray-50"
+      )}
+    >
       <NavBar />
       <div className="px-4 py-4 md:px-12 md:py-4">
         {isSpinnerVisible() ? <Spinner size="small" /> : children}
