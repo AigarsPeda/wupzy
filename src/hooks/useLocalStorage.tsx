@@ -22,6 +22,7 @@ const getStorageValue = <T,>(key: string, defaultValue: T): T => {
 
 export const useLocalStorage = <D,>(key: string, defaultValue: D) => {
   const [isError, setIsError] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [value, saveValue] = useState<D>(defaultValue);
 
   // saving input name
@@ -37,7 +38,8 @@ export const useLocalStorage = <D,>(key: string, defaultValue: D) => {
 
   useEffect(() => {
     saveValue(getStorageValue(key, defaultValue));
+    setIsLoaded(true);
   }, [key, defaultValue]);
 
-  return { value, isError, setValue };
+  return { value, isError, isLoaded, setValue };
 };

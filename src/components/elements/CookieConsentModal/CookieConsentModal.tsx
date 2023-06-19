@@ -8,13 +8,13 @@ const COOKIE_CONSENT = {
 };
 
 const CookieConsentModal: FC = () => {
-  const { value, setValue, isError } = useLocalStorage(
+  const { value, setValue, isLoaded, isError } = useLocalStorage(
     "cookie-consent",
     COOKIE_CONSENT
   );
   return (
     <>
-      {!value.value && (
+      {isLoaded && !value.value && (
         <div className="fixed bottom-2 left-1/2 mx-auto w-full max-w-4xl -translate-x-1/2 transform px-2 md:bottom-10">
           <div className="w-full items-start justify-between rounded bg-gray-900 px-3 py-3 text-white md:flex md:px-5">
             <div>
