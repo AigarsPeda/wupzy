@@ -15,7 +15,7 @@ const CookieConsentModal: FC = () => {
   return (
     <>
       {!value.value && (
-        <div className="fixed bottom-20 left-1/2 mx-auto w-full max-w-4xl -translate-x-1/2 transform px-2">
+        <div className="fixed bottom-2 left-1/2 mx-auto w-full max-w-4xl -translate-x-1/2 transform px-2 md:bottom-10">
           <div className="w-full items-start justify-between rounded bg-gray-900 px-3 py-3 text-white md:flex md:px-5">
             <div>
               <p>
