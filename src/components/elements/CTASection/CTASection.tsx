@@ -18,10 +18,10 @@ const CTASection: FC = () => {
         </h1>
 
         <h2 className="mx-auto mb-5 mt-10 max-w-2xl font-primary font-medium text-gray-800 md:text-xl">
-          Don&apos;t wait any longer – start creating your tournament today and
-          enjoy the benefits it brings! Say goodbye to tedious manual result
-          tracking and embrace the convenience of having all your tournament
-          results in one place.
+          With Wupzy, you can effortlessly save game scores, access past
+          results, and stay updated on upcoming matches. Plus, our user-friendly
+          platform allows you to easily share your game tables with fellow
+          participants.
         </h2>
       </div>
 
