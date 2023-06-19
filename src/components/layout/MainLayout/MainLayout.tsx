@@ -5,8 +5,8 @@ import Footer from "~/components/elements/Footer/Footer";
 import LoginModal from "~/components/elements/LoginModal/LoginModal";
 import NavBar from "~/components/elements/NavBar/NavBar";
 import Spinner from "~/components/elements/Spinner/Spinner";
+import classNames from "~/utils/classNames";
 import isPrivatePage from "~/utils/isPrivatePage";
-import classNames from "../../../utils/classNames";
 
 interface MainLayoutProps {
   children: ReactNode;

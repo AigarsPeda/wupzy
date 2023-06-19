@@ -1,5 +1,6 @@
 import { type FC } from "react";
-import classNames from "../../../utils/classNames";
+import classNames from "~/utils/classNames";
+import Tooltip from "~/components/elements/Tooltip/Tooltip";
 
 interface TeamNameProps {
   name: string;
@@ -14,9 +15,9 @@ const TeamName: FC<TeamNameProps> = ({ name, isTextLeft }) => {
         "col-span-5"
       )}
     >
-      <p className="truncate whitespace-nowrap font-primary text-lg font-medium tracking-wider text-gray-900">
+      <Tooltip isNowrap content={name}>
         {name}
-      </p>
+      </Tooltip>
     </div>
   );
 };

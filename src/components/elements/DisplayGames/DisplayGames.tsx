@@ -52,7 +52,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
   };
 
   return (
-    <div className="mt-4 flex w-full space-x-3 overflow-x-auto">
+    <div className="mt-4 flex w-full space-x-3 overflow-x-auto px-[8%] pb-5 md:px-0">
       {!isGamesLoading ? (
         games.map((game) => {
           const gameScore = gamesScores.find(
@@ -62,7 +62,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
           const isWinnerFound = Boolean(game.winnerId);
 
           return (
-            <div key={game.id} className="relative m-1">
+            <div key={game.id} className="relative">
               <div
                 className="h-full rounded-md border border-gray-200 bg-white p-2 shadow shadow-gray-300"
                 style={{ width: `${cardsWidth(windowSize.width)}vw` }}

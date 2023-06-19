@@ -1,4 +1,5 @@
 import { Fragment, type FC } from "react";
+import Tooltip from "~/components/elements/Tooltip/Tooltip";
 import { GameSets, type GameType } from "~/types/tournament.types";
 import classNames from "~/utils/classNames";
 
@@ -14,14 +15,18 @@ const DisplaySetScore: FC<DisplaySetScoreProps> = ({ game }) => {
           <p className="font-primary text-xs text-gray-900">Sets</p>
         </div>
         <div className="col-span-4 text-center">
-          <p className="truncate font-primary text-xs text-gray-900">
-            {game?.teamOne?.name}
-          </p>
+          <Tooltip isNowrap content={game?.teamOne?.name}>
+            <p className="truncate font-primary text-xs text-gray-900">
+              {game?.teamOne?.name}
+            </p>
+          </Tooltip>
         </div>
         <div className="col-span-4 text-center">
-          <p className="truncate font-primary text-xs text-gray-900">
-            {game?.teamTwo?.name}
-          </p>
+          <Tooltip isNowrap content={game?.teamOne?.name}>
+            <p className="truncate font-primary text-xs text-gray-900">
+              {game?.teamTwo?.name}
+            </p>
+          </Tooltip>
         </div>
       </div>
 
