@@ -21,7 +21,7 @@ const SetSelect: FC<SetSelectProps> = ({
 
   return (
     <Dropdown
-      dropdownClass="top-[2.8rem]"
+      dropdownClass="top-[2.79rem]"
       isDropdownOpen={isDropdownOpen}
       handleDropdownClose={handleDropdownClose}
       dropdownBtn={

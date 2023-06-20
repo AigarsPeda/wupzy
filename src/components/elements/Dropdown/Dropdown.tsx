@@ -4,10 +4,10 @@ import useOnClickOutside from "~/hooks/useOnClickOutside";
 import classNames from "~/utils/classNames";
 
 interface DropdownProps {
-  width?: "full" | "32";
   dropdownClass?: string;
   isDropdownOpen: boolean;
   dropdownBtn: JSX.Element;
+  width?: "full" | "32" | "20";
   handleDropdownClose: () => void;
   children: JSX.Element | JSX.Element[];
 }

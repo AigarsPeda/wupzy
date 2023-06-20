@@ -12,6 +12,7 @@ import {
   type HandleScoreChangTypeArgs,
   type HandleScoreSaveTypeArgs,
 } from "~/types/utils.types";
+import GameOption from "../GameOption/GameOption";
 
 interface DisplayGamesProps {
   games: GameType[];
@@ -67,13 +68,16 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                 className="h-full rounded-md border border-gray-200 bg-white p-2 shadow shadow-gray-300"
                 style={{ width: `${cardsWidth(windowSize.width)}vw` }}
               >
-                <div className="flex space-x-1">
-                  <p className="rounded-md px-1 py-0.5 font-primary text-xs font-normal capitalize text-pink-500">
-                    Game {game?.order}
-                  </p>
-                  <p className="rounded-md p-1 py-0.5 font-primary text-xs font-normal capitalize text-pink-500">
-                    Round {game?.round}
-                  </p>
+                <div className="flex justify-between">
+                  <div className="flex space-x-1">
+                    <p className="rounded-md px-1 py-0.5 font-primary text-xs font-normal capitalize text-pink-500">
+                      Game {game?.order}
+                    </p>
+                    <p className="rounded-md p-1 py-0.5 font-primary text-xs font-normal capitalize text-pink-500">
+                      Round {game?.round}
+                    </p>
+                  </div>
+                  <GameOption />
                 </div>
                 <div className="mb-2 mt-4">
                   <div className="grid grid-cols-12">
