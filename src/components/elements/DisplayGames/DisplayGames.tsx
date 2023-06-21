@@ -77,7 +77,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                       Round {game?.round}
                     </p>
                   </div>
-                  <GameOption />
+                  <GameOption id={game.id} />
                 </div>
                 <div className="mb-2 mt-4">
                   <div className="grid grid-cols-12">

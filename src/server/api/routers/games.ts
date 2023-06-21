@@ -134,4 +134,34 @@ export const gameRouter = createTRPCRouter({
 
       return { games };
     }),
+
+  getGame: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { prisma } = ctx;
+
+      const game = await prisma.game.findUnique({
+        where: {
+          id: input.id,
+        },
+        include: {
+          teamOne: {
+            include: {
+              players: true,
+            },
+          },
+          teamTwo: {
+            include: {
+              players: true,
+            },
+          },
+        },
+      });
+
+      return { game };
+    }),
 });
