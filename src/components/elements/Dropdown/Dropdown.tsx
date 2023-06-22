@@ -4,6 +4,7 @@ import useOnClickOutside from "~/hooks/useOnClickOutside";
 import classNames from "~/utils/classNames";
 
 interface DropdownProps {
+  top?: "3" | "2.2";
   dropdownClass?: string;
   isDropdownOpen: boolean;
   dropdownBtn: JSX.Element;
@@ -14,6 +15,7 @@ interface DropdownProps {
 
 const Dropdown: FC<DropdownProps> = ({
   children,
+  top = "3.8",
   dropdownBtn,
   width = "32",
   dropdownClass,
@@ -45,7 +47,9 @@ const Dropdown: FC<DropdownProps> = ({
             isAnimation
               ? "visible translate-x-0 scale-100 opacity-100"
               : "invisible scale-95 opacity-0",
-            "absolute right-0 top-[3.8rem] z-10 origin-top-right -translate-y-2.5 transform-gpu rounded-md bg-white shadow-md transition-all duration-150",
+            "absolute right-0 z-10 origin-top-right -translate-y-2.5 transform-gpu rounded-md bg-white shadow-md transition-all duration-150",
+            top === "3" && "top-[3rem]",
+            top === "2.2" && "top-[2.2rem]",
             dropdownClass && dropdownClass
           )}
         >

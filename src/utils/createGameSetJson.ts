@@ -1,28 +1,40 @@
 import { GameSets } from "~/types/tournament.types";
-import { type GamesScoresType } from "~/types/utils.types";
 import getGameWinner from "~/utils/getGameWinner";
 
 type CreateGameSetJson = {
   json: unknown;
   setToWin: number;
-  scores: GamesScoresType;
+  teamTwoId: string;
+  teamOneId: string;
+  teamOneScore: number;
+  teamTwoScore: number;
 };
 
-const createGameSetJson = ({ json, scores, setToWin }: CreateGameSetJson) => {
+const createGameSetJson = ({
+  json,
+  setToWin,
+  teamOneId,
+  teamTwoId,
+  teamOneScore,
+  teamTwoScore,
+}: CreateGameSetJson) => {
   let finishedGames = json ? GameSets.parse(json) : {};
   const keys = Object.keys(finishedGames);
 
   const { winner, firstTeamWins, secondTeamWins } = getGameWinner({
     finishedGames,
-    scores: scores,
     setToWin,
+    teamOneId,
+    teamTwoId,
+    teamOneScore,
+    teamTwoScore,
   });
 
   finishedGames = {
     ...finishedGames,
     [keys.length + 1]: {
-      teamOne: scores.teamOneScore,
-      teamTwo: scores.teamTwoScore,
+      teamOne: teamOneScore,
+      teamTwo: teamTwoScore,
     },
   };
 

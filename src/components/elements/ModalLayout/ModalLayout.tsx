@@ -7,7 +7,7 @@ import classNames from "~/utils/classNames";
 
 interface ModalLayoutProps {
   footer?: ReactNode;
-  modalTitle: string;
+  header?: ReactNode;
   children: ReactNode;
   isPadding?: boolean;
   isFullScreen?: boolean;
@@ -18,7 +18,7 @@ interface ModalLayoutProps {
 const ModalLayout: FC<ModalLayoutProps> = ({
   footer,
   children,
-  modalTitle,
+  header,
   isFullScreen,
   isModalVisible,
   handleCancelClick,
@@ -51,19 +51,13 @@ const ModalLayout: FC<ModalLayoutProps> = ({
                 className="flex h-full w-full flex-col justify-between rounded bg-white"
               >
                 <div className="relative flex items-center justify-between px-3 py-2 pb-2 text-left md:px-6 md:py-4">
-                  <div className={classNames()}>
-                    <div className="flex">
-                      <p className="font-secondary text-2xl font-bold">
-                        {modalTitle}
-                      </p>
-                    </div>
-                    <button
-                      className="cursor-pointer"
-                      onClick={handleCancelClick}
-                    >
-                      <IoClose className="absolute right-2 top-2 h-8 w-9 text-gray-800 hover:text-gray-500" />
-                    </button>
-                  </div>
+                  {header && <div>{header}</div>}
+                  <button
+                    className="cursor-pointer"
+                    onClick={handleCancelClick}
+                  >
+                    <IoClose className="absolute right-2 top-2 h-8 w-9 text-gray-800 hover:text-gray-500" />
+                  </button>
                 </div>
                 <div className="h-full overflow-y-auto">{children}</div>
                 {footer && <div>{footer}</div>}

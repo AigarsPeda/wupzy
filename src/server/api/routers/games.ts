@@ -2,11 +2,12 @@ import z from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import updatePlayerScores from "~/server/api/utils/updatePlayerScores";
 import updateTeamsScore from "~/server/api/utils/updateTeamsScore";
+import { GameSchema } from "~/types/tournament.types";
 import { GamesScoresSchema } from "~/types/utils.types";
 import createGameSetJson from "~/utils/createGameSetJson";
 
 export const gameRouter = createTRPCRouter({
-  updateGame: protectedProcedure
+  updateGameScore: protectedProcedure
     .input(
       z.object({
         tournamentId: z.string(),
@@ -51,8 +52,11 @@ export const gameRouter = createTRPCRouter({
       const { winner, finishedGames, firstTeamWins, secondTeamWins } =
         createGameSetJson({
           json: game.gameSets,
-          scores: input.scores,
           setToWin: tournament.sets,
+          teamOneId: game.teamOneId,
+          teamTwoId: game.teamTwoId,
+          teamOneScore: input.scores.teamOneScore,
+          teamTwoScore: input.scores.teamTwoScore,
         });
 
       const updateGame = await prisma.game.update({
@@ -161,6 +165,112 @@ export const gameRouter = createTRPCRouter({
           },
         },
       });
+
+      return { game };
+    }),
+
+  updateGame: protectedProcedure
+    .input(
+      z.object({
+        game: GameSchema,
+        tournamentId: z.string(),
+        // oldScoreTeamOne: z.number(),
+        // oldScoreTeamTwo: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { prisma } = ctx;
+
+      const tournament = await prisma.tournament.findUnique({
+        where: {
+          id: input.tournamentId,
+        },
+      });
+
+      const oldGame = await prisma.game.findUnique({
+        where: {
+          id: input.game.id,
+        },
+      });
+
+      if (!tournament || !oldGame) {
+        throw new Error("Tournament or Game not found");
+      }
+
+      const { winner, finishedGames, firstTeamWins, secondTeamWins } =
+        createGameSetJson({
+          json: input.game.gameSets,
+          setToWin: tournament.sets,
+          teamOneId: input.game.teamOneId,
+          teamTwoId: input.game.teamTwoId,
+          teamOneScore: input.game.teamOneSetScore,
+          teamTwoScore: input.game.teamTwoSetScore,
+        });
+
+      // TODO: if old winner is null, then the game was not finished
+
+      // TODO: if old winner does not equal new winner, then the we need to update participants scores
+      // TODO: if old winner does not equal new winner, then the we need to update teams scores
+
+      const game = await prisma.game.update({
+        where: {
+          id: input.game.id,
+        },
+        data: {
+          winnerId: winner,
+          gameSets: finishedGames,
+          teamOneSetScore: firstTeamWins,
+          teamTwoSetScore: secondTeamWins,
+        },
+        include: {
+          teamOne: {
+            include: {
+              players: true,
+            },
+          },
+          teamTwo: {
+            include: {
+              players: true,
+            },
+          },
+        },
+      });
+
+      if (input.game.winnerId !== winner) {
+        const { teamOne, teamTwo } = game;
+
+        await updateTeamsScore({
+          prisma,
+          team: teamOne,
+          winnerId: winner,
+          setsWon: firstTeamWins,
+          teamScore: -oldGame.teamOneSetScore + input.game.teamOneSetScore,
+        });
+
+        await updateTeamsScore({
+          prisma,
+          team: teamTwo,
+          winnerId: winner,
+          setsWon: secondTeamWins,
+          teamScore: -oldGame.teamTwoSetScore + input.game.teamTwoSetScore,
+        });
+
+        await updatePlayerScores({
+          prisma,
+          winner,
+          team: teamOne,
+          setsWon: firstTeamWins,
+          teamScore: -oldGame.teamOneSetScore + input.game.teamOneSetScore,
+        });
+
+        await updatePlayerScores({
+          prisma,
+          winner,
+          team: teamTwo,
+          setsWon: secondTeamWins,
+          teamScore: -oldGame.teamTwoSetScore + input.game.teamTwoSetScore,
+        });
+      }
 
       return { game };
     }),

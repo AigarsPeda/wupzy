@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { GameSchemaArray } from "~/types/tournament.types";
 import {
   type GamesScoresType,
   type HandleScoreChangTypeArgs,
@@ -17,7 +18,7 @@ const useTournamentGames = () => {
     { enabled: Boolean(tournamentId) }
   );
 
-  const { mutate } = api.game.updateGame.useMutation({
+  const { mutate } = api.game.updateGameScore.useMutation({
     onSuccess: async () => {
       void refetch();
       await teams.invalidate();
@@ -115,7 +116,7 @@ const useTournamentGames = () => {
     gamesScores,
     handleScoreSave,
     handleScoreChange,
-    games: data?.games || [],
+    games: data?.games ? GameSchemaArray.parse(data?.games) : undefined,
   };
 };
 

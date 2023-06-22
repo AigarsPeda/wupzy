@@ -4,29 +4,35 @@ import getWinsPerTeam from "~/utils/getWinsPerTeam";
 
 type GameWinnerArgsType = {
   setToWin: number;
-  scores: GamesScoresType;
+  teamTwoId: string;
+  teamOneId: string;
+  teamOneScore: number;
+  teamTwoScore: number;
   finishedGames: GameSetsType | null;
 };
 
 const getGameWinner = ({
-  scores,
   setToWin,
+  teamOneId,
+  teamTwoId,
+  teamOneScore,
+  teamTwoScore,
   finishedGames,
 }: GameWinnerArgsType) => {
   let winner = null;
 
   const { firstTeamWins, secondTeamWins } = getWinsPerTeam(
     finishedGames,
-    scores.teamOneScore,
-    scores.teamTwoScore
+    teamOneScore,
+    teamTwoScore
   );
 
   if (firstTeamWins >= setToWin) {
-    winner = scores.teamOneId;
+    winner = teamOneId;
   }
 
   if (secondTeamWins >= setToWin) {
-    winner = scores.teamTwoId;
+    winner = teamTwoId;
   }
 
   return {

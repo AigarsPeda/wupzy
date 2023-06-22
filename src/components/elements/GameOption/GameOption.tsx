@@ -4,8 +4,6 @@ import { FiEdit2 } from "react-icons/fi";
 import Dropdown from "~/components/elements/Dropdown/Dropdown";
 import EditGame from "~/components/elements/EditGame/EditGame";
 import OptionButton from "~/components/elements/OptionButton/OptionButton";
-import { GameSchema } from "~/types/tournament.types";
-import { api } from "~/utils/api";
 
 interface GameOptionProps {
   id: string;
@@ -15,20 +13,14 @@ const GameOption: FC<GameOptionProps> = ({ id }) => {
   const [gameId, setGameId] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const { data, isFetching } = api.game.getGame.useQuery(
-    { id: gameId },
-    { enabled: Boolean(gameId) }
-  );
-
   const handleDropdownClose = () => setIsDropdownOpen(false);
   const updateState = () => setIsDropdownOpen((state) => !state);
 
   return (
     <>
-      {console.log("isFetching", isFetching)}
       <Dropdown
+        top="2.2"
         width="20"
-        dropdownClass="top-[2rem]"
         isDropdownOpen={isDropdownOpen}
         handleDropdownClose={handleDropdownClose}
         dropdownBtn={
@@ -46,7 +38,6 @@ const GameOption: FC<GameOptionProps> = ({ id }) => {
             title="Edit"
             kind="warning"
             icon={<FiEdit2 />}
-            isLoading={isFetching}
             handleClick={() => {
               setGameId(id);
               handleDropdownClose();
@@ -54,9 +45,9 @@ const GameOption: FC<GameOptionProps> = ({ id }) => {
           />
         </div>
       </Dropdown>
-      {data?.game && !isFetching && (
+      {gameId && (
         <EditGame
-          game={GameSchema.parse(data.game)}
+          gameId={gameId}
           handleModalClose={() => {
             setGameId("");
             handleDropdownClose();
