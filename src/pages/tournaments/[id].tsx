@@ -21,7 +21,7 @@ const TournamentPage: NextPage = () => {
       )}
 
       <DisplayGames
-        games={games}
+        games={games || []}
         gamesScores={gamesScores}
         isGamesLoading={isLoading}
         handleScoreSave={handleScoreSave}
