@@ -84,7 +84,7 @@ export const GameSchema = z.object({
   teamTwoSetScore: z.number(),
   gameSets: GameSets, // How to make JSON type?
   winnerId: z.string().nullish(),
-  tournamentId: z.string().nullish(),
+  tournamentId: z.string(),
 });
 
 export const GameSchemaArray = z.array(GameSchema);

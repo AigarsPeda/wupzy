@@ -1,10 +1,10 @@
-import { Fragment, useEffect, useState, type FC } from "react";
+import { Fragment, type FC } from "react";
 import Button from "~/components/elements/Button/Button";
 import ModalLayout from "~/components/elements/ModalLayout/ModalLayout";
 import NumberInput from "~/components/elements/NumberInput/NumberInput";
 import Tooltip from "~/components/elements/Tooltip/Tooltip";
+import useGame from "~/hooks/useGame";
 import { GameSets, type GameType } from "~/types/tournament.types";
-import { api } from "~/utils/api";
 
 interface EditGameProps {
   gameId: string;
@@ -12,26 +12,10 @@ interface EditGameProps {
 }
 
 const EditGame: FC<EditGameProps> = ({ gameId, handleModalClose }) => {
-  const [game, setGame] = useState<GameType | undefined>(undefined);
-  const { data } = api.game.getGame.useQuery(
-    { id: gameId },
-    { enabled: Boolean(gameId), refetchOnWindowFocus: false }
+  const { game, mutate, setGame, isLoading } = useGame(
+    gameId,
+    handleModalClose
   );
-
-  const { mutate } = api.game.updateGame.useMutation();
-
-  useEffect(() => {
-    if (data?.game && GameSets.parse(data?.game?.gameSets)) {
-      const gameSets = GameSets.parse(data?.game?.gameSets);
-
-      const newGame = {
-        ...data.game,
-        gameSets,
-      };
-
-      setGame(newGame);
-    }
-  }, [data]);
 
   return (
     <ModalLayout
@@ -145,8 +129,13 @@ const EditGame: FC<EditGameProps> = ({ gameId, handleModalClose }) => {
             size="sm"
             title="Save"
             type="button"
+            isLoading={isLoading}
             handleClick={() => {
-              handleModalClose();
+              if (!game) return;
+
+              mutate({
+                game,
+              });
             }}
           />
         </div>

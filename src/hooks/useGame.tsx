@@ -1,26 +1,26 @@
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { GameSets, type GameType } from "~/types/tournament.types";
 import { api } from "~/utils/api";
-import validateIsString from "~/utils/validateIsString";
 
-const useGame = () => {
-  const router = useRouter();
-  const { data: sessionData } = useSession();
-  const { mutate, isLoading } = api.game.updateGame.useMutation();
+const useGame = (gameId: string, handleModalClose?: () => void) => {
+  const { teams, player, game: games } = api.useContext();
   const [game, setGame] = useState<GameType | undefined>(undefined);
   const { data } = api.game.getGame.useQuery(
-    { id: validateIsString(router.query.gameId) ? router.query.gameId : "" },
-    {
-      enabled: Boolean(router.query.gameId) && sessionData?.user !== undefined,
-      refetchOnWindowFocus: false,
-    }
+    { id: gameId },
+    { enabled: Boolean(gameId), refetchOnWindowFocus: false }
   );
 
-  const handleScoreChange = (game: GameType) => {
-    setGame(game);
-  };
+  const { mutate, isLoading } = api.game.updateGame.useMutation({
+    onSuccess: () => {
+      void games.invalidate();
+      void teams.invalidate();
+      void player.invalidate();
+
+      if (handleModalClose) {
+        handleModalClose();
+      }
+    },
+  });
 
   useEffect(() => {
     if (data?.game && GameSets.parse(data?.game?.gameSets)) {
@@ -38,9 +38,8 @@ const useGame = () => {
   return {
     game,
     mutate,
+    setGame,
     isLoading,
-    handleScoreChange,
-    isId: Boolean(router.query.gameId),
   };
 };
 

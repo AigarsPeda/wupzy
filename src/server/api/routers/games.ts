@@ -1,9 +1,11 @@
 import z from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import editScore from "~/server/api/utils/editScore";
 import updatePlayerScores from "~/server/api/utils/updatePlayerScores";
 import updateTeamsScore from "~/server/api/utils/updateTeamsScore";
-import { GameSchema } from "~/types/tournament.types";
+import { GameSchema, GameSets } from "~/types/tournament.types";
 import { GamesScoresSchema } from "~/types/utils.types";
+import countWinsPerTeam from "~/utils/countWinsPerTeam";
 import createGameSetJson from "~/utils/createGameSetJson";
 
 export const gameRouter = createTRPCRouter({
@@ -173,9 +175,6 @@ export const gameRouter = createTRPCRouter({
     .input(
       z.object({
         game: GameSchema,
-        tournamentId: z.string(),
-        // oldScoreTeamOne: z.number(),
-        // oldScoreTeamTwo: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -183,44 +182,13 @@ export const gameRouter = createTRPCRouter({
 
       const tournament = await prisma.tournament.findUnique({
         where: {
-          id: input.tournamentId,
+          id: input.game.tournamentId,
         },
       });
 
       const oldGame = await prisma.game.findUnique({
         where: {
           id: input.game.id,
-        },
-      });
-
-      if (!tournament || !oldGame) {
-        throw new Error("Tournament or Game not found");
-      }
-
-      const { winner, finishedGames, firstTeamWins, secondTeamWins } =
-        createGameSetJson({
-          json: input.game.gameSets,
-          setToWin: tournament.sets,
-          teamOneId: input.game.teamOneId,
-          teamTwoId: input.game.teamTwoId,
-          teamOneScore: input.game.teamOneSetScore,
-          teamTwoScore: input.game.teamTwoSetScore,
-        });
-
-      // TODO: if old winner is null, then the game was not finished
-
-      // TODO: if old winner does not equal new winner, then the we need to update participants scores
-      // TODO: if old winner does not equal new winner, then the we need to update teams scores
-
-      const game = await prisma.game.update({
-        where: {
-          id: input.game.id,
-        },
-        data: {
-          winnerId: winner,
-          gameSets: finishedGames,
-          teamOneSetScore: firstTeamWins,
-          teamTwoSetScore: secondTeamWins,
         },
         include: {
           teamOne: {
@@ -236,41 +204,74 @@ export const gameRouter = createTRPCRouter({
         },
       });
 
-      if (input.game.winnerId !== winner) {
-        const { teamOne, teamTwo } = game;
-
-        await updateTeamsScore({
-          prisma,
-          team: teamOne,
-          winnerId: winner,
-          setsWon: firstTeamWins,
-          teamScore: -oldGame.teamOneSetScore + input.game.teamOneSetScore,
-        });
-
-        await updateTeamsScore({
-          prisma,
-          team: teamTwo,
-          winnerId: winner,
-          setsWon: secondTeamWins,
-          teamScore: -oldGame.teamTwoSetScore + input.game.teamTwoSetScore,
-        });
-
-        await updatePlayerScores({
-          prisma,
-          winner,
-          team: teamOne,
-          setsWon: firstTeamWins,
-          teamScore: -oldGame.teamOneSetScore + input.game.teamOneSetScore,
-        });
-
-        await updatePlayerScores({
-          prisma,
-          winner,
-          team: teamTwo,
-          setsWon: secondTeamWins,
-          teamScore: -oldGame.teamTwoSetScore + input.game.teamTwoSetScore,
-        });
+      if (!tournament || !oldGame) {
+        throw new Error("Tournament or Game not found");
       }
+
+      const {
+        firstTeamPoints: firstTeamOldPoints,
+        secondTeamPoints: secondTeamOldPoints,
+      } = countWinsPerTeam({
+        setsToWin: tournament.sets,
+        game: GameSchema.parse(oldGame),
+      });
+
+      const {
+        winnerId,
+        firstTeamWins,
+        secondTeamWins,
+        firstTeamPoints,
+        secondTeamPoints,
+      } = countWinsPerTeam({
+        game: input.game,
+        setsToWin: tournament.sets,
+      });
+
+      const game = await prisma.game.update({
+        where: {
+          id: input.game.id,
+        },
+        data: {
+          winnerId: winnerId,
+          teamOneSetScore: firstTeamWins,
+          teamTwoSetScore: secondTeamWins,
+          gameSets: GameSets.parse(input.game.gameSets),
+        },
+        include: {
+          teamOne: {
+            include: {
+              players: true,
+            },
+          },
+          teamTwo: {
+            include: {
+              players: true,
+            },
+          },
+        },
+      });
+
+      const { teamOne, teamTwo } = game;
+
+      await editScore({
+        prisma,
+        team: teamOne,
+        newWinnerId: winnerId,
+        teamsWins: firstTeamWins,
+        oldWinnerId: oldGame.winnerId,
+        teamsNewScore: firstTeamPoints,
+        teamsOldScore: firstTeamOldPoints || 0,
+      });
+
+      await editScore({
+        prisma,
+        team: teamTwo,
+        newWinnerId: winnerId,
+        teamsWins: secondTeamWins,
+        oldWinnerId: oldGame.winnerId,
+        teamsNewScore: secondTeamPoints,
+        teamsOldScore: secondTeamOldPoints,
+      });
 
       return { game };
     }),

@@ -1,13 +1,22 @@
 import { type FC } from "react";
+import classNames from "~/utils/classNames";
 
 interface PageHeadLineProps {
+  isLight?: boolean;
   title: string | undefined;
 }
 
-const PageHeadLine: FC<PageHeadLineProps> = ({ title }) => {
+const PageHeadLine: FC<PageHeadLineProps> = ({ title, isLight }) => {
   return (
-    <div className=" max-w-md">
-      <h1 className="mt-2 truncate text-3xl">{title || ""}</h1>
+    <div className="max-w-[16rem]">
+      <h1
+        className={classNames(
+          isLight ? "text-white" : "text-gray-900",
+          "truncate text-3xl"
+        )}
+      >
+        {title || ""}
+      </h1>
     </div>
   );
 };

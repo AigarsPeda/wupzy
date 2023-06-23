@@ -1,5 +1,4 @@
 import { type GameSetsType } from "~/types/tournament.types";
-import { type GamesScoresType } from "~/types/utils.types";
 import getWinsPerTeam from "~/utils/getWinsPerTeam";
 
 type GameWinnerArgsType = {
