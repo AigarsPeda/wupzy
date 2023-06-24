@@ -8,7 +8,7 @@ interface PageHeadLineProps {
 
 const PageHeadLine: FC<PageHeadLineProps> = ({ title, isLight }) => {
   return (
-    <div className="max-w-[16rem]">
+    <div className="max-w-md">
       <h1
         className={classNames(
           isLight ? "text-white" : "text-gray-900",

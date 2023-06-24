@@ -44,7 +44,7 @@ const TournamentPage: NextPage = () => {
         <LoadingSkeleton classes="mt-2 h-14 w-72" />
       ) : (
         <div className="mt-4 flex items-center space-x-4 rounded px-3 py-1 md:mt-0">
-          <div>
+          <div className="max-w-[16rem]">
             <PageHeadLine title={tournament?.name} />
             <p className="text-sm text-gray-500">{getGamesLeft()} games left</p>
           </div>
