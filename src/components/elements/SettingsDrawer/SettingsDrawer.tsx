@@ -1,8 +1,12 @@
 import { type FC } from "react";
+import Button from "~/components/elements/Button/Button";
 import TopDrawerLayout from "~/components/elements/TopDrawerLayout/TopDrawerLayout";
+import useTournament from "~/hooks/useTournament";
 import classNames from "~/utils/classNames";
 
 const SettingsDrawer: FC = () => {
+  const { isDeleting, deleteTournament } = useTournament();
+
   return (
     <TopDrawerLayout>
       <div
@@ -11,7 +15,15 @@ const SettingsDrawer: FC = () => {
         )}
       >
         <h1>Tournament setting</h1>
-        <p className="text-pink-500">Coming soon...</p>
+        <div className="mt-10">
+          <Button
+            size="sm"
+            color="red"
+            isLoading={isDeleting}
+            title="Delete tournament"
+            handleClick={deleteTournament}
+          />
+        </div>
       </div>
     </TopDrawerLayout>
   );

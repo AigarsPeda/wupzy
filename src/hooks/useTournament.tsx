@@ -11,6 +11,20 @@ const useTournament = () => {
     { id: tournamentId },
     { enabled: Boolean(tournamentId) && sessionData?.user !== undefined }
   );
+  const { mutate: delTournament, isLoading: isDeleting } =
+    api.tournament.deleteTournament.useMutation({
+      onSuccess: async () => {
+        await router.push("/tournaments");
+      },
+    });
+
+  const deleteTournament = () => {
+    if (tournamentId) {
+      delTournament({
+        id: tournamentId,
+      });
+    }
+  };
 
   useEffect(() => {
     if (router.query.id && typeof router.query.id === "string") {
@@ -18,7 +32,12 @@ const useTournament = () => {
     }
   }, [router.query.id, setTournamentId]);
 
-  return { tournament: data?.tournament, isLoading };
+  return {
+    isLoading,
+    isDeleting,
+    deleteTournament,
+    tournament: data?.tournament,
+  };
 };
 
 export default useTournament;

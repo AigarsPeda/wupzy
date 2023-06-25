@@ -126,4 +126,24 @@ export const tournamentRouter = createTRPCRouter({
         return { id };
       }
     }),
+
+  deleteTournament: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const { prisma } = ctx;
+
+      await prisma.game.deleteMany({
+        where: {
+          tournamentId: input.id,
+        },
+      });
+
+      await prisma.tournament.delete({
+        where: {
+          id: input.id,
+        },
+      });
+
+      return { id: input };
+    }),
 });
