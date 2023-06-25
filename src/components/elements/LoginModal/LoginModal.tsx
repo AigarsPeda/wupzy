@@ -29,7 +29,7 @@ const LoginModal: FC = () => {
             />
             {status !== "loading" && (
               <Button
-                isSecondary
+                color="light"
                 title="Cancel"
                 handleClick={() => redirectToPath("/")}
               />
