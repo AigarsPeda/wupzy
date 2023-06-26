@@ -16,12 +16,12 @@ const LoginModal: FC = () => {
         redirectToPath("/");
       }}
     >
-      <div className="w-full max-w-[28rem] px-3 pb-2 text-left md:px-6 md:pb-4">
-        <p className="mb-5 font-primary">
+      <div className="w-72 px-3 pb-2 text-left md:w-full md:max-w-[28rem] md:px-6 md:pb-4">
+        <p className="mb-8 mt-5 font-primary">
           You need to be logged in to access this page.
         </p>
         <div className="flex flex-col space-y-4">
-          <div className="flex w-full items-center justify-center space-x-4">
+          <div className="flex w-full flex-col items-center justify-center space-x-0 space-y-3 md:flex-row md:space-x-3 md:space-y-0">
             <Button
               title="Sign in"
               isLoading={status === "loading"}

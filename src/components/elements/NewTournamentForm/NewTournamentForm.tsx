@@ -180,14 +180,16 @@ const NewTournamentForm: FC = () => {
         >
           Cancel
         </button>
-        <Button
-          size="sm"
-          title="Save"
-          type="button"
-          handleClick={() => mutate(newTournament)}
-          isLoading={isLoading}
-          isDisabled={newTournament.name.trim() === ""}
-        />
+        <div className="w-20">
+          <Button
+            size="sm"
+            title="Save"
+            type="button"
+            handleClick={() => mutate(newTournament)}
+            isLoading={isLoading}
+            isDisabled={newTournament.name.trim() === ""}
+          />
+        </div>
       </div>
     </form>
   );

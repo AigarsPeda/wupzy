@@ -122,22 +122,25 @@ const EditGame: FC<EditGameProps> = ({ gameId, handleModalClose }) => {
           <button
             type="button"
             className="text-sm font-semibold leading-6 text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-800"
+            onClick={handleModalClose}
           >
             Cancel
           </button>
-          <Button
-            size="sm"
-            title="Save"
-            type="button"
-            isLoading={isLoading}
-            handleClick={() => {
-              if (!game) return;
+          <div className="w-20">
+            <Button
+              size="sm"
+              title="Save"
+              type="button"
+              isLoading={isLoading}
+              handleClick={() => {
+                if (!game) return;
 
-              mutate({
-                game,
-              });
-            }}
-          />
+                mutate({
+                  game,
+                });
+              }}
+            />
+          </div>
         </div>
       </div>
     </ModalLayout>

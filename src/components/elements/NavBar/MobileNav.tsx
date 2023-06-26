@@ -24,13 +24,15 @@ const MobileNav: FC<MobileNavProps> = ({ links }) => {
       }}
       drawerBtn={
         <div className="flex w-full justify-end">
-          <Button
-            size="sm"
-            title={<TiThMenu className="h-6 w-6" />}
-            handleClick={() => {
-              setIsDrawerOpen((state) => !state);
-            }}
-          />
+          <div className="w-20">
+            <Button
+              size="sm"
+              title={<TiThMenu className="h-6 w-6" />}
+              handleClick={() => {
+                setIsDrawerOpen((state) => !state);
+              }}
+            />
+          </div>
         </div>
       }
       header={
