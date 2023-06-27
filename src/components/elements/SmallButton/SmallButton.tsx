@@ -4,6 +4,7 @@ import classNames from "~/utils/classNames";
 interface SmallButtonProps {
   title: string;
   icon?: JSX.Element;
+  isDisabled?: boolean;
   isFullWidth?: boolean;
   handleClick?: () => void;
   type?: "button" | "submit" | "reset";
@@ -13,6 +14,7 @@ interface SmallButtonProps {
 const SmallButton: FC<SmallButtonProps> = ({
   icon,
   title,
+  isDisabled,
   handleClick,
   isFullWidth,
   color = "gray",
@@ -21,9 +23,11 @@ const SmallButton: FC<SmallButtonProps> = ({
   return (
     <button
       type={type}
+      disabled={isDisabled}
       onClick={handleClick}
       className={classNames(
         isFullWidth && "w-full",
+        isDisabled && "cursor-not-allowed opacity-50",
         color === "red" && "bg-red-600 text-white hover:bg-red-700",
         color === "gray" && "bg-gray-200 text-gray-800 hover:bg-gray-300",
         color === "green" && "bg-green-500 text-white hover:bg-green-600",

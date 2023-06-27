@@ -1,5 +1,5 @@
 const genUniqueId = (): string => {
-  return Date.now().toString(36) + Math.random().toString(36).substr(2);
+  return `id-${Math.random().toString(16).slice(2)}`;
 };
 
 export default genUniqueId;

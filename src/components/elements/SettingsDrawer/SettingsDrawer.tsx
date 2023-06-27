@@ -40,6 +40,7 @@ const SettingsDrawer: FC = () => {
             />
             <SmallButton
               color="gray"
+              isDisabled
               icon={<LuSplitSquareHorizontal className="mr-2 h-6 w-6" />}
               title="Split"
               handleClick={() => {
