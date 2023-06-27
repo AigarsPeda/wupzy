@@ -1,6 +1,6 @@
 import { type FC } from "react";
 import Button from "~/components/elements/Button/Button";
-import ModalLayout from "~/components/layout/ModalLayout/ModalLayout";
+import SmallModalLayout from "~/components/layout/SmallModalLayout/SmallModalLayout";
 import useTournament from "~/hooks/useTournament";
 
 interface DeleteTournamentModalProps {
@@ -15,7 +15,7 @@ const DeleteTournamentModal: FC<DeleteTournamentModalProps> = ({
   const { isDeleting, deleteTournament } = useTournament();
 
   return (
-    <ModalLayout
+    <SmallModalLayout
       isModalVisible={isDeleteModal}
       modalTitle="Delete tournament"
       handleCancelClick={handleCancelClicks}
@@ -23,10 +23,10 @@ const DeleteTournamentModal: FC<DeleteTournamentModalProps> = ({
       <div className="w-72 px-3 pb-2 text-left md:w-full md:max-w-[28rem] md:px-6 md:pb-4">
         <p className="mb-8 mt-5 font-primary">
           Are you sure you want to delete this tournament?{" "}
-          <span className="font-medium"> This action cannot be undone.</span>
+          <span className="font-medium">This action cannot be undone.</span>
         </p>
-        <div className="flex flex-col">
-          <div className="flex w-full flex-col items-center justify-center space-x-0 space-y-3 md:flex-row md:space-x-3 md:space-y-0">
+        <div>
+          <div className="grid-cols-2 gap-5 space-y-3 md:grid md:space-y-0">
             <Button
               color="red"
               title="Delete"
@@ -45,7 +45,7 @@ const DeleteTournamentModal: FC<DeleteTournamentModalProps> = ({
           </div>
         </div>
       </div>
-    </ModalLayout>
+    </SmallModalLayout>
   );
 };
 

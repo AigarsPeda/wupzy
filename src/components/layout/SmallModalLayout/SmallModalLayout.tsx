@@ -1,27 +1,27 @@
-import type { FC, ReactNode } from "react";
-import { useRef } from "react";
+import { useRef, type FC, type ReactNode } from "react";
 import { IoClose } from "react-icons/io5";
 import useDelayUnmount from "~/hooks/useDelayUnmount";
 import useOnClickOutside from "~/hooks/useOnClickOutside";
 import classNames from "~/utils/classNames";
 
-interface ModalLayoutProps {
+interface SmallModalLayoutProps {
   footer?: ReactNode;
-  header?: ReactNode;
+  modalTitle?: string;
   children: ReactNode;
-  isPadding?: boolean;
   isFullScreen?: boolean;
   isModalVisible: boolean;
+  bgColor?: "white" | "dark";
   handleCancelClick: () => void;
 }
 
-const ModalLayout: FC<ModalLayoutProps> = ({
+const SmallModalLayout: FC<SmallModalLayoutProps> = ({
   footer,
   children,
-  header,
-  isFullScreen,
+  modalTitle,
   isModalVisible,
   handleCancelClick,
+  bgColor = "white",
+  isFullScreen = false,
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const { shouldRender, isAnimation } = useDelayUnmount(isModalVisible, 100);
@@ -42,21 +42,39 @@ const ModalLayout: FC<ModalLayoutProps> = ({
           <div className="relative h-full w-full">
             <div
               className={classNames(
-                !isFullScreen && "p-3 md:p-10",
-                "absolute left-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 transform"
+                isFullScreen && "h-full w-full",
+                "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform p-3"
               )}
             >
               <div
                 ref={modalRef}
-                className="flex h-full w-full flex-col justify-between rounded bg-white"
+                className={classNames(
+                  bgColor === "white" && "bg-white",
+                  bgColor === "dark" && "bg-gray-900",
+                  "flex h-full w-full flex-col justify-between rounded"
+                )}
               >
                 <div className="relative flex items-center justify-between px-3 py-2 pb-2 text-left md:px-6 md:py-4">
-                  {header && <div>{header}</div>}
+                  {modalTitle && (
+                    <div>
+                      <p className="font-secondary text-2xl font-bold">
+                        {modalTitle}
+                      </p>
+                    </div>
+                  )}
                   <button
                     className="cursor-pointer"
                     onClick={handleCancelClick}
                   >
-                    <IoClose className="absolute right-2 top-2 h-8 w-9 text-gray-800 hover:text-gray-500" />
+                    <IoClose
+                      className={classNames(
+                        bgColor === "white" &&
+                          "text-gray-800 hover:text-gray-500",
+                        bgColor === "dark" &&
+                          "text-gray-200 hover:text-gray-500",
+                        "absolute right-2 top-2 h-8 w-9"
+                      )}
+                    />
                   </button>
                 </div>
                 <div className="h-full overflow-y-auto">{children}</div>
@@ -70,4 +88,4 @@ const ModalLayout: FC<ModalLayoutProps> = ({
   );
 };
 
-export default ModalLayout;
+export default SmallModalLayout;

@@ -1,10 +1,23 @@
+import dynamic from "next/dynamic";
 import { useState, type FC } from "react";
-import Button from "~/components/elements/Button/Button";
-import DeleteTournamentModal from "~/components/elements/DeleteTournamentModal/DeleteTournamentModal";
+import { AiOutlineDelete } from "react-icons/ai";
+import { LuSplitSquareHorizontal } from "react-icons/lu";
+import SmallButton from "~/components/elements/SmallButton/SmallButton";
 import TopDrawerLayout from "~/components/elements/TopDrawerLayout/TopDrawerLayout";
 import classNames from "~/utils/classNames";
 
+const SplitTournamentModal = dynamic(
+  () =>
+    import("~/components/elements/SplitTournamentModal/SplitTournamentModal")
+);
+
+const DeleteTournamentModal = dynamic(
+  () =>
+    import("~/components/elements/DeleteTournamentModal/DeleteTournamentModal")
+);
+
 const SettingsDrawer: FC = () => {
+  const [isSplitModal, setIsSplitModal] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
 
   return (
@@ -16,17 +29,23 @@ const SettingsDrawer: FC = () => {
           )}
         >
           <h1>Tournament setting</h1>
-          <div className="mt-10">
-            <div className="w-40">
-              <Button
-                size="sm"
-                color="red"
-                title="Delete tournament"
-                handleClick={() => {
-                  setIsDeleteModal(true);
-                }}
-              />
-            </div>
+          <div className="mt-10 flex flex-wrap space-x-6">
+            <SmallButton
+              color="red"
+              icon={<AiOutlineDelete className="mr-2 h-[1.4rem] w-[1.4rem]" />}
+              title="Delete"
+              handleClick={() => {
+                setIsDeleteModal(true);
+              }}
+            />
+            <SmallButton
+              color="gray"
+              icon={<LuSplitSquareHorizontal className="mr-2 h-6 w-6" />}
+              title="Split"
+              handleClick={() => {
+                setIsSplitModal(true);
+              }}
+            />
           </div>
         </div>
       </TopDrawerLayout>
@@ -34,6 +53,12 @@ const SettingsDrawer: FC = () => {
         isDeleteModal={isDeleteModal}
         handleCancelClicks={() => {
           setIsDeleteModal(false);
+        }}
+      />
+      <SplitTournamentModal
+        isSplitModal={isSplitModal}
+        handleCancelClicks={() => {
+          setIsSplitModal(false);
         }}
       />
     </>

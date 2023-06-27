@@ -3,7 +3,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiEdit2 } from "react-icons/fi";
 import Dropdown from "~/components/elements/Dropdown/Dropdown";
 import EditGame from "~/components/elements/EditGame/EditGame";
-import OptionButton from "~/components/elements/OptionButton/OptionButton";
+import SmallButton from "~/components/elements/SmallButton/SmallButton";
 
 interface GameOptionProps {
   id: string;
@@ -33,11 +33,11 @@ const GameOption: FC<GameOptionProps> = ({ id }) => {
           </button>
         }
       >
-        <div className="w-28 px-2">
-          <OptionButton
+        <div className="flex w-32 flex-col justify-center px-2 py-1">
+          <SmallButton
             title="Edit"
-            kind="warning"
-            icon={<FiEdit2 />}
+            color="orange"
+            icon={<FiEdit2 className="mr-2 h-4 w-4" />}
             handleClick={() => {
               setGameId(id);
               handleDropdownClose();

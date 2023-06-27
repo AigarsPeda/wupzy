@@ -1,8 +1,8 @@
 import { Fragment, type FC } from "react";
 import Button from "~/components/elements/Button/Button";
-import ModalLayout from "~/components/elements/ModalLayout/ModalLayout";
 import NumberInput from "~/components/elements/NumberInput/NumberInput";
 import Tooltip from "~/components/elements/Tooltip/Tooltip";
+import ModalLayout from "~/components/layout/ModalLayout/ModalLayout";
 import useGame from "~/hooks/useGame";
 import { GameSets, type GameType } from "~/types/tournament.types";
 
@@ -24,7 +24,7 @@ const EditGame: FC<EditGameProps> = ({ gameId, handleModalClose }) => {
       handleCancelClick={handleModalClose}
       header={
         <div className="mb-4">
-          <h1 className="text-3xl"> Edit Game</h1>
+          <h1 className="text-3xl">Edit Game</h1>
           <div className="flex space-x-1">
             <p className="rounded-md font-primary text-xs font-normal capitalize text-pink-500">
               Game {game?.order}

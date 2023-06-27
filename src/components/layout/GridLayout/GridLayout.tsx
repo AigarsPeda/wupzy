@@ -7,6 +7,7 @@ interface GridLayoutProps {
   isDivideX?: boolean;
   children: JSX.Element | JSX.Element[] | ReactNode;
   minWith?:
+    | "40"
     | "150"
     | "175"
     | "200"
@@ -40,6 +41,7 @@ const GridLayout = forwardRef<Ref, GridLayoutProps>(
         minWith === "200" && "grid-cols-[repeat(auto-fit,minmax(200px,1fr))]",
         minWith === "175" && "grid-cols-[repeat(auto-fit,minmax(175px,1fr))]",
         minWith === "150" && "grid-cols-[repeat(auto-fit,minmax(150px,1fr))]",
+        minWith === "40" && "grid-cols-[repeat(auto-fit,minmax(40px,1fr))]",
         minWith === "150-033" &&
           "grid-cols-[repeat(auto-fit,minmax(150px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(150px,0.34fr))]",
         "mb-5 grid w-full"

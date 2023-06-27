@@ -1,7 +1,7 @@
 import { signIn, useSession } from "next-auth/react";
 import { type FC } from "react";
 import Button from "~/components/elements/Button/Button";
-import ModalLayout from "~/components/layout/ModalLayout/ModalLayout";
+import SmallModalLayout from "~/components/layout/SmallModalLayout/SmallModalLayout";
 import useRedirect from "~/hooks/useRedirect";
 
 const LoginModal: FC = () => {
@@ -9,7 +9,7 @@ const LoginModal: FC = () => {
   const { redirectToPath } = useRedirect();
 
   return (
-    <ModalLayout
+    <SmallModalLayout
       isModalVisible
       modalTitle="Login"
       handleCancelClick={() => {
@@ -20,13 +20,8 @@ const LoginModal: FC = () => {
         <p className="mb-8 mt-5 font-primary">
           You need to be logged in to access this page.
         </p>
-        <div className="flex flex-col space-y-4">
-          <div className="flex w-full flex-col items-center justify-center space-x-0 space-y-3 md:flex-row md:space-x-3 md:space-y-0">
-            <Button
-              title="Sign in"
-              isLoading={status === "loading"}
-              handleClick={() => void signIn()}
-            />
+        <div>
+          <div className="grid-cols-2 gap-5 space-y-3 md:grid md:space-y-0">
             {status !== "loading" && (
               <Button
                 color="light"
@@ -34,10 +29,15 @@ const LoginModal: FC = () => {
                 handleClick={() => redirectToPath("/")}
               />
             )}
+            <Button
+              title="Sign in"
+              isLoading={status === "loading"}
+              handleClick={() => void signIn()}
+            />
           </div>
         </div>
       </div>
-    </ModalLayout>
+    </SmallModalLayout>
   );
 };
 
