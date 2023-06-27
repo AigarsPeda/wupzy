@@ -1,5 +1,11 @@
-import { type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import ModalLayout from "~/components/layout/ModalLayout/ModalLayout";
+import useTeams from "~/hooks/useTeams";
+import { type TeamType } from "~/types/tournament.types";
+import genUniqueId from "~/utils/genUniqueId";
+import groupTeamsByGroup from "~/utils/groupTeamsByGroup";
+
+type TeamsMapType = Map<string, TeamType[]>;
 
 interface SplitTournamentModalProps {
   isSplitModal: boolean;
@@ -10,6 +16,17 @@ const SplitTournamentModal: FC<SplitTournamentModalProps> = ({
   isSplitModal,
   handleCancelClicks,
 }) => {
+  const { teams, isLoading } = useTeams(isSplitModal);
+  const [teamsByGroup, setTeamsByGroup] = useState<TeamsMapType>(
+    new Map<string, TeamType[]>()
+  );
+
+  useEffect(() => {
+    if (!teams || isLoading) return;
+
+    setTeamsByGroup(groupTeamsByGroup(teams));
+  }, [teams, isLoading]);
+
   return (
     <ModalLayout
       isFullScreen
@@ -25,6 +42,19 @@ const SplitTournamentModal: FC<SplitTournamentModalProps> = ({
         <p className="mb-8 mt-5 font-primary">
           Are you sure you want to split this tournament?{" "}
         </p>
+      </div>
+      <div>
+        {Array.from(teamsByGroup).map(([group, teams]) => (
+          <div key={genUniqueId()}>
+            <h2 className="text-3xl">{group}</h2>
+            <ul>
+              {teams.map((team) => {
+                console.log(team);
+                return <li key={genUniqueId()}>{team.name}</li>;
+              })}
+            </ul>
+          </div>
+        ))}
       </div>
     </ModalLayout>
   );

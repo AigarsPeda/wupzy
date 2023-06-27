@@ -54,6 +54,7 @@ export const tournamentRouter = createTRPCRouter({
             players: {
               create: input.king.players.map((player) => ({
                 name: player.name,
+                group: player.group,
               })),
             },
           },
@@ -109,6 +110,7 @@ export const tournamentRouter = createTRPCRouter({
                 players: {
                   create: team.players.map((player) => ({
                     name: player.name,
+                    group: team.group,
                   })),
                 },
               })),

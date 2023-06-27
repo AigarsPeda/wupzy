@@ -40,23 +40,29 @@ const Table: FC<TableProps> = ({ exclude, isLoading, tableContents }) => {
       };
     }
 
+    const keys: string[] = [];
+
     const tableBody = arr.map((obj) => {
+      // const objCopy = Object.assign({}, obj);
+
+      const objCopy = JSON.parse(JSON.stringify(obj)) as {
+        [key: string]: TableValueType;
+      };
+
       if (exclude) {
         exclude.forEach((key) => {
-          delete obj[key];
+          delete objCopy[key];
         });
       }
 
-      return Object.values(obj);
-      // return Object.values(obj).filter((value) => {
-      //   if (typeof value === "object") {
-      //     return false;
-      //   }
-      //   return true;
-      // });
+      if (keys.length === 0) {
+        keys.push(...Object.keys(objCopy));
+      }
+
+      return Object.values(objCopy);
     });
 
-    return { tableBody: tableBody, tableHead: Object.keys(arr[0]) };
+    return { tableBody: tableBody, tableHead: keys };
   };
 
   useEffect(() => {

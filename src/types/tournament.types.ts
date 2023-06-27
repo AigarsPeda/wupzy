@@ -7,11 +7,13 @@ export type TournamentTypeType = z.infer<typeof TournamentTypeEnum>;
 export const NewPlayerSchema = z.object({
   id: z.string(),
   name: z.string(),
+  group: z.string(),
 });
 
 export const NewTeamsSchema = z.object({
   id: z.string(),
   name: z.string(),
+  group: z.string(),
   players: z.array(NewPlayerSchema),
 });
 

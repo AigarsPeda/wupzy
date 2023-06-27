@@ -1,21 +1,27 @@
 import { type Team } from "@prisma/client";
+import { type CreateGameType } from "~/types/utils.types";
 import shuffleArray from "~/utils/shuffleArray";
 
 const createGames = (teams: Team[], tournamentId: string, round: number) => {
   let order = 1;
-  const games = [];
+  const games: CreateGameType[] = [];
   for (let i = 0; i < teams.length; i++) {
     for (let j = i + 1; j < teams.length; j++) {
-      const teamOneId = teams[i]?.id;
-      const teamTwoId = teams[j]?.id;
+      const firstTeams = teams[i];
+      const secondTeams = teams[j];
 
-      if (teamOneId && teamTwoId) {
+      if (
+        firstTeams?.id &&
+        secondTeams?.id &&
+        firstTeams?.group === secondTeams?.group
+      ) {
         games.push({
           round,
-          teamOneId,
-          teamTwoId,
           tournamentId,
           order: order++,
+          group: firstTeams?.group,
+          teamOneId: firstTeams?.id,
+          teamTwoId: secondTeams?.id,
         });
       }
     }

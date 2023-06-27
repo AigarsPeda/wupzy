@@ -29,3 +29,12 @@ export const GamesScoresSchema = z.object({
 });
 
 export type GamesScoresType = z.infer<typeof GamesScoresSchema>;
+
+export type CreateGameType = {
+  round: number;
+  order: number;
+  group: string;
+  teamOneId: string;
+  teamTwoId: string;
+  tournamentId: string;
+};

@@ -16,22 +16,27 @@ const createTeams = (players: Player[] | NewPlayerType[]) => {
       if (
         playerOne &&
         playerTwo &&
+        playerOne.group === playerTwo.group &&
         playerOne?.name.trim() !== "" &&
         playerTwo.name.trim() !== ""
       ) {
         const playerOneId = playerOne.id;
         const playerTwoId = playerTwo.id;
+        const group = playerOne.group || "A";
 
         if (playerOneId !== playerTwoId) {
           newTeams.push({
+            group: group,
             id: (id++).toString(),
             name: `${playerOne.name}  ${playerTwo.name}`,
             players: [
               {
+                group: group,
                 id: playerOneId,
                 name: playerOne.name,
               },
               {
+                group: group,
                 id: playerTwoId,
                 name: playerTwo.name,
               },

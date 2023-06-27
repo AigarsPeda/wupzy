@@ -1,14 +1,7 @@
 import { type Player, type Team } from "@prisma/client";
+import { type CreateGameType } from "~/types/utils.types";
 import isAnyIdTheSame from "~/utils/isAnyIdTheSame";
 import shuffleArray from "~/utils/shuffleArray";
-
-type GameType = {
-  round: number;
-  teamOneId: string;
-  teamTwoId: string;
-  tournamentId: string;
-  order: number;
-};
 
 const createKingGames = (
   teams: (Team & {
@@ -18,26 +11,28 @@ const createKingGames = (
   round: number
 ) => {
   let order = 1;
-  const games: GameType[] = [];
+  const games: CreateGameType[] = [];
   for (let i = 0; i < teams.length; i++) {
     for (let j = i + 1; j < teams.length; j++) {
-      const teamOneId = teams[i]?.id;
-      const teamTwoId = teams[j]?.id;
+      const firstTeams = teams[i];
+      const secondTeams = teams[j];
 
-      const firstTeamsIds = teams[i]?.players.map((player) => player.id);
-      const secondTeamsIds = teams[j]?.players.map((player) => player.id);
+      const firstTeamsIds = firstTeams?.players.map((player) => player.id);
+      const secondTeamsIds = secondTeams?.players.map((player) => player.id);
 
       if (
-        teamOneId &&
-        teamTwoId &&
+        firstTeams?.id &&
+        secondTeams?.id &&
+        firstTeams?.group === secondTeams?.group &&
         !isAnyIdTheSame(firstTeamsIds, secondTeamsIds)
       ) {
         games.push({
           round,
-          teamOneId,
-          teamTwoId,
           tournamentId,
           order: order++,
+          group: firstTeams?.group,
+          teamOneId: firstTeams?.id,
+          teamTwoId: secondTeams?.id,
         });
       }
     }

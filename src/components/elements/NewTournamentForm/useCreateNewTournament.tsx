@@ -22,14 +22,17 @@ const useCreateNewTournament = () => {
         {
           id: "1",
           name: "",
+          group: "A",
         },
         {
           id: "2",
           name: "",
+          group: "A",
         },
         {
           id: "3",
           name: "",
+          group: "A",
         },
       ],
     },
@@ -37,28 +40,34 @@ const useCreateNewTournament = () => {
       {
         id: "1",
         name: "",
+        group: "A",
         players: [
           {
             id: "1",
             name: "",
+            group: "A",
           },
           {
             id: "2",
             name: "",
+            group: "A",
           },
         ],
       },
       {
         id: "2",
         name: "",
+        group: "A",
         players: [
           {
             id: "1",
             name: "",
+            group: "A",
           },
           {
             id: "2",
             name: "",
+            group: "A",
           },
         ],
       },
@@ -89,6 +98,7 @@ const useCreateNewTournament = () => {
     const newPlayer: NewPlayerType = {
       id: (newTournament.king.players.length + 1).toString(),
       name: "",
+      group: "A",
     };
     setNewTournament({
       ...newTournament,
@@ -103,14 +113,17 @@ const useCreateNewTournament = () => {
     const newTeam: NewTeamsType = {
       id: (newTournament.teams.length + 1).toString(),
       name: "",
+      group: "A",
       players: [
         {
           id: "1",
           name: "",
+          group: "A",
         },
         {
           id: "2",
           name: "",
+          group: "A",
         },
       ],
     };
@@ -173,6 +186,7 @@ const useCreateNewTournament = () => {
         const newPlayer: NewPlayerType = {
           id: (team.players.length + 1).toString(),
           name: "",
+          group: "A",
         };
         return {
           ...team,

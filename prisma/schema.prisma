@@ -107,10 +107,12 @@ model Player {
   points       Int         @default(0)
   setsWon      Int         @default(0)
   gamesWon     Int         @default(0)
+  group        String
 }
 
 model Game {
   id              String     @id @default(cuid())
+  group           String
   teamOneSetScore Int        @default(0)
   teamTwoSetScore Int        @default(0)
   round           Int        @default(1)
