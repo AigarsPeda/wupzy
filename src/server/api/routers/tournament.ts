@@ -2,10 +2,10 @@ import z from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import createGamesNTimes from "~/server/api/utils/createGamesNTimes";
 import createKingGamesNTimes from "~/server/api/utils/createKingGamesNTimes";
-import splitPlayerInGroups from "~/server/api/utils/splitPlayerInGroups";
-import splitTeamsInGroups from "~/server/api/utils/splitTeamsInGroups";
 import { NewTournamentSchema } from "~/types/tournament.types";
 import createTeams from "~/utils/createTeams";
+import splitPlayerInGroups from "~/utils/splitPlayerInGroups";
+import splitTeamsInGroups from "~/utils/splitTeamsInGroups";
 
 export const tournamentRouter = createTRPCRouter({
   getAllTournaments: protectedProcedure.query(async ({ ctx }) => {
@@ -66,7 +66,8 @@ export const tournamentRouter = createTRPCRouter({
         });
 
         // create teams
-        for (const [, playersInGroup] of splitPlayerInGroups(players)) {
+        for (const [, playersInGroup] of splitPlayerInGroups(players)
+          .playersByGroup) {
           const newTeams = createTeams(playersInGroup);
 
           for (let i = 0; i < newTeams.length; i++) {
@@ -127,7 +128,8 @@ export const tournamentRouter = createTRPCRouter({
         });
 
         // create games
-        for (const [, teamsInGroup] of splitTeamsInGroups(teams)) {
+        for (const [, teamsInGroup] of splitTeamsInGroups(teams)
+          .playersByGroup) {
           await prisma.game.createMany({
             data: createGamesNTimes(teamsInGroup, id, input.rounds),
           });
