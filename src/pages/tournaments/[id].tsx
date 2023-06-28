@@ -2,6 +2,7 @@ import { type NextPage } from "next";
 import CircleProgress from "~/components/elements/CircleProgress/CircleProgress";
 import DisplayGames from "~/components/elements/DisplayGames/DisplayGames";
 import LoadingSkeleton from "~/components/elements/LoadingSkeleton/LoadingSkeleton";
+import PageHead from "~/components/elements/PageHead/PageHead";
 import PageHeadLine from "~/components/elements/PageHeadLine/PageHeadLine";
 import PlayerTable from "~/components/elements/PlayerTable/PlayerTable";
 import TeamTable from "~/components/elements/TeamTable/TeamTable";
@@ -39,7 +40,14 @@ const TournamentPage: NextPage = () => {
   };
 
   return (
-    <div>
+    <>
+      <PageHead
+        title={`Wupzy | ${tournament?.name || "Tournament"}`}
+        descriptionShort="Platform that lets you effortlessly create tournament tables."
+        descriptionLong="Wupzy is a powerful platform that lets you effortlessly create
+      tournament tables, save game scores, view real-time results, and share
+      them with all participants in just a few clicks."
+      />
       {isTournamentLoading ? (
         <LoadingSkeleton classes="mt-2 h-14 w-72" />
       ) : (
@@ -63,7 +71,7 @@ const TournamentPage: NextPage = () => {
       <div className="mt-5">
         {tournament?.type === "king" ? <PlayerTable /> : <TeamTable />}
       </div>
-    </div>
+    </>
   );
 };
 
