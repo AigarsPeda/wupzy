@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { api } from "~/utils/api";
 
-const useTeams = (isRefetch?: boolean) => {
+const useTeams = () => {
   const router = useRouter();
   const { data: sessionData } = useSession();
   const [tournamentId, setTournamentId] = useState("");
@@ -18,11 +18,11 @@ const useTeams = (isRefetch?: boolean) => {
     }
   }, [router.query.id, setTournamentId]);
 
-  useEffect(() => {
-    if (isRefetch) {
-      void refetch();
-    }
-  }, [isRefetch, refetch]);
+  // useEffect(() => {
+  //   if (isRefetch) {
+  //     void refetch();
+  //   }
+  // }, [isRefetch, refetch]);
 
   return { teams: data?.teams || [], isLoading, refetch };
 };

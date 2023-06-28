@@ -4,6 +4,8 @@ import useTeams from "~/hooks/useTeams";
 import { type TeamType } from "~/types/tournament.types";
 import genUniqueId from "~/utils/genUniqueId";
 import groupTeamsByGroup from "~/utils/groupTeamsByGroup";
+import useTournament from "../../../hooks/useTournament";
+import TeamsSplit from "../TeamsSplit/TeamsSplit";
 
 type TeamsMapType = Map<string, TeamType[]>;
 
@@ -16,16 +18,7 @@ const SplitTournamentModal: FC<SplitTournamentModalProps> = ({
   isSplitModal,
   handleCancelClicks,
 }) => {
-  const { teams, isLoading } = useTeams(isSplitModal);
-  const [teamsByGroup, setTeamsByGroup] = useState<TeamsMapType>(
-    new Map<string, TeamType[]>()
-  );
-
-  useEffect(() => {
-    if (!teams || isLoading) return;
-
-    setTeamsByGroup(groupTeamsByGroup(teams));
-  }, [teams, isLoading]);
+  const { tournament } = useTournament();
 
   return (
     <ModalLayout
@@ -33,28 +26,19 @@ const SplitTournamentModal: FC<SplitTournamentModalProps> = ({
       isModalVisible={isSplitModal}
       handleCancelClick={handleCancelClicks}
       header={
-        <div className="mb-4">
-          <h1 className="text-3xl">Split tournament</h1>
+        <div className="">
+          <h1 className="text-3xl">Split {tournament?.name}</h1>
         </div>
       }
     >
       <div className="w-72 px-3 pb-2 text-left md:w-full md:max-w-[28rem] md:px-6 md:pb-4">
-        <p className="mb-8 mt-5 font-primary">
-          Are you sure you want to split this tournament?{" "}
+        <p className="mb-8 mt-5 font-primary text-red-600">
+          * Splitting the tournament in groups will result in a reset of all
+          scores and matches.
         </p>
       </div>
-      <div>
-        {Array.from(teamsByGroup).map(([group, teams]) => (
-          <div key={genUniqueId()}>
-            <h2 className="text-3xl">{group}</h2>
-            <ul>
-              {teams.map((team) => {
-                console.log(team);
-                return <li key={genUniqueId()}>{team.name}</li>;
-              })}
-            </ul>
-          </div>
-        ))}
+      <div className="px-3 pb-2 text-left md:w-full md:max-w-[28rem] md:px-6 md:pb-4">
+        {tournament?.type === "teams" ? <TeamsSplit /> : <div>King</div>}
       </div>
     </ModalLayout>
   );

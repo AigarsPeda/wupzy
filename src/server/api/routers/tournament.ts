@@ -2,6 +2,8 @@ import z from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import createGamesNTimes from "~/server/api/utils/createGamesNTimes";
 import createKingGamesNTimes from "~/server/api/utils/createKingGamesNTimes";
+import splitPlayerInGroups from "~/server/api/utils/splitPlayerInGroups";
+import splitTeamsInGroups from "~/server/api/utils/splitTeamsInGroups";
 import { NewTournamentSchema } from "~/types/tournament.types";
 import createTeams from "~/utils/createTeams";
 
@@ -63,38 +65,41 @@ export const tournamentRouter = createTRPCRouter({
           },
         });
 
-        const newTeams = createTeams(players);
+        // create teams
+        for (const [, playersInGroup] of splitPlayerInGroups(players)) {
+          const newTeams = createTeams(playersInGroup);
 
-        for (let i = 0; i < newTeams.length; i++) {
-          const element = newTeams[i];
+          for (let i = 0; i < newTeams.length; i++) {
+            const element = newTeams[i];
 
-          if (element) {
-            await prisma.team.create({
-              data: {
-                tournamentId: id,
-                name: element.name,
-                players: {
-                  connect: element.players.map((player) => ({
-                    id: player.id,
-                  })),
+            if (element) {
+              await prisma.team.create({
+                data: {
+                  tournamentId: id,
+                  name: element.name,
+                  players: {
+                    connect: element.players.map((player) => ({
+                      id: player.id,
+                    })),
+                  },
                 },
-              },
-            });
+              });
+            }
           }
+
+          const teams = await prisma.team.findMany({
+            where: {
+              tournamentId: id,
+            },
+            include: {
+              players: true,
+            },
+          });
+
+          await prisma.game.createMany({
+            data: createKingGamesNTimes(teams, id, input.rounds),
+          });
         }
-
-        const teams = await prisma.team.findMany({
-          where: {
-            tournamentId: id,
-          },
-          include: {
-            players: true,
-          },
-        });
-
-        await prisma.game.createMany({
-          data: createKingGamesNTimes(teams, id, input.rounds),
-        });
 
         return { id };
       } else {
@@ -121,9 +126,12 @@ export const tournamentRouter = createTRPCRouter({
           },
         });
 
-        await prisma.game.createMany({
-          data: createGamesNTimes(teams, id, input.rounds),
-        });
+        // create games
+        for (const [, teamsInGroup] of splitTeamsInGroups(teams)) {
+          await prisma.game.createMany({
+            data: createGamesNTimes(teamsInGroup, id, input.rounds),
+          });
+        }
 
         return { id };
       }

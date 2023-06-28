@@ -40,7 +40,7 @@ const SettingsDrawer: FC = () => {
             />
             <SmallButton
               color="gray"
-              isDisabled
+              // isDisabled
               icon={<LuSplitSquareHorizontal className="mr-2 h-6 w-6" />}
               title="Split"
               handleClick={() => {
@@ -50,18 +50,22 @@ const SettingsDrawer: FC = () => {
           </div>
         </div>
       </TopDrawerLayout>
-      <DeleteTournamentModal
-        isDeleteModal={isDeleteModal}
-        handleCancelClicks={() => {
-          setIsDeleteModal(false);
-        }}
-      />
-      <SplitTournamentModal
-        isSplitModal={isSplitModal}
-        handleCancelClicks={() => {
-          setIsSplitModal(false);
-        }}
-      />
+      {isDeleteModal && (
+        <DeleteTournamentModal
+          isDeleteModal={isDeleteModal}
+          handleCancelClicks={() => {
+            setIsDeleteModal(false);
+          }}
+        />
+      )}
+      {isSplitModal && (
+        <SplitTournamentModal
+          isSplitModal={isSplitModal}
+          handleCancelClicks={() => {
+            setIsSplitModal(false);
+          }}
+        />
+      )}
     </>
   );
 };
