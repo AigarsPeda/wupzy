@@ -1,6 +1,7 @@
 import { type TeamType } from "~/types/tournament.types";
 
 const groupTeamsByGroup = (teams: TeamType[]) => {
+  const groups = new Set<string>();
   const teamsByGroup = new Map<string, TeamType[]>();
 
   for (const team of teams) {
@@ -13,9 +14,10 @@ const groupTeamsByGroup = (teams: TeamType[]) => {
 
     if (team.group) {
       teamsByGroup.set(team.group, [team]);
+      groups.add(team.group);
     }
   }
-  return teamsByGroup;
+  return { teamsByGroup, groups: [...groups] };
 };
 
 export default groupTeamsByGroup;

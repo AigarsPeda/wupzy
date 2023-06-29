@@ -1,7 +1,7 @@
 import { type Player } from "@prisma/client";
 
 const splitPlayerInGroups = (players: Player[]) => {
-  const groups = new Set<string>();
+  // const groups = new Set<string>();
   const playersByGroup = new Map<string, typeof players>();
 
   for (const player of players) {
@@ -14,11 +14,11 @@ const splitPlayerInGroups = (players: Player[]) => {
 
     if (player.group) {
       playersByGroup.set(player.group, [player]);
-      groups.add(player.group);
+      // groups.add(player.group);
     }
   }
 
-  return { groups: Array.from(groups), playersByGroup };
+  return playersByGroup;
 };
 
 export default splitPlayerInGroups;

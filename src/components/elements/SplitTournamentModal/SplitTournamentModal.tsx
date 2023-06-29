@@ -1,13 +1,7 @@
-import { useEffect, useState, type FC } from "react";
+import { type FC } from "react";
+import TeamsSplit from "~/components/elements/TeamsSplit/TeamsSplit";
 import ModalLayout from "~/components/layout/ModalLayout/ModalLayout";
-import useTeams from "~/hooks/useTeams";
-import { type TeamType } from "~/types/tournament.types";
-import genUniqueId from "~/utils/genUniqueId";
-import groupTeamsByGroup from "~/utils/groupTeamsByGroup";
-import useTournament from "../../../hooks/useTournament";
-import TeamsSplit from "../TeamsSplit/TeamsSplit";
-
-type TeamsMapType = Map<string, TeamType[]>;
+import useTournament from "~/hooks/useTournament";
 
 interface SplitTournamentModalProps {
   isSplitModal: boolean;

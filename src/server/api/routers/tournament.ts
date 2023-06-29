@@ -4,8 +4,8 @@ import createGamesNTimes from "~/server/api/utils/createGamesNTimes";
 import createKingGamesNTimes from "~/server/api/utils/createKingGamesNTimes";
 import { NewTournamentSchema } from "~/types/tournament.types";
 import createTeams from "~/utils/createTeams";
-import splitPlayerInGroups from "~/utils/splitPlayerInGroups";
-import splitTeamsInGroups from "~/utils/splitTeamsInGroups";
+import splitPlayerInGroups from "~/server/api/utils/splitPlayerInGroups";
+import splitTeamsInGroups from "~/server/api/utils/splitTeamsInGroups";
 
 export const tournamentRouter = createTRPCRouter({
   getAllTournaments: protectedProcedure.query(async ({ ctx }) => {
@@ -66,8 +66,7 @@ export const tournamentRouter = createTRPCRouter({
         });
 
         // create teams
-        for (const [, playersInGroup] of splitPlayerInGroups(players)
-          .playersByGroup) {
+        for (const [, playersInGroup] of splitPlayerInGroups(players)) {
           const newTeams = createTeams(playersInGroup);
 
           for (let i = 0; i < newTeams.length; i++) {
@@ -123,13 +122,16 @@ export const tournamentRouter = createTRPCRouter({
             },
           },
           include: {
-            teams: true,
+            teams: {
+              include: {
+                players: true,
+              },
+            },
           },
         });
 
         // create games
-        for (const [, teamsInGroup] of splitTeamsInGroups(teams)
-          .playersByGroup) {
+        for (const [, teamsInGroup] of splitTeamsInGroups(teams)) {
           await prisma.game.createMany({
             data: createGamesNTimes(teamsInGroup, id, input.rounds),
           });

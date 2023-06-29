@@ -15,7 +15,11 @@ const TeamsSplit = () => {
   useEffect(() => {
     if (!teams || isLoading) return;
 
-    setTeamsByGroup(groupTeamsByGroup(teams));
+    const { groups, teamsByGroup } = groupTeamsByGroup(teams);
+
+    setTeamsByGroup(teamsByGroup);
+
+    console.log("groups", groups);
   }, [teams, isLoading]);
 
   return (
@@ -25,7 +29,6 @@ const TeamsSplit = () => {
           <h2 className="text-3xl">{group}</h2>
           <ul>
             {teams.map((team) => {
-              console.log(team);
               return <li key={genUniqueId()}>{team.name}</li>;
             })}
           </ul>
