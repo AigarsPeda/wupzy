@@ -59,7 +59,7 @@ export const TeamSchema = z.object({
   createdAt: z.date(),
   updatedAt: z.date(),
   players: z.array(PlayerSchema),
-  tournamentId: z.string().nullish(),
+  tournamentId: z.string(),
 });
 
 export const GameSets = z.record(
@@ -76,6 +76,7 @@ export const GameSchema = z.object({
   id: z.string(),
   order: z.number(),
   round: z.number(),
+  group: z.string(),
   teamOne: TeamSchema,
   teamTwo: TeamSchema,
   createdAt: z.date(),

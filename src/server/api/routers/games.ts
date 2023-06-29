@@ -138,7 +138,13 @@ export const gameRouter = createTRPCRouter({
         orderBy: [{ round: "asc" }, { order: "asc" }],
       });
 
-      return { games };
+      // get all unique groups
+      const groups = new Set<string>();
+      for (const game of games) {
+        groups.add(game.teamOne.group);
+      }
+
+      return { games, groups: [...groups] };
     }),
 
   getGame: protectedProcedure

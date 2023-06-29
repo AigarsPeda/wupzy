@@ -1,5 +1,5 @@
 import z from "zod";
-import { type GameType } from "~/types/tournament.types";
+import { type GameType, type TeamType } from "~/types/tournament.types";
 
 export const LinkSchema = z.object({
   public: z.boolean(),
@@ -38,3 +38,5 @@ export type CreateGameType = {
   teamTwoId: string;
   tournamentId: string;
 };
+
+export type TeamsMapType = Map<string, TeamType[]>;

@@ -25,13 +25,7 @@ const SplitTournamentModal: FC<SplitTournamentModalProps> = ({
         </div>
       }
     >
-      <div className="w-72 px-3 pb-2 text-left md:w-full md:max-w-[28rem] md:px-6 md:pb-4">
-        <p className="mb-8 mt-5 font-primary text-red-600">
-          * Splitting the tournament in groups will result in a reset of all
-          scores and matches.
-        </p>
-      </div>
-      <div className="px-3 pb-2 text-left md:w-full md:max-w-[28rem] md:px-6 md:pb-4">
+      <div className="px-3 pb-2 text-left md:px-6 md:pb-4">
         {tournament?.type === "teams" ? <TeamsSplit /> : <div>King</div>}
       </div>
     </ModalLayout>

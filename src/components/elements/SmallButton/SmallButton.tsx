@@ -8,7 +8,7 @@ interface SmallButtonProps {
   isFullWidth?: boolean;
   handleClick?: () => void;
   type?: "button" | "submit" | "reset";
-  color?: "red" | "gray" | "green" | "blue" | "orange";
+  color?: "red" | "gray" | "green" | "blue" | "orange" | "dark" | "pink";
 }
 
 const SmallButton: FC<SmallButtonProps> = ({
@@ -33,6 +33,8 @@ const SmallButton: FC<SmallButtonProps> = ({
         color === "green" && "bg-green-500 text-white hover:bg-green-600",
         color === "blue" && "bg-indigo-500 text-white hover:bg-indigo-600",
         color === "orange" && "bg-orange-500 text-white hover:bg-orange-600",
+        color === "dark" && "bg-gray-800 text-white hover:bg-gray-900",
+        color === "pink" && "bg-pink-500 text-white hover:bg-pink-600",
         "inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium"
       )}
     >

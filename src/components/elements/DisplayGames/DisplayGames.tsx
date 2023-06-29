@@ -1,18 +1,19 @@
 import { type FC } from "react";
 import DisplayScore from "~/components/elements/DisplayScore/DisplayScore";
 import DisplaySetScore from "~/components/elements/DisplaySetScore/DisplaySetScore";
+import GameOption from "~/components/elements/GameOption/GameOption";
 import LoadingSkeleton from "~/components/elements/LoadingSkeleton/LoadingSkeleton";
 import NumberInput from "~/components/elements/NumberInput/NumberInput";
 import SecondaryButton from "~/components/elements/SecondaryButton/SecondaryButton";
 import TeamName from "~/components/elements/TeamName/TeamName";
 import useWindowSize from "~/hooks/useWindowSize";
 import { type GameType } from "~/types/tournament.types";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import {
   type GamesScoresType,
   type HandleScoreChangTypeArgs,
   type HandleScoreSaveTypeArgs,
 } from "~/types/utils.types";
-import GameOption from "../GameOption/GameOption";
 
 interface DisplayGamesProps {
   games: GameType[];
@@ -33,6 +34,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
   handleScoreSave,
   handleScoreChange,
 }) => {
+  const [parent] = useAutoAnimate();
   const { windowSize } = useWindowSize();
 
   // calculate the width of the one game card based on the window size so that the last card is cut off
@@ -53,7 +55,10 @@ const DisplayGames: FC<DisplayGamesProps> = ({
   };
 
   return (
-    <div className="mt-4 flex w-full space-x-3 overflow-x-auto px-[8%] pb-5 md:px-0">
+    <div
+      ref={parent}
+      className="mt-4 flex w-full space-x-3 overflow-x-auto px-[8%] pb-5 md:px-0"
+    >
       {!isGamesLoading ? (
         games.map((game) => {
           const gameScore = gamesScores.find(

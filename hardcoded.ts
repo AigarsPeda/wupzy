@@ -16,3 +16,5 @@ export const LINKS: LinkType[] = [
     href: "/tournaments/[id]",
   },
 ];
+
+export const ALPHABET = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];

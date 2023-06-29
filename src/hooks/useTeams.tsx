@@ -24,7 +24,7 @@ const useTeams = () => {
   //   }
   // }, [isRefetch, refetch]);
 
-  return { teams: data?.teams || [], isLoading, refetch };
+  return { teams: data?.teams || [], isLoading, refetch, tournamentId };
 };
 
 export default useTeams;
