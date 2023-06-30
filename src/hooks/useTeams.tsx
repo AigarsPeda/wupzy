@@ -18,12 +18,6 @@ const useTeams = () => {
     }
   }, [router.query.id, setTournamentId]);
 
-  // useEffect(() => {
-  //   if (isRefetch) {
-  //     void refetch();
-  //   }
-  // }, [isRefetch, refetch]);
-
   return { teams: data?.teams || [], isLoading, refetch, tournamentId };
 };
 

@@ -3,7 +3,7 @@ import Table from "~/components/elements/Table/Table";
 import useTeams from "~/hooks/useTeams";
 
 interface TeamTableProps {
-  selectedGroup: string;
+  selectedGroup: string | null;
 }
 
 const TeamTable: FC<TeamTableProps> = ({ selectedGroup }) => {

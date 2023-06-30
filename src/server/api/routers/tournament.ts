@@ -87,20 +87,20 @@ export const tournamentRouter = createTRPCRouter({
               });
             }
           }
-
-          const teams = await prisma.team.findMany({
-            where: {
-              tournamentId: id,
-            },
-            include: {
-              players: true,
-            },
-          });
-
-          await prisma.game.createMany({
-            data: createKingGamesNTimes(teams, id, input.rounds),
-          });
         }
+
+        const teams = await prisma.team.findMany({
+          where: {
+            tournamentId: id,
+          },
+          include: {
+            players: true,
+          },
+        });
+
+        await prisma.game.createMany({
+          data: createKingGamesNTimes(teams, id, input.rounds),
+        });
 
         return { id };
       } else {

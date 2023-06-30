@@ -1,5 +1,5 @@
 import { type NextPage } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CircleProgress from "~/components/elements/CircleProgress/CircleProgress";
 import DisplayGames from "~/components/elements/DisplayGames/DisplayGames";
 import DisplayGroupSelect from "~/components/elements/DisplayGroupSelect/DisplayGroupSelect";
@@ -12,7 +12,6 @@ import useTournament from "~/hooks/useTournament";
 import useTournamentGames from "~/hooks/useTournamentGames";
 
 const TournamentPage: NextPage = () => {
-  const [selectedGroup, setSelectedGroup] = useState("A");
   const { tournament, isLoading: isTournamentLoading } = useTournament();
   const {
     games,
@@ -22,6 +21,7 @@ const TournamentPage: NextPage = () => {
     handleScoreSave,
     handleScoreChange,
   } = useTournamentGames();
+  const [selectedGroup, setSelectedGroup] = useState("A");
 
   const getPercentagesOfFinishedGames = () => {
     if (!games) {
@@ -34,6 +34,7 @@ const TournamentPage: NextPage = () => {
     const finishedGames = games.filter(
       (game) => game.winnerId && game.group === selectedGroup
     );
+
     const progress = Math.round((finishedGames.length / games.length) * 100);
 
     return {
@@ -47,7 +48,10 @@ const TournamentPage: NextPage = () => {
       return 0;
     }
 
-    return games.length - getPercentagesOfFinishedGames().finishedGames.length;
+    return (
+      games.filter((game) => game.group === selectedGroup).length -
+      getPercentagesOfFinishedGames().finishedGames.length
+    );
   };
 
   return (
@@ -78,11 +82,11 @@ const TournamentPage: NextPage = () => {
       />
 
       <DisplayGames
-        games={games?.filter((game) => game.group === selectedGroup) || []}
         gamesScores={gamesScores}
         isGamesLoading={isLoading}
         handleScoreSave={handleScoreSave}
         handleScoreChange={handleScoreChange}
+        games={games?.filter((game) => game.group === selectedGroup) || []}
       />
 
       <div className="mt-5">

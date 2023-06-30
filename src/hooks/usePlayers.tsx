@@ -7,7 +7,7 @@ const usePlayers = () => {
   const router = useRouter();
   const { data: sessionData } = useSession();
   const [tournamentId, setTournamentId] = useState("");
-  const { data } = api.player.getPlayers.useQuery(
+  const { data, isLoading } = api.player.getPlayers.useQuery(
     { id: tournamentId },
     { enabled: Boolean(tournamentId) && sessionData?.user !== undefined }
   );
@@ -18,7 +18,7 @@ const usePlayers = () => {
     }
   }, [router.query.id, setTournamentId]);
 
-  return { players: data?.players };
+  return { players: data?.players, isLoading, tournamentId };
 };
 
 export default usePlayers;

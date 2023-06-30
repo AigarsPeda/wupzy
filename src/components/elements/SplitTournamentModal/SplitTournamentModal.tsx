@@ -1,4 +1,5 @@
 import { type FC } from "react";
+import PlayerSplit from "~/components/elements/PlayerSplit/PlayerSplit";
 import TeamsSplit from "~/components/elements/TeamsSplit/TeamsSplit";
 import ModalLayout from "~/components/layout/ModalLayout/ModalLayout";
 import useTournament from "~/hooks/useTournament";
@@ -26,7 +27,7 @@ const SplitTournamentModal: FC<SplitTournamentModalProps> = ({
       }
     >
       <div className="px-3 pb-2 text-left md:px-6 md:pb-4">
-        {tournament?.type === "teams" ? <TeamsSplit /> : <div>King</div>}
+        {tournament?.type === "teams" ? <TeamsSplit /> : <PlayerSplit />}
       </div>
     </ModalLayout>
   );

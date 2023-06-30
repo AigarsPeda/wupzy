@@ -36,6 +36,7 @@ export type NewTournamentType = z.infer<typeof NewTournamentSchema>;
 export const PlayerSchema = z.object({
   id: z.string(),
   name: z.string(),
+  group: z.string(),
   // teamId: z.string(),
   updatedAt: z.date(),
   createdAt: z.date(),
