@@ -1,7 +1,6 @@
 import z from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import createKingGamesNTimes from "~/server/api/utils/createKingGamesNTimes";
-import splitPlayerInGroups from "~/server/api/utils/splitPlayerInGroups";
 import { PlayerSchema } from "~/types/tournament.types";
 import createTeams from "~/utils/createTeams";
 
@@ -86,28 +85,24 @@ export const playerRouter = createTRPCRouter({
         },
       });
 
-      for (const [, playersInGroup] of splitPlayerInGroups(players)) {
-        console.log("playersInGroup", playersInGroup);
+      const newTeams = createTeams(players);
 
-        const newTeams = createTeams(playersInGroup);
+      for (let i = 0; i < newTeams.length; i++) {
+        const element = newTeams[i];
 
-        for (let i = 0; i < newTeams.length; i++) {
-          const element = newTeams[i];
-
-          if (element) {
-            await prisma.team.create({
-              data: {
-                name: element.name,
-                group: element.group,
-                tournamentId: tournament.id,
-                players: {
-                  connect: element.players.map((player) => ({
-                    id: player.id,
-                  })),
-                },
+        if (element) {
+          await prisma.team.create({
+            data: {
+              name: element.name,
+              group: element.group,
+              tournamentId: tournament.id,
+              players: {
+                connect: element.players.map((player) => ({
+                  id: player.id,
+                })),
               },
-            });
-          }
+            },
+          });
         }
       }
 
