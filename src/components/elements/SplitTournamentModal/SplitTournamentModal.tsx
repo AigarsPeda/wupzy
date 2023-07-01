@@ -27,7 +27,11 @@ const SplitTournamentModal: FC<SplitTournamentModalProps> = ({
       }
     >
       <div className="px-3 pb-2 text-left md:px-6 md:pb-4">
-        {tournament?.type === "teams" ? <TeamsSplit /> : <PlayerSplit />}
+        {tournament?.type === "teams" ? (
+          <TeamsSplit handleModalClose={handleCancelClicks} />
+        ) : (
+          <PlayerSplit handleModalClose={handleCancelClicks} />
+        )}
       </div>
     </ModalLayout>
   );

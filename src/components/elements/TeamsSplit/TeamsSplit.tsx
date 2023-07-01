@@ -1,5 +1,5 @@
 import { ALPHABET } from "hardcoded";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FC } from "react";
 import Button from "~/components/elements/Button/Button";
 import SmallButton from "~/components/elements/SmallButton/SmallButton";
 import GridLayout from "~/components/layout/GridLayout/GridLayout";
@@ -8,17 +8,35 @@ import { type TeamType } from "~/types/tournament.types";
 import { type TeamsMapType } from "~/types/utils.types";
 import { api } from "~/utils/api";
 import changeTeamsGroup from "~/utils/changeTeamsGroup";
+import classNames from "~/utils/classNames";
 import genUniqueId from "~/utils/genUniqueId";
 import groupTeamsByGroup from "~/utils/groupTeamsByGroup";
 
-const TeamsSplit = () => {
+interface TeamsSplitProps {
+  handleModalClose: () => void;
+}
+
+const TeamsSplit: FC<TeamsSplitProps> = ({ handleModalClose }) => {
   const { teams, isLoading, tournamentId } = useTeams();
   const [availableGroups, setAvailableGroups] = useState<string[]>([]);
   const [teamsByGroup, setTeamsByGroup] = useState<TeamsMapType>(
     new Map<string, TeamType[]>()
   );
 
-  const { mutate } = api.teams.splitTeamsInGroups.useMutation();
+  const {
+    game: invalidateGames,
+    teams: invalidateTeams,
+    player: invalidatePlayers,
+  } = api.useContext();
+  const { mutate, isLoading: isSplitting } =
+    api.teams.splitTeamsInGroups.useMutation({
+      onSuccess: () => {
+        void invalidateGames.invalidate();
+        void invalidateTeams.invalidate();
+        void invalidatePlayers.invalidate();
+        handleModalClose();
+      },
+    });
 
   const addGroup = () => {
     const newGroup = availableGroups[0];
@@ -52,7 +70,7 @@ const TeamsSplit = () => {
 
   return (
     <div className="w-full">
-      <div className="flex w-full items-center justify-between">
+      <div className="mb-4 flex w-full items-center justify-between">
         <div className="w-full">
           <p className="font-primary text-red-600">
             * Splitting the tournament in groups will result in a reset of all
@@ -64,28 +82,37 @@ const TeamsSplit = () => {
         </div>
       </div>
 
-      <GridLayout minWith="300">
+      <GridLayout minWith="300" isGap>
         {Array.from(teamsByGroup).map(([group, teams]) => {
           const allKeys = Array.from(teamsByGroup.keys());
 
           return (
-            <div key={genUniqueId()} className="w-full overflow-x-auto">
-              <div className="grid grid-cols-4 gap-4">
-                <h2 className="text-3xl">{group}</h2>
+            <div
+              key={genUniqueId()}
+              className="min-h-[17rem] w-full overflow-x-auto rounded border border-gray-200 p-2 shadow-md"
+            >
+              <div className="mb-4 grid grid-cols-12 gap-4">
+                <h2 className="col-span-3 text-4xl">{group}</h2>
+                <div className="col-span-2 flex items-center">
+                  <p className="text-xs font-semibold">Move to</p>
+                </div>
               </div>
+
               <ul>
-                {teams.map((team) => {
+                {teams.map((team, i) => {
                   return (
                     <li
                       key={genUniqueId()}
-                      className="mb-2 grid grid-cols-12 gap-4 bg-slate-300"
+                      className={classNames(
+                        i !== teams.length - 1 &&
+                          "mb-2 border-b border-gray-200",
+                        "grid grid-cols-12 gap-4 px-2 pb-1"
+                      )}
                     >
                       <div className="col-span-3 flex items-center">
                         <p>{team.name}</p>
                       </div>
-                      <div className="col-span-2 flex items-center">
-                        <p className="text-xs font-semibold">Move to</p>
-                      </div>
+
                       <div className="col-span-7 flex items-center space-x-2">
                         {allKeys.map((group) => {
                           if (group === team.group) return null;
@@ -123,6 +150,7 @@ const TeamsSplit = () => {
         <div>
           <Button
             title="Split"
+            isLoading={isSplitting}
             handleClick={() => {
               void mutate({
                 tournamentId,

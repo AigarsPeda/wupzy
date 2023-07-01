@@ -78,6 +78,7 @@ model Tournament {
   createdAt DateTime       @default(now())
   updatedAt DateTime       @updatedAt
   rounds    Int            @default(1)
+  king      String         @default("amateur")
 }
 
 model Team {

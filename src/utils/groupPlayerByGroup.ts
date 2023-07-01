@@ -1,4 +1,4 @@
-import { type PlayerType } from "../types/tournament.types";
+import { type PlayerType } from "~/types/tournament.types";
 
 const groupPlayerByGroup = (players: PlayerType[]) => {
   const groups = new Set<string>();
