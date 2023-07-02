@@ -61,7 +61,6 @@ const SettingsDrawer: FC = () => {
               color="gray"
               icon={<LuSplitSquareHorizontal className="mr-2 h-6 w-6" />}
               title="Split"
-              isDisabled
               handleClick={() => {
                 setIsSplitModal(true);
               }}

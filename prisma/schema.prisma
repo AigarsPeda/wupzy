@@ -41,15 +41,16 @@ model Session {
 }
 
 model User {
-  id            String       @id @default(cuid())
-  name          String?
-  email         String?      @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  credits       Int          @default(100)
-  Tournament    Tournament[]
+  id               String       @id @default(cuid())
+  name             String?
+  email            String?      @unique
+  emailVerified    DateTime?
+  image            String?
+  accounts         Account[]
+  sessions         Session[]
+  credits          Int          @default(100)
+  Tournament       Tournament[]
+  stripeCustomerId String?
 }
 
 model VerificationToken {
