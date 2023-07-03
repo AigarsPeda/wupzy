@@ -5,9 +5,22 @@ import Logo from "~/components/elements/Logo/Logo";
 import DesktopNav from "~/components/elements/NavBar/DesktopNav";
 import MobileNav from "~/components/elements/NavBar/MobileNav";
 import SettingsDrawer from "~/components/elements/SettingsDrawer/SettingsDrawer";
+import { api } from "../../../utils/api";
 
 const NavBar: FC = () => {
   const router = useRouter();
+
+  const { mutateAsync } = api.stripe.createCheckoutSession.useMutation();
+
+  const checkout = async (priceId: string) => {
+    const { checkoutUrl } = await mutateAsync({ priceId });
+
+    if (checkoutUrl) {
+      router.push(checkoutUrl).catch((err) => {
+        console.log(err);
+      });
+    }
+  };
 
   return (
     <>
@@ -17,6 +30,17 @@ const NavBar: FC = () => {
         <div className="hidden w-full md:block">
           <DesktopNav links={LINKS} />
         </div>
+
+        <button
+          onClick={() => {
+            checkout("price_1NP7sDFTT3aSVLG6wBWIJrXN").catch((err) => {
+              console.log(err);
+            });
+            console.log("clicked");
+          }}
+        >
+          Buy credits
+        </button>
 
         <div className="w-full md:hidden">
           <MobileNav links={LINKS} />

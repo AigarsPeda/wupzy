@@ -18,3 +18,5 @@ export const LINKS: LinkType[] = [
 ];
 
 export const ALPHABET = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+
+export const PRICE_FOR_100_CREDITS = 345;

@@ -22,25 +22,29 @@ export const stripeRouter = createTRPCRouter({
         throw new Error("Could not create customer");
       }
 
-      const baseUrl =
-        process.env.NODE_ENV === "development"
-          ? `http://${req.headers.host ?? "localhost:3000"}`
-          : `https://${req.headers.host ?? "localhost:3000"}`;
+      console.log("req.headers.referer", req.headers.referer);
 
-      const successUrl = `${baseUrl}/signup?session_id={CHECKOUT_SESSION_ID}`;
+      const baseUrl =
+        req.headers.referer ??
+        `https://${req.headers.host ?? "localhost:3000"}`;
+
+      // const successUrl = `${baseUrl}/?session_id={CHECKOUT_SESSION_ID}`;
 
       const checkoutSession = await stripe.checkout.sessions.create({
         customer: customerId,
         client_reference_id: session.user?.id,
         payment_method_types: ["card"],
-        mode: "subscription",
+        mode: "payment",
+        metadata: {
+          amount: "1",
+        },
         line_items: [
           {
             price: input.priceId,
             quantity: 1,
           },
         ],
-        success_url: successUrl,
+        success_url: baseUrl,
         cancel_url: `${baseUrl}/`,
       });
 

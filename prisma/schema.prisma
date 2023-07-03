@@ -50,7 +50,7 @@ model User {
   sessions         Session[]
   credits          Int          @default(100)
   Tournament       Tournament[]
-  stripeCustomerId String?
+  stripeCustomerId String?      @unique
 }
 
 model VerificationToken {

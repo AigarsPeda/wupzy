@@ -1,8 +1,11 @@
+import { PRICE_FOR_100_CREDITS } from "hardcoded";
 import { buffer } from "micro";
 import type { NextApiRequest, NextApiResponse } from "next";
 import type Stripe from "stripe";
+import z from "zod";
 import { env } from "~/env.mjs";
-import stripe from "../../server/stripe/client";
+import { prisma } from "~/server/db";
+import stripe from "~/server/stripe/client";
 
 // Stripe requires the raw body to construct the event.
 export const config = {
@@ -28,62 +31,29 @@ export default async function handler(
 
       // Handle the event
       switch (event.type) {
-        case "invoice.paid":
-          // Used to provision services after the trial has ended.
-          // The status of the invoice will show up as paid. Store the status in your database to reference when a user accesses your service to avoid hitting rate limits.
+        case "charge.succeeded":
+          const payment = event.data.object as Stripe.Charge;
 
-          console.log("invoice.paid", event.data.object);
+          // validate userId with zod tat it is string
+          const userId = z.string().parse(payment.customer);
 
-          break;
-        case "customer.subscription.created":
-          // Used to provision services as they are added to a subscription.
+          if (!userId) {
+            throw new Error("No userId");
+          }
 
-          console.log("customer.subscription.created", event.data.object);
+          await prisma.user.update({
+            where: {
+              stripeCustomerId: userId,
+            },
+            data: {
+              credits: {
+                increment: payment.amount === PRICE_FOR_100_CREDITS ? 100 : 0,
+              },
+            },
+          });
 
-          break;
-        case "customer.subscription.updated":
-          // Used to provision services as they are updated.
-          console.log("customer.subscription.updated", event.data.object);
-          break;
-        case "invoice.payment_failed":
-          // If the payment fails or the customer does not have a valid payment method,
-          //  an invoice.payment_failed event is sent, the subscription becomes past_due.
-          // Use this webhook to notify your user that their payment has
-          // failed and to retrieve new card details.
-          // Can also have Stripe send an email to the customer notifying them of the failure. See settings: https://dashboard.stripe.com/settings/billing/automatic
-          break;
-        case "customer.subscription.deleted":
-          // handle subscription cancelled automatically based
-          // upon your subscription settings.
-          console.log("customer.subscription.deleted", event.data.object);
-          break;
         default:
-        // Unexpected event type
       }
-
-      // record the event in the database
-      // await prisma.stripeEvent.create({
-      //   data: {
-      //     id: event.id,
-      //     type: event.type,
-      //     object: event.object,
-      //     api_version: event.api_version,
-      //     account: event.account,
-      //     created: new Date(event.created * 1000), // convert to milliseconds
-      //     data: {
-      //       object: event.data.object,
-      //       previous_attributes: event.data.previous_attributes,
-      //     },
-      //     livemode: event.livemode,
-      //     pending_webhooks: event.pending_webhooks,
-      //     request: {
-      //       id: event.request?.id,
-      //       idempotency_key: event.request?.idempotency_key,
-      //     },
-      //   },
-      // });
-
-      console.log("event", event);
 
       res.json({ received: true });
     } catch (err) {
