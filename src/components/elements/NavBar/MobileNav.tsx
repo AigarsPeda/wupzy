@@ -73,15 +73,17 @@ const MobileNav: FC<MobileNavProps> = ({ links }) => {
         />
 
         <div className="mt-10 space-y-3">
-          <Button
-            color="light"
-            title="Buy 100 credits"
-            handleClick={() => {
-              checkout(STRIPE_PRICE_ID).catch((err) => {
-                console.error(err);
-              });
-            }}
-          />
+          {sessionData?.user.id && (
+            <Button
+              color="light"
+              title="Buy 100 credits"
+              handleClick={() => {
+                checkout(STRIPE_PRICE_ID).catch((err) => {
+                  console.error(err);
+                });
+              }}
+            />
+          )}
           <AuthenticateUser sessionData={sessionData} status={status} />
         </div>
       </div>

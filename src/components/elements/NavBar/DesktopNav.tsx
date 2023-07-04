@@ -34,15 +34,17 @@ const DesktopNav: FC<DesktopNavProps> = ({ links }) => {
           <NavLink isFlex links={links} sessionData={sessionData} />
         </div>
         <div className="flex space-x-2">
-          <Button
-            color="light"
-            title="Buy 100 credits"
-            handleClick={() => {
-              checkout(STRIPE_PRICE_ID).catch((err) => {
-                console.error(err);
-              });
-            }}
-          />
+          {sessionData?.user.id && (
+            <Button
+              color="light"
+              title="Buy 100 credits"
+              handleClick={() => {
+                checkout(STRIPE_PRICE_ID).catch((err) => {
+                  console.error(err);
+                });
+              }}
+            />
+          )}
           <AuthenticateUser sessionData={sessionData} status={status} />
         </div>
       </div>

@@ -5,6 +5,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { LuSplitSquareHorizontal } from "react-icons/lu";
 import SmallButton from "~/components/elements/SmallButton/SmallButton";
 import TopDrawerLayout from "~/components/elements/TopDrawerLayout/TopDrawerLayout";
+import useTournament from "~/hooks/useTournament";
 import classNames from "~/utils/classNames";
 
 const SplitTournamentModal = dynamic(
@@ -21,6 +22,7 @@ const SettingsDrawer: FC = () => {
   const { data: sessionData } = useSession();
   const [isSplitModal, setIsSplitModal] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
+  const { tournament } = useTournament();
 
   return (
     <>
@@ -51,17 +53,17 @@ const SettingsDrawer: FC = () => {
           <div className="mt-5 flex flex-wrap space-x-6">
             <SmallButton
               color="red"
-              icon={<AiOutlineDelete className="mr-2 h-[1.4rem] w-[1.4rem]" />}
               title="Delete"
+              icon={<AiOutlineDelete className="mr-2 h-[1.4rem] w-[1.4rem]" />}
               handleClick={() => {
                 setIsDeleteModal(true);
               }}
             />
             <SmallButton
               color="gray"
-              isDisabled
-              icon={<LuSplitSquareHorizontal className="mr-2 h-6 w-6" />}
               title="Split"
+              isDisabled={tournament?.kind === "FREE"}
+              icon={<LuSplitSquareHorizontal className="mr-2 h-6 w-6" />}
               handleClick={() => {
                 setIsSplitModal(true);
               }}
