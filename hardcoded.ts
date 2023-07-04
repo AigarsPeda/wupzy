@@ -21,6 +21,9 @@ export const ALPHABET = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
 
 export const PRICE_FOR_100_CREDITS = 345;
 
-export const STRIPE_PRICE_ID = "price_1NPyuIFTT3aSVLG6lVGK9JMN";
+export const STRIPE_PRICE_ID =
+  process.env.NODE_ENV === "development"
+    ? "price_1NP7sDFTT3aSVLG6wBWIJrXN"
+    : "price_1NPyuIFTT3aSVLG6lVGK9JMN";
 
-export const TEST_STRIPE_PRICE_ID = "price_1NP7sDFTT3aSVLG6wBWIJrXN";
+// export const TEST_STRIPE_PRICE_ID = "price_1NP7sDFTT3aSVLG6wBWIJrXN";
