@@ -22,8 +22,6 @@ export const stripeRouter = createTRPCRouter({
         throw new Error("Could not create customer");
       }
 
-      console.log("req.headers.referer", req.headers.referer);
-
       const baseUrl =
         req.headers.referer ??
         `https://${req.headers.host ?? "localhost:3000"}`;

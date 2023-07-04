@@ -3,10 +3,12 @@ import dynamic from "next/dynamic";
 import { useState, type FC } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { LuSplitSquareHorizontal } from "react-icons/lu";
+import ErrorMessage from "~/components/elements/ErrorMessage/ErrorMessage";
 import SmallButton from "~/components/elements/SmallButton/SmallButton";
 import TopDrawerLayout from "~/components/elements/TopDrawerLayout/TopDrawerLayout";
 import useTournament from "~/hooks/useTournament";
 import classNames from "~/utils/classNames";
+import Tooltip from "../Tooltip/Tooltip";
 
 const SplitTournamentModal = dynamic(
   () =>
@@ -22,7 +24,12 @@ const SettingsDrawer: FC = () => {
   const { data: sessionData } = useSession();
   const [isSplitModal, setIsSplitModal] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
-  const { tournament } = useTournament();
+  const {
+    tournament,
+    updateTournamentToPro,
+    isUpdatingKind,
+    errorUpdatingKind,
+  } = useTournament();
 
   return (
     <>
@@ -33,21 +40,34 @@ const SettingsDrawer: FC = () => {
           )}
         >
           <div className="flex justify-end">
-            {sessionData && (
-              <p className="font-normal">
-                Available credits:
-                <span
-                  className={classNames(
-                    sessionData.user.credits >= 75 && "text-green-500",
-                    sessionData.user.credits < 75 && "text-yellow-500",
-                    sessionData.user.credits < 25 && "text-orange-500",
-                    sessionData.user.credits === 0 && "text-red-500",
-                    "ml-2 font-bold tracking-wider"
-                  )}
-                >
-                  {sessionData?.user.credits}
-                </span>
-              </p>
+            {sessionData && tournament?.kind === "FREE" && (
+              <div className="flex flex-col justify-end">
+                <p className="mb-2 font-normal">
+                  Available credits:
+                  <span
+                    className={classNames(
+                      sessionData.user.credits >= 75 && "text-green-500",
+                      sessionData.user.credits < 75 && "text-yellow-500",
+                      sessionData.user.credits < 25 && "text-orange-500",
+                      sessionData.user.credits === 0 && "text-red-500",
+                      "ml-2 font-bold tracking-wider"
+                    )}
+                  >
+                    {sessionData?.user.credits}
+                  </span>
+                </p>
+                <SmallButton
+                  color="gray"
+                  title="Upgrade to PRO"
+                  isDisabled={isUpdatingKind}
+                  handleClick={updateTournamentToPro}
+                />
+                {errorUpdatingKind && (
+                  <div className="mt-2">
+                    <ErrorMessage message={errorUpdatingKind} />
+                  </div>
+                )}
+              </div>
             )}
           </div>
           <div className="mt-5 flex flex-wrap space-x-6">
@@ -59,15 +79,24 @@ const SettingsDrawer: FC = () => {
                 setIsDeleteModal(true);
               }}
             />
-            <SmallButton
-              color="gray"
-              title="Split"
-              isDisabled={tournament?.kind === "FREE"}
-              icon={<LuSplitSquareHorizontal className="mr-2 h-6 w-6" />}
-              handleClick={() => {
-                setIsSplitModal(true);
-              }}
-            />
+            <Tooltip
+              isNowrap
+              content={
+                tournament?.kind === "FREE"
+                  ? "Splitting is only available for pro tournaments"
+                  : "Divide participants into groups."
+              }
+            >
+              <SmallButton
+                color="gray"
+                title="Split"
+                isDisabled={tournament?.kind === "FREE"}
+                icon={<LuSplitSquareHorizontal className="mr-2 h-6 w-6" />}
+                handleClick={() => {
+                  setIsSplitModal(true);
+                }}
+              />
+            </Tooltip>
           </div>
         </div>
       </TopDrawerLayout>

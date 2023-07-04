@@ -1,3 +1,4 @@
+import { ONE_TOURNAMENT_COST } from "hardcoded";
 import z from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import createGamesNTimes from "~/server/api/utils/createGamesNTimes";
@@ -33,6 +34,48 @@ export const tournamentRouter = createTRPCRouter({
       const tournament = await prisma.tournament.findUnique({
         where: {
           id: input.id,
+        },
+      });
+
+      return { tournament };
+    }),
+
+  updateTournamentToPro: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { prisma, session } = ctx;
+
+      const user = await prisma.user.findUnique({
+        where: {
+          id: session.user.id,
+        },
+      });
+
+      if (user && user.credits < ONE_TOURNAMENT_COST) {
+        throw new Error("Not enough credits");
+      }
+
+      const tournament = await prisma.tournament.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          kind: "PRO",
+        },
+      });
+
+      await prisma.user.update({
+        where: {
+          id: session.user.id,
+        },
+        data: {
+          credits: {
+            decrement: ONE_TOURNAMENT_COST,
+          },
         },
       });
 

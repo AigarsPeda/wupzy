@@ -21,6 +21,8 @@ export const ALPHABET = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
 
 export const PRICE_FOR_100_CREDITS = 345;
 
+export const ONE_TOURNAMENT_COST = 18;
+
 export const STRIPE_PRICE_ID =
   process.env.NODE_ENV === "development"
     ? "price_1NP7sDFTT3aSVLG6wBWIJrXN"

@@ -19,8 +19,8 @@ const TopDrawerLayout: FC<TopDrawerLayoutProps> = ({ children }) => {
     <div className="relative" ref={drawerRef}>
       <div
         className={classNames(
-          isDrawerOpen ? "translate-y-0" : "translate-y-[-100%]",
-          "absolute left-0 right-0 top-0 z-[10] transition duration-300 ease-in-out "
+          isDrawerOpen ? "translate-y-0 shadow-md" : "translate-y-[-100%]",
+          "absolute left-0 right-0 top-0 z-[10] transition duration-300 ease-in-out"
         )}
       >
         {children}
