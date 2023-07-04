@@ -4,6 +4,7 @@ import classNames from "~/utils/classNames";
 
 interface ButtonProps {
   size?: "sm" | "md";
+  icon?: JSX.Element;
   isLoading?: boolean;
   isDisabled?: boolean;
   handleClick?: () => void;
@@ -13,6 +14,7 @@ interface ButtonProps {
 }
 
 const Button: FC<ButtonProps> = ({
+  icon,
   title,
   isLoading,
   isDisabled,
@@ -36,10 +38,16 @@ const Button: FC<ButtonProps> = ({
           "border-gray-900 bg-gray-900 text-white hover:bg-gray-700",
         color === "red" &&
           "border-red-500 bg-red-500 text-white hover:bg-red-700",
-        "focus:shadow-outline relative inline-flex w-full border-collapse items-center justify-center whitespace-nowrap rounded-lg border-2 font-medium tracking-[0.055em] transition duration-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-pink-500"
+        "focus:shadow-outline relative flex w-full border-collapse items-center justify-center space-x-2 whitespace-nowrap rounded-lg border-2 font-medium tracking-[0.055em] transition duration-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-pink-500"
       )}
     >
-      {isLoading ? <Spinner color="light" size="xs" /> : title}
+      {isLoading ? (
+        <Spinner color="light" size="xs" />
+      ) : (
+        <>
+          {icon} {title}
+        </>
+      )}
     </button>
   );
 };

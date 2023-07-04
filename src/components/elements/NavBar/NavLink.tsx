@@ -21,6 +21,7 @@ const NavLink: FC<NavLinkProps> = ({
   onLinkClick,
 }) => {
   const router = useRouter();
+
   return (
     <ul
       className={classNames(

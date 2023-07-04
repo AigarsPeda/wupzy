@@ -20,3 +20,5 @@ export const LINKS: LinkType[] = [
 export const ALPHABET = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
 
 export const PRICE_FOR_100_CREDITS = 345;
+
+export const STRIPE_PRICE_ID = "price_1NP7sDFTT3aSVLG6wBWIJrXN";
