@@ -66,6 +66,12 @@ enum TournamentType {
   teams
 }
 
+enum TournamentKind {
+  FREE
+  PRO
+  CUSTOM
+}
+
 model Tournament {
   id        String         @id @default(cuid())
   userId    String
@@ -79,7 +85,7 @@ model Tournament {
   createdAt DateTime       @default(now())
   updatedAt DateTime       @updatedAt
   rounds    Int            @default(1)
-  king      String         @default("amateur")
+  kind      TournamentKind @default(FREE)
 }
 
 model Team {
