@@ -39,7 +39,7 @@ const SettingsDrawer: FC = () => {
             "w-full bg-gray-800 px-4 pb-6 pt-4 text-white shadow-[0_2px_5px_rgba(0,0,0,0.07)] outline-none transition-all duration-300 ease-in-out md:px-12 md:pb-6 md:pt-4"
           )}
         >
-          <div className="flex justify-end">
+          <div className="flex md:justify-end">
             {sessionData && tournament?.kind === "FREE" && (
               <div className="flex flex-col justify-end">
                 <p className="mb-2 font-normal">
@@ -60,7 +60,7 @@ const SettingsDrawer: FC = () => {
                 </p>
                 <SmallButton
                   color="gray"
-                  title="18 credits for PRO upgrade"
+                  title="Upgrade to Pro"
                   isDisabled={isUpdatingKind}
                   handleClick={updateTournamentToPro}
                 />

@@ -4,6 +4,7 @@ import classNames from "~/utils/classNames";
 
 interface GradientButtonProps {
   title: string;
+  icon?: JSX.Element;
   isLoading?: boolean;
   isDisabled?: boolean;
   handleClick: () => void;
@@ -11,6 +12,7 @@ interface GradientButtonProps {
 }
 
 const GradientButton: FC<GradientButtonProps> = ({
+  icon,
   title,
   handleClick,
   isLoading = false,
@@ -39,7 +41,7 @@ const GradientButton: FC<GradientButtonProps> = ({
       <span
         className={classNames(
           !isNotActionable && "group-hover:bg-opacity-0",
-          "duration-400 relative flex h-11 min-w-[8rem] items-center justify-center rounded bg-gray-900 px-6 transition-all ease-out"
+          "duration-400 relative flex h-11 min-w-[8rem] items-center justify-center rounded bg-gray-100 px-6 transition-all ease-out"
         )}
       >
         {isLoading ? (
@@ -47,11 +49,14 @@ const GradientButton: FC<GradientButtonProps> = ({
         ) : (
           <span
             className={classNames(
-              !isNotActionable ? "text-white" : "text-gray-500",
-              "relative"
+              !isNotActionable
+                ? "text-gray-900 group-hover:text-white"
+                : "text-gray-500",
+              "relative flex items-center justify-center"
             )}
           >
             {title}
+            {icon && <span className="ml-4">{icon}</span>}
           </span>
         )}
       </span>
