@@ -1,9 +1,8 @@
 import { type NextPage } from "next";
-import CTASection from "~/components/elements/CTASection/CTASection";
 import PageHead from "~/components/elements/PageHead/PageHead";
 
+import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
-import { useSession, signIn } from "next-auth/react";
 import GradientButton from "../components/elements/GradientButton/GradientButton";
 import useRedirect from "../hooks/useRedirect";
 import useWindowSize from "../hooks/useWindowSize";
