@@ -47,9 +47,11 @@ const SettingsDrawer: FC = () => {
                   <span
                     className={classNames(
                       sessionData.user.credits >= 75 && "text-green-500",
-                      sessionData.user.credits < 75 && "text-yellow-500",
-                      sessionData.user.credits < 25 && "text-orange-500",
-                      sessionData.user.credits === 0 && "text-red-500",
+                      sessionData.user.credits < 75 &&
+                        sessionData.user.credits > 17 &&
+                        "text-yellow-500",
+                      sessionData.user.credits <= 17 && "text-red-500",
+                      // sessionData.user.credits === 0 && "text-red-500",
                       "ml-2 font-bold tracking-wider"
                     )}
                   >
@@ -58,7 +60,7 @@ const SettingsDrawer: FC = () => {
                 </p>
                 <SmallButton
                   color="gray"
-                  title="Upgrade to PRO"
+                  title="18 credits for PRO upgrade"
                   isDisabled={isUpdatingKind}
                   handleClick={updateTournamentToPro}
                 />
