@@ -26,7 +26,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   return (
     <div
       className={classNames(
-        isIndexPage() && "flex flex-col justify-between",
+        // isIndexPage() && "flex flex-col justify-between",
         "max-w-screen-1xl min-h-screen  bg-gray-50"
       )}
     >

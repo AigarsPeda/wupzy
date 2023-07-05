@@ -17,12 +17,12 @@ const CTASection: FC = () => {
           </span>
         </h1>
 
-        <h2 className="mx-auto mb-5 mt-10 max-w-2xl font-primary font-medium text-gray-800 md:text-xl">
+        {/* <h2 className="mx-auto mb-5 mt-10 max-w-2xl font-primary font-medium text-gray-800 md:text-xl">
           With Wupzy, you can effortlessly save game scores, access past
           results, and stay updated on upcoming matches. Plus, our user-friendly
           platform allows you to easily share your game tables with fellow
           participants.
-        </h2>
+        </h2> */}
       </div>
 
       <GradientButton
