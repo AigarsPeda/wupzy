@@ -5,10 +5,8 @@ import { HiArrowRight } from "react-icons/hi";
 import GradientButton from "~/components/elements/GradientButton/GradientButton";
 import PageHead from "~/components/elements/PageHead/PageHead";
 import useRedirect from "~/hooks/useRedirect";
-import useWindowSize from "~/hooks/useWindowSize";
 
 const HomePage: NextPage = () => {
-  const { windowSize } = useWindowSize();
   const { redirectToPath } = useRedirect();
   const { data: sessionData } = useSession();
 
@@ -53,33 +51,32 @@ const HomePage: NextPage = () => {
         </div>
         <div className="w-full rounded-md bg-gray-200 p-6">
           <div className="overflow-hidden rounded-md shadow">
-            {windowSize.width > 550 ? (
-              <Image
-                src="/asset/main_desktop_2.webp"
-                width={1000}
-                height={1000}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "fill",
-                  position: "relative",
-                }}
-                alt="Picture wupzy dashboard"
-              />
-            ) : (
-              <Image
-                src="/asset/main_mob.webp"
-                width={1000}
-                height={1000}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "fill",
-                  position: "relative",
-                }}
-                alt="Picture wupzy dashboard"
-              />
-            )}
+            <Image
+              width={1000}
+              height={1000}
+              className="hidden md:block"
+              alt="Picture wupzy dashboard"
+              src="/asset/main_desktop_2.webp"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "fill",
+                position: "relative",
+              }}
+            />
+            <Image
+              width={1000}
+              height={1000}
+              src="/asset/main_mob.webp"
+              className="block md:hidden"
+              alt="Picture wupzy dashboard"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "fill",
+                position: "relative",
+              }}
+            />
           </div>
         </div>
       </main>
