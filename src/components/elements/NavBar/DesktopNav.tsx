@@ -30,7 +30,7 @@ const DesktopNav: FC<DesktopNavProps> = ({ links }) => {
   return (
     <>
       <div className="flex w-full items-center justify-between">
-        <div className="flex w-full justify-center">
+        <div className="ml-8 flex w-full">
           <NavLink isFlex links={links} sessionData={sessionData} />
         </div>
         <div className="flex space-x-2">

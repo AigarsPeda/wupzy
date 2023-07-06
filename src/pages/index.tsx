@@ -1,12 +1,11 @@
 import { type NextPage } from "next";
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
+import { HiArrowRight } from "react-icons/hi";
 import GradientButton from "~/components/elements/GradientButton/GradientButton";
 import PageHead from "~/components/elements/PageHead/PageHead";
 import useRedirect from "~/hooks/useRedirect";
 import useWindowSize from "~/hooks/useWindowSize";
-import { GoArrowRight } from "react-icons/go";
-import { HiArrowRight } from "react-icons/hi";
 
 const HomePage: NextPage = () => {
   const { windowSize } = useWindowSize();
@@ -53,33 +52,35 @@ const HomePage: NextPage = () => {
           />
         </div>
         <div className="w-full rounded-md bg-gray-200 p-6">
-          {windowSize.width > 550 ? (
-            <Image
-              src="/asset/main_desktop.webp"
-              width={1000}
-              height={1000}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "fill",
-                position: "relative",
-              }}
-              alt="Picture wupzy dashboard"
-            />
-          ) : (
-            <Image
-              src="/asset/main_mob.webp"
-              width={1000}
-              height={1000}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "fill",
-                position: "relative",
-              }}
-              alt="Picture wupzy dashboard"
-            />
-          )}
+          <div className="overflow-hidden rounded-md shadow">
+            {windowSize.width > 550 ? (
+              <Image
+                src="/asset/main_desktop_2.webp"
+                width={1000}
+                height={1000}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "fill",
+                  position: "relative",
+                }}
+                alt="Picture wupzy dashboard"
+              />
+            ) : (
+              <Image
+                src="/asset/main_mob.webp"
+                width={1000}
+                height={1000}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "fill",
+                  position: "relative",
+                }}
+                alt="Picture wupzy dashboard"
+              />
+            )}
+          </div>
         </div>
       </main>
     </>

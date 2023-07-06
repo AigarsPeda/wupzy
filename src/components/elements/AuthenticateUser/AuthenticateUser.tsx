@@ -26,6 +26,7 @@ const AuthenticateUser: FC<AuthenticateUserProps> = ({
     <div>
       <Button
         isLoading={isLoading}
+        color="light"
         title={sessionData ? "Sign out" : "Sign in"}
         handleClick={
           sessionData
