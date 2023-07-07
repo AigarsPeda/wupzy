@@ -24,9 +24,14 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     isPrivatePage(pathname) && status === "unauthenticated";
 
   return (
-    <div className={classNames("max-w-screen-1xl min-h-screen  bg-gray-50")}>
+    <div
+      className={classNames(
+        // isIndexPage() && "flex flex-col justify-between",
+        "max-w-screen-1xl min-h-screen  bg-gray-50"
+      )}
+    >
       <NavBar />
-      <div className="px-4 py-4 md:px-12 md:py-4">
+      <div className={"px-4 py-4 md:px-12 md:py-4"}>
         {isSpinnerVisible() ? <Spinner size="small" /> : children}
 
         {isLoginModalVisible() && <LoginModal />}

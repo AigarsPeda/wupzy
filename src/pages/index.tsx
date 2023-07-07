@@ -49,8 +49,9 @@ const HomePage: NextPage = () => {
             }}
           />
         </div>
-        <div className="w-full rounded-md bg-gray-200 p-6">
-          <div className="overflow-hidden rounded-md shadow">
+
+        <div className="relative z-10 mx-auto flex items-center justify-center rounded-xl bg-slate-200">
+          <div className="relative mx-auto w-full rounded-xl border border-white/25 bg-gray-200 bg-white/5 p-6 shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] backdrop-blur-xl will-change-transform">
             <Image
               width={1000}
               height={1000}
@@ -78,6 +79,8 @@ const HomePage: NextPage = () => {
               }}
             />
           </div>
+
+          <div className="absolute left-1/2 top-1/2 -z-10 h-[32rem] w-screen -translate-x-1/2 -translate-y-1/2 transform bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500"></div>
         </div>
       </main>
     </>
