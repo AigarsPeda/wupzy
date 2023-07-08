@@ -40,7 +40,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
   // calculate the width of the one game card based on the window size so that the last card is cut off
   const cardsWidth = (wind: number) => {
     if (wind > 1100) {
-      return 30;
+      return 25;
     }
 
     if (wind > 810) {

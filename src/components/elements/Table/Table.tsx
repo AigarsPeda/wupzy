@@ -18,7 +18,9 @@ interface TableProps {
 
 const Table: FC<TableProps> = ({ exclude, isLoading, tableContents }) => {
   const [tableHead, setTableHead] = useState<string[]>([]);
-  const [tableBody, setTableBody] = useState<TableValueType[][]>([]);
+  const [tableBody, setTableBody] = useState<
+    { [key: string]: TableValueType }[]
+  >([]);
 
   const formatKey = (keys: string[]) => {
     return keys.map((key) => {
@@ -59,7 +61,7 @@ const Table: FC<TableProps> = ({ exclude, isLoading, tableContents }) => {
         keys.push(...Object.keys(objCopy));
       }
 
-      return Object.values(objCopy);
+      return objCopy;
     });
 
     return { tableBody: tableBody, tableHead: keys };
@@ -112,7 +114,7 @@ const Table: FC<TableProps> = ({ exclude, isLoading, tableContents }) => {
           <tbody>
             {tableBody.map((values, i) => (
               <tr key={i}>
-                {values.map((value, j) => (
+                {Object.values(values).map((value, j) => (
                   <td
                     key={`${i}-${j}`}
                     className="border-b border-gray-200 bg-white px-5 py-5 text-sm"
