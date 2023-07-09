@@ -45,8 +45,6 @@ const Table: FC<TableProps> = ({ exclude, isLoading, tableContents }) => {
     const keys: string[] = [];
 
     const tableBody = arr.map((obj) => {
-      // const objCopy = Object.assign({}, obj);
-
       const objCopy = JSON.parse(JSON.stringify(obj)) as {
         [key: string]: TableValueType;
       };
