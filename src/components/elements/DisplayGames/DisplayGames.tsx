@@ -85,25 +85,27 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                   <GameOption id={game.id} />
                 </div>
                 <div className="mb-2 mt-4">
-                  <div className="grid grid-cols-12">
-                    <TeamName name={game?.teamOne?.name} />
-                    <div className="col-span-2 text-center">
-                      <p className="text-sm text-gray-900"></p>
+                  <div className="grid grid-cols-10">
+                    <div className="col-span-4 text-center">
+                      <TeamName name={game?.teamOne?.name} />
                     </div>
-                    <TeamName isTextLeft name={game?.teamTwo?.name} />
+                    <div className="col-span-2 text-center" />
+                    <div className="col-span-4 text-center">
+                      <TeamName isTextLeft name={game?.teamTwo?.name} />
+                    </div>
                   </div>
                 </div>
 
                 {isWinnerFound ? (
-                  <div className="mb-5 grid grid-cols-12">
-                    <div className="col-span-5 text-center">
+                  <div className="mb-5 grid grid-cols-10">
+                    <div className="col-span-4 text-center">
                       <DisplayScore
                         score={game.teamOneSetScore}
                         isWinner={game.teamOneId === game.winnerId}
                       />
                     </div>
                     <div className="col-span-2 text-center" />
-                    <div className="col-span-5 text-center">
+                    <div className="col-span-4 text-center">
                       <DisplayScore
                         isTextLeft
                         score={game.teamTwoSetScore}
