@@ -1,5 +1,5 @@
 import { type NextPage } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CircleProgress from "~/components/elements/CircleProgress/CircleProgress";
 import DisplayGames from "~/components/elements/DisplayGames/DisplayGames";
 import DisplayGroupSelect from "~/components/elements/DisplayGroupSelect/DisplayGroupSelect";
@@ -10,6 +10,8 @@ import PlayerTable from "~/components/elements/PlayerTable/PlayerTable";
 import TeamTable from "~/components/elements/TeamTable/TeamTable";
 import useTournament from "~/hooks/useTournament";
 import useTournamentGames from "~/hooks/useTournamentGames";
+import { api } from "../../../utils/api";
+import { useRouter } from "next/router";
 
 const TournamentPage: NextPage = () => {
   const { tournament, isLoading: isTournamentLoading } = useTournament();
@@ -22,6 +24,13 @@ const TournamentPage: NextPage = () => {
     handleScoreChange,
   } = useTournamentGames();
   const [selectedGroup, setSelectedGroup] = useState("A");
+
+  const { query } = useRouter();
+  const [slug, setSlug] = useState("");
+  const { data } = api.shareLink.getTournament.useQuery(
+    { slug },
+    { enabled: Boolean(slug) }
+  );
 
   const getPercentagesOfFinishedGames = () => {
     if (!games) {
@@ -54,10 +63,16 @@ const TournamentPage: NextPage = () => {
     );
   };
 
+  useEffect(() => {
+    if (query.slug && typeof query.slug === "string") {
+      setSlug(query.slug);
+    }
+  }, [query.slug]);
+
   return (
     <>
       <PageHead
-        title={`Wupzy | ${tournament?.name || "Tournament"}`}
+        title={`Wupzy | ${data?.shareLink?.tournament?.name || "Tournament"}`}
         descriptionShort="Platform that lets you effortlessly create tournament tables."
         descriptionLong="Wupzy is a powerful platform that lets you effortlessly create
         tournament tables, save game scores, view real-time results, and share
@@ -75,6 +90,7 @@ const TournamentPage: NextPage = () => {
         </div>
       )}
       Share
+      {console.log(data)}
       {/* <DisplayGroupSelect
         groups={groups}
         selectedGroup={selectedGroup}

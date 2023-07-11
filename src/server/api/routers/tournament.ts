@@ -36,6 +36,9 @@ export const tournamentRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
+        include: {
+          shareLink: true,
+        },
       });
 
       return { tournament };
@@ -66,7 +69,16 @@ export const tournamentRouter = createTRPCRouter({
         },
         data: {
           kind: "PRO",
-          shareSlug: uuidv4(),
+          shareLink: {
+            connectOrCreate: {
+              where: {
+                tournamentId: input.id,
+              },
+              create: {
+                slug: uuidv4(),
+              },
+            },
+          },
         },
       });
 

@@ -17,7 +17,7 @@ export const LINKS: LinkType[] = [
   },
 ];
 
-export const PAGES_WITHOUT_HEADER = ["/share/[id]"];
+export const PAGES_WITHOUT_HEADER = ["/share/[slug]"];
 
 export const ALPHABET = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
 

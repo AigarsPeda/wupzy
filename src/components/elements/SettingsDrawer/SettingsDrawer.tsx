@@ -76,13 +76,13 @@ const SettingsDrawer: FC = () => {
               <div className="flex space-x-3">
                 <div>
                   <p>{`${env.NEXT_PUBLIC_APP_DOMAIN}/share/${
-                    tournament?.shareSlug || ""
+                    tournament?.shareLink?.slug || ""
                   }`}</p>
                 </div>
                 <div className="rounded-md bg-white p-2">
                   <QRCodeSVG
                     value={`${env.NEXT_PUBLIC_APP_DOMAIN}/share/${
-                      tournament?.shareSlug || ""
+                      tournament?.shareLink?.slug || ""
                     }`}
                   />
                 </div>

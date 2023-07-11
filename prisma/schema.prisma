@@ -86,7 +86,17 @@ model Tournament {
   updatedAt DateTime       @updatedAt
   rounds    Int            @default(1)
   kind      TournamentKind @default(FREE)
-  shareSlug String?        @unique
+
+  shareLink ShareLink?
+}
+
+model ShareLink {
+  id           String     @id @default(cuid())
+  slug         String     @unique
+  tournamentId String     @unique
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  tournament   Tournament @relation(fields: [tournamentId], references: [id])
 }
 
 model Team {
