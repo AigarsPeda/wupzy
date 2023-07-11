@@ -86,6 +86,7 @@ model Tournament {
   updatedAt DateTime       @updatedAt
   rounds    Int            @default(1)
   kind      TournamentKind @default(FREE)
+  shareSlug String?        @unique
 }
 
 model Team {

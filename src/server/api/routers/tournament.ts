@@ -5,6 +5,7 @@ import createGamesNTimes from "~/server/api/utils/createGamesNTimes";
 import createKingGamesNTimes from "~/server/api/utils/createKingGamesNTimes";
 import { NewTournamentSchema } from "~/types/tournament.types";
 import createTeams from "~/utils/createTeams";
+import { v4 as uuidv4 } from "uuid";
 
 export const tournamentRouter = createTRPCRouter({
   getAllTournaments: protectedProcedure.query(async ({ ctx }) => {
@@ -65,6 +66,7 @@ export const tournamentRouter = createTRPCRouter({
         },
         data: {
           kind: "PRO",
+          shareSlug: uuidv4(),
         },
       });
 
