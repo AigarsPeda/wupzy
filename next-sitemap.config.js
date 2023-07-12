@@ -3,5 +3,11 @@ module.exports = {
   siteUrl,
   exclude: ["/404"],
   generateRobotsTxt: true,
-  exclude: ["/signup", "/tournaments", "/login/forgot", "/new-tournament"],
+  exclude: [
+    "/signup",
+    "/tournaments",
+    "/login/forgot",
+    "/new-tournament",
+    "/share/[slug]",
+  ],
 };
