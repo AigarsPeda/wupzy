@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { QRCodeSVG } from "qrcode.react";
-import { useState, type FC, useRef } from "react";
+import { useState, type FC } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { LuClipboardCopy, LuSplitSquareHorizontal } from "react-icons/lu";
 import ErrorMessage from "~/components/elements/ErrorMessage/ErrorMessage";
