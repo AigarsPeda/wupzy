@@ -19,8 +19,8 @@ interface DisplayGamesProps {
   games: GameType[];
   isGamesLoading: boolean;
   gamesScores: GamesScoresType[];
-  handleScoreSave: ({ game }: HandleScoreSaveTypeArgs) => void;
-  handleScoreChange: ({
+  handleScoreSave?: ({ game }: HandleScoreSaveTypeArgs) => void;
+  handleScoreChange?: ({
     num,
     gameId,
     teamId,
@@ -82,7 +82,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                       Round {game?.round}
                     </p>
                   </div>
-                  <GameOption id={game.id} />
+                  {handleScoreChange && <GameOption id={game.id} />}
                 </div>
                 <div className="mb-2 mt-4">
                   <div className="grid grid-cols-10">
@@ -96,7 +96,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                   </div>
                 </div>
 
-                {isWinnerFound ? (
+                {isWinnerFound || !handleScoreChange ? (
                   <div className="mb-5 grid grid-cols-10">
                     <div className="col-span-4 text-center">
                       <DisplayScore
@@ -150,7 +150,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
 
                 <DisplaySetScore game={game} />
 
-                {!isWinnerFound && (
+                {!isWinnerFound && handleScoreSave && (
                   <div className="absolute bottom-2 right-2 mt-2 flex min-h-[2.5rem] items-center justify-end">
                     <SecondaryButton
                       color="dark"

@@ -16,10 +16,45 @@ export const shareLinkRouter = createTRPCRouter({
           slug: input.slug,
         },
         include: {
-          tournament: true,
+          tournament: {
+            include: {
+              games: {
+                include: {
+                  teamOne: {
+                    include: {
+                      players: true,
+                    },
+                  },
+                  teamTwo: {
+                    include: {
+                      players: true,
+                    },
+                  },
+                },
+                orderBy: [{ round: "asc" }, { order: "asc" }],
+              },
+              teams: true,
+              players: true,
+            },
+          },
         },
       });
 
-      return { shareLink };
+      if (!shareLink) {
+        throw new Error("Share link not found");
+      }
+
+      const groups = new Set<string>();
+      for (const game of shareLink?.tournament.games) {
+        groups.add(game.teamOne.group);
+      }
+
+      // return { games, groups: [...groups] };
+
+      return {
+        tournament: shareLink?.tournament,
+        games: shareLink?.tournament.games,
+        groups: [...groups],
+      };
     }),
 });

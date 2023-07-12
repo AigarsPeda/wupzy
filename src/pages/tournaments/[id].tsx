@@ -10,8 +10,14 @@ import PlayerTable from "~/components/elements/PlayerTable/PlayerTable";
 import TeamTable from "~/components/elements/TeamTable/TeamTable";
 import useTournament from "~/hooks/useTournament";
 import useTournamentGames from "~/hooks/useTournamentGames";
+import getGamesLeft from "~/utils/getGamesLeft";
+import getPercentagesOfFinishedGames from "~/utils/getPercentagesOfFinishedGames";
+import usePlayers from "~/hooks/usePlayers";
+import useTeams from "~/hooks/useTeams";
 
 const TournamentPage: NextPage = () => {
+  const { teams } = useTeams();
+  const { players } = usePlayers();
   const { tournament, isLoading: isTournamentLoading } = useTournament();
   const {
     games,
@@ -23,37 +29,6 @@ const TournamentPage: NextPage = () => {
   } = useTournamentGames();
   const [selectedGroup, setSelectedGroup] = useState("A");
 
-  const getPercentagesOfFinishedGames = () => {
-    if (!games) {
-      return {
-        progress: 0,
-        finishedGames: [],
-      };
-    }
-
-    const finishedGames = games.filter(
-      (game) => game.winnerId && game.group === selectedGroup
-    );
-
-    const progress = Math.round((finishedGames.length / games.length) * 100);
-
-    return {
-      progress,
-      finishedGames,
-    };
-  };
-
-  const getGamesLeft = () => {
-    if (!games) {
-      return 0;
-    }
-
-    return (
-      games.filter((game) => game.group === selectedGroup).length -
-      getPercentagesOfFinishedGames().finishedGames.length
-    );
-  };
-
   return (
     <>
       <PageHead
@@ -63,15 +38,21 @@ const TournamentPage: NextPage = () => {
         tournament tables, save game scores, view real-time results, and share
         them with all participants in just a few clicks."
       />
-      {isTournamentLoading ? (
+      {isTournamentLoading || !games ? (
         <LoadingSkeleton classes="mt-2 h-14 w-72" />
       ) : (
         <div className="mt-4 flex items-center space-x-4 rounded py-1 md:mt-0">
           <div className="max-w-[16rem] md:max-w-none">
             <PageHeadLine title={tournament?.name} />
-            <p className="text-sm text-gray-500">{getGamesLeft()} games left</p>
+            <p className="text-sm text-gray-500">
+              {getGamesLeft(games, selectedGroup)} games left
+            </p>
           </div>
-          <CircleProgress progress={getPercentagesOfFinishedGames().progress} />
+          <CircleProgress
+            progress={
+              getPercentagesOfFinishedGames(games, selectedGroup).progress
+            }
+          />
         </div>
       )}
 
@@ -91,9 +72,9 @@ const TournamentPage: NextPage = () => {
 
       <div className="mt-5">
         {tournament?.type === "king" ? (
-          <PlayerTable selectedGroup={selectedGroup} />
+          <PlayerTable selectedGroup={selectedGroup} players={players || []} />
         ) : (
-          <TeamTable selectedGroup={selectedGroup} />
+          <TeamTable selectedGroup={selectedGroup} teams={teams || []} />
         )}
       </div>
     </>

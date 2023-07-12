@@ -11,7 +11,6 @@ import { api } from "~/utils/api";
 const useTournamentGames = () => {
   const { query } = useRouter();
   const { teams, player } = api.useContext();
-
   const [tournamentId, setTournamentId] = useState("");
   const { data, isLoading, refetch } = api.game.getGames.useQuery(
     { id: tournamentId },

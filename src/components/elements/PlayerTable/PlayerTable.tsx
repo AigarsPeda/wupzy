@@ -1,14 +1,13 @@
 import { type FC } from "react";
 import Table from "~/components/elements/Table/Table";
-import usePlayers from "~/hooks/usePlayers";
+import { type PlayerType } from "~/types/tournament.types";
 
 interface PlayerTableProps {
+  players: PlayerType[];
   selectedGroup: string;
 }
 
-const PlayerTable: FC<PlayerTableProps> = ({ selectedGroup }) => {
-  const { players } = usePlayers();
-
+const PlayerTable: FC<PlayerTableProps> = ({ players, selectedGroup }) => {
   return (
     <Table
       tableContents={players?.filter(
