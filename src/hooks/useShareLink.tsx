@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { api } from "../utils/api";
-import { GameSchemaArray } from "../types/tournament.types";
+import { GameSchemaArray } from "~/types/tournament.types";
+import { api } from "~/utils/api";
 
 const useShareLink = () => {
   const { query } = useRouter();
@@ -19,9 +19,11 @@ const useShareLink = () => {
 
   return {
     isLoading,
-    groups: data?.groups,
+    teams: data?.teams || [],
+    groups: data?.groups || [],
+    players: data?.players || [],
     tournament: data?.tournament,
-    games: data?.games ? GameSchemaArray.parse(data?.games) : undefined,
+    games: data?.games ? GameSchemaArray.parse(data?.games) : [],
   };
 };
 

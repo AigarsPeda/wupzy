@@ -6,13 +6,16 @@ import DisplayGroupSelect from "~/components/elements/DisplayGroupSelect/Display
 import LoadingSkeleton from "~/components/elements/LoadingSkeleton/LoadingSkeleton";
 import PageHead from "~/components/elements/PageHead/PageHead";
 import PageHeadLine from "~/components/elements/PageHeadLine/PageHeadLine";
+import PlayerTable from "~/components/elements/PlayerTable/PlayerTable";
+import TeamTable from "~/components/elements/TeamTable/TeamTable";
 import useShareLink from "~/hooks/useShareLink";
 import getGamesLeft from "~/utils/getGamesLeft";
 import getPercentagesOfFinishedGames from "~/utils/getPercentagesOfFinishedGames";
 
 const TournamentPage: NextPage = () => {
   const [selectedGroup, setSelectedGroup] = useState("A");
-  const { games, groups, isLoading, tournament } = useShareLink();
+  const { games, groups, players, teams, isLoading, tournament } =
+    useShareLink();
 
   return (
     <>
@@ -49,15 +52,15 @@ const TournamentPage: NextPage = () => {
       <DisplayGames
         gamesScores={[]}
         isGamesLoading={isLoading}
-        games={games?.filter((game) => game.group === selectedGroup) || []}
+        games={games?.filter((game) => game.group === selectedGroup)}
       />
-      {/* <div className="mt-5">
+      <div className="mt-5">
         {tournament?.type === "king" ? (
-          <PlayerTable selectedGroup={selectedGroup} />
+          <PlayerTable selectedGroup={selectedGroup} players={players} />
         ) : (
-          <TeamTable selectedGroup={selectedGroup} />
+          <TeamTable selectedGroup={selectedGroup} teams={teams} />
         )}
-      </div> */}
+      </div>
     </>
   );
 };

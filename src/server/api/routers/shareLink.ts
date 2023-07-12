@@ -33,7 +33,22 @@ export const shareLinkRouter = createTRPCRouter({
                 },
                 orderBy: [{ round: "asc" }, { order: "asc" }],
               },
-              teams: true,
+              teams: {
+                include: {
+                  players: true,
+                },
+                orderBy: [
+                  {
+                    gamesWon: "desc",
+                  },
+                  {
+                    setsWon: "desc",
+                  },
+                  {
+                    points: "desc",
+                  },
+                ],
+              },
               players: true,
             },
           },
@@ -49,12 +64,12 @@ export const shareLinkRouter = createTRPCRouter({
         groups.add(game.teamOne.group);
       }
 
-      // return { games, groups: [...groups] };
-
       return {
+        groups: [...groups],
         tournament: shareLink?.tournament,
         games: shareLink?.tournament.games,
-        groups: [...groups],
+        teams: shareLink?.tournament.teams,
+        players: shareLink?.tournament.players,
       };
     }),
 });

@@ -135,14 +135,6 @@ const SettingsDrawer: FC = () => {
           }}
         />
       )}
-      {/* {isShareModal && (
-        <ShareTournamentModal
-          isShareModal={isShareModal}
-          handleCancelClicks={() => {
-            setIsShareModal(false);
-          }}
-        />
-      )} */}
     </>
   );
 };
