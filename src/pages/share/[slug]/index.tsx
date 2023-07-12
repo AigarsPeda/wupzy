@@ -20,7 +20,7 @@ const TournamentPage: NextPage = () => {
   return (
     <>
       <PageHead
-        title={`Wupzy | ${tournament?.name || "Tournament"}`}
+        title={`Wupzy | ${tournament?.name || "Share"}`}
         descriptionShort="Platform that lets you effortlessly create tournament tables."
         descriptionLong="Wupzy is a powerful platform that lets you effortlessly create
         tournament tables, save game scores, view real-time results, and share
