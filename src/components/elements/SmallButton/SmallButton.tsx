@@ -2,7 +2,7 @@ import { type FC } from "react";
 import classNames from "~/utils/classNames";
 
 interface SmallButtonProps {
-  title: string;
+  title?: string;
   icon?: JSX.Element;
   isDisabled?: boolean;
   isFullWidth?: boolean;

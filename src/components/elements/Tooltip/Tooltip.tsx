@@ -22,9 +22,9 @@ const Tooltip: FC<TooltipProps> = ({
       <div
         className={classNames(
           isNowrap && "whitespace-nowrap",
-          placement === "top" ? "bottom-full" : "top-full",
+          !position && placement === "top" ? "bottom-full" : "top-full",
           position ? position : "left-1/2 -translate-x-1/2",
-          "pointer-events-none absolute z-30 transform rounded bg-gray-900 p-2 text-sm text-white opacity-0 transition-all duration-300 ease-in-out group-hover:pointer-events-auto group-hover:opacity-100"
+          "pointer-events-none absolute z-[100] transform rounded bg-gray-900 p-2 text-sm text-white opacity-0 transition-all duration-300 ease-in-out group-hover:pointer-events-auto group-hover:opacity-100"
         )}
       >
         {content}

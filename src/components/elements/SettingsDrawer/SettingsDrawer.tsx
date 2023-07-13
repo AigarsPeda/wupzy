@@ -1,14 +1,12 @@
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
-import { QRCodeSVG } from "qrcode.react";
 import { useState, type FC } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
-import { LuClipboardCopy, LuSplitSquareHorizontal } from "react-icons/lu";
+import { LuSplitSquareHorizontal } from "react-icons/lu";
 import ErrorMessage from "~/components/elements/ErrorMessage/ErrorMessage";
 import SmallButton from "~/components/elements/SmallButton/SmallButton";
 import Tooltip from "~/components/elements/Tooltip/Tooltip";
 import TopDrawerLayout from "~/components/elements/TopDrawerLayout/TopDrawerLayout";
-import { env } from "~/env.mjs";
 import useTournament from "~/hooks/useTournament";
 import classNames from "~/utils/classNames";
 
@@ -43,7 +41,7 @@ const SettingsDrawer: FC = () => {
           )}
         >
           <div className="flex">
-            {sessionData && tournament?.kind === "FREE" ? (
+            {sessionData && tournament?.kind === "FREE" && (
               <div className="flex flex-col justify-end">
                 <p className="mb-2 font-normal">
                   Available credits:
@@ -72,41 +70,6 @@ const SettingsDrawer: FC = () => {
                   </div>
                 )}
               </div>
-            ) : (
-              <div className="flex space-x-3">
-                <div className="rounded-md bg-white p-2">
-                  <QRCodeSVG
-                    value={`${env.NEXT_PUBLIC_APP_DOMAIN}/share/${
-                      tournament?.shareLink?.slug || ""
-                    }`}
-                  />
-                </div>
-                <div className="flex">
-                  <div>
-                    <p className="text-sm">{`${
-                      env.NEXT_PUBLIC_APP_DOMAIN
-                    }/share/${tournament?.shareLink?.slug || ""}`}</p>
-                  </div>
-                  <div>
-                    <button
-                      onClick={() => {
-                        navigator.clipboard
-                          .writeText(
-                            `${env.NEXT_PUBLIC_APP_DOMAIN}/share/${
-                              tournament?.shareLink?.slug || ""
-                            }`
-                          )
-                          .catch((err) => {
-                            console.error(err);
-                          });
-                      }}
-                      className="ml-2 text-white transition-colors duration-300 ease-in-out hover:text-gray-300"
-                    >
-                      <LuClipboardCopy className="h-5 w-5" />
-                    </button>
-                  </div>
-                </div>
-              </div>
             )}
           </div>
           <div className="mt-5 flex flex-wrap space-x-6">
@@ -120,6 +83,7 @@ const SettingsDrawer: FC = () => {
             />
             <Tooltip
               isNowrap
+              position="-top-10"
               content={
                 tournament?.kind === "FREE"
                   ? "Splitting is only available for pro tournaments"

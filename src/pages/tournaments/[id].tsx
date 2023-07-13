@@ -1,5 +1,6 @@
 import { type NextPage } from "next";
 import { useState } from "react";
+import { IoQrCodeOutline } from "react-icons/io5";
 import CircleProgress from "~/components/elements/CircleProgress/CircleProgress";
 import DisplayGames from "~/components/elements/DisplayGames/DisplayGames";
 import DisplayGroupSelect from "~/components/elements/DisplayGroupSelect/DisplayGroupSelect";
@@ -7,17 +8,21 @@ import LoadingSkeleton from "~/components/elements/LoadingSkeleton/LoadingSkelet
 import PageHead from "~/components/elements/PageHead/PageHead";
 import PageHeadLine from "~/components/elements/PageHeadLine/PageHeadLine";
 import PlayerTable from "~/components/elements/PlayerTable/PlayerTable";
+import QRModal from "~/components/elements/QRModal/QRModal";
+import SmallButton from "~/components/elements/SmallButton/SmallButton";
 import TeamTable from "~/components/elements/TeamTable/TeamTable";
+import usePlayers from "~/hooks/usePlayers";
+import useTeams from "~/hooks/useTeams";
 import useTournament from "~/hooks/useTournament";
 import useTournamentGames from "~/hooks/useTournamentGames";
 import getGamesLeft from "~/utils/getGamesLeft";
 import getPercentagesOfFinishedGames from "~/utils/getPercentagesOfFinishedGames";
-import usePlayers from "~/hooks/usePlayers";
-import useTeams from "~/hooks/useTeams";
+import Tooltip from "../../components/elements/Tooltip/Tooltip";
 
 const TournamentPage: NextPage = () => {
   const { teams } = useTeams();
   const { players } = usePlayers();
+  const [isQRModal, setIsQRModal] = useState(false);
   const { tournament, isLoading: isTournamentLoading } = useTournament();
   const {
     games,
@@ -41,18 +46,40 @@ const TournamentPage: NextPage = () => {
       {isTournamentLoading || !games ? (
         <LoadingSkeleton classes="mt-2 h-14 w-72" />
       ) : (
-        <div className="mt-4 flex items-center space-x-4 rounded py-1 md:mt-0">
-          <div className="max-w-[16rem] md:max-w-none">
-            <PageHeadLine title={tournament?.name} />
-            <p className="text-sm text-gray-500">
-              {getGamesLeft(games, selectedGroup)} games left
-            </p>
+        <div className="mt-4 items-center rounded py-1 md:mt-0 md:flex md:justify-between">
+          <div className="flex items-center justify-between space-x-4">
+            <div className="max-w-[16rem] md:max-w-none">
+              <PageHeadLine title={tournament?.name} />
+              <p className="text-sm text-gray-500">
+                {getGamesLeft(games, selectedGroup)} games left
+              </p>
+            </div>
+            <CircleProgress
+              progress={
+                getPercentagesOfFinishedGames(games, selectedGroup).progress
+              }
+            />
           </div>
-          <CircleProgress
-            progress={
-              getPercentagesOfFinishedGames(games, selectedGroup).progress
-            }
-          />
+
+          <div className="mt-4 md:mt-0">
+            <Tooltip
+              isNowrap
+              position="md:right-0 -top-10"
+              content={
+                tournament?.kind === "FREE"
+                  ? "Share tournament is only available for pro tournaments"
+                  : "Share tournament QR code."
+              }
+            >
+              <SmallButton
+                color="dark"
+                icon={<IoQrCodeOutline className="h-6 w-6" />}
+                handleClick={() => {
+                  setIsQRModal((state) => !state);
+                }}
+              />
+            </Tooltip>
+          </div>
         </div>
       )}
 
@@ -77,6 +104,13 @@ const TournamentPage: NextPage = () => {
           <TeamTable selectedGroup={selectedGroup} teams={teams || []} />
         )}
       </div>
+
+      <QRModal
+        isQRModal={isQRModal}
+        handleCancelClicks={() => {
+          setIsQRModal((state) => !state);
+        }}
+      />
     </>
   );
 };
