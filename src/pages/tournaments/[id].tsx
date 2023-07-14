@@ -1,4 +1,5 @@
 import { type NextPage } from "next";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import { IoQrCodeOutline } from "react-icons/io5";
 import CircleProgress from "~/components/elements/CircleProgress/CircleProgress";
@@ -8,16 +9,17 @@ import LoadingSkeleton from "~/components/elements/LoadingSkeleton/LoadingSkelet
 import PageHead from "~/components/elements/PageHead/PageHead";
 import PageHeadLine from "~/components/elements/PageHeadLine/PageHeadLine";
 import PlayerTable from "~/components/elements/PlayerTable/PlayerTable";
-import QRModal from "~/components/elements/QRModal/QRModal";
 import SmallButton from "~/components/elements/SmallButton/SmallButton";
 import TeamTable from "~/components/elements/TeamTable/TeamTable";
+import Tooltip from "~/components/elements/Tooltip/Tooltip";
 import usePlayers from "~/hooks/usePlayers";
 import useTeams from "~/hooks/useTeams";
 import useTournament from "~/hooks/useTournament";
 import useTournamentGames from "~/hooks/useTournamentGames";
 import getGamesLeft from "~/utils/getGamesLeft";
 import getPercentagesOfFinishedGames from "~/utils/getPercentagesOfFinishedGames";
-import Tooltip from "../../components/elements/Tooltip/Tooltip";
+
+const QRModal = dynamic(() => import("~/components/elements/QRModal/QRModal"));
 
 const TournamentPage: NextPage = () => {
   const { teams } = useTeams();
@@ -105,12 +107,14 @@ const TournamentPage: NextPage = () => {
         )}
       </div>
 
-      <QRModal
-        isQRModal={isQRModal}
-        handleCancelClicks={() => {
-          setIsQRModal((state) => !state);
-        }}
-      />
+      {isQRModal && (
+        <QRModal
+          isQRModal={isQRModal}
+          handleCancelClicks={() => {
+            setIsQRModal((state) => !state);
+          }}
+        />
+      )}
     </>
   );
 };

@@ -1,11 +1,11 @@
 import { QRCodeSVG } from "qrcode.react";
 import { type FC } from "react";
-import { env } from "../../../env.mjs";
-import useTournament from "../../../hooks/useTournament";
-import SmallModalLayout from "../../layout/SmallModalLayout/SmallModalLayout";
 import { LuClipboardCopy, LuDownload } from "react-icons/lu";
-import SmallButton from "../SmallButton/SmallButton";
-import Tooltip from "../Tooltip/Tooltip";
+import SmallButton from "~/components/elements/SmallButton/SmallButton";
+import Tooltip from "~/components/elements/Tooltip/Tooltip";
+import SmallModalLayout from "~/components/layout/SmallModalLayout/SmallModalLayout";
+import { env } from "~/env.mjs";
+import useTournament from "~/hooks/useTournament";
 
 const EXPLAIN = "Scan to view tournament or use provided link:";
 
@@ -15,6 +15,7 @@ interface QRModalProps {
 }
 
 const QRModal: FC<QRModalProps> = ({ isQRModal, handleCancelClicks }) => {
+  // const { windowSize } = useWindowSize();
   const { tournament } = useTournament();
 
   const downloadQRCode = () => {
@@ -68,9 +69,10 @@ const QRModal: FC<QRModalProps> = ({ isQRModal, handleCancelClicks }) => {
     <SmallModalLayout
       isModalVisible={isQRModal}
       modalTitle="Scan the QR code"
+      // isFullScreen={windowSize.width < 768}
       handleCancelClick={handleCancelClicks}
     >
-      <div className="w-72 px-3 pb-2 text-left md:w-full md:max-w-[28rem] md:px-6 md:pb-4">
+      <div className="w-[22rem] px-3 pb-2 text-left md:w-full md:max-w-[28rem] md:px-6 md:pb-4">
         <p className="mb-6 mt-2 font-primary text-sm text-gray-700">
           Share this QR code with your tournament participants to let them see
           the tournament progress.
