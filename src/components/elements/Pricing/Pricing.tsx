@@ -19,8 +19,8 @@ const OPTIONS = [
     options: [
       "Unlimited tournaments",
       "Unlimited king tournaments",
-      "5 Share tournament link",
-      "5 Split players into groups",
+      "5 share tournament link",
+      "5 split players into groups",
     ],
   },
   {
@@ -30,8 +30,8 @@ const OPTIONS = [
     options: [
       "Unlimited tournaments",
       "Unlimited king tournaments",
-      "5 Share tournament link",
-      "5 Split players into groups",
+      "Unlimited share tournament link",
+      "Unlimited split players into groups",
       "Custom solutions",
     ],
   },
