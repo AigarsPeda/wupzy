@@ -4,8 +4,8 @@ import GradientButton from "~/components/elements/GradientButton/GradientButton"
 import useRedirect from "~/hooks/useRedirect";
 
 const CTASection: FC = () => {
-  const { data: sessionData } = useSession();
   const { redirectToPath } = useRedirect();
+  const { data: sessionData } = useSession();
 
   return (
     <div className="flex w-full flex-col items-center justify-center text-center">

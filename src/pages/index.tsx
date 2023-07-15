@@ -4,6 +4,7 @@ import Image from "next/image";
 import { HiArrowRight } from "react-icons/hi";
 import GradientButton from "~/components/elements/GradientButton/GradientButton";
 import PageHead from "~/components/elements/PageHead/PageHead";
+import Pricing from "~/components/elements/Pricing/Pricing";
 import useRedirect from "~/hooks/useRedirect";
 
 const HomePage: NextPage = () => {
@@ -36,6 +37,7 @@ const HomePage: NextPage = () => {
         <div className="mb-10 mt-10 md:mb-16">
           <GradientButton
             type="button"
+            bgColor="bg-gray-100"
             title={sessionData ? "Your tournaments" : "Try it now"}
             icon={
               <HiArrowRight className="h-5 w-5 text-gray-900 group-hover:text-white" />
@@ -82,6 +84,8 @@ const HomePage: NextPage = () => {
 
           <div className="absolute left-1/2 top-1/2 -z-10 h-[32rem] w-screen -translate-x-1/2 -translate-y-1/2 transform bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500"></div>
         </div>
+
+        <Pricing />
       </main>
     </>
   );

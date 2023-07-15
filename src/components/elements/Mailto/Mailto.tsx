@@ -2,32 +2,34 @@ import { type FC } from "react";
 import Spinner from "~/components/elements/Spinner/Spinner";
 import classNames from "~/utils/classNames";
 
-interface GradientButtonProps {
-  title: string;
+interface MailtoProps {
+  body: string;
+  email: string;
+  subject: string;
+  bgColor?: string;
   icon?: JSX.Element;
   isLoading?: boolean;
   isDisabled?: boolean;
-  bgColor?: string;
-  handleClick: () => void;
-  type?: "button" | "submit" | "reset";
+  children?: string | React.ReactNode;
 }
 
-const GradientButton: FC<GradientButtonProps> = ({
+const Mailto: FC<MailtoProps> = ({
+  body,
   icon,
-  title,
+  email,
   bgColor,
-  handleClick,
+  subject,
+  children,
   isLoading = false,
   isDisabled = false,
-  type = "button",
 }) => {
   const isNotActionable = isLoading || isDisabled;
 
   return (
-    <button
-      type={type}
-      onClick={handleClick}
-      disabled={isNotActionable}
+    <a
+      href={`mailto:${email}?subject=${
+        encodeURIComponent(subject) || ""
+      }&body=${encodeURIComponent(body) || ""}`}
       className={classNames(
         isNotActionable && "cursor-not-allowed",
         "group relative inline-flex items-center justify-center overflow-hidden rounded-md p-0.5 font-medium tracking-[0.06em] transition duration-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-pink-500"
@@ -58,13 +60,13 @@ const GradientButton: FC<GradientButtonProps> = ({
               "relative flex items-center justify-center"
             )}
           >
-            {title}
+            {children}
             {icon && <span className="ml-4">{icon}</span>}
           </span>
         )}
       </span>
-    </button>
+    </a>
   );
 };
 
-export default GradientButton;
+export default Mailto;
