@@ -25,7 +25,6 @@ const OPTIONS = [
   },
   {
     title: "Business",
-    // price: "Talk to us",
     price: "Custom",
     options: [
       "Unlimited tournaments",
