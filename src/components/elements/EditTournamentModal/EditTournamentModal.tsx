@@ -48,7 +48,7 @@ const EditTournamentModal: FC<EditTournamentModalModalProps> = ({
       isModalVisible={isEditModal}
       handleCancelClick={handleCancelClicks}
       header={
-        <div className="">
+        <div>
           <h1 className="text-3xl">Edit {tournament?.name}</h1>
         </div>
       }

@@ -101,23 +101,20 @@ const useCreateTournament = () => {
         kind: tournament.type,
         king: {
           ...state.king,
-          players: players.map((player, i) => ({
-            // id: player.id,
-            id: (i + 1).toString(),
+          players: players.map((player) => ({
+            id: player.id,
             name: player.name,
             group: player.group,
           })),
         },
 
-        teams: teams.map((team, i) => ({
-          // id: team.id,
-          id: (i + 1).toString(),
+        teams: teams.map((team) => ({
+          id: team.id,
           name: team.name,
           group: team.group,
 
-          players: team.players.map((player, i) => ({
-            // id: player.id,
-            id: (i + 1).toString(),
+          players: team.players.map((player) => ({
+            id: player.id,
             name: player.name,
             group: player.group,
           })),
