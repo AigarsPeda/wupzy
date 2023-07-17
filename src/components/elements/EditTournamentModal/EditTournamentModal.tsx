@@ -29,8 +29,6 @@ const EditTournamentModal: FC<EditTournamentModalModalProps> = ({
   useEffect(() => {
     if (tournament) {
       loadTournament({
-        teams: tournament.teams,
-        players: tournament.players,
         tournament: {
           id: tournament.id,
           sets: tournament.sets,
@@ -38,6 +36,8 @@ const EditTournamentModal: FC<EditTournamentModalModalProps> = ({
           name: tournament.name,
           rounds: tournament.rounds,
         },
+        teams: tournament.teams,
+        players: tournament.players,
       });
     }
   }, [loadTournament, tournament]);
