@@ -1,27 +1,18 @@
 import { useSession } from "next-auth/react";
-import dynamic from "next/dynamic";
 import { useState, type FC } from "react";
-import { AiOutlineDelete } from "react-icons/ai";
+import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { LuSplitSquareHorizontal } from "react-icons/lu";
 import ErrorMessage from "~/components/elements/ErrorMessage/ErrorMessage";
+import SettingsDrawerModals from "~/components/elements/SettingsDrawerModals/SettingsDrawerModals";
 import SmallButton from "~/components/elements/SmallButton/SmallButton";
 import Tooltip from "~/components/elements/Tooltip/Tooltip";
 import TopDrawerLayout from "~/components/elements/TopDrawerLayout/TopDrawerLayout";
 import useTournament from "~/hooks/useTournament";
 import classNames from "~/utils/classNames";
 
-const SplitTournamentModal = dynamic(
-  () =>
-    import("~/components/elements/SplitTournamentModal/SplitTournamentModal")
-);
-
-const DeleteTournamentModal = dynamic(
-  () =>
-    import("~/components/elements/DeleteTournamentModal/DeleteTournamentModal")
-);
-
 const SettingsDrawer: FC = () => {
   const { data: sessionData } = useSession();
+  const [isEditModal, setIsEditModal] = useState(false);
   const [isSplitModal, setIsSplitModal] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
 
@@ -37,7 +28,7 @@ const SettingsDrawer: FC = () => {
       <TopDrawerLayout>
         <div
           className={classNames(
-            "w-full bg-gray-800 px-4 pb-6 pt-4 text-white shadow-[0_2px_5px_rgba(0,0,0,0.07)] outline-none transition-all duration-300 ease-in-out md:px-12 md:pb-6 md:pt-4"
+            "w-screen bg-gray-800 px-4 pb-6 pt-4 text-white shadow-[0_2px_5px_rgba(0,0,0,0.07)] outline-none transition-all duration-300 ease-in-out md:px-12 md:pb-6 md:pt-4"
           )}
         >
           <div className="flex">
@@ -72,15 +63,42 @@ const SettingsDrawer: FC = () => {
               </div>
             )}
           </div>
-          <div className="mt-5 flex flex-wrap space-x-6">
-            <SmallButton
-              color="red"
-              title="Delete"
-              icon={<AiOutlineDelete className="mr-2 h-[1.4rem] w-[1.4rem]" />}
-              handleClick={() => {
-                setIsDeleteModal(true);
-              }}
-            />
+          <div className="mt-5 space-y-3 md:flex md:space-x-4 md:space-y-0">
+            <Tooltip
+              isNowrap
+              position="-top-10"
+              content="Delete tournament and all its data."
+            >
+              <SmallButton
+                isFullWidth
+                color="red"
+                title="Delete"
+                iconMaxWidth="max-w-[5rem] w-full"
+                icon={<AiOutlineDelete className="ml-3 h-6 w-6" />}
+                handleClick={() => {
+                  setIsDeleteModal((sate) => !sate);
+                }}
+              />
+            </Tooltip>
+
+            <Tooltip
+              isNowrap
+              position="-top-10"
+              content="Edit tournament name, description, and more."
+            >
+              <SmallButton
+                isFullWidth
+                color="gray"
+                title="Edit"
+                iconMaxWidth="max-w-[5rem] w-full"
+                isDisabled={tournament?.kind === "FREE"}
+                icon={<AiOutlineEdit className="ml-4 h-6 w-6" />}
+                handleClick={() => {
+                  setIsEditModal((state) => !state);
+                }}
+              />
+            </Tooltip>
+
             <Tooltip
               isNowrap
               position="-top-10"
@@ -91,34 +109,29 @@ const SettingsDrawer: FC = () => {
               }
             >
               <SmallButton
+                isFullWidth
                 color="gray"
                 title="Split"
+                iconMaxWidth="max-w-[5rem] w-full"
                 isDisabled={tournament?.kind === "FREE"}
-                icon={<LuSplitSquareHorizontal className="mr-2 h-6 w-6" />}
+                icon={<LuSplitSquareHorizontal className="ml-4 h-6 w-6" />}
                 handleClick={() => {
-                  setIsSplitModal(true);
+                  setIsSplitModal((state) => !state);
                 }}
               />
             </Tooltip>
           </div>
         </div>
       </TopDrawerLayout>
-      {isDeleteModal && (
-        <DeleteTournamentModal
-          isDeleteModal={isDeleteModal}
-          handleCancelClicks={() => {
-            setIsDeleteModal(false);
-          }}
-        />
-      )}
-      {isSplitModal && (
-        <SplitTournamentModal
-          isSplitModal={isSplitModal}
-          handleCancelClicks={() => {
-            setIsSplitModal(false);
-          }}
-        />
-      )}
+
+      <SettingsDrawerModals
+        isEditModal={isEditModal}
+        isSplitModal={isSplitModal}
+        isDeleteModal={isDeleteModal}
+        setIsEditModal={setIsEditModal}
+        setIsSplitModal={setIsSplitModal}
+        setIsDeleteModal={setIsDeleteModal}
+      />
     </>
   );
 };

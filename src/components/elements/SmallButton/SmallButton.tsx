@@ -6,6 +6,7 @@ interface SmallButtonProps {
   icon?: JSX.Element;
   isDisabled?: boolean;
   isFullWidth?: boolean;
+  iconMaxWidth?: string;
   handleClick?: () => void;
   type?: "button" | "submit" | "reset";
   color?: "red" | "gray" | "green" | "blue" | "orange" | "dark" | "pink";
@@ -17,6 +18,7 @@ const SmallButton: FC<SmallButtonProps> = ({
   isDisabled,
   handleClick,
   isFullWidth,
+  iconMaxWidth,
   color = "gray",
   type = "button",
 }) => {
@@ -38,8 +40,15 @@ const SmallButton: FC<SmallButtonProps> = ({
         "inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium"
       )}
     >
-      {icon}
-      {title}
+      <span
+        className={classNames(
+          iconMaxWidth && iconMaxWidth,
+          "flex h-full items-center justify-between"
+        )}
+      >
+        {title}
+        {icon}
+      </span>
     </button>
   );
 };
