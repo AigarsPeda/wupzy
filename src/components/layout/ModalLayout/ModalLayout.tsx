@@ -10,18 +10,20 @@ interface ModalLayoutProps {
   header?: ReactNode;
   children: ReactNode;
   isPadding?: boolean;
+  bgColor?: "white" | "gray";
   isFullScreen?: boolean;
   isModalVisible: boolean;
   handleCancelClick: () => void;
 }
 
 const ModalLayout: FC<ModalLayoutProps> = ({
+  header,
   footer,
   children,
-  header,
   isFullScreen,
   isModalVisible,
   handleCancelClick,
+  bgColor = "white",
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const { shouldRender, isAnimation } = useDelayUnmount(isModalVisible, 100);
@@ -48,7 +50,11 @@ const ModalLayout: FC<ModalLayoutProps> = ({
             >
               <div
                 ref={modalRef}
-                className="flex h-full w-full flex-col justify-between rounded bg-white"
+                className={classNames(
+                  bgColor === "white" && "bg-white",
+                  bgColor === "gray" && "bg-gray-100",
+                  "flex h-full w-full flex-col justify-between rounded"
+                )}
               >
                 <div className="relative flex items-center justify-between px-3 py-2 pb-2 text-left md:px-6 md:py-4">
                   {header && <div>{header}</div>}

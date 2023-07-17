@@ -31,7 +31,7 @@ const NewKingTournament: FC<NewKingTournamentProps> = ({
           </h2>
           <ul className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             {players.map((player, i) => {
-              const label = `${i + 1}${getOrdinal(i)} player`;
+              const label = `${i + 1}${getOrdinal(i + 1)} player`;
               return (
                 <li className="font-normal sm:col-span-4" key={player.id}>
                   <AddingToListAnimationLayout index={i}>

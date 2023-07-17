@@ -32,23 +32,21 @@ const Input = forwardRef<Ref, InputProps>(
         {inputLabel}
       </label>
       <div className="mt-2">
-        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-gray-900 sm:max-w-md">
-          <input
-            type="text"
-            id={inputFor}
-            name={inputFor}
-            value={inputVal}
-            placeholder={inputPlaceholder}
-            autoComplete={inputAutocomplete}
-            className="mx-2 block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 outline outline-0 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-            onChange={(e) => handleInputChange(e.target.value)}
-            ref={(() => {
-              // If ref is passed, use it, otherwise use null
-              if (ref) return ref;
-              return null;
-            })()}
-          />
-        </div>
+        <input
+          type="text"
+          id={inputFor}
+          name={inputFor}
+          value={inputVal}
+          placeholder={inputPlaceholder}
+          autoComplete={inputAutocomplete}
+          className="mx-0.5 block w-full rounded-md bg-transparent py-1.5 pl-2 text-gray-900 shadow-sm outline-gray-800 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:max-w-md sm:text-sm sm:leading-6"
+          onChange={(e) => handleInputChange(e.target.value)}
+          ref={(() => {
+            // If ref is passed, use it, otherwise use null
+            if (ref) return ref;
+            return null;
+          })()}
+        />
       </div>
     </>
   )
