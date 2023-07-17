@@ -43,24 +43,15 @@ export const PlayerSchema = z.object({
   tournamentId: z.string().nullish(),
 });
 
-export const ShareLinkSchema = z.object({
-  id: z.string(),
-  slug: z.string(),
-  updatedAt: z.date(),
-  createdAt: z.date(),
-  tournamentId: z.string(),
-});
-
 export const TournamentSchema = z.object({
   id: z.string(),
   name: z.string(),
   sets: z.number(),
-  rounds: z.number(),
   userId: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
+  rounds: z.number(),
   type: TournamentTypeEnum,
-  shareLink: ShareLinkSchema,
 });
 
 export const TeamSchema = z.object({
