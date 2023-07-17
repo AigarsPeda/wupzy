@@ -212,4 +212,27 @@ export const tournamentRouter = createTRPCRouter({
 
       return { id: input };
     }),
+
+  getTournamentToEdit: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const { prisma } = ctx;
+
+      const tournament = await prisma.tournament.findUnique({
+        where: {
+          id: input.id,
+        },
+        include: {
+          players: true,
+          teams: {
+            include: {
+              players: true,
+            },
+          },
+          shareLink: true,
+        },
+      });
+
+      return { tournament };
+    }),
 });

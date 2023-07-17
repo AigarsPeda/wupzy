@@ -3,7 +3,7 @@ import Button from "~/components/elements/Button/Button";
 import Input from "~/components/elements/Input/Input";
 import NewKingTournament from "~/components/elements/NewKingTournament/NewKingTournament";
 import NewTeamsTournament from "~/components/elements/NewTeamsTournament/NewTeamsTournament";
-import useCreateNewTournament from "~/components/elements/NewTournamentForm/useCreateNewTournament";
+import useCreateTournament from "~/hooks/useCreateTournament";
 import RadioSelect from "~/components/elements/RadioSelect/RadioSelect";
 import SetSelect from "~/components/elements/SetSelect/SetSelect";
 import useRedirect from "~/hooks/useRedirect";
@@ -26,7 +26,7 @@ const NewTournamentForm: FC = () => {
     changeTournamentKind,
     updateKingsPlayerName,
     updateTeamsPlayerName,
-  } = useCreateNewTournament();
+  } = useCreateTournament();
 
   const { redirectToPath } = useRedirect();
   const [gameCount, setGameCount] = useState(0);

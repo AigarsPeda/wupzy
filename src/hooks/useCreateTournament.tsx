@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import {
   type AddPlayerToTeamType,
   type HandleInputChangeType,
@@ -8,10 +8,13 @@ import {
   type NewPlayerType,
   type NewTeamsType,
   type NewTournamentType,
+  type PlayerType,
+  type TeamType,
+  type TournamentTypeType,
 } from "~/types/tournament.types";
 import validatedTournamentKing from "~/utils/validatedTournamentKing";
 
-const useCreateNewTournament = () => {
+const useCreateTournament = () => {
   const [newTournament, setNewTournament] = useState<NewTournamentType>({
     sets: 1,
     name: "",
@@ -73,6 +76,56 @@ const useCreateNewTournament = () => {
       },
     ],
   });
+
+  const loadTournament = useCallback(
+    ({
+      teams,
+      players,
+      tournament,
+    }: {
+      teams: TeamType[];
+      players: PlayerType[];
+      tournament: {
+        id: string;
+        name: string;
+        sets: number;
+        rounds: number;
+        type: TournamentTypeType;
+      };
+    }) => {
+      setNewTournament((state) => ({
+        ...state,
+        name: tournament.name,
+        sets: tournament.sets,
+        rounds: tournament.rounds,
+        kind: tournament.type,
+        king: {
+          ...state.king,
+          players: players.map((player, i) => ({
+            // id: player.id,
+            id: (i + 1).toString(),
+            name: player.name,
+            group: player.group,
+          })),
+        },
+
+        teams: teams.map((team, i) => ({
+          // id: team.id,
+          id: (i + 1).toString(),
+          name: team.name,
+          group: team.group,
+
+          players: team.players.map((player, i) => ({
+            // id: player.id,
+            id: (i + 1).toString(),
+            name: player.name,
+            group: player.group,
+          })),
+        })),
+      }));
+    },
+    []
+  );
 
   const updateKingsPlayerName = ({ id, name }: HandleInputChangeType) => {
     const players = newTournament.king.players.map((player) => {
@@ -234,6 +287,7 @@ const useCreateNewTournament = () => {
   return {
     newTournament,
     handleAddTeam,
+    loadTournament,
     handleAddPlayer,
     addPlayerToTeam,
     handleSetSelect,
@@ -246,4 +300,4 @@ const useCreateNewTournament = () => {
   };
 };
 
-export default useCreateNewTournament;
+export default useCreateTournament;
