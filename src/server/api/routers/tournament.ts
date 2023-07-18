@@ -250,7 +250,42 @@ export const tournamentRouter = createTRPCRouter({
           },
         });
 
+        // loop through old players and if they are updated, update them or create new ones
+        const newPlayers = await Promise.all(
+          input.tournament.king.players.map(async (player) => {
+            if (player.id) {
+              return await prisma.player.update({
+                where: {
+                  id: player.id,
+                },
+                data: {
+                  name: player.name,
+                  group: player.group,
+                },
+              });
+            } else {
+              return await prisma.player.create({
+                data: {
+                  name: player.name,
+                  group: player.group,
+                  tournamentId: input.id,
+                },
+              });
+            }
+          })
+        );
+
+        if (oldPlayers.length === newPlayers.length) {
+          // find teams and update them name
+          // find games and update them
+        }
+
+        if (oldPlayers.length !== newPlayers.length) {
+          // TODO: delete old games and create new ones
+        }
+
         console.log("oldPlayers", oldPlayers);
+        console.log("newPlayers", newPlayers);
 
         return { id: input.id };
       }

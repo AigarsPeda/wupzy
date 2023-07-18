@@ -57,7 +57,7 @@ const EditTournamentModal: FC<EditTournamentModalModalProps> = ({
       }
     >
       <form
-        className="mx-auto mt-4 max-w-lg rounded rounded-md bg-white p-2 shadow md:mt-6"
+        className="mx-auto mt-4 max-w-lg rounded-md bg-white p-2 shadow md:mt-6"
         onSubmit={(e) => {
           e.preventDefault();
         }}
