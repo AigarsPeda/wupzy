@@ -51,7 +51,7 @@ const NewTeamsTournament: FC<NewTeamsTournamentProps> = ({
                       <Input
                         inputFor={label}
                         inputLabel={label}
-                        inputVal={team.name}
+                        inputVal={team.name || ""}
                         handleInputChange={(str) => {
                           updateTeamsTeamName({
                             name: str,
