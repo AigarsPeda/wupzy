@@ -1,3 +1,4 @@
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { type FC } from "react";
 import DisplayScore from "~/components/elements/DisplayScore/DisplayScore";
 import DisplaySetScore from "~/components/elements/DisplaySetScore/DisplaySetScore";
@@ -8,7 +9,6 @@ import SecondaryButton from "~/components/elements/SecondaryButton/SecondaryButt
 import TeamName from "~/components/elements/TeamName/TeamName";
 import useWindowSize from "~/hooks/useWindowSize";
 import { type GameType } from "~/types/tournament.types";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
 import {
   type GamesScoresType,
   type HandleScoreChangTypeArgs,
@@ -72,8 +72,6 @@ const DisplayGames: FC<DisplayGamesProps> = ({
           const secondTeamName = game?.teamTwo?.players
             .map((player) => player.name)
             .join(" ");
-
-          console.log("game", game);
 
           const isWinnerFound = Boolean(game.winnerId);
 

@@ -1,11 +1,11 @@
 import { ONE_TOURNAMENT_COST } from "hardcoded";
+import { v4 as uuidv4 } from "uuid";
 import z from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import createGamesNTimes from "~/server/api/utils/createGamesNTimes";
 import createKingGamesNTimes from "~/server/api/utils/createKingGamesNTimes";
 import { NewTournamentSchema } from "~/types/tournament.types";
 import createTeams from "~/utils/createTeams";
-import { v4 as uuidv4 } from "uuid";
 
 export const tournamentRouter = createTRPCRouter({
   getAllTournaments: protectedProcedure.query(async ({ ctx }) => {
@@ -241,8 +241,6 @@ export const tournamentRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { prisma } = ctx;
 
-      console.log(input);
-
       if (input.tournament.kind === "king") {
         const oldPlayers = await prisma.player.findMany({
           where: {
@@ -250,190 +248,100 @@ export const tournamentRouter = createTRPCRouter({
           },
         });
 
+        const oldGames = await prisma.game.findMany({
+          where: {
+            tournamentId: input.id,
+          },
+        });
+
+        oldGames[0]?.order;
+
         // loop through old players and if they are updated, update them or create new ones
         const newPlayers = await Promise.all(
           input.tournament.king.players.map(async (player) => {
-            if (player.id) {
-              return await prisma.player.update({
-                where: {
-                  id: player.id,
-                },
-                data: {
-                  name: player.name,
-                  group: player.group,
-                },
-              });
-            } else {
-              return await prisma.player.create({
-                data: {
-                  name: player.name,
-                  group: player.group,
-                  tournamentId: input.id,
-                },
-              });
-            }
+            return await prisma.player.upsert({
+              where: {
+                id: player.id,
+              },
+              update: {
+                name: player.name,
+                group: player.group,
+              },
+              create: {
+                name: player.name,
+                group: player.group,
+                tournamentId: input.id,
+              },
+            });
           })
         );
 
-        if (oldPlayers.length === newPlayers.length) {
-          // compare old players with new players names
-          // if they are different, update them
-          // for (const player of oldPlayers) {
-          //   const newPlayer = newPlayers.find((p) => p.id === player.id);
-          //   if (newPlayer && newPlayer.name !== player.name) {
-          //     await prisma.team.updateMany({
-          //       where: {
-          //         players: {
-          //           some: {
-          //             id: player.id,
-          //           },
-          //         },
-          //       },
-          //       data: {
-          //         name: newPlayer.name,
-          //       },
-          //     });
-          //   }
-          // }
-          // const teams = await prisma.team.findMany({
-          //   where: {
-          //     tournamentId: id,
-          //   },
-          //   include: {
-          //     players: true,
-          //   },
-          // });
-          // await prisma.game.createMany({
-          //   data: createKingGamesNTimes(teams, id, input.rounds),
-          // });
-          // find teams and update them name
-          // find games and update them
-        }
-
         if (oldPlayers.length !== newPlayers.length) {
-          // TODO: delete old games and create new ones
-        }
+          const newTeams = createTeams(newPlayers);
 
-        console.log("oldPlayers", oldPlayers);
-        console.log("newPlayers", newPlayers);
+          // remove newTeams with all players are oldPlayers
+          const filteredNewTeams = newTeams.filter((newTeam) => {
+            return !newTeam.players.every((newPlayer) => {
+              return oldPlayers.some((oldPlayer) => {
+                return oldPlayer.id === newPlayer.id;
+              });
+            });
+          });
+
+          // Save new teams
+          for (let i = 0; i < filteredNewTeams.length; i++) {
+            const element = filteredNewTeams[i];
+
+            if (element) {
+              await prisma.team.create({
+                data: {
+                  tournamentId: input.id,
+                  group: element.group,
+                  players: {
+                    connect: element.players.map((player) => ({
+                      id: player.id,
+                    })),
+                  },
+                },
+              });
+            }
+          }
+
+          const teams = await prisma.team.findMany({
+            where: {
+              tournamentId: input.id,
+            },
+            include: {
+              players: true,
+            },
+          });
+
+          const newGames = createKingGamesNTimes(
+            teams,
+            input.id,
+            input.tournament.rounds
+          );
+
+          // remove games that matches round, order and group
+          const filteredNewGames = newGames.filter((newGame) => {
+            return !oldGames.some((oldGame) => {
+              return (
+                oldGame.round === newGame.round &&
+                oldGame.order === newGame.order &&
+                oldGame.group === newGame.group
+              );
+            });
+          });
+
+          // Create new games
+          await prisma.game.createMany({
+            data: filteredNewGames,
+          });
+        }
 
         return { id: input.id };
       }
 
-      // if (input.tournament.kind === "king") {
-      //   // const { players, id } = await prisma.tournament.create({
-      //   //   data: {
-      //   //     type: input.kind,
-      //   //     name: input.name,
-      //   //     sets: input.sets,
-      //   //     rounds: input.rounds,
-      //   //     userId: ctx.session.user.id,
-      //   //     players: {
-      //   //       create: input.king.players.map((player) => ({
-      //   //         name: player.name,
-      //   //         group: player.group,
-      //   //       })),
-      //   //     },
-      //   //   },
-      //   //   include: {
-      //   //     players: true,
-      //   //   },
-      //   // });
-
-      //   // create or update players
-      //   const players = await Promise.all(
-      //     input.tournament.king.players.map(async (player) => {
-      //       if (player.id) {
-      //         return await prisma.player.update({
-      //           where: {
-      //             id: player.id,
-      //           },
-      //           data: {
-      //             name: player.name,
-      //             group: player.group,
-      //           },
-      //         });
-      //       } else {
-      //         return await prisma.player.create({
-      //           data: {
-      //             name: player.name,
-      //             group: player.group,
-      //             tournamentId: input.id,
-      //           },
-      //         });
-      //       }
-      //     })
-      //   );
-
-      //   const newTeams = createTeams(players);
-
-      //   for (let i = 0; i < newTeams.length; i++) {
-      //     const element = newTeams[i];
-
-      //     if (element) {
-      //       await prisma.team.create({
-      //         data: {
-      //           tournamentId: id,
-      //           name: element.name,
-      //           group: element.group,
-      //           players: {
-      //             connect: element.players.map((player) => ({
-      //               id: player.id,
-      //             })),
-      //           },
-      //         },
-      //       });
-      //     }
-      //   }
-
-      //   const teams = await prisma.team.findMany({
-      //     where: {
-      //       tournamentId: id,
-      //     },
-      //     include: {
-      //       players: true,
-      //     },
-      //   });
-
-      //   await prisma.game.createMany({
-      //     data: createKingGamesNTimes(teams, id, input.rounds),
-      //   });
-
-      //   return { id };
-      // } else {
-      //   const { teams, id } = await prisma.tournament.create({
-      //     data: {
-      //       type: input.kind,
-      //       name: input.name,
-      //       sets: input.sets,
-      //       rounds: input.rounds,
-      //       userId: ctx.session.user.id,
-      //       teams: {
-      //         create: input.teams.map((team) => ({
-      //           name: team.name,
-      //           players: {
-      //             create: team.players.map((player) => ({
-      //               name: player.name,
-      //               group: team.group,
-      //             })),
-      //           },
-      //         })),
-      //       },
-      //     },
-      //     include: {
-      //       teams: {
-      //         include: {
-      //           players: true,
-      //         },
-      //       },
-      //     },
-      //   });
-
-      //   await prisma.game.createMany({
-      //     data: createGamesNTimes(teams, id, input.rounds),
-      //   });
-
       return { id: input.id };
-      // }
     }),
 });
