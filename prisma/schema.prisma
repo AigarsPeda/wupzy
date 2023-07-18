@@ -2,8 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["jsonProtocol"]
+  provider = "prisma-client-js"
+  // previewFeatures = ["jsonProtocol"]
 }
 
 datasource db {
@@ -102,7 +102,7 @@ model ShareLink {
 model Team {
   id           String     @id @default(cuid())
   tournamentId String
-  name         String
+  name         String?
   tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
   players      Player[]   @relation("TeamPlayers")
   teamOne      Game[]     @relation("teamOne")

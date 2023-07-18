@@ -65,6 +65,16 @@ const DisplayGames: FC<DisplayGamesProps> = ({
             (gameScore) => gameScore.gameId === game.id
           );
 
+          const firstTeamName = game?.teamOne?.players
+            .map((player) => player.name)
+            .join(" ");
+
+          const secondTeamName = game?.teamTwo?.players
+            .map((player) => player.name)
+            .join(" ");
+
+          console.log("game", game);
+
           const isWinnerFound = Boolean(game.winnerId);
 
           return (
@@ -87,11 +97,14 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                 <div className="mb-2 mt-4">
                   <div className="grid grid-cols-10">
                     <div className="col-span-4 text-center">
-                      <TeamName name={game?.teamOne?.name} />
+                      <TeamName name={game?.teamOne?.name || firstTeamName} />
                     </div>
                     <div className="col-span-2 text-center" />
                     <div className="col-span-4 text-center">
-                      <TeamName isTextLeft name={game?.teamTwo?.name} />
+                      <TeamName
+                        isTextLeft
+                        name={game?.teamTwo?.name || secondTeamName}
+                      />
                     </div>
                   </div>
                 </div>
@@ -148,7 +161,11 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                   </div>
                 )}
 
-                <DisplaySetScore game={game} />
+                <DisplaySetScore
+                  game={game}
+                  teamOneName={firstTeamName}
+                  teamTwoName={secondTeamName}
+                />
 
                 {!isWinnerFound && handleScoreSave && (
                   <div className="absolute bottom-2 right-2 mt-2 flex min-h-[2.5rem] items-center justify-end">

@@ -28,7 +28,7 @@ const createTeams = (players: Player[] | NewPlayerType[]) => {
           newTeams.push({
             group: group,
             id: (id++).toString(),
-            name: `${playerOne.name}  ${playerTwo.name}`,
+            // name: `${playerOne.name}  ${playerTwo.name}`,
             players: [
               {
                 group: group,

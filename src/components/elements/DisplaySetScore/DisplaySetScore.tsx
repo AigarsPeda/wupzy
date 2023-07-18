@@ -5,9 +5,15 @@ import classNames from "~/utils/classNames";
 
 interface DisplaySetScoreProps {
   game: GameType;
+  teamOneName: string;
+  teamTwoName: string;
 }
 
-const DisplaySetScore: FC<DisplaySetScoreProps> = ({ game }) => {
+const DisplaySetScore: FC<DisplaySetScoreProps> = ({
+  game,
+  teamOneName,
+  teamTwoName,
+}) => {
   return (
     <div className="mx-auto min-h-[5rem] w-56 md:w-52">
       <div className="grid grid-cols-12 gap-x-3">
@@ -15,16 +21,16 @@ const DisplaySetScore: FC<DisplaySetScoreProps> = ({ game }) => {
           <p className="font-primary text-xs text-gray-900">Sets</p>
         </div>
         <div className="col-span-4 text-center">
-          <Tooltip isNowrap content={game?.teamOne?.name}>
+          <Tooltip isNowrap content={teamOneName}>
             <p className="truncate font-primary text-xs text-gray-900">
-              {game?.teamOne?.name}
+              {teamOneName}
             </p>
           </Tooltip>
         </div>
         <div className="col-span-4 text-center">
-          <Tooltip isNowrap content={game?.teamTwo?.name}>
+          <Tooltip isNowrap content={teamTwoName}>
             <p className="truncate font-primary text-xs text-gray-900">
-              {game?.teamTwo?.name}
+              {teamTwoName}
             </p>
           </Tooltip>
         </div>

@@ -130,7 +130,7 @@ export const tournamentRouter = createTRPCRouter({
             await prisma.team.create({
               data: {
                 tournamentId: id,
-                name: element.name,
+                // name: element.name,
                 group: element.group,
                 players: {
                   connect: element.players.map((player) => ({
