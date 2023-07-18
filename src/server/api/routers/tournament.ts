@@ -276,6 +276,36 @@ export const tournamentRouter = createTRPCRouter({
         );
 
         if (oldPlayers.length === newPlayers.length) {
+          // compare old players with new players names
+          // if they are different, update them
+          // for (const player of oldPlayers) {
+          //   const newPlayer = newPlayers.find((p) => p.id === player.id);
+          //   if (newPlayer && newPlayer.name !== player.name) {
+          //     await prisma.team.updateMany({
+          //       where: {
+          //         players: {
+          //           some: {
+          //             id: player.id,
+          //           },
+          //         },
+          //       },
+          //       data: {
+          //         name: newPlayer.name,
+          //       },
+          //     });
+          //   }
+          // }
+          // const teams = await prisma.team.findMany({
+          //   where: {
+          //     tournamentId: id,
+          //   },
+          //   include: {
+          //     players: true,
+          //   },
+          // });
+          // await prisma.game.createMany({
+          //   data: createKingGamesNTimes(teams, id, input.rounds),
+          // });
           // find teams and update them name
           // find games and update them
         }

@@ -94,6 +94,7 @@ const EditTournamentModal: FC<EditTournamentModalModalProps> = ({
               isDisabled={newTournament.name.trim() === ""}
               handleClick={() => {
                 updateTournament(newTournament);
+                handleCancelClicks();
               }}
             />
           </div>

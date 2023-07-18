@@ -10,10 +10,14 @@ const useEditTournament = () => {
   const { redirectToPath } = useRedirect();
   const { data: sessionData } = useSession();
   const [tournamentId, setTournamentId] = useState("");
+  const { teams, player, game: games } = api.useContext();
   const { mutate, isLoading: isUpdatingTournament } =
     api.tournament.updateTournament.useMutation({
       onSuccess: (data) => {
-        redirectToPath(`/tournaments/${data.id}`);
+        void games.invalidate();
+        void teams.invalidate();
+        void player.invalidate();
+        // redirectToPath(`/tournaments/${data.id}`);
       },
     });
   const { data } = api.tournament.getTournamentToEdit.useQuery(
