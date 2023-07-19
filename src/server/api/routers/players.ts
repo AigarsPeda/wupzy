@@ -75,6 +75,7 @@ export const playerRouter = createTRPCRouter({
             setsWon: 0,
             gamesWon: 0,
             group: player.group,
+            tournamentId: tournament.id,
           },
         });
       }

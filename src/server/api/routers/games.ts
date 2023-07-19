@@ -138,13 +138,19 @@ export const gameRouter = createTRPCRouter({
         orderBy: [{ round: "asc" }, { order: "asc" }],
       });
 
-      // get all unique groups
-      const groups = new Set<string>();
-      for (const game of games) {
-        groups.add(game.teamOne.group);
+      const players = await prisma.player.findMany({
+        where: {
+          tournamentId: input.id,
+        },
+      });
+
+      const playerGroups = new Set<string>();
+
+      for (const player of players) {
+        playerGroups.add(player.group);
       }
 
-      return { games, groups: [...groups] };
+      return { games, groups: [...playerGroups] };
     }),
 
   getGame: protectedProcedure

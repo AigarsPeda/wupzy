@@ -65,11 +65,11 @@ export const teamRouter = createTRPCRouter({
             id: team.id,
           },
           data: {
-            tournamentId: tournament.id,
-            group: team.group,
-            gamesWon: 0,
-            setsWon: 0,
             points: 0,
+            setsWon: 0,
+            gamesWon: 0,
+            group: team.group,
+            tournamentId: tournament.id,
           },
         });
 
@@ -79,10 +79,11 @@ export const teamRouter = createTRPCRouter({
               id: player.id,
             },
             data: {
-              group: team.group,
-              gamesWon: 0,
-              setsWon: 0,
               points: 0,
+              setsWon: 0,
+              gamesWon: 0,
+              group: team.group,
+              tournamentId: tournament.id,
             },
           });
         }

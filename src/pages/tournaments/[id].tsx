@@ -13,6 +13,7 @@ import SmallButton from "~/components/elements/SmallButton/SmallButton";
 import TeamTable from "~/components/elements/TeamTable/TeamTable";
 import Tooltip from "~/components/elements/Tooltip/Tooltip";
 import usePlayers from "~/hooks/usePlayers";
+import useSelectedValueQuery from "~/hooks/useSelectedValueQuery";
 import useTeams from "~/hooks/useTeams";
 import useTournament from "~/hooks/useTournament";
 import useTournamentGames from "~/hooks/useTournamentGames";
@@ -34,7 +35,11 @@ const TournamentPage: NextPage = () => {
     handleScoreSave,
     handleScoreChange,
   } = useTournamentGames();
-  const [selectedGroup, setSelectedGroup] = useState("A");
+
+  const { selectedValue, updateSelectedValue } = useSelectedValueQuery(
+    "A",
+    "group"
+  );
 
   return (
     <>
@@ -53,12 +58,12 @@ const TournamentPage: NextPage = () => {
             <div className="max-w-[16rem] md:max-w-none">
               <PageHeadLine title={tournament?.name} />
               <p className="text-sm text-gray-500">
-                {getGamesLeft(games, selectedGroup)} games left
+                {getGamesLeft(games, selectedValue)} games left
               </p>
             </div>
             <CircleProgress
               progress={
-                getPercentagesOfFinishedGames(games, selectedGroup).progress
+                getPercentagesOfFinishedGames(games, selectedValue).progress
               }
             />
           </div>
@@ -87,8 +92,8 @@ const TournamentPage: NextPage = () => {
 
       <DisplayGroupSelect
         groups={groups}
-        selectedGroup={selectedGroup}
-        setSelectedGroup={setSelectedGroup}
+        selectedGroup={selectedValue}
+        setSelectedGroup={updateSelectedValue}
       />
 
       <DisplayGames
@@ -96,14 +101,14 @@ const TournamentPage: NextPage = () => {
         isGamesLoading={isLoading}
         handleScoreSave={handleScoreSave}
         handleScoreChange={handleScoreChange}
-        games={games?.filter((game) => game.group === selectedGroup) || []}
+        games={games?.filter((game) => game.group === selectedValue) || []}
       />
 
       <div className="mt-5">
         {tournament?.type === "king" ? (
-          <PlayerTable selectedGroup={selectedGroup} players={players || []} />
+          <PlayerTable selectedGroup={selectedValue} players={players || []} />
         ) : (
-          <TeamTable selectedGroup={selectedGroup} teams={teams || []} />
+          <TeamTable selectedGroup={selectedValue} teams={teams || []} />
         )}
       </div>
 

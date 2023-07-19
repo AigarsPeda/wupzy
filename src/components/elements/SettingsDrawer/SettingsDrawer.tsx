@@ -91,7 +91,6 @@ const SettingsDrawer: FC = () => {
                 color="gray"
                 title="Edit"
                 iconMaxWidth="max-w-[5rem] w-full"
-                isDisabled={tournament?.kind === "FREE"}
                 icon={<AiOutlineEdit className="ml-4 h-6 w-6" />}
                 handleClick={() => {
                   setIsEditModal((state) => !state);

@@ -6,7 +6,7 @@ import { api } from "~/utils/api";
 
 const useEditTournament = () => {
   const router = useRouter();
-
+  const [group, setGroup] = useState("A");
   const { data: sessionData } = useSession();
   const [tournamentId, setTournamentId] = useState("");
   const { teams, player, game: games } = api.useContext();
@@ -19,7 +19,7 @@ const useEditTournament = () => {
       },
     });
   const { data } = api.tournament.getTournamentToEdit.useQuery(
-    { id: tournamentId },
+    { id: tournamentId, group },
     { enabled: Boolean(tournamentId) && sessionData?.user !== undefined }
   );
 
@@ -29,8 +29,15 @@ const useEditTournament = () => {
     mutate({
       tournament,
       id: tournamentId,
+      group,
     });
   };
+
+  useEffect(() => {
+    if (router.query.group && typeof router.query.group === "string") {
+      setGroup(router.query.group);
+    }
+  }, [router.query.group, setGroup]);
 
   useEffect(() => {
     if (router.query.id && typeof router.query.id === "string") {
