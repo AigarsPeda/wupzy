@@ -8,9 +8,30 @@ interface TeamTableProps {
 }
 
 const TeamTable: FC<TeamTableProps> = ({ teams, selectedGroup }) => {
+  const updateTeams = () => {
+    // add players names to name column and return new array
+    const teamsWithPlayersNames = teams.map((team) => {
+      const playersNames = team.players.map((player) => player.name);
+
+      return {
+        ...team,
+        // participants: playersNames.join(", "),
+        name: {
+          name: team.name,
+          // players: playersNames.join(", "),
+          players: playersNames,
+        },
+      };
+    });
+
+    return teamsWithPlayersNames;
+  };
+
   return (
     <Table
-      tableContents={teams.filter((team) => team.group === selectedGroup)}
+      tableContents={updateTeams().filter(
+        (team) => team.group === selectedGroup
+      )}
       exclude={[
         "id",
         "group",

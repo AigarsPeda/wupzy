@@ -254,8 +254,6 @@ export const tournamentRouter = createTRPCRouter({
           },
         });
 
-        oldGames[0]?.order;
-
         // loop through old players and if they are updated, update them or create new ones
         const newPlayers = await Promise.all(
           input.tournament.king.players.map(async (player) => {
@@ -340,8 +338,84 @@ export const tournamentRouter = createTRPCRouter({
         }
 
         return { id: input.id };
-      }
+      } else {
+        // update teams
+        const oldTeams = await prisma.team.findMany({
+          where: {
+            tournamentId: input.id,
+          },
+        });
 
-      return { id: input.id };
+        const oldGames = await prisma.game.findMany({
+          where: {
+            tournamentId: input.id,
+          },
+        });
+
+        const newTeams = await Promise.all(
+          input.tournament.teams.map(async (team) => {
+            return await prisma.team.upsert({
+              where: {
+                id: team.id,
+              },
+              update: {
+                name: team.name,
+                players: {
+                  upsert: team.players.map((player) => ({
+                    where: {
+                      id: player.id,
+                    },
+                    update: {
+                      name: player.name,
+                      group: team.group,
+                    },
+                    create: {
+                      name: player.name,
+                      group: team.group,
+
+                      tournamentId: input.id,
+                    },
+                  })),
+                },
+              },
+              create: {
+                name: team.name,
+                tournamentId: input.id,
+                players: {
+                  create: team.players.map((player) => ({
+                    name: player.name,
+                    group: team.group,
+                  })),
+                },
+              },
+            });
+          })
+        );
+
+        if (oldTeams.length !== newTeams.length) {
+          const newGames = createGamesNTimes(
+            newTeams,
+            input.id,
+            input.tournament.rounds
+          );
+
+          // remove games that matches round, order and group
+          const filteredNewGames = newGames.filter((newGame) => {
+            return !oldGames.some((oldGame) => {
+              return (
+                oldGame.round === newGame.round &&
+                oldGame.order === newGame.order &&
+                oldGame.group === newGame.group
+              );
+            });
+          });
+
+          await prisma.game.createMany({
+            data: filteredNewGames,
+          });
+        }
+
+        return { id: input.id };
+      }
     }),
 });

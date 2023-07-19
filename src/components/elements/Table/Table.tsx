@@ -1,5 +1,6 @@
 import { useEffect, useState, type FC, type ReactNode } from "react";
 import LoadingSkeleton from "~/components/elements/LoadingSkeleton/LoadingSkeleton";
+import classNames from "~/utils/classNames";
 
 type TableValueType =
   | null
@@ -117,9 +118,39 @@ const Table: FC<TableProps> = ({ exclude, isLoading, tableContents }) => {
                     key={`${i}-${j}`}
                     className="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                   >
-                    {value && typeof value === "object"
-                      ? JSON.stringify(value)
-                      : value}
+                    {value && typeof value === "object" ? (
+                      <div className="flex max-w-[5rem] flex-col md:max-w-[10rem]">
+                        {Object.values(value).map((val, index) => {
+                          const isValueArray = Array.isArray(val);
+
+                          if (isValueArray) {
+                            return (
+                              <div
+                                key={index}
+                                className="flex w-full space-x-1 overflow-y-auto whitespace-nowrap text-xs"
+                              >
+                                {val.map((v, i) => (
+                                  <div key={i} className="mb-2">
+                                    {v}
+                                  </div>
+                                ))}
+                              </div>
+                            );
+                          }
+
+                          return (
+                            <div
+                              key={index}
+                              className={classNames("font-semibold")}
+                            >
+                              {val}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      value
+                    )}
                   </td>
                 ))}
               </tr>

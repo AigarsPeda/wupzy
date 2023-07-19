@@ -18,9 +18,9 @@ const EditTournamentModal: FC<EditTournamentModalModalProps> = ({
   const { tournament, updateTournament, isUpdatingTournament } =
     useEditTournament();
   const {
+    handleAddTeam,
     newTournament,
     loadTournament,
-    handleAddTeam,
     handleAddPlayer,
     addPlayerToTeam,
     updateTeamsTeamName,

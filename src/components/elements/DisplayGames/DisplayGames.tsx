@@ -161,8 +161,8 @@ const DisplayGames: FC<DisplayGamesProps> = ({
 
                 <DisplaySetScore
                   game={game}
-                  teamOneName={firstTeamName}
-                  teamTwoName={secondTeamName}
+                  teamOneName={game?.teamOne?.name || firstTeamName}
+                  teamTwoName={game?.teamTwo?.name || secondTeamName}
                 />
 
                 {!isWinnerFound && handleScoreSave && (
