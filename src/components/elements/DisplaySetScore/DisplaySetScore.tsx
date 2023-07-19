@@ -21,14 +21,14 @@ const DisplaySetScore: FC<DisplaySetScoreProps> = ({
           <p className="font-primary text-xs text-gray-900">Sets</p>
         </div>
         <div className="col-span-4 text-center">
-          <Tooltip isNowrap content={teamOneName}>
+          <Tooltip content={teamOneName}>
             <p className="truncate font-primary text-xs text-gray-900">
               {teamOneName}
             </p>
           </Tooltip>
         </div>
         <div className="col-span-4 text-center">
-          <Tooltip isNowrap content={teamTwoName}>
+          <Tooltip content={teamTwoName}>
             <p className="truncate font-primary text-xs text-gray-900">
               {teamTwoName}
             </p>

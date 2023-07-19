@@ -4,19 +4,13 @@ import Tooltip from "~/components/elements/Tooltip/Tooltip";
 
 interface TeamNameProps {
   name: string;
-  isTextLeft?: boolean;
 }
 
-const TeamName: FC<TeamNameProps> = ({ name, isTextLeft }) => {
+const TeamName: FC<TeamNameProps> = ({ name }) => {
   return (
-    <div
-      className={classNames(
-        isTextLeft ? "text-left" : "text-right",
-        "col-span-5"
-      )}
-    >
-      <Tooltip isNowrap content={name}>
-        {name}
+    <div className={classNames("col-span-5 w-full text-center")}>
+      <Tooltip content={name} placement="bottom">
+        <div className="truncate">{name}</div>
       </Tooltip>
     </div>
   );

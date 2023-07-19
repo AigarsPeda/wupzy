@@ -343,6 +343,7 @@ export const tournamentRouter = createTRPCRouter({
           const teams = await prisma.team.findMany({
             where: {
               tournamentId: input.id,
+              group: input.group,
             },
             include: {
               players: true,
@@ -394,6 +395,7 @@ export const tournamentRouter = createTRPCRouter({
             return await prisma.team.upsert({
               where: {
                 id: team.id,
+                group: input.group,
               },
               update: {
                 name: team.name,

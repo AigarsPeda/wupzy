@@ -141,7 +141,7 @@ const Table: FC<TableProps> = ({ exclude, isLoading, tableContents }) => {
                           return (
                             <div
                               key={index}
-                              className={classNames("font-semibold")}
+                              className={classNames("truncate font-semibold")}
                             >
                               {val}
                             </div>

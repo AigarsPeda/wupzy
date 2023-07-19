@@ -99,10 +99,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                     </div>
                     <div className="col-span-2 text-center" />
                     <div className="col-span-4 text-center">
-                      <TeamName
-                        isTextLeft
-                        name={game?.teamTwo?.name || secondTeamName}
-                      />
+                      <TeamName name={game?.teamTwo?.name || secondTeamName} />
                     </div>
                   </div>
                 </div>
