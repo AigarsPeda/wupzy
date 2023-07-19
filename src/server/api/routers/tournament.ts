@@ -284,6 +284,7 @@ export const tournamentRouter = createTRPCRouter({
         const oldGames = await prisma.game.findMany({
           where: {
             tournamentId: input.id,
+            group: input.group,
           },
         });
 
@@ -293,10 +294,11 @@ export const tournamentRouter = createTRPCRouter({
             return await prisma.player.upsert({
               where: {
                 id: player.id,
-                group: input.group,
+                // group: input.group,
               },
               update: {
                 name: player.name,
+                group: input.group,
               },
               create: {
                 name: player.name,
@@ -354,15 +356,18 @@ export const tournamentRouter = createTRPCRouter({
           );
 
           // remove games that matches round, order and group
-          const filteredNewGames = newGames.filter((newGame) => {
-            return !oldGames.some((oldGame) => {
-              return (
-                oldGame.round === newGame.round &&
-                oldGame.order === newGame.order &&
-                oldGame.group === newGame.group
-              );
-            });
-          });
+          const filteredNewGames =
+            oldGames.length === 0
+              ? newGames
+              : newGames.filter((newGame) => {
+                  return !oldGames.some((oldGame) => {
+                    return (
+                      oldGame.round === newGame.round &&
+                      oldGame.order === newGame.order &&
+                      oldGame.group === newGame.group
+                    );
+                  });
+                });
 
           // Create new games
           await prisma.game.createMany({
