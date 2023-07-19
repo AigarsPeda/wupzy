@@ -82,6 +82,7 @@ const EditTournamentModal: FC<EditTournamentModalModalProps> = ({
           <button
             type="button"
             className="text-sm font-semibold leading-6 text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-800"
+            onClick={handleCancelClicks}
           >
             Cancel
           </button>

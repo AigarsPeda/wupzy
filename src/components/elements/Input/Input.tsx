@@ -39,7 +39,7 @@ const Input = forwardRef<Ref, InputProps>(
           value={inputVal}
           placeholder={inputPlaceholder}
           autoComplete={inputAutocomplete}
-          className="mx-0.5 block w-full rounded-md bg-transparent py-1.5 pl-2 text-gray-900 shadow-sm outline-gray-800 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:max-w-md sm:text-sm sm:leading-6"
+          className="mx-0.5 block w-full rounded-md border border-gray-300 bg-transparent py-1.5 pl-2 text-gray-900 outline-gray-800 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 sm:max-w-md sm:text-sm sm:leading-6"
           onChange={(e) => handleInputChange(e.target.value)}
           ref={(() => {
             // If ref is passed, use it, otherwise use null

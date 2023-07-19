@@ -37,6 +37,11 @@ const useCreateTournament = () => {
           name: "",
           group: "A",
         },
+        {
+          id: "4",
+          name: "",
+          group: "A",
+        },
       ],
     },
     teams: [

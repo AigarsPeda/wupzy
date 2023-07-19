@@ -177,6 +177,7 @@ const NewTournamentForm: FC = () => {
         <button
           type="button"
           className="text-sm font-semibold leading-6 text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-800"
+          onClick={() => redirectToPath("/tournaments")}
         >
           Cancel
         </button>
@@ -185,8 +186,8 @@ const NewTournamentForm: FC = () => {
             size="sm"
             title="Save"
             type="button"
-            handleClick={() => mutate(newTournament)}
             isLoading={isLoading}
+            handleClick={() => mutate(newTournament)}
             isDisabled={newTournament.name.trim() === ""}
           />
         </div>

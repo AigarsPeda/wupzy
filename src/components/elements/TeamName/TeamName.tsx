@@ -9,7 +9,7 @@ interface TeamNameProps {
 const TeamName: FC<TeamNameProps> = ({ name }) => {
   return (
     <div className={classNames("col-span-5 w-full text-center")}>
-      <Tooltip content={name} placement="bottom">
+      <Tooltip content={name} isNowrap>
         <div className="truncate">{name}</div>
       </Tooltip>
     </div>
