@@ -56,14 +56,17 @@ const ModalLayout: FC<ModalLayoutProps> = ({
                   "flex h-full w-full flex-col justify-between rounded"
                 )}
               >
-                <div className="relative flex items-center justify-between px-3 py-2 pb-2 text-left md:px-6 md:py-4">
-                  {header && <div>{header}</div>}
-                  <button
-                    className="cursor-pointer"
-                    onClick={handleCancelClick}
-                  >
-                    <IoClose className="absolute right-2 top-2 h-8 w-9 text-gray-800 hover:text-gray-500" />
-                  </button>
+                <div className="flex items-center justify-between px-3 py-2 pb-2 text-left md:px-6 md:py-4">
+                  {header && <div className="truncate">{header}</div>}
+                  {/* <div className="truncate">{header}</div> */}
+                  <div>
+                    <button
+                      className="cursor-pointer"
+                      onClick={handleCancelClick}
+                    >
+                      <IoClose className="right-2 top-2 h-8 w-9 text-gray-800 hover:text-gray-500" />
+                    </button>
+                  </div>
                 </div>
                 <div className="h-full overflow-y-auto">{children}</div>
                 {footer && <div>{footer}</div>}

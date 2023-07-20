@@ -20,11 +20,7 @@ const SplitTournamentModal: FC<SplitTournamentModalProps> = ({
       isFullScreen
       isModalVisible={isSplitModal}
       handleCancelClick={handleCancelClicks}
-      header={
-        <div className="">
-          <h1 className="text-3xl">Split {tournament?.name}</h1>
-        </div>
-      }
+      header={<h1 className="truncate text-3xl">Split {tournament?.name}</h1>}
     >
       <div className="px-3 pb-2 text-left md:px-6 md:pb-4">
         {tournament?.type === "teams" ? (

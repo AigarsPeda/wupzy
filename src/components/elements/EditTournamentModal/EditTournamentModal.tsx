@@ -50,11 +50,7 @@ const EditTournamentModal: FC<EditTournamentModalModalProps> = ({
       bgColor="gray"
       isModalVisible={isEditModal}
       handleCancelClick={handleCancelClicks}
-      header={
-        <div>
-          <h1 className="text-3xl">Edit {tournament?.name}</h1>
-        </div>
-      }
+      header={<h1 className="truncate text-3xl">Edit {tournament?.name}</h1>}
     >
       <form
         className="mx-auto mt-4 max-w-lg rounded-md bg-white p-2 shadow md:mt-6"
