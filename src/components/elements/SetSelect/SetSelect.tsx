@@ -28,7 +28,8 @@ const SetSelect: FC<SetSelectProps> = ({
         <button
           type="button"
           onClick={updateState}
-          className="flex w-full justify-between rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+          className="flex w-full justify-between rounded-md border-0 px-2 py-1.5 text-gray-900 outline-none outline-1 outline-offset-2 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:max-w-xs sm:text-sm sm:leading-6"
+          // className="outline-none ring-2 focus:ring-pink-500"
         >
           <span className="block truncate">{selectedSetCount}</span>
           <IoIosArrowDown
@@ -40,23 +41,25 @@ const SetSelect: FC<SetSelectProps> = ({
         </button>
       }
     >
-      {OPTIONS.map((option, i) => {
-        return (
-          <button
-            key={`${option}${i}`}
-            className={classNames(
-              "block w-full cursor-pointer px-2 py-1.5 text-left text-sm text-gray-900 transition-all duration-150 hover:bg-gray-100",
-              option === selectedSetCount && "bg-gray-100"
-            )}
-            onClick={() => {
-              handleSetSelect(option);
-              handleDropdownClose();
-            }}
-          >
-            {option}
-          </button>
-        );
-      })}
+      <div className="m-0.5 space-y-1 rounded">
+        {OPTIONS.map((option, i) => {
+          return (
+            <button
+              key={`${option}${i}`}
+              className={classNames(
+                "flex w-full justify-between rounded-md border-0 px-2 py-1.5 text-gray-900 outline-none outline-1 outline-offset-2 ring-1 ring-inset ring-transparent hover:bg-gray-200 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:max-w-xs sm:text-sm sm:leading-6",
+                option === selectedSetCount && "bg-gray-100"
+              )}
+              onClick={() => {
+                handleSetSelect(option);
+                handleDropdownClose();
+              }}
+            >
+              {option}
+            </button>
+          );
+        })}
+      </div>
     </Dropdown>
   );
 };
