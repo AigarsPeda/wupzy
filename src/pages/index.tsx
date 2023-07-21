@@ -57,6 +57,7 @@ const HomePage: NextPage = () => {
             <Image
               width={1000}
               height={1000}
+              priority={true}
               className="hidden md:block"
               alt="Picture wupzy dashboard"
               src="/asset/main_desktop_2.webp"
