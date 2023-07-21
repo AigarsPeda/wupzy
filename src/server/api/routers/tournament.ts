@@ -160,46 +160,75 @@ export const tournamentRouter = createTRPCRouter({
 
         return { id };
       } else {
-        const { teams, id } = await prisma.tournament.create({
+        const { id } = await prisma.tournament.create({
           data: {
             type: input.kind,
             name: input.name,
             sets: input.sets,
             rounds: input.rounds,
             userId: ctx.session.user.id,
-            teams: {
-              create: filteredTeams(input).map((team) => ({
+          },
+        });
+
+        const teams = await Promise.all(
+          filteredTeams(input).map(async (team) => {
+            return await prisma.team.create({
+              data: {
                 name: team.name,
+                tournamentId: id,
+                group: team.group,
                 players: {
                   create: team.players.map((player) => ({
                     name: player.name,
                     group: team.group,
+                    tournamentId: id,
                   })),
                 },
-              })),
-            },
-          },
-          include: {
-            teams: {
-              include: {
-                players: true,
-              },
-            },
-          },
-        });
-
-        for (const team of teams) {
-          for (const player of team.players) {
-            await prisma.player.update({
-              where: {
-                id: player.id,
-              },
-              data: {
-                tournamentId: id,
               },
             });
-          }
-        }
+          })
+        );
+
+        // const { teams, id } = await prisma.tournament.create({
+        //   data: {
+        //     type: input.kind,
+        //     name: input.name,
+        //     sets: input.sets,
+        //     rounds: input.rounds,
+        //     userId: ctx.session.user.id,
+        //     teams: {
+        //       create: filteredTeams(input).map((team) => ({
+        //         name: team.name,
+        //         players: {
+        //           create: team.players.map((player) => ({
+        //             name: player.name,
+        //             group: team.group,
+        //           })),
+        //         },
+        //       })),
+        //     },
+        //   },
+        //   include: {
+        //     teams: {
+        //       include: {
+        //         players: true,
+        //       },
+        //     },
+        //   },
+        // });
+
+        // for (const team of teams) {
+        //   for (const player of team.players) {
+        //     await prisma.player.update({
+        //       where: {
+        //         id: player.id,
+        //       },
+        //       data: {
+        //         tournamentId: id,
+        //       },
+        //     });
+        //   }
+        // }
 
         await prisma.game.createMany({
           data: createGamesNTimes(teams, id, input.rounds),
@@ -243,15 +272,24 @@ export const tournamentRouter = createTRPCRouter({
             where: {
               group: input.group,
             },
+            orderBy: {
+              name: "asc",
+            },
           },
           teams: {
             where: {
               group: input.group,
             },
+            orderBy: {
+              name: "asc",
+            },
             include: {
               players: {
                 where: {
                   group: input.group,
+                },
+                orderBy: {
+                  name: "asc",
                 },
               },
             },
@@ -294,11 +332,11 @@ export const tournamentRouter = createTRPCRouter({
             return await prisma.player.upsert({
               where: {
                 id: player.id,
-                // group: input.group,
+                group: input.group,
               },
               update: {
                 name: player.name,
-                group: input.group,
+                // group: input.group,
               },
               create: {
                 name: player.name,

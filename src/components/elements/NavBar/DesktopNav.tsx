@@ -22,7 +22,7 @@ const DesktopNav: FC<DesktopNavProps> = ({ links }) => {
 
     if (checkoutUrl) {
       router.push(checkoutUrl).catch((err) => {
-        console.log(err);
+        console.error("Error redirecting to checkout", err);
       });
     }
   };
@@ -40,7 +40,7 @@ const DesktopNav: FC<DesktopNavProps> = ({ links }) => {
               title="Buy 100 credits"
               handleClick={() => {
                 checkout(STRIPE_PRICE_ID).catch((err) => {
-                  console.error(err);
+                  console.error("Error creating checkout session", err);
                 });
               }}
             />
