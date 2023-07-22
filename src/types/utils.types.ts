@@ -45,3 +45,23 @@ export type CreateGameType = {
 
 export type TeamsMapType = Map<string, TeamType[]>;
 export type PlayersMapType = Map<string, PlayerType[]>;
+
+export type PlayoffsTreeTeamType = {
+  id: string;
+  name: string;
+  score: number;
+};
+
+export type PlayoffsTreeMatchType = {
+  id: number;
+  name: string;
+  right: boolean;
+  left: boolean;
+  teams: PlayoffsTreeTeamType[];
+};
+
+export type PlayoffType = {
+  id: number;
+  name: string;
+  matches: PlayoffsTreeMatchType[];
+};

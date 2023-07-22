@@ -15,22 +15,33 @@ const EditTournamentModal = dynamic(
   () => import("~/components/elements/EditTournamentModal/EditTournamentModal")
 );
 
+const PlayoffTournamentModal = dynamic(
+  () =>
+    import(
+      "~/components/elements/PlayoffTournamentModal/PlayoffTournamentModal"
+    )
+);
+
 interface SettingsDrawerModalsProps {
   isEditModal: boolean;
   isSplitModal: boolean;
   isDeleteModal: boolean;
+  isPlayOffModal: boolean;
   setIsEditModal: (value: boolean) => void;
   setIsSplitModal: (value: boolean) => void;
   setIsDeleteModal: (value: boolean) => void;
+  setIsPlayOffModal: (value: boolean) => void;
 }
 
 const SettingsDrawerModals: FC<SettingsDrawerModalsProps> = ({
   isEditModal,
   isSplitModal,
   isDeleteModal,
+  isPlayOffModal,
   setIsEditModal,
   setIsSplitModal,
   setIsDeleteModal,
+  setIsPlayOffModal,
 }) => {
   return (
     <>
@@ -55,6 +66,14 @@ const SettingsDrawerModals: FC<SettingsDrawerModalsProps> = ({
           isEditModal={isEditModal}
           handleCancelClicks={() => {
             setIsEditModal(false);
+          }}
+        />
+      )}
+      {isPlayOffModal && (
+        <PlayoffTournamentModal
+          isPlayOffModal={isPlayOffModal}
+          handleCancelClicks={() => {
+            setIsPlayOffModal(false);
           }}
         />
       )}

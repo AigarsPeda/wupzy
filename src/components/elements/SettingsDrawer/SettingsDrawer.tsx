@@ -1,6 +1,10 @@
 import { useSession } from "next-auth/react";
 import { useState, type FC } from "react";
-import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import {
+  AiOutlineDelete,
+  AiOutlineEdit,
+  AiOutlinePartition,
+} from "react-icons/ai";
 import { LuSplitSquareHorizontal } from "react-icons/lu";
 import ErrorMessage from "~/components/elements/ErrorMessage/ErrorMessage";
 import SettingsDrawerModals from "~/components/elements/SettingsDrawerModals/SettingsDrawerModals";
@@ -15,6 +19,7 @@ const SettingsDrawer: FC = () => {
   const [isEditModal, setIsEditModal] = useState(false);
   const [isSplitModal, setIsSplitModal] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
+  const [isPlayOffModal, setIsPlayOffModal] = useState(false);
 
   const {
     tournament,
@@ -73,7 +78,7 @@ const SettingsDrawer: FC = () => {
                 isFullWidth
                 color="red"
                 title="Delete"
-                iconMaxWidth="max-w-[5rem] w-full"
+                iconMaxWidth="max-w-[7rem] w-full"
                 icon={<AiOutlineDelete className="ml-3 h-6 w-6" />}
                 handleClick={() => {
                   setIsDeleteModal((sate) => !sate);
@@ -90,7 +95,7 @@ const SettingsDrawer: FC = () => {
                 isFullWidth
                 color="gray"
                 title="Edit"
-                iconMaxWidth="max-w-[5rem] w-full"
+                iconMaxWidth="max-w-[7rem] w-full"
                 icon={<AiOutlineEdit className="ml-4 h-6 w-6" />}
                 handleClick={() => {
                   setIsEditModal((state) => !state);
@@ -111,11 +116,33 @@ const SettingsDrawer: FC = () => {
                 isFullWidth
                 color="gray"
                 title="Split"
-                iconMaxWidth="max-w-[5rem] w-full"
+                iconMaxWidth="max-w-[7rem] w-full"
                 isDisabled={tournament?.kind === "FREE"}
                 icon={<LuSplitSquareHorizontal className="ml-4 h-6 w-6" />}
                 handleClick={() => {
                   setIsSplitModal((state) => !state);
+                }}
+              />
+            </Tooltip>
+
+            <Tooltip
+              isNowrap
+              position="-top-10"
+              content={
+                tournament?.kind === "FREE"
+                  ? "Play offs is only available for pro tournaments"
+                  : "Create play offs."
+              }
+            >
+              <SmallButton
+                isFullWidth
+                color="gray"
+                title="Play Offs"
+                iconMaxWidth="max-w-[7rem] w-full"
+                isDisabled={tournament?.kind === "FREE"}
+                icon={<AiOutlinePartition className="ml-4 h-6 w-6" />}
+                handleClick={() => {
+                  setIsPlayOffModal((state) => !state);
                 }}
               />
             </Tooltip>
@@ -127,9 +154,11 @@ const SettingsDrawer: FC = () => {
         isEditModal={isEditModal}
         isSplitModal={isSplitModal}
         isDeleteModal={isDeleteModal}
+        isPlayOffModal={isPlayOffModal}
         setIsEditModal={setIsEditModal}
         setIsSplitModal={setIsSplitModal}
         setIsDeleteModal={setIsDeleteModal}
+        setIsPlayOffModal={setIsPlayOffModal}
       />
     </>
   );
