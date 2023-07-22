@@ -50,11 +50,14 @@ export type PlayoffsTreeTeamType = {
   id: string;
   name: string;
   score: number;
+  round: number;
+  match: number;
+  game: number;
 };
 
 export type PlayoffsTreeMatchType = {
   id: number;
-  name: string;
+  name: number;
   right: boolean;
   left: boolean;
   teams: PlayoffsTreeTeamType[];

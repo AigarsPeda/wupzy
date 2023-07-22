@@ -13,6 +13,8 @@ import countNewGames from "~/utils/countNewGames";
 import createTeams from "~/utils/createTeams";
 import kingGameCount from "~/utils/kingGameCount";
 
+const OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
 const NewTournamentForm: FC = () => {
   const {
     newTournament,
@@ -114,6 +116,7 @@ const NewTournamentForm: FC = () => {
               </p>
               <div className="mt-4 grid grid-cols-2 sm:grid-cols-4">
                 <SetSelect
+                  options={OPTIONS}
                   handleSetSelect={handleSetSelect}
                   selectedSetCount={newTournament.sets}
                 />
@@ -128,6 +131,7 @@ const NewTournamentForm: FC = () => {
               </p>
               <div className="mt-4 grid grid-cols-2 sm:grid-cols-4">
                 <SetSelect
+                  options={OPTIONS}
                   handleSetSelect={handleSetRounds}
                   selectedSetCount={newTournament.rounds}
                 />

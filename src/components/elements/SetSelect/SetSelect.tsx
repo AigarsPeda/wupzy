@@ -3,14 +3,16 @@ import { IoIosArrowDown } from "react-icons/io";
 import Dropdown from "~/components/elements/Dropdown/Dropdown";
 import classNames from "~/utils/classNames";
 
-const OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+// const OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 interface SetSelectProps {
+  options: number[];
   selectedSetCount: number;
   handleSetSelect: (setCount: number) => void;
 }
 
 const SetSelect: FC<SetSelectProps> = ({
+  options,
   handleSetSelect,
   selectedSetCount,
 }) => {
@@ -28,8 +30,7 @@ const SetSelect: FC<SetSelectProps> = ({
         <button
           type="button"
           onClick={updateState}
-          className="flex w-full justify-between rounded-md border-0 px-2 py-1.5 text-gray-900 outline-none outline-1 outline-offset-2 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:max-w-xs sm:text-sm sm:leading-6"
-          // className="outline-none ring-2 focus:ring-pink-500"
+          className="flex w-full justify-between rounded-md border-0 bg-white px-2 py-1.5 text-gray-900 outline-none outline-1 outline-offset-2 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:max-w-xs sm:text-sm sm:leading-6"
         >
           <span className="block truncate">{selectedSetCount}</span>
           <IoIosArrowDown
@@ -42,7 +43,7 @@ const SetSelect: FC<SetSelectProps> = ({
       }
     >
       <div className="m-0.5 space-y-1 rounded">
-        {OPTIONS.map((option, i) => {
+        {options.map((option, i) => {
           return (
             <button
               key={`${option}${i}`}

@@ -1,6 +1,7 @@
 import { type FC } from "react";
 import { type PlayoffType } from "~/types/utils.types";
 import classNames from "~/utils/classNames";
+import genUniqueId from "../../../utils/genUniqueId";
 
 interface PlayoffsTreeProps {
   playoffTree: PlayoffType[];
@@ -14,7 +15,7 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({ playoffTree }) => {
 
         return (
           <div
-            key={round.id}
+            key={genUniqueId()}
             className={classNames(
               !isLast && "mr-20",
               "flex flex-col justify-center"
@@ -34,14 +35,14 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({ playoffTree }) => {
                     "flex flex-col rounded-md bg-gray-100 p-1 shadow"
                   )}
                 >
-                  {/* <h2>{match.name}</h2> */}
+                  <h2>Name {match.name}</h2>
                   <div className="min-w-[12rem]">
                     {match.teams.map((team, i) => {
                       const isLast = i === match.teams.length - 1;
 
                       return (
                         <div
-                          key={team.id}
+                          key={genUniqueId()}
                           className={classNames(
                             !isLast && "mb-2",
                             "flex space-x-1 rounded bg-gray-200 px-2 py-2"
