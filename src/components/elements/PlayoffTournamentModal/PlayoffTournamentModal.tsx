@@ -27,7 +27,6 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
   const { teams } = useTeams();
   const { players } = usePlayers();
   const { tournament } = useTournament();
-
   const [playoffRounds, setPlayoffRounds] = useState<number[]>([]);
   const [selectedRoundsCount, setSelectedRoundsCount] = useState(0);
 
@@ -40,31 +39,24 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
 
     const playoffTree: PlayoffType[] = [];
     const playersCount = Math.pow(2, selectedRoundsCount) * 2;
-    // const playersCount = Math.pow(2, selectedRoundsCount);
-
-    console.log("selectedRoundsCount", selectedRoundsCount);
-
-    console.log("playersCount", playersCount);
 
     // select players for the first round based on playoff rounds count
     const selectedPlayers = players.slice(0, playersCount);
 
-    if (playersCount > selectedPlayers.length) {
-      // add empty players to the end of the array
-      const emptyPlayersCount = playersCount - selectedPlayers.length;
+    // if (playersCount > selectedPlayers.length) {
+    //   // add empty players to the end of the array
+    //   const emptyPlayersCount = playersCount - selectedPlayers.length;
 
-      for (let i = 0; i < emptyPlayersCount; i++) {
-        const emptyPlayer = {
-          id: "",
-          score: 0,
-          name: "n/a",
-        };
+    //   for (let i = 0; i < emptyPlayersCount; i++) {
+    // const emptyPlayer = {
+    //   id: "",
+    //   score: 0,
+    //   name: "n/a",
+    // };
 
-        selectedPlayers.push(emptyPlayer);
-      }
-    }
-
-    console.log("selectedPlayers", selectedPlayers);
+    //     selectedPlayers.push(emptyPlayer);
+    //   }
+    // }
 
     const middleIndex = Math.floor(selectedPlayers.length / 2);
     const nextRoundPlayers: PlayoffsTreeTeamType[] = [];
@@ -88,6 +80,10 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
           leftPointer--;
         }
 
+        // if (middleIndex % 2 !== 0) {
+        //   leftPointer++;
+        // }
+
         while (leftPointer >= 0 || rightPointer < selectedPlayers.length) {
           const leftPlayer = selectedPlayers[leftPointer];
           const rightPlayer = selectedPlayers[rightPointer];
@@ -108,6 +104,7 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
               round: match.id,
               match: i,
               game: leftPointer,
+              isEmpty: false,
             });
 
             if (rightPlayer?.name === "n/a") {
@@ -118,6 +115,7 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
                 round: i + 1,
                 match: i,
                 game: leftPointer,
+                isEmpty: false,
               });
             }
           }
@@ -130,18 +128,20 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
               round: match.id,
               match: i,
               game: leftPointer,
+              isEmpty: false,
             });
 
-            // if (leftPlayer?.name === "n/a") {
-            //   nextRoundPlayers.push({
-            //     id: rightPlayer.id,
-            //     name: rightPlayer.name || "n/a",
-            //     score: 0,
-            //     round: i + 1,
-            //     match: i,
-            //     game: leftPointer / 2,
-            //   });
-            // }
+            if (leftPlayer?.name === "n/a") {
+              nextRoundPlayers.push({
+                id: rightPlayer.id,
+                name: rightPlayer.name || "n/a",
+                score: 0,
+                round: i + 1,
+                match: i,
+                game: leftPointer,
+                isEmpty: false,
+              });
+            }
           }
 
           round.matches.push(match);
@@ -172,6 +172,7 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
                 round: j,
                 match: j,
                 game: j,
+                isEmpty: true,
               },
               {
                 id: "2",
@@ -180,6 +181,7 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
                 round: j,
                 match: j,
                 game: j,
+                isEmpty: true,
               },
             ],
           };
@@ -190,8 +192,6 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
 
       playoffTree.push(round);
     }
-
-    console.log("nextRoundPlayers", nextRoundPlayers);
 
     // add next round players to the next round
     nextRoundPlayers.forEach((player) => {
@@ -219,22 +219,263 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
     return playoffTree;
   };
 
+  const newPlayoffTree = (players: SelectedProperties[] | undefined) => {
+    if (!players) {
+      return [];
+    }
+
+    const playoffTree = new Map<number, PlayoffType[][]>();
+    const playersCount = Math.pow(2, selectedRoundsCount) * 2;
+
+    console.log("selectedRoundsCount --->", selectedRoundsCount);
+
+    // select players for the first round based on playoff rounds count
+    const selectedPlayers = players.slice(0, playersCount);
+    const middleIndex = Math.floor(selectedPlayers.length / 2);
+
+    let leftPointer = middleIndex;
+    let rightPointer = middleIndex;
+
+    // If the array length is even, move the left pointer one step back
+    if (middleIndex % 2 === 0) {
+      leftPointer--;
+    }
+
+    const emptyPlayer = {
+      id: "",
+      score: 0,
+      name: "n/a",
+    };
+
+    for (let i = 0; i <= selectedRoundsCount; i++) {
+      while (leftPointer >= 0 || rightPointer < selectedPlayers.length) {
+        const leftPlayer = selectedPlayers[leftPointer];
+        const rightPlayer = selectedPlayers[rightPointer];
+
+        if (leftPlayer && rightPlayer) {
+          const round = playoffTree.get(i);
+
+          if (round) {
+            round.push([
+              {
+                id: leftPlayer.id,
+                name: leftPlayer.name || "",
+                score: 0,
+              },
+              {
+                id: rightPlayer.id,
+                name: rightPlayer.name || "",
+                score: 0,
+              },
+            ]);
+          }
+
+          if (!round) {
+            playoffTree.set(i, [
+              [
+                {
+                  id: leftPlayer.id,
+                  name: leftPlayer.name || "",
+                  score: 0,
+                },
+                {
+                  id: rightPlayer.id,
+                  name: rightPlayer.name || "",
+                  score: 0,
+                },
+              ],
+            ]);
+          }
+        }
+
+        if (leftPlayer && !rightPlayer) {
+          const round = playoffTree.get(i);
+          const nextRound = playoffTree.get(i + 1);
+
+          if (round) {
+            round.push([
+              {
+                id: leftPlayer.id,
+                name: leftPlayer.name || "",
+                score: 0,
+              },
+              {
+                id: emptyPlayer.id,
+                name: emptyPlayer.name || "",
+                score: 0,
+              },
+            ]);
+          }
+
+          if (!round) {
+            playoffTree.set(i, [
+              [
+                {
+                  id: leftPlayer.id,
+                  name: leftPlayer.name || "",
+                  score: 0,
+                },
+                {
+                  id: emptyPlayer.id,
+                  name: emptyPlayer.name || "",
+                  score: 0,
+                },
+              ],
+            ]);
+          }
+
+          if (nextRound) {
+            nextRound.push([
+              {
+                id: leftPlayer.id,
+                name: leftPlayer.name || "",
+                score: 0,
+              },
+              {
+                id: emptyPlayer.id,
+                name: emptyPlayer.name || "",
+                score: 0,
+              },
+            ]);
+          }
+
+          if (!nextRound) {
+            playoffTree.set(i + 1, [
+              [
+                {
+                  id: leftPlayer.id,
+                  name: leftPlayer.name || "",
+                  score: 0,
+                },
+                {
+                  id: emptyPlayer.id,
+                  name: emptyPlayer.name || "",
+                  score: 0,
+                },
+              ],
+            ]);
+          }
+        }
+
+        if (!leftPlayer && rightPlayer) {
+          const round = playoffTree.get(i);
+          const nextRound = playoffTree.get(i + 1);
+
+          if (round) {
+            round.push([
+              {
+                id: emptyPlayer.id,
+                name: emptyPlayer.name || "",
+                score: 0,
+              },
+              {
+                id: rightPlayer.id,
+                name: rightPlayer.name || "",
+                score: 0,
+              },
+            ]);
+          }
+
+          if (!round) {
+            playoffTree.set(i, [
+              [
+                {
+                  id: emptyPlayer.id,
+                  name: emptyPlayer.name || "",
+                  score: 0,
+                },
+                {
+                  id: rightPlayer.id,
+                  name: rightPlayer.name || "",
+                  score: 0,
+                },
+              ],
+            ]);
+          }
+
+          if (nextRound) {
+            nextRound.push([
+              {
+                id: emptyPlayer.id,
+                name: emptyPlayer.name || "",
+                score: 0,
+              },
+              {
+                id: rightPlayer.id,
+                name: rightPlayer.name || "",
+                score: 0,
+              },
+            ]);
+          }
+
+          if (!nextRound) {
+            playoffTree.set(i + 1, [
+              [
+                {
+                  id: emptyPlayer.id,
+                  name: emptyPlayer.name || "",
+                  score: 0,
+                },
+                {
+                  id: rightPlayer.id,
+                  name: rightPlayer.name || "",
+                  score: 0,
+                },
+              ],
+            ]);
+          }
+        }
+
+        leftPointer--;
+        rightPointer++;
+      }
+    }
+
+    // const firstRound = playoffTree.get(0);
+    // const firstRoundLength = firstRound?.length || 0;
+
+    // LOOP THROUGH PLAYOFF TREE AND ADD EMPTY PLAYERS TO THE END OF THE ARRAY
+    playoffTree.forEach((round) => {
+      console.log("round --->", round);
+
+      // ROUND LENGTH IS NOT EVEN NUMBER ADD EMPTY PLAYER
+      if (round.length % 2 !== 0 || round.length === 0) {
+        round.push([
+          {
+            id: emptyPlayer.id,
+            name: emptyPlayer.name || "",
+            score: 0,
+          },
+          {
+            id: emptyPlayer.id,
+            name: emptyPlayer.name || "",
+            score: 0,
+          },
+        ]);
+      }
+    });
+
+    console.log("AAAAAA --->", playoffTree);
+  };
+
   useEffect(() => {
     if (players) {
       const length = players.length;
       let rounds = countDivisionsByTwo(length);
 
-      console.log("rounds", rounds);
+      console.log("rounds --->", rounds);
 
       if (rounds % 2 !== 0) {
         rounds--;
       }
 
+      console.log("rounds --->", rounds);
+
       const playoffRounds = Array.from({ length: rounds }, (_, i) => i + 1);
       const lastRound = playoffRounds[playoffRounds.length - 1] || 0;
 
       setPlayoffRounds(playoffRounds);
-      selectedRoundsCount === 0 && setSelectedRoundsCount(lastRound);
+      selectedRoundsCount === 0 && setSelectedRoundsCount(rounds);
     }
   }, [teams, players, selectedRoundsCount]);
 
@@ -255,7 +496,7 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
             handleSetSelect={setSelectedRoundsCount}
           />
         </div>
-
+        {newPlayoffTree(tournament?.type === "king" ? players : teams)}
         <div className="flex h-[80%] w-full overflow-y-auto px-3 py-2 pb-2 md:justify-center  md:px-6 md:py-4">
           <PlayoffsTree
             playoffTree={addTeamsToPlayoffTree(

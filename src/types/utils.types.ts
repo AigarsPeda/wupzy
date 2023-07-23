@@ -53,6 +53,7 @@ export type PlayoffsTreeTeamType = {
   round: number;
   match: number;
   game: number;
+  isEmpty: boolean;
 };
 
 export type PlayoffsTreeMatchType = {

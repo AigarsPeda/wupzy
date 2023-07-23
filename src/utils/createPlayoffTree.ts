@@ -35,6 +35,7 @@ const createPlayoffTree = (participatingLength: number, roundCount: number) => {
             round: j,
             match: j,
             game: j,
+            isEmpty: true,
           },
           {
             id: "2",
@@ -43,6 +44,7 @@ const createPlayoffTree = (participatingLength: number, roundCount: number) => {
             round: j,
             match: j,
             game: j,
+            isEmpty: true,
           },
         ],
       };
