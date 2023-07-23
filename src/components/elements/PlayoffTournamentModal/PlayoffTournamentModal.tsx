@@ -6,13 +6,12 @@ import usePlayers from "~/hooks/usePlayers";
 import useTeams from "~/hooks/useTeams";
 import useTournament from "~/hooks/useTournament";
 import { type PlayerType, type TeamType } from "~/types/tournament.types";
-import countDivisionsByTwo from "~/utils/countDivisionsByTwo";
-import createPlayoffTree from "~/utils/createPlayoffTree";
 import {
-  type PlayoffsTreeTeamType,
   type PlayoffType,
   type PlayoffsTreeMatchType,
-} from "../../../types/utils.types";
+  type PlayoffsTreeTeamType,
+} from "~/types/utils.types";
+import countDivisionsByTwo from "~/utils/countDivisionsByTwo";
 
 type SelectedProperties = Pick<PlayerType | TeamType, "id" | "name">;
 
@@ -40,8 +39,8 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
     }
 
     const playoffTree: PlayoffType[] = [];
-    // const playersCount = Math.pow(2, selectedRoundsCount) * 2;
-    const playersCount = selectedRoundsCount * 2;
+    const playersCount = Math.pow(2, selectedRoundsCount) * 2;
+    // const playersCount = Math.pow(2, selectedRoundsCount);
 
     console.log("selectedRoundsCount", selectedRoundsCount);
 
