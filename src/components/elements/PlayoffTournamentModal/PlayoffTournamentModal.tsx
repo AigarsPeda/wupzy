@@ -8,6 +8,11 @@ import useTournament from "~/hooks/useTournament";
 import { type PlayerType, type TeamType } from "~/types/tournament.types";
 import countDivisionsByTwo from "~/utils/countDivisionsByTwo";
 import createPlayoffTree from "~/utils/createPlayoffTree";
+import {
+  type PlayoffsTreeTeamType,
+  type PlayoffType,
+  type PlayoffsTreeMatchType,
+} from "../../../types/utils.types";
 
 type SelectedProperties = Pick<PlayerType | TeamType, "id" | "name">;
 
@@ -34,8 +39,13 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
       return [];
     }
 
-    // const playoffTree: PlayoffType[] = [];
-    const playersCount = Math.pow(2, selectedRoundsCount) * 2;
+    const playoffTree: PlayoffType[] = [];
+    // const playersCount = Math.pow(2, selectedRoundsCount) * 2;
+    const playersCount = selectedRoundsCount * 2;
+
+    console.log("selectedRoundsCount", selectedRoundsCount);
+
+    console.log("playersCount", playersCount);
 
     // select players for the first round based on playoff rounds count
     const selectedPlayers = players.slice(0, playersCount);
@@ -55,153 +65,155 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
       }
     }
 
-    // const middleIndex = Math.floor(selectedPlayers.length / 2);
-    // const nextRoundPlayers: PlayoffsTreeTeamType[] = [];
+    console.log("selectedPlayers", selectedPlayers);
 
-    const playoffTree = createPlayoffTree(playersCount, selectedRoundsCount);
+    const middleIndex = Math.floor(selectedPlayers.length / 2);
+    const nextRoundPlayers: PlayoffsTreeTeamType[] = [];
 
-    // for (let i = 0; i <= selectedRoundsCount; i++) {
-    //   const round: PlayoffType = {
-    //     id: i,
-    //     matches: [],
-    //     name: `Round ${i + 1}`,
-    //   };
+    // const playoffTree = createPlayoffTree(playersCount, selectedRoundsCount);
 
-    //   if (i === 0) {
-    //     // Start with pointers at the middle index
-    //     let leftPointer = middleIndex;
-    //     let rightPointer = middleIndex;
+    for (let i = 0; i <= selectedRoundsCount; i++) {
+      const round: PlayoffType = {
+        id: i,
+        matches: [],
+        name: `Round ${i + 1}`,
+      };
 
-    //     // If the array length is even, move the left pointer one step back
-    //     if (middleIndex % 2 === 0) {
-    //       leftPointer--;
-    //     }
+      if (i === 0) {
+        // Start with pointers at the middle index
+        let leftPointer = middleIndex;
+        let rightPointer = middleIndex;
 
-    //     while (leftPointer >= 0 || rightPointer < selectedPlayers.length) {
-    //       const leftPlayer = selectedPlayers[leftPointer];
-    //       const rightPlayer = selectedPlayers[rightPointer];
+        // If the array length is even, move the left pointer one step back
+        if (middleIndex % 2 === 0) {
+          leftPointer--;
+        }
 
-    //       const match: PlayoffsTreeMatchType = {
-    //         id: leftPointer,
-    //         name: leftPointer + 1,
-    //         right: false,
-    //         left: false,
-    //         teams: [],
-    //       };
+        while (leftPointer >= 0 || rightPointer < selectedPlayers.length) {
+          const leftPlayer = selectedPlayers[leftPointer];
+          const rightPlayer = selectedPlayers[rightPointer];
 
-    //       if (leftPlayer) {
-    //         match.teams.push({
-    //           score: 0,
-    //           id: leftPlayer.id,
-    //           name: leftPlayer.name || "",
-    //           round: match.id,
-    //           match: i,
-    //           game: leftPointer,
-    //         });
+          const match: PlayoffsTreeMatchType = {
+            id: leftPointer,
+            name: leftPointer + 1,
+            right: false,
+            left: false,
+            teams: [],
+          };
 
-    //         if (rightPlayer?.name === "n/a") {
-    //           nextRoundPlayers.push({
-    //             id: leftPlayer.id,
-    //             name: leftPlayer.name || "n/a",
-    //             score: 0,
-    //             round: i + 1,
-    //             match: i,
-    //             game: leftPointer,
-    //           });
-    //         }
-    //       }
+          if (leftPlayer) {
+            match.teams.push({
+              score: 0,
+              id: leftPlayer.id,
+              name: leftPlayer.name || "",
+              round: match.id,
+              match: i,
+              game: leftPointer,
+            });
 
-    //       if (rightPlayer) {
-    //         match.teams.push({
-    //           score: 0,
-    //           id: rightPlayer.id,
-    //           name: rightPlayer.name || "",
-    //           round: match.id,
-    //           match: i,
-    //           game: leftPointer,
-    //         });
+            if (rightPlayer?.name === "n/a") {
+              nextRoundPlayers.push({
+                id: leftPlayer.id,
+                name: leftPlayer.name || "n/a",
+                score: 0,
+                round: i + 1,
+                match: i,
+                game: leftPointer,
+              });
+            }
+          }
 
-    //         // if (leftPlayer?.name === "n/a") {
-    //         //   nextRoundPlayers.push({
-    //         //     id: rightPlayer.id,
-    //         //     name: rightPlayer.name || "n/a",
-    //         //     score: 0,
-    //         //     round: i + 1,
-    //         //     match: i,
-    //         //     game: leftPointer / 2,
-    //         //   });
-    //         // }
-    //       }
+          if (rightPlayer) {
+            match.teams.push({
+              score: 0,
+              id: rightPlayer.id,
+              name: rightPlayer.name || "",
+              round: match.id,
+              match: i,
+              game: leftPointer,
+            });
 
-    //       round.matches.push(match);
-    //       round.matches.sort((a, b) => a.id - b.id);
+            // if (leftPlayer?.name === "n/a") {
+            //   nextRoundPlayers.push({
+            //     id: rightPlayer.id,
+            //     name: rightPlayer.name || "n/a",
+            //     score: 0,
+            //     round: i + 1,
+            //     match: i,
+            //     game: leftPointer / 2,
+            //   });
+            // }
+          }
 
-    //       leftPointer--;
-    //       rightPointer++;
-    //     }
-    //   } else {
-    //     // add empty matches to other rounds every next round has half of the matches
-    //     // const matchesCount = Math.pow(2, selectedRoundsCount - i);
+          round.matches.push(match);
+          round.matches.sort((a, b) => a.id - b.id);
 
-    //     // get previous round matches count and divide it by 2
-    //     const prevRound = playoffTree[i - 1]?.matches.length || 0;
-    //     const matchesCount = Math.floor(prevRound / 2);
+          leftPointer--;
+          rightPointer++;
+        }
+      } else {
+        // add empty matches to other rounds every next round has half of the matches
+        // const matchesCount = Math.pow(2, selectedRoundsCount - i);
 
-    //     for (let j = 0; j < matchesCount; j++) {
-    //       const match: PlayoffsTreeMatchType = {
-    //         id: j,
-    //         name: j + 1,
-    //         right: false,
-    //         left: false,
-    //         teams: [
-    //           {
-    //             id: "1",
-    //             name: "",
-    //             score: 0,
-    //             round: j,
-    //             match: j,
-    //             game: j,
-    //           },
-    //           {
-    //             id: "2",
-    //             name: "",
-    //             score: 0,
-    //             round: j,
-    //             match: j,
-    //             game: j,
-    //           },
-    //         ],
-    //       };
+        // get previous round matches count and divide it by 2
+        const prevRound = playoffTree[i - 1]?.matches.length || 0;
+        const matchesCount = Math.floor(prevRound / 2);
 
-    //       round.matches.push(match);
-    //     }
-    //   }
+        for (let j = 0; j < matchesCount; j++) {
+          const match: PlayoffsTreeMatchType = {
+            id: j,
+            name: j + 1,
+            right: false,
+            left: false,
+            teams: [
+              {
+                id: "1",
+                name: "",
+                score: 0,
+                round: j,
+                match: j,
+                game: j,
+              },
+              {
+                id: "2",
+                name: "",
+                score: 0,
+                round: j,
+                match: j,
+                game: j,
+              },
+            ],
+          };
 
-    //   playoffTree.push(round);
-    // }
+          round.matches.push(match);
+        }
+      }
 
-    // console.log("nextRoundPlayers", nextRoundPlayers);
+      playoffTree.push(round);
+    }
 
-    // // add next round players to the next round
-    // nextRoundPlayers.forEach((player) => {
-    //   const round = playoffTree[player.round];
+    console.log("nextRoundPlayers", nextRoundPlayers);
 
-    //   if (!round) {
-    //     return;
-    //   }
+    // add next round players to the next round
+    nextRoundPlayers.forEach((player) => {
+      const round = playoffTree[player.round];
 
-    //   const match = round.matches.find((match) => match.id === player.match);
+      if (!round) {
+        return;
+      }
 
-    //   if (match) {
-    //     // replace team with player in place
-    //     match.teams.forEach((team, i) => {
-    //       if (player.game === i) {
-    //         team.id = player.id;
-    //         team.name = player.name;
-    //       }
-    //     });
-    //   }
-    // });
+      const match = round.matches.find((match) => match.id === player.match);
+
+      if (match) {
+        // replace team with player in place
+        match.teams.forEach((team, i) => {
+          if (player.game === i) {
+            team.id = player.id;
+            team.name = player.name;
+          }
+        });
+      }
+    });
 
     console.log("playoffTree", playoffTree);
 
@@ -212,6 +224,8 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
     if (players) {
       const length = players.length;
       let rounds = countDivisionsByTwo(length);
+
+      console.log("rounds", rounds);
 
       if (rounds % 2 !== 0) {
         rounds--;
@@ -242,8 +256,8 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
             handleSetSelect={setSelectedRoundsCount}
           />
         </div>
-        {/* md:justify-center */}
-        <div className="flex h-[80%] w-full overflow-y-auto px-3 py-2 pb-2  md:px-6 md:py-4">
+
+        <div className="flex h-[80%] w-full overflow-y-auto px-3 py-2 pb-2 md:justify-center  md:px-6 md:py-4">
           <PlayoffsTree
             playoffTree={addTeamsToPlayoffTree(
               tournament?.type === "king" ? players : teams
