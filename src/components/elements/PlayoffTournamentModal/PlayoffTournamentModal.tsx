@@ -13,6 +13,12 @@ import {
 } from "~/types/utils.types";
 import countDivisionsByTwo from "~/utils/countDivisionsByTwo";
 
+type TestPlayerType = {
+  id: string;
+  score: number;
+  name: string;
+};
+
 type SelectedProperties = Pick<PlayerType | TeamType, "id" | "name">;
 
 interface PlayoffTournamentModalProps {
@@ -224,10 +230,8 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
       return [];
     }
 
-    const playoffTree = new Map<number, PlayoffType[][]>();
+    const playoffTree: TestPlayerType[][] = [];
     const playersCount = Math.pow(2, selectedRoundsCount) * 2;
-
-    console.log("selectedRoundsCount --->", selectedRoundsCount);
 
     // select players for the first round based on playoff rounds count
     const selectedPlayers = players.slice(0, playersCount);
@@ -241,221 +245,37 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
       leftPointer--;
     }
 
-    const emptyPlayer = {
+    const emptyPlayer: TestPlayerType = {
       id: "",
       score: 0,
       name: "n/a",
     };
 
-    for (let i = 0; i <= selectedRoundsCount; i++) {
-      while (leftPointer >= 0 || rightPointer < selectedPlayers.length) {
-        const leftPlayer = selectedPlayers[leftPointer];
-        const rightPlayer = selectedPlayers[rightPointer];
+    while (leftPointer >= 0 || rightPointer < selectedPlayers.length) {
+      const leftPlayer = selectedPlayers[leftPointer];
+      const rightPlayer = selectedPlayers[rightPointer];
 
-        if (leftPlayer && rightPlayer) {
-          const round = playoffTree.get(i);
+      const firstTam = leftPlayer ? leftPlayer : emptyPlayer;
+      const secondTeam = rightPlayer ? rightPlayer : emptyPlayer;
 
-          if (round) {
-            round.push([
-              {
-                id: leftPlayer.id,
-                name: leftPlayer.name || "",
-                score: 0,
-              },
-              {
-                id: rightPlayer.id,
-                name: rightPlayer.name || "",
-                score: 0,
-              },
-            ]);
-          }
+      playoffTree.push([
+        {
+          id: firstTam.id,
+          name: firstTam.name || "",
+          score: 0,
+        },
+        {
+          id: secondTeam.id,
+          name: secondTeam.name || "",
+          score: 0,
+        },
+      ]);
 
-          if (!round) {
-            playoffTree.set(i, [
-              [
-                {
-                  id: leftPlayer.id,
-                  name: leftPlayer.name || "",
-                  score: 0,
-                },
-                {
-                  id: rightPlayer.id,
-                  name: rightPlayer.name || "",
-                  score: 0,
-                },
-              ],
-            ]);
-          }
-        }
-
-        if (leftPlayer && !rightPlayer) {
-          const round = playoffTree.get(i);
-          const nextRound = playoffTree.get(i + 1);
-
-          if (round) {
-            round.push([
-              {
-                id: leftPlayer.id,
-                name: leftPlayer.name || "",
-                score: 0,
-              },
-              {
-                id: emptyPlayer.id,
-                name: emptyPlayer.name || "",
-                score: 0,
-              },
-            ]);
-          }
-
-          if (!round) {
-            playoffTree.set(i, [
-              [
-                {
-                  id: leftPlayer.id,
-                  name: leftPlayer.name || "",
-                  score: 0,
-                },
-                {
-                  id: emptyPlayer.id,
-                  name: emptyPlayer.name || "",
-                  score: 0,
-                },
-              ],
-            ]);
-          }
-
-          if (nextRound) {
-            nextRound.push([
-              {
-                id: leftPlayer.id,
-                name: leftPlayer.name || "",
-                score: 0,
-              },
-              {
-                id: emptyPlayer.id,
-                name: emptyPlayer.name || "",
-                score: 0,
-              },
-            ]);
-          }
-
-          if (!nextRound) {
-            playoffTree.set(i + 1, [
-              [
-                {
-                  id: leftPlayer.id,
-                  name: leftPlayer.name || "",
-                  score: 0,
-                },
-                {
-                  id: emptyPlayer.id,
-                  name: emptyPlayer.name || "",
-                  score: 0,
-                },
-              ],
-            ]);
-          }
-        }
-
-        if (!leftPlayer && rightPlayer) {
-          const round = playoffTree.get(i);
-          const nextRound = playoffTree.get(i + 1);
-
-          if (round) {
-            round.push([
-              {
-                id: emptyPlayer.id,
-                name: emptyPlayer.name || "",
-                score: 0,
-              },
-              {
-                id: rightPlayer.id,
-                name: rightPlayer.name || "",
-                score: 0,
-              },
-            ]);
-          }
-
-          if (!round) {
-            playoffTree.set(i, [
-              [
-                {
-                  id: emptyPlayer.id,
-                  name: emptyPlayer.name || "",
-                  score: 0,
-                },
-                {
-                  id: rightPlayer.id,
-                  name: rightPlayer.name || "",
-                  score: 0,
-                },
-              ],
-            ]);
-          }
-
-          if (nextRound) {
-            nextRound.push([
-              {
-                id: emptyPlayer.id,
-                name: emptyPlayer.name || "",
-                score: 0,
-              },
-              {
-                id: rightPlayer.id,
-                name: rightPlayer.name || "",
-                score: 0,
-              },
-            ]);
-          }
-
-          if (!nextRound) {
-            playoffTree.set(i + 1, [
-              [
-                {
-                  id: emptyPlayer.id,
-                  name: emptyPlayer.name || "",
-                  score: 0,
-                },
-                {
-                  id: rightPlayer.id,
-                  name: rightPlayer.name || "",
-                  score: 0,
-                },
-              ],
-            ]);
-          }
-        }
-
-        leftPointer--;
-        rightPointer++;
-      }
+      leftPointer--;
+      rightPointer++;
     }
 
-    // const firstRound = playoffTree.get(0);
-    // const firstRoundLength = firstRound?.length || 0;
-
-    // LOOP THROUGH PLAYOFF TREE AND ADD EMPTY PLAYERS TO THE END OF THE ARRAY
-    playoffTree.forEach((round) => {
-      console.log("round --->", round);
-
-      // ROUND LENGTH IS NOT EVEN NUMBER ADD EMPTY PLAYER
-      if (round.length % 2 !== 0 || round.length === 0) {
-        round.push([
-          {
-            id: emptyPlayer.id,
-            name: emptyPlayer.name || "",
-            score: 0,
-          },
-          {
-            id: emptyPlayer.id,
-            name: emptyPlayer.name || "",
-            score: 0,
-          },
-        ]);
-      }
-    });
-
-    console.log("AAAAAA --->", playoffTree);
+    console.log("TEST --->", playoffTree);
   };
 
   useEffect(() => {
