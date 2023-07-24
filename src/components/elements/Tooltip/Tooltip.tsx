@@ -6,7 +6,6 @@ interface TooltipProps {
   isFull?: boolean;
   position?: string;
   isNowrap?: boolean;
-
   placement?: "top" | "bottom";
   children: JSX.Element | string;
 }
@@ -20,7 +19,7 @@ const Tooltip: FC<TooltipProps> = ({
   placement = "top",
 }) => {
   return (
-    <div className="group relative max-w-md cursor-pointer">
+    <div className="group relative cursor-pointer">
       {children}
       <div
         className={classNames(

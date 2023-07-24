@@ -68,7 +68,7 @@ const SettingsDrawer: FC = () => {
               </div>
             )}
           </div>
-          <div className="mt-5 space-y-3 md:flex md:space-x-4 md:space-y-0">
+          <div className="mt-5 space-y-3 sm:flex sm:space-x-4 sm:space-y-0">
             <Tooltip
               isNowrap
               position="-top-10"
