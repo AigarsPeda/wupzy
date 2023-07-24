@@ -12,14 +12,15 @@ import {
   type PlayoffsTreeTeamType,
 } from "~/types/utils.types";
 import countDivisionsByTwo from "~/utils/countDivisionsByTwo";
+import createPlayoffRound from "~/utils/createPlayoffRound";
 
-type TestPlayerType = {
+export type TestPlayerType = {
   id: string;
   score: number;
   name: string;
 };
 
-type SelectedProperties = Pick<PlayerType | TeamType, "id" | "name">;
+export type SelectedProperties = Pick<PlayerType | TeamType, "id" | "name">;
 
 interface PlayoffTournamentModalProps {
   isPlayOffModal: boolean;
@@ -220,62 +221,20 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
       }
     });
 
-    console.log("playoffTree", playoffTree);
-
     return playoffTree;
   };
 
-  const newPlayoffTree = (players: SelectedProperties[] | undefined) => {
-    if (!players) {
-      return [];
-    }
+  const createPlayoffs = (
+    players: SelectedProperties[] | undefined,
+    selectedRoundsCount: number
+  ) => {
+    // if future filter players / games by round and create playoff tree
+    const playoffFirstRound = createPlayoffRound({
+      players,
+      selectedRoundsCount,
+    });
 
-    const playoffTree: TestPlayerType[][] = [];
-    const playersCount = Math.pow(2, selectedRoundsCount) * 2;
-
-    // select players for the first round based on playoff rounds count
-    const selectedPlayers = players.slice(0, playersCount);
-    const middleIndex = Math.floor(selectedPlayers.length / 2);
-
-    let leftPointer = middleIndex;
-    let rightPointer = middleIndex;
-
-    // If the array length is even, move the left pointer one step back
-    if (middleIndex % 2 === 0) {
-      leftPointer--;
-    }
-
-    const emptyPlayer: TestPlayerType = {
-      id: "",
-      score: 0,
-      name: "n/a",
-    };
-
-    while (leftPointer >= 0 || rightPointer < selectedPlayers.length) {
-      const leftPlayer = selectedPlayers[leftPointer];
-      const rightPlayer = selectedPlayers[rightPointer];
-
-      const firstTam = leftPlayer ? leftPlayer : emptyPlayer;
-      const secondTeam = rightPlayer ? rightPlayer : emptyPlayer;
-
-      playoffTree.push([
-        {
-          id: firstTam.id,
-          name: firstTam.name || "",
-          score: 0,
-        },
-        {
-          id: secondTeam.id,
-          name: secondTeam.name || "",
-          score: 0,
-        },
-      ]);
-
-      leftPointer--;
-      rightPointer++;
-    }
-
-    console.log("TEST --->", playoffTree);
+    console.log("playoffFirstRound --->", playoffFirstRound);
   };
 
   useEffect(() => {
@@ -316,7 +275,10 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
             handleSetSelect={setSelectedRoundsCount}
           />
         </div>
-        {newPlayoffTree(tournament?.type === "king" ? players : teams)}
+        {createPlayoffs(
+          tournament?.type === "king" ? players : teams,
+          selectedRoundsCount
+        )}
         <div className="flex h-[80%] w-full overflow-y-auto px-3 py-2 pb-2 md:justify-center  md:px-6 md:py-4">
           <PlayoffsTree
             playoffTree={addTeamsToPlayoffTree(
