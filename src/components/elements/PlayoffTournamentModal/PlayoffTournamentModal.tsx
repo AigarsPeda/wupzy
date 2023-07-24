@@ -44,226 +44,23 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
       return [];
     }
 
-    const playoffTree: PlayoffType[] = [];
-    const playersCount = Math.pow(2, selectedRoundsCount) * 2;
-
-    // select players for the first round based on playoff rounds count
-    const selectedPlayers = players.slice(0, playersCount);
-
-    // if (playersCount > selectedPlayers.length) {
-    //   // add empty players to the end of the array
-    //   const emptyPlayersCount = playersCount - selectedPlayers.length;
-
-    //   for (let i = 0; i < emptyPlayersCount; i++) {
-    // const emptyPlayer = {
-    //   id: "",
-    //   score: 0,
-    //   name: "n/a",
-    // };
-
-    //     selectedPlayers.push(emptyPlayer);
-    //   }
-    // }
-
-    const middleIndex = Math.floor(selectedPlayers.length / 2);
-    const nextRoundPlayers: PlayoffsTreeTeamType[] = [];
-
-    // const playoffTree = createPlayoffTree(playersCount, selectedRoundsCount);
-
-    for (let i = 0; i <= selectedRoundsCount; i++) {
-      const round: PlayoffType = {
-        id: i,
-        matches: [],
-        name: `Round ${i + 1}`,
-      };
-
-      if (i === 0) {
-        // Start with pointers at the middle index
-        let leftPointer = middleIndex;
-        let rightPointer = middleIndex;
-
-        // If the array length is even, move the left pointer one step back
-        if (middleIndex % 2 === 0) {
-          leftPointer--;
-        }
-
-        // if (middleIndex % 2 !== 0) {
-        //   leftPointer++;
-        // }
-
-        while (leftPointer >= 0 || rightPointer < selectedPlayers.length) {
-          const leftPlayer = selectedPlayers[leftPointer];
-          const rightPlayer = selectedPlayers[rightPointer];
-
-          const match: PlayoffsTreeMatchType = {
-            id: leftPointer,
-            name: leftPointer + 1,
-            right: false,
-            left: false,
-            teams: [],
-          };
-
-          if (leftPlayer) {
-            match.teams.push({
-              score: 0,
-              id: leftPlayer.id,
-              name: leftPlayer.name || "",
-              round: match.id,
-              match: i,
-              game: leftPointer,
-              isEmpty: false,
-            });
-
-            if (rightPlayer?.name === "n/a") {
-              nextRoundPlayers.push({
-                id: leftPlayer.id,
-                name: leftPlayer.name || "n/a",
-                score: 0,
-                round: i + 1,
-                match: i,
-                game: leftPointer,
-                isEmpty: false,
-              });
-            }
-          }
-
-          if (rightPlayer) {
-            match.teams.push({
-              score: 0,
-              id: rightPlayer.id,
-              name: rightPlayer.name || "",
-              round: match.id,
-              match: i,
-              game: leftPointer,
-              isEmpty: false,
-            });
-
-            if (leftPlayer?.name === "n/a") {
-              nextRoundPlayers.push({
-                id: rightPlayer.id,
-                name: rightPlayer.name || "n/a",
-                score: 0,
-                round: i + 1,
-                match: i,
-                game: leftPointer,
-                isEmpty: false,
-              });
-            }
-          }
-
-          round.matches.push(match);
-          round.matches.sort((a, b) => a.id - b.id);
-
-          leftPointer--;
-          rightPointer++;
-        }
-      } else {
-        // add empty matches to other rounds every next round has half of the matches
-        // const matchesCount = Math.pow(2, selectedRoundsCount - i);
-
-        // get previous round matches count and divide it by 2
-        const prevRound = playoffTree[i - 1]?.matches.length || 0;
-        const matchesCount = Math.floor(prevRound / 2);
-
-        for (let j = 0; j < matchesCount; j++) {
-          const match: PlayoffsTreeMatchType = {
-            id: j,
-            name: j + 1,
-            right: false,
-            left: false,
-            teams: [
-              {
-                id: "1",
-                name: "",
-                score: 0,
-                round: j,
-                match: j,
-                game: j,
-                isEmpty: true,
-              },
-              {
-                id: "2",
-                name: "",
-                score: 0,
-                round: j,
-                match: j,
-                game: j,
-                isEmpty: true,
-              },
-            ],
-          };
-
-          round.matches.push(match);
-        }
-      }
-
-      playoffTree.push(round);
-    }
-
-    // add next round players to the next round
-    nextRoundPlayers.forEach((player) => {
-      const round = playoffTree[player.round];
-
-      if (!round) {
-        return;
-      }
-
-      const match = round.matches.find((match) => match.id === player.match);
-
-      if (match) {
-        // replace team with player in place
-        match.teams.forEach((team, i) => {
-          if (player.game === i) {
-            team.id = player.id;
-            team.name = player.name;
-          }
-        });
-      }
-    });
-
-    return playoffTree;
-  };
-
-  const createPlayoffs = (
-    players: SelectedProperties[] | undefined,
-    selectedRoundsCount: number
-  ) => {
-    // if future filter players / games by round and create playoff tree
-
-    const playoffFirstRound = createPlayoffRound({
+    const firstRound = createPlayoffRound({
       players,
       selectedRoundsCount,
     });
 
-    console.log("playoffFirstRound --->", playoffFirstRound);
+    console.log("firstRound --->", firstRound);
 
-    const round: {
-      [key: string]: {
-        id: number;
-        matches: TestPlayerType[][];
-        name: string;
-      };
-    } = {};
+    const playoffMap = new Map<number, PlayoffsTreeTeamType[]>();
 
-    for (let i = 0; i < playoffFirstRound.length; i++) {
-      // const matchesCount = Math.floor(Math.pow(2, selectedRoundsCount - i));
-
-      round[i] = {
-        id: i,
-        matches: [],
-        name: `Round ${i + 1}`,
-      };
-
-      for (let j = 0; j < playoffFirstRound.length; j++) {
-        const match = playoffFirstRound[j];
-
-        if (match) {
-          round[i]?.matches.push(match);
-        }
-      }
+    for (let i = 0; i <= selectedRoundsCount; i++) {
+      console.log("i --->", i);
+      playoffMap.set(i, []);
     }
 
-    console.log("round --->", round);
+    const playoffTree: PlayoffType[] = [];
+
+    return playoffTree;
   };
 
   useEffect(() => {
@@ -304,10 +101,7 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
             handleSetSelect={setSelectedRoundsCount}
           />
         </div>
-        {createPlayoffs(
-          tournament?.type === "king" ? players : teams,
-          selectedRoundsCount
-        )}
+
         <div className="flex h-[80%] w-full overflow-y-auto px-3 py-2 pb-2 md:justify-center  md:px-6 md:py-4">
           <PlayoffsTree
             playoffTree={addTeamsToPlayoffTree(

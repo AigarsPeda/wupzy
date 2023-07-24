@@ -50,10 +50,10 @@ export type PlayoffsTreeTeamType = {
   id: string;
   name: string;
   score: number;
-  round: number;
-  match: number;
-  game: number;
-  isEmpty: boolean;
+  // round: number;
+  // match: number;
+  // game: number;
+  // isEmpty: boolean;
 };
 
 export type PlayoffsTreeMatchType = {

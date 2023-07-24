@@ -1,7 +1,7 @@
 import { type FC } from "react";
 import { type PlayoffType } from "~/types/utils.types";
 import classNames from "~/utils/classNames";
-import genUniqueId from "../../../utils/genUniqueId";
+import genUniqueId from "~/utils/genUniqueId";
 
 interface PlayoffsTreeProps {
   playoffTree: PlayoffType[];

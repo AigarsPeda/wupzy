@@ -1,7 +1,7 @@
 import {
   type SelectedProperties,
   type TestPlayerType,
-} from "../components/elements/PlayoffTournamentModal/PlayoffTournamentModal";
+} from "~/components/elements/PlayoffTournamentModal/PlayoffTournamentModal";
 
 type CreatePlayoffRoundArrayType = {
   players: SelectedProperties[] | undefined;
@@ -16,33 +16,37 @@ const createPlayoffRound = ({
     return [];
   }
 
-  const playoffTree: TestPlayerType[][] = [];
-  const playersCount = Math.pow(2, selectedRoundsCount) * 2;
-
-  // select players for the first round based on playoff rounds count
-  const selectedPlayers = players.slice(0, playersCount);
-  const middleIndex = Math.floor(selectedPlayers.length / 2);
-
-  let leftPointer = middleIndex;
-  let rightPointer = middleIndex;
-
-  // If the array length is even, move the left pointer one step back
-  if (middleIndex % 2 === 0) {
-    leftPointer--;
-  }
-
   const emptyPlayer: TestPlayerType = {
     id: "",
     score: 0,
     name: "n/a",
   };
 
-  while (leftPointer >= 0 || rightPointer < selectedPlayers.length) {
-    const leftPlayer = selectedPlayers[leftPointer];
-    const rightPlayer = selectedPlayers[rightPointer];
+  const newPlayers = players.map((player) => {
+    return {
+      score: 0,
+      id: player.id,
+      name: player.name,
+    };
+  });
 
-    const firstTam = leftPlayer ? leftPlayer : emptyPlayer;
-    const secondTeam = rightPlayer ? rightPlayer : emptyPlayer;
+  if (newPlayers.length % 2 !== 0) {
+    players.push(emptyPlayer);
+  }
+
+  const playoffTree: TestPlayerType[][] = [];
+  const playersCount = Math.pow(2, selectedRoundsCount) * 2;
+
+  // select players for the first round based on playoff rounds count
+  const selectedPlayers = newPlayers.slice(0, playersCount);
+  const middleIndex = Math.floor(selectedPlayers.length / 2);
+
+  for (let i = 0; i < middleIndex; i++) {
+    const first = selectedPlayers[i];
+    const last = selectedPlayers[selectedPlayers.length - i - 1];
+
+    const firstTam = first ? first : emptyPlayer;
+    const secondTeam = last ? last : emptyPlayer;
 
     playoffTree.push([
       {
@@ -56,12 +60,9 @@ const createPlayoffRound = ({
         name: secondTeam.name || "",
       },
     ]);
-
-    leftPointer--;
-    rightPointer++;
   }
 
-  // add empty players to the end of the playoffTree till it's length is equal even number
+  // // add empty players to the end of the playoffTree till it's length is equal even number
   if (playoffTree.length % 2 !== 0) {
     playoffTree.push([emptyPlayer, emptyPlayer]);
   }

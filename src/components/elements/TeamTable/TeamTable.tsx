@@ -11,7 +11,7 @@ const TeamTable: FC<TeamTableProps> = ({ teams, selectedGroup }) => {
   const updateTeams = () => {
     // add players names to name column and return new array
     const teamsWithPlayersNames = teams.map((team) => {
-      const playersNames = team.players.map((player) => player.name);
+      const playersNames = team.players?.map((player) => player.name);
 
       return {
         ...team,
