@@ -229,12 +229,41 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
     selectedRoundsCount: number
   ) => {
     // if future filter players / games by round and create playoff tree
+
     const playoffFirstRound = createPlayoffRound({
       players,
       selectedRoundsCount,
     });
 
     console.log("playoffFirstRound --->", playoffFirstRound);
+
+    const round: {
+      [key: string]: {
+        id: number;
+        matches: TestPlayerType[][];
+        name: string;
+      };
+    } = {};
+
+    for (let i = 0; i < playoffFirstRound.length; i++) {
+      // const matchesCount = Math.floor(Math.pow(2, selectedRoundsCount - i));
+
+      round[i] = {
+        id: i,
+        matches: [],
+        name: `Round ${i + 1}`,
+      };
+
+      for (let j = 0; j < playoffFirstRound.length; j++) {
+        const match = playoffFirstRound[j];
+
+        if (match) {
+          round[i]?.matches.push(match);
+        }
+      }
+    }
+
+    console.log("round --->", round);
   };
 
   useEffect(() => {
@@ -275,10 +304,10 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
             handleSetSelect={setSelectedRoundsCount}
           />
         </div>
-        {/* {createPlayoffs(
+        {createPlayoffs(
           tournament?.type === "king" ? players : teams,
           selectedRoundsCount
-        )} */}
+        )}
         <div className="flex h-[80%] w-full overflow-y-auto px-3 py-2 pb-2 md:justify-center  md:px-6 md:py-4">
           <PlayoffsTree
             playoffTree={addTeamsToPlayoffTree(
