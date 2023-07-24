@@ -275,10 +275,10 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
             handleSetSelect={setSelectedRoundsCount}
           />
         </div>
-        {createPlayoffs(
+        {/* {createPlayoffs(
           tournament?.type === "king" ? players : teams,
           selectedRoundsCount
-        )}
+        )} */}
         <div className="flex h-[80%] w-full overflow-y-auto px-3 py-2 pb-2 md:justify-center  md:px-6 md:py-4">
           <PlayoffsTree
             playoffTree={addTeamsToPlayoffTree(
