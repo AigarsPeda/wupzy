@@ -64,7 +64,15 @@ const createPlayoffRound = ({
 
   // // add empty players to the end of the playoffTree till it's length is equal even number
   if (playoffTree.length % 2 !== 0) {
-    playoffTree.push([emptyPlayer, emptyPlayer]);
+    // find array with player with empty id
+    const emptyPlayerIndex = playoffTree.findIndex((team) => {
+      return team.some((player) => {
+        return player.id === "";
+      });
+    });
+
+    // add empty player array wright after the array with empty player
+    playoffTree.splice(emptyPlayerIndex + 1, 0, [emptyPlayer, emptyPlayer]);
   }
 
   return playoffTree;
