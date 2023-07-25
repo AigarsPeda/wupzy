@@ -20,6 +20,12 @@ export type TestPlayerType = {
   name: string;
 };
 
+export type TestPlayoffType = {
+  round: number;
+  match: number;
+  teams: TestPlayerType[];
+};
+
 export type SelectedProperties = Pick<PlayerType | TeamType, "id" | "name">;
 
 interface PlayoffTournamentModalProps {
@@ -51,12 +57,51 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
 
     console.log("firstRound --->", firstRound);
 
-    const playoffMap = new Map<number, PlayoffsTreeTeamType[]>();
+    const playoffMap = new Map<number, TestPlayoffType[]>();
+    // const test: { [key: string]: PlayoffsTreeTeamType[] } = {};
 
     for (let i = 0; i <= selectedRoundsCount; i++) {
-      console.log("i --->", i);
-      playoffMap.set(i, []);
+      // i = round
+
+      for (let j = 0; j < firstRound.length; j++) {
+        // j = match
+
+        const [player1, player2] = firstRound[j] || [];
+
+        if (!player1 || !player2) {
+          continue;
+        }
+
+        const team1: TestPlayerType = {
+          id: player1.id,
+          name: player1.name,
+          score: 0,
+        };
+
+        const team2: TestPlayerType = {
+          id: player2.id,
+          name: player2.name,
+          score: 0,
+        };
+
+        const playoffMatch: TestPlayoffType = {
+          round: i,
+          match: j,
+          teams: [team1, team2],
+        };
+
+        const round = playoffMap.get(i);
+
+        if (round) {
+          round.push(playoffMatch);
+        } else {
+          playoffMap.set(i, [playoffMatch]);
+        }
+      }
     }
+
+    console.log("playoffMap --->", playoffMap);
+    // console.log("test --->", test);
 
     const playoffTree: PlayoffType[] = [];
 
@@ -68,7 +113,7 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
       const length = players.length;
       let rounds = countDivisionsByTwo(length);
 
-      console.log("rounds --->", rounds);
+      // console.log("rounds --->", rounds);
 
       if (rounds % 2 !== 0) {
         rounds--;
