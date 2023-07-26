@@ -6,22 +6,13 @@ import usePlayers from "~/hooks/usePlayers";
 import useTeams from "~/hooks/useTeams";
 import useTournament from "~/hooks/useTournament";
 import { type PlayerType, type TeamType } from "~/types/tournament.types";
+import {
+  type PlayoffPlayerType,
+  type PlayoffRoundType,
+} from "~/types/utils.types";
 import countDivisionsByTwo from "~/utils/countDivisionsByTwo";
 import createPlayoffRound from "~/utils/createPlayoffRound";
 import genUniqueId from "~/utils/genUniqueId";
-
-export type TestPlayerType = {
-  id: string;
-  score: number;
-  name: string;
-};
-
-export type TestPlayoffType = {
-  id: string;
-  round: number;
-  match: number;
-  teams: TestPlayerType[];
-};
 
 export type SelectedProperties = Pick<PlayerType | TeamType, "id" | "name">;
 
@@ -50,7 +41,7 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
       selectedRoundsCount,
     });
 
-    const playoffMap = new Map<number, TestPlayoffType[]>();
+    const playoffMap = new Map<number, PlayoffRoundType[]>();
 
     for (let i = 0; i <= selectedRoundsCount; i++) {
       // i = round
@@ -65,19 +56,19 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
             continue;
           }
 
-          const team1: TestPlayerType = {
+          const team1: PlayoffPlayerType = {
             score: 0,
             id: player1.id,
             name: player1.name,
           };
 
-          const team2: TestPlayerType = {
+          const team2: PlayoffPlayerType = {
             score: 0,
             id: player2.id,
             name: player2.name,
           };
 
-          const playoffMatch: TestPlayoffType = {
+          const playoffMatch: PlayoffRoundType = {
             round: i,
             match: j,
             id: genUniqueId(),
@@ -109,7 +100,7 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
               team2 &&
               (team1.id === "" || team2.id === "")
             ) {
-              const playoffMatch: TestPlayoffType = {
+              const playoffMatch: PlayoffRoundType = {
                 ...match,
                 round: i,
                 match: j,
@@ -178,7 +169,7 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
           const half = Math.floor(previousRound / 2) - length;
 
           for (let j = 0; j < half; j++) {
-            const playoffMatch: TestPlayoffType = {
+            const playoffMatch: PlayoffRoundType = {
               round: i,
               match: j,
               id: genUniqueId(),
@@ -216,7 +207,7 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
 
           if (previousRound) {
             for (let j = 0; j < half; j++) {
-              const playoffMatch: TestPlayoffType = {
+              const playoffMatch: PlayoffRoundType = {
                 round: i,
                 match: j,
                 id: genUniqueId(),

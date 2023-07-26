@@ -1,7 +1,5 @@
-import {
-  type SelectedProperties,
-  type TestPlayerType,
-} from "~/components/elements/PlayoffTournamentModal/PlayoffTournamentModal";
+import { type SelectedProperties } from "~/components/elements/PlayoffTournamentModal/PlayoffTournamentModal";
+import { type PlayoffPlayerType } from "~/types/utils.types";
 
 type CreatePlayoffRoundArrayType = {
   players: SelectedProperties[] | undefined;
@@ -16,7 +14,7 @@ const createPlayoffRound = ({
     return [];
   }
 
-  const emptyPlayer: TestPlayerType = {
+  const emptyPlayer: PlayoffPlayerType = {
     id: "",
     score: 0,
     name: "n/a",
@@ -34,7 +32,7 @@ const createPlayoffRound = ({
     players.push(emptyPlayer);
   }
 
-  const playoffTree: TestPlayerType[][] = [];
+  const playoffTree: PlayoffPlayerType[][] = [];
   const playersCount = Math.pow(2, selectedRoundsCount) * 2;
 
   // select players for the first round based on playoff rounds count

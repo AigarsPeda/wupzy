@@ -56,16 +56,29 @@ export type PlayoffsTreeTeamType = {
   // isEmpty: boolean;
 };
 
-export type PlayoffsTreeMatchType = {
-  id: number;
-  name: number;
-  right: boolean;
-  left: boolean;
-  teams: PlayoffsTreeTeamType[];
+// export type PlayoffsTreeMatchType = {
+//   id: number;
+//   name: number;
+//   right: boolean;
+//   left: boolean;
+//   teams: PlayoffsTreeTeamType[];
+// };
+
+// export type PlayoffType = {
+//   id: number;
+//   name: string;
+//   matches: PlayoffsTreeMatchType[];
+// };
+
+export type PlayoffPlayerType = {
+  id: string;
+  score: number;
+  name: string;
 };
 
-export type PlayoffType = {
-  id: number;
-  name: string;
-  matches: PlayoffsTreeMatchType[];
+export type PlayoffRoundType = {
+  id: string;
+  round: number;
+  match: number;
+  teams: PlayoffPlayerType[];
 };
