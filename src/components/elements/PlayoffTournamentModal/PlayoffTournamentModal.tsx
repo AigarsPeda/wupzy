@@ -6,14 +6,9 @@ import usePlayers from "~/hooks/usePlayers";
 import useTeams from "~/hooks/useTeams";
 import useTournament from "~/hooks/useTournament";
 import { type PlayerType, type TeamType } from "~/types/tournament.types";
-import {
-  type PlayoffType,
-  type PlayoffsTreeMatchType,
-  type PlayoffsTreeTeamType,
-} from "~/types/utils.types";
 import countDivisionsByTwo from "~/utils/countDivisionsByTwo";
 import createPlayoffRound from "~/utils/createPlayoffRound";
-import genUniqueId from "../../../utils/genUniqueId";
+import genUniqueId from "~/utils/genUniqueId";
 
 export type TestPlayerType = {
   id: string;
@@ -45,8 +40,6 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
   const [playoffRounds, setPlayoffRounds] = useState<number[]>([]);
   const [selectedRoundsCount, setSelectedRoundsCount] = useState(0);
 
-  // add one for every two players
-
   const addTeamsToPlayoffTree = (players: SelectedProperties[] | undefined) => {
     if (!players) {
       return [];
@@ -56,8 +49,6 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
       players,
       selectedRoundsCount,
     });
-
-    console.log("firstRound --->", firstRound);
 
     const playoffMap = new Map<number, TestPlayoffType[]>();
 
@@ -101,10 +92,9 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
             playoffMap.set(i, [playoffMatch]);
           }
         }
+        // from previous round get matches with empty teams with no id and add them to current round
       }
-
-      // from previous round get matches with empty teams with no id and add them to current round
-      else if (i > 0) {
+      if (i > 0) {
         const previousRound = playoffMap.get(i - 1);
 
         if (previousRound) {
@@ -157,12 +147,14 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
         const [team1, team2] = match?.teams || [];
 
         if (team1 && team1?.id !== "" && team2?.id === "") {
-          const timesSeen = seenIds.filter((id) => id === team1.id).length;
+          // remove teams that have been seen twice
 
-          if (timesSeen === 2) {
-            // remove match from round
-            round.splice(j, 1);
-          }
+          // const timesSeen = seenIds.filter((id) => id === team1.id).length;
+
+          // if (timesSeen === 2) {
+          //   // remove match from round
+          //   round.splice(j, 1);
+          // }
 
           seenIds.push(team1.id);
         }
@@ -173,11 +165,97 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
       }
     }
 
-    console.log("playoffMap --->", playoffMap);
+    // loop through playoffMap and add empty matches with empty teams and half of previous round
+    for (let i = 0; i < keys.length; i++) {
+      const round = playoffMap.get(keys[i] || 0);
 
-    const playoffTree: PlayoffType[] = [];
+      if (round) {
+        const length = round.length;
 
-    return playoffTree;
+        if (length % 2 !== 0 || length === 0) {
+          const previousRound = playoffMap.get(keys[i - 1] || 0)?.length || 0;
+
+          const half = Math.floor(previousRound / 2) - length;
+
+          for (let j = 0; j < half; j++) {
+            const playoffMatch: TestPlayoffType = {
+              round: i,
+              match: j,
+              id: genUniqueId(),
+              teams: [
+                {
+                  score: 0,
+                  id: "",
+                  name: "",
+                },
+                {
+                  score: 0,
+                  id: "",
+                  name: "",
+                },
+              ],
+            };
+
+            round.push(playoffMatch);
+          }
+        }
+      }
+    }
+
+    const lastRound = playoffMap.get(selectedRoundsCount);
+
+    // add empty matches to playoffMap if there are no matches in the last round
+    if (!lastRound) {
+      for (let i = 0; i <= keys.length; i++) {
+        const round = playoffMap.get(i);
+
+        if (!round) {
+          const previousRound = playoffMap.get(i - 1);
+          const length = previousRound?.length || 0;
+          const half = Math.round(length / 2);
+
+          if (previousRound) {
+            for (let j = 0; j < half; j++) {
+              const playoffMatch: TestPlayoffType = {
+                round: i,
+                match: j,
+                id: genUniqueId(),
+                teams: [
+                  {
+                    score: 0,
+                    id: "",
+                    name: "",
+                  },
+                  {
+                    score: 0,
+                    id: "",
+                    name: "",
+                  },
+                ],
+              };
+
+              playoffMap.set(i, [playoffMatch]);
+            }
+          }
+        }
+      }
+    }
+
+    if (lastRound && lastRound.length > 1) {
+      // find index of match with empty teams
+      const index = lastRound?.findIndex((match) => {
+        const [team1, team2] = match?.teams || [];
+
+        return team1?.id === "" && team2?.id === "";
+      });
+
+      // remove teams in index
+      if (index) {
+        lastRound?.splice(index, 1);
+      }
+    }
+
+    return playoffMap;
   };
 
   useEffect(() => {
@@ -185,16 +263,11 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
       const length = players.length;
       let rounds = countDivisionsByTwo(length);
 
-      // console.log("rounds --->", rounds);
-
       if (rounds % 2 !== 0) {
         rounds--;
       }
 
-      console.log("rounds --->", rounds);
-
       const playoffRounds = Array.from({ length: rounds }, (_, i) => i + 1);
-      const lastRound = playoffRounds[playoffRounds.length - 1] || 0;
 
       setPlayoffRounds(playoffRounds);
       selectedRoundsCount === 0 && setSelectedRoundsCount(rounds);
@@ -207,8 +280,9 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
       bgColor="gray"
       isModalVisible={isPlayOffModal}
       handleCancelClick={handleCancelClicks}
-      // header={<h1 className="truncate text-3xl">Create {tournament?.name} PAYOFFS</h1>}
-      header={<h1 className="truncate text-3xl">Create PAYOFFS</h1>}
+      header={
+        <h1 className="truncate text-3xl">Create {tournament?.name} PAYOFFS</h1>
+      }
     >
       <div className="dots h-full w-full">
         <div className="flex px-3 py-2 pb-2 md:px-6 md:py-4">
