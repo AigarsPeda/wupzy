@@ -21,17 +21,26 @@ const editTeamsScore = async ({
   teamsOldScore,
   teamsNewScore,
 }: EditTeamsScoreArgsType) => {
+  const updateGameWon = () => {
+    if (oldWinnerId === newWinnerId) {
+      return { decrement: 0 };
+    }
+
+    if (team.id === newWinnerId && oldWinnerId !== newWinnerId) {
+      return { increment: 1 };
+    }
+
+    return { decrement: 1 };
+  };
+
   await prisma.team.update({
     where: {
       id: team.id,
     },
     data: {
-      points: team.points - teamsOldScore + teamsNewScore,
       setsWon: teamsWins,
-      gamesWon:
-        team.id === newWinnerId && oldWinnerId !== newWinnerId
-          ? { increment: oldWinnerId ? 1 : 0 }
-          : { decrement: oldWinnerId ? 1 : 0 },
+      gamesWon: updateGameWon(),
+      points: team.points - teamsOldScore + teamsNewScore,
     },
   });
 
@@ -41,12 +50,9 @@ const editTeamsScore = async ({
         id: player.id,
       },
       data: {
-        points: team.points - teamsOldScore + teamsNewScore,
         setsWon: teamsWins,
-        gamesWon:
-          team.id === newWinnerId && oldWinnerId !== newWinnerId
-            ? { increment: oldWinnerId ? 1 : 0 }
-            : { decrement: oldWinnerId ? 1 : 0 },
+        gamesWon: updateGameWon(),
+        points: team.points - teamsOldScore + teamsNewScore,
       },
     });
   }

@@ -3,8 +3,6 @@ import { IoIosArrowDown } from "react-icons/io";
 import Dropdown from "~/components/elements/Dropdown/Dropdown";
 import classNames from "~/utils/classNames";
 
-// const OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
 interface SetSelectProps {
   options: number[];
   selectedSetCount: number;
