@@ -30,3 +30,13 @@
     yarn dev
 
 
+## Stripe
+
+### To start the stripe cli
+    If first terminal:
+    stripe listen --forward-to localhost:3000/api/stripe-webhook
+
+### Trigger a test event
+    If second terminal:
+    stripe trigger payment_intent.succeeded
+

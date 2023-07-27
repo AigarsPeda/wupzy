@@ -8,8 +8,8 @@ interface DropdownProps {
   dropdownClass?: string;
   isDropdownOpen: boolean;
   dropdownBtn: JSX.Element;
-  width?: "full" | "32" | "20";
   handleDropdownClose: () => void;
+  width?: "full" | "32" | "20" | "52";
   children: JSX.Element | JSX.Element[];
 }
 
@@ -34,6 +34,7 @@ const Dropdown: FC<DropdownProps> = ({
       ref={dropdownRef}
       className={classNames(
         width === "32" && "w-32",
+        width === "52" && "w-52",
         width === "full" && "w-full",
         "relative inline-block text-left"
       )}
@@ -43,6 +44,7 @@ const Dropdown: FC<DropdownProps> = ({
         <div
           className={classNames(
             width === "32" && "w-32",
+            width === "52" && "w-52",
             width === "full" && "w-full",
             isAnimation
               ? "visible translate-x-0 scale-100 opacity-100"
