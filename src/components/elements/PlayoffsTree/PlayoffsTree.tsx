@@ -9,7 +9,7 @@ interface PlayoffsTreeProps {
 
 const PlayoffsTree: FC<PlayoffsTreeProps> = ({ playoffTree }) => {
   return (
-    <>
+    <div className="flex lg:justify-center">
       {[...playoffTree].map(([_key, value], i) => {
         const isLast = i === [...playoffTree].length - 1;
 
@@ -17,7 +17,7 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({ playoffTree }) => {
           <div
             key={genUniqueId()}
             className={classNames(
-              !isLast && "mr-20",
+              !isLast && "mr-14 md:mr-16",
               "flex flex-col justify-center"
             )}
           >
@@ -39,7 +39,7 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({ playoffTree }) => {
                   )}
                 >
                   {/* <h2>Name {match.name}</h2> */}
-                  <div className="min-w-[12rem]">
+                  <div className="min-w-[10rem] md:min-w-[12rem]">
                     {match.teams.map((team, i) => {
                       const isLast = i === match.teams.length - 1;
 
@@ -64,7 +64,7 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({ playoffTree }) => {
           </div>
         );
       })}
-    </>
+    </div>
   );
 };
 

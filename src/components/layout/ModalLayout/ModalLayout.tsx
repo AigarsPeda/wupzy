@@ -6,19 +6,21 @@ import useOnClickOutside from "~/hooks/useOnClickOutside";
 import classNames from "~/utils/classNames";
 
 interface ModalLayoutProps {
+  isDots?: boolean;
   footer?: ReactNode;
   header?: ReactNode;
   children: ReactNode;
   isPadding?: boolean;
-  bgColor?: "white" | "gray";
   isFullScreen?: boolean;
   isModalVisible: boolean;
+  bgColor?: "white" | "gray";
   handleCancelClick: () => void;
 }
 
 const ModalLayout: FC<ModalLayoutProps> = ({
   header,
   footer,
+  isDots,
   children,
   isFullScreen,
   isModalVisible,
@@ -58,7 +60,6 @@ const ModalLayout: FC<ModalLayoutProps> = ({
               >
                 <div className="flex items-center justify-between px-3 py-2 pb-2 text-left md:px-6 md:py-4">
                   {header && <div className="truncate">{header}</div>}
-                  {/* <div className="truncate">{header}</div> */}
                   <div>
                     <button
                       className="cursor-pointer"
@@ -68,7 +69,14 @@ const ModalLayout: FC<ModalLayoutProps> = ({
                     </button>
                   </div>
                 </div>
-                <div className="h-full overflow-y-auto">{children}</div>
+                <div
+                  className={classNames(
+                    isDots && "dots",
+                    "h-full overflow-x-auto overflow-y-auto"
+                  )}
+                >
+                  {children}
+                </div>
                 {footer && <div>{footer}</div>}
               </div>
             </div>

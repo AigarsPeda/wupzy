@@ -35,6 +35,10 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
         rounds--;
       }
 
+      if (rounds >= 4) {
+        rounds = 3;
+      }
+
       const playoffRounds = Array.from({ length: rounds }, (_, i) => i + 1);
 
       setPlayoffRounds(playoffRounds);
@@ -44,6 +48,7 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
 
   return (
     <ModalLayout
+      isDots
       isFullScreen
       bgColor="gray"
       isModalVisible={isPlayOffModal}
@@ -52,8 +57,8 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
         <h1 className="truncate text-3xl">Create {tournament?.name} PAYOFFS</h1>
       }
     >
-      <div className="dots h-full w-full">
-        <div className="flex px-3 py-2 pb-2 md:px-6 md:py-4">
+      <div className="h-full px-3 py-2 pb-2 md:px-6 md:py-4">
+        <div className="flex">
           <SetSelect
             options={playoffRounds}
             selectedSetCount={selectedRoundsCount}
@@ -68,7 +73,7 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
               y2={y + (depth + 1) * 50}
               stroke="black"
             /> */}
-        <div className="flex h-[80%] w-full overflow-y-auto px-3 py-2 pb-2 md:justify-center  md:px-6 md:py-4">
+        <div className="mt-10 overflow-x-auto overflow-y-auto pb-10">
           <PlayoffsTree
             playoffTree={formatTeamsToPlayoffTree(
               tournament?.type === "king" ? players : teams,
