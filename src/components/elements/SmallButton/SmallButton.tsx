@@ -1,9 +1,11 @@
 import { type FC } from "react";
 import classNames from "~/utils/classNames";
+import Spinner from "../Spinner/Spinner";
 
 interface SmallButtonProps {
   title?: string;
   icon?: JSX.Element;
+  isLoading?: boolean;
   isDisabled?: boolean;
   isFullWidth?: boolean;
   iconMaxWidth?: string;
@@ -15,6 +17,7 @@ interface SmallButtonProps {
 const SmallButton: FC<SmallButtonProps> = ({
   icon,
   title,
+  isLoading,
   isDisabled,
   handleClick,
   isFullWidth,
@@ -40,15 +43,19 @@ const SmallButton: FC<SmallButtonProps> = ({
         "inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium"
       )}
     >
-      <span
-        className={classNames(
-          iconMaxWidth && iconMaxWidth,
-          "flex h-full items-center justify-between"
-        )}
-      >
-        {title}
-        {icon}
-      </span>
+      {isLoading ? (
+        <Spinner color="dark" size="xs" />
+      ) : (
+        <span
+          className={classNames(
+            iconMaxWidth && iconMaxWidth,
+            "flex h-full items-center justify-between"
+          )}
+        >
+          {title}
+          {icon}
+        </span>
+      )}
     </button>
   );
 };

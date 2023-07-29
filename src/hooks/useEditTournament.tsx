@@ -18,10 +18,11 @@ const useEditTournament = () => {
         void player.invalidate();
       },
     });
-  const { data } = api.tournament.getTournamentToEdit.useQuery(
-    { id: tournamentId, group },
-    { enabled: Boolean(tournamentId) && sessionData?.user !== undefined }
-  );
+  const { data, isLoading: isGroupLoading } =
+    api.tournament.getTournamentToEdit.useQuery(
+      { id: tournamentId, group },
+      { enabled: Boolean(tournamentId) && sessionData?.user !== undefined }
+    );
 
   const updateTournament = (tournament: NewTournamentType) => {
     if (!tournamentId) return;
@@ -46,6 +47,7 @@ const useEditTournament = () => {
   }, [router.query.id, setTournamentId]);
 
   return {
+    isGroupLoading,
     updateTournament,
     isUpdatingTournament,
     tournamentId: tournamentId,
