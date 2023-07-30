@@ -52,11 +52,12 @@ const useTournament = () => {
   return {
     isLoading,
     isDeleting,
-    errorUpdatingKind: errorUpdatingKind?.message,
     isUpdatingKind,
     deleteTournament,
     updateTournamentToPro,
     tournament: data?.tournament,
+    errorUpdatingKind: errorUpdatingKind?.message,
+    isKingTournament: data?.tournament?.type === "king",
   };
 };
 

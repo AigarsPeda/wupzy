@@ -27,6 +27,7 @@ const TournamentPage: NextPage = () => {
   const { players } = usePlayers();
   const [isQRModal, setIsQRModal] = useState(false);
   const { tournament, isLoading: isTournamentLoading } = useTournament();
+  // TODO: Fetch games only for selected group
   const {
     games,
     groups,
@@ -40,27 +41,6 @@ const TournamentPage: NextPage = () => {
     "A",
     "group"
   );
-
-  // const fil = (fn, a) => {
-  //   const f = []; //final
-  //   for (let i = 0; i < a.length; i++) {
-  //     if (fn(a[i])) {
-  //       f.push(a[i]);
-  //     }
-  //   }
-  //   return f;
-  // };
-
-  // fast filter function
-  const ff = (fn: (a: any) => boolean, a: any[]) => {
-    const f = []; //final
-    for (let i = 0; i < a.length; i++) {
-      if (fn(a[i])) {
-        f.push(a[i]);
-      }
-    }
-    return f;
-  };
 
   return (
     <>

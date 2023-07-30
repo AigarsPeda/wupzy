@@ -24,6 +24,7 @@ const SettingsDrawer: FC = () => {
   const {
     tournament,
     isUpdatingKind,
+    isKingTournament,
     errorUpdatingKind,
     updateTournamentToPro,
   } = useTournament();
@@ -125,27 +126,30 @@ const SettingsDrawer: FC = () => {
               />
             </Tooltip>
 
-            <Tooltip
-              isNowrap
-              position="-top-10"
-              content={
-                tournament?.kind === "FREE"
-                  ? "Play offs is only available for pro tournaments"
-                  : "Create play offs."
-              }
-            >
-              <SmallButton
-                isFullWidth
-                color="gray"
-                title="Play Offs"
-                iconMaxWidth="max-w-[7rem] w-full"
-                isDisabled={tournament?.kind === "FREE"}
-                icon={<AiOutlinePartition className="ml-4 h-6 w-6" />}
-                handleClick={() => {
-                  setIsPlayOffModal((state) => !state);
-                }}
-              />
-            </Tooltip>
+            {!isKingTournament && (
+              <Tooltip
+                isNowrap
+                position="-top-10"
+                content={
+                  tournament?.kind === "FREE"
+                    ? "Play offs is only available for pro tournaments"
+                    : "Create play offs."
+                }
+              >
+                <SmallButton
+                  isFullWidth
+                  color="gray"
+                  title="Play Offs"
+                  iconMaxWidth="max-w-[7rem] w-full"
+                  // isDisabled={tournament?.kind === "FREE"}
+                  isDisabled
+                  icon={<AiOutlinePartition className="ml-4 h-6 w-6" />}
+                  handleClick={() => {
+                    setIsPlayOffModal((state) => !state);
+                  }}
+                />
+              </Tooltip>
+            )}
           </div>
         </div>
       </TopDrawerLayout>
