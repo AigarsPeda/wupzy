@@ -27,6 +27,7 @@ const TournamentPage: NextPage = () => {
   const { players } = usePlayers();
   const [isQRModal, setIsQRModal] = useState(false);
   const { tournament, isLoading: isTournamentLoading } = useTournament();
+
   // TODO: Fetch games only for selected group
   const {
     games,
