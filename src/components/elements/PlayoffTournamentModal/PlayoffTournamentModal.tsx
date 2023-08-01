@@ -30,7 +30,10 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
   const [playoffTree, setPlayoffTree] = useState<PlayoffMapType>(new Map());
 
   const handlePlayOffSave = () => {
-    console.log("handlePlayOffSave", playoffTree);
+    const values = Array.from(playoffTree.values());
+    const flatValues = values.flat();
+
+    console.log("flatValues", flatValues);
   };
 
   useEffect(() => {
