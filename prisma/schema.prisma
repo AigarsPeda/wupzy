@@ -100,20 +100,23 @@ model ShareLink {
 }
 
 model Team {
-  id           String     @id @default(cuid())
-  tournamentId String
-  name         String?
-  tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
-  players      Player[]   @relation("TeamPlayers")
-  teamOne      Game[]     @relation("teamOne")
-  teamTwo      Game[]     @relation("teamTwo")
-  winnerTeam   Game[]     @relation("winnerTeam")
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-  group        String     @default("A")
-  points       Int        @default(0)
-  setsWon      Int        @default(0)
-  gamesWon     Int        @default(0)
+  id                 String        @id @default(cuid())
+  tournamentId       String
+  name               String?
+  tournament         Tournament    @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  players            Player[]      @relation("TeamPlayers")
+  teamOne            Game[]        @relation("teamOne")
+  teamTwo            Game[]        @relation("teamTwo")
+  winnerTeam         Game[]        @relation("winnerTeam")
+  playoffTeam        PlayoffGame[] @relation("playoffTeamWinner")
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  group              String        @default("A")
+  points             Int           @default(0)
+  setsWon            Int           @default(0)
+  gamesWon           Int           @default(0)
+  teamOnePlayoffGame PlayoffGame[] @relation("teamOnePlayoffGame")
+  teamTwoPlayoffGame PlayoffGame[] @relation("teamTwoPlayoffGame")
 }
 
 model Player {
@@ -151,9 +154,20 @@ model Game {
 }
 
 model PlayoffGame {
-  id    String @id @default(cuid())
-  match Int
-  round Int
+  id                 String   @id @default(cuid())
+  match              Int
+  round              Int
+  teamOneSetScore    Int      @default(0)
+  teamTwoSetScore    Int      @default(0)
+  gameSets           Json     @default("{}")
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  winnerId           String?
+  playoffTeamWinner  Team?    @relation("playoffTeamWinner", fields: [winnerId], references: [id])
+  teamOneId          String
+  teamOnePlayoffGame Team?    @relation("teamOnePlayoffGame", fields: [teamOneId], references: [id])
+  teamTwoId          String
+  teamTwoPlayoffGame Team?    @relation("teamTwoPlayoffGame", fields: [teamTwoId], references: [id])
 }
 
 model EmailList {
