@@ -12,6 +12,7 @@ const useTournamentGames = () => {
   const { query } = useRouter();
   const { teams, player } = api.useContext();
   const [tournamentId, setTournamentId] = useState("");
+  // const [group, setGroup] = useState<string | undefined>(undefined);
   const { data, isLoading, refetch } = api.game.getGames.useQuery(
     { id: tournamentId },
     { enabled: Boolean(tournamentId) }
@@ -86,6 +87,12 @@ const useTournamentGames = () => {
       });
     }
   };
+
+  // useEffect(() => {
+  //   if (query.group && typeof query.group === "string") {
+  //     setGroup(query.group);
+  //   }
+  // }, [query.group, setGroup]);
 
   useEffect(() => {
     if (query.id && typeof query.id === "string") {

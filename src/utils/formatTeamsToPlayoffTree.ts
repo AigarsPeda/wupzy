@@ -1,5 +1,8 @@
 import { type SelectedProperties } from "~/components/elements/PlayoffTournamentModal/PlayoffTournamentModal";
-import { type PlayoffRoundType } from "~/types/utils.types";
+import {
+  type PlayoffMapType,
+  type PlayoffRoundType,
+} from "~/types/utils.types";
 import createPlayoffRound from "~/utils/createPlayoffRound";
 import genUniqueId from "~/utils/genUniqueId";
 
@@ -8,7 +11,7 @@ const formatTeamsToPlayoffTree = (
   selectedRoundsCount: number
 ) => {
   if (!players) {
-    return [];
+    return undefined;
   }
 
   const firstRound = createPlayoffRound({
@@ -16,7 +19,7 @@ const formatTeamsToPlayoffTree = (
     selectedRoundsCount,
   });
 
-  const playoffMap = new Map<number, PlayoffRoundType[]>();
+  const playoffMap: PlayoffMapType = new Map();
 
   // create empty playoffMap
   for (let i = 0; i <= selectedRoundsCount; i++) {

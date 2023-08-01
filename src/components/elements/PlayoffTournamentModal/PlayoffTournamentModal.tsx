@@ -1,4 +1,5 @@
 import { useEffect, useState, type FC } from "react";
+import Button from "~/components/elements/Button/Button";
 import PlayoffsTree from "~/components/elements/PlayoffsTree/PlayoffsTree";
 import SetSelect from "~/components/elements/SetSelect/SetSelect";
 import ModalLayout from "~/components/layout/ModalLayout/ModalLayout";
@@ -6,6 +7,7 @@ import usePlayers from "~/hooks/usePlayers";
 import useTeams from "~/hooks/useTeams";
 import useTournament from "~/hooks/useTournament";
 import { type PlayerType, type TeamType } from "~/types/tournament.types";
+import { type PlayoffMapType } from "~/types/utils.types";
 import countDivisionsByTwo from "~/utils/countDivisionsByTwo";
 import formatTeamsToPlayoffTree from "~/utils/formatTeamsToPlayoffTree";
 
@@ -25,6 +27,11 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
   const { tournament } = useTournament();
   const [playoffRounds, setPlayoffRounds] = useState<number[]>([]);
   const [selectedRoundsCount, setSelectedRoundsCount] = useState(0);
+  const [playoffTree, setPlayoffTree] = useState<PlayoffMapType>(new Map());
+
+  const handlePlayOffSave = () => {
+    console.log("handlePlayOffSave", playoffTree);
+  };
 
   useEffect(() => {
     if (players) {
@@ -46,6 +53,19 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
     }
   }, [teams, players, selectedRoundsCount]);
 
+  useEffect(() => {
+    if (players) {
+      const playoffTree = formatTeamsToPlayoffTree(
+        tournament?.type === "king" ? players : teams,
+        selectedRoundsCount
+      );
+
+      if (playoffTree) {
+        setPlayoffTree(playoffTree);
+      }
+    }
+  }, [players, selectedRoundsCount, teams, tournament?.type]);
+
   return (
     <ModalLayout
       isDots
@@ -64,6 +84,18 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
             selectedSetCount={selectedRoundsCount}
             handleSetSelect={setSelectedRoundsCount}
           />
+
+          <div className="ml-4 w-36">
+            <Button
+              size="sm"
+              type="button"
+              title="Create playoff"
+              // isLoading={isLoading}
+              // handleClick={() => mutate(newTournament)}
+              handleClick={handlePlayOffSave}
+              // isDisabled={newTournament.name.trim() === ""}
+            />
+          </div>
         </div>
 
         {/* <line
@@ -74,12 +106,7 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
               stroke="black"
             /> */}
         <div className="mt-10 overflow-x-auto overflow-y-auto pb-10">
-          <PlayoffsTree
-            playoffTree={formatTeamsToPlayoffTree(
-              tournament?.type === "king" ? players : teams,
-              selectedRoundsCount
-            )}
-          />
+          <PlayoffsTree playoffTree={playoffTree} />
         </div>
       </div>
     </ModalLayout>

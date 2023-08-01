@@ -58,3 +58,5 @@ export type PlayoffRoundType = {
   match: number;
   teams: PlayoffPlayerType[];
 };
+
+export type PlayoffMapType = Map<number, PlayoffRoundType[]>;
