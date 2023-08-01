@@ -150,6 +150,12 @@ model Game {
   winnerTeamId    Team?      @relation("winnerTeam", fields: [winnerId], references: [id])
 }
 
+model PlayoffGame {
+  id    String @id @default(cuid())
+  match Int
+  round Int
+}
+
 model EmailList {
   id        String   @id @default(cuid())
   email     String   @unique
