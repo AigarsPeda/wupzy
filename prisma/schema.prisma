@@ -138,7 +138,7 @@ model Game {
   group           String
   teamOneSetScore Int        @default(0)
   teamTwoSetScore Int        @default(0)
-  round           Int        @default(1)
+  round           Int        @default(1) // How many times the teams have played each other
   gameSets        Json       @default("{}")
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
