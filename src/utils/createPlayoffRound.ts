@@ -3,8 +3,8 @@ import { type PlayOffTeamType } from "~/types/playoff.types";
 import getTeamsCountPerRound from "~/utils/getTeamsCountPerRound";
 
 type CreatePlayoffRoundArrayType = {
-  players: SelectedProperties[] | undefined;
   selectedRoundsCount: number;
+  players: SelectedProperties[] | undefined;
 };
 
 const createPlayoffRound = ({

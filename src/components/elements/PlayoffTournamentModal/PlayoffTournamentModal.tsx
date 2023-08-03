@@ -6,9 +6,9 @@ import ModalLayout from "~/components/layout/ModalLayout/ModalLayout";
 import usePlayers from "~/hooks/usePlayers";
 import useTeams from "~/hooks/useTeams";
 import useTournament from "~/hooks/useTournament";
-import { type PlayerType, type TeamType } from "~/types/tournament.types";
 import { type PlayGameType, type PlayoffMapType } from "~/types/playoff.types";
-import countDivisionsByTwo from "~/utils/countDivisionsByTwo";
+import { type PlayerType, type TeamType } from "~/types/tournament.types";
+import createPlayoffRounds from "~/utils/createPlayoffRounds";
 import formatTeamsToPlayoffTree from "~/utils/formatTeamsToPlayoffTree";
 
 export type SelectedProperties = Pick<PlayerType | TeamType, "id" | "name">;
@@ -39,17 +39,17 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
   useEffect(() => {
     if (players) {
       const length = players.length;
-      let rounds = countDivisionsByTwo(length);
+      const playoffRounds = createPlayoffRounds(length);
+      const rounds = playoffRounds[playoffRounds.length - 1] || 0;
 
-      if (rounds % 2 !== 0) {
-        rounds--;
-      }
+      setPlayoffRounds(playoffRounds);
+      selectedRoundsCount === 0 && setSelectedRoundsCount(rounds);
+    }
 
-      if (rounds >= 4) {
-        rounds = 3;
-      }
-
-      const playoffRounds = Array.from({ length: rounds }, (_, i) => i + 1);
+    if (teams) {
+      const length = teams.length;
+      const playoffRounds = createPlayoffRounds(length);
+      const rounds = playoffRounds[playoffRounds.length - 1] || 0;
 
       setPlayoffRounds(playoffRounds);
       selectedRoundsCount === 0 && setSelectedRoundsCount(rounds);
@@ -57,7 +57,7 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
   }, [teams, players, selectedRoundsCount]);
 
   useEffect(() => {
-    if (players) {
+    if (players || teams) {
       const playoffTree = formatTeamsToPlayoffTree(
         tournament?.type === "king" ? players : teams,
         selectedRoundsCount
