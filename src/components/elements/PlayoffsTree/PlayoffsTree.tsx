@@ -1,10 +1,10 @@
 import { type FC } from "react";
-import { type PlayoffRoundType } from "~/types/utils.types";
+import { type PlayGameType } from "~/types/playoff.types";
 import classNames from "~/utils/classNames";
 import genUniqueId from "~/utils/genUniqueId";
 
 interface PlayoffsTreeProps {
-  playoffTree: Map<number, PlayoffRoundType[]> | never[];
+  playoffTree: Map<number, PlayGameType[]> | never[];
 }
 
 const PlayoffsTree: FC<PlayoffsTreeProps> = ({ playoffTree }) => {

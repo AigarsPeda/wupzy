@@ -1,25 +1,26 @@
 import { type SelectedProperties } from "~/components/elements/PlayoffTournamentModal/PlayoffTournamentModal";
-import {
-  type PlayoffMapType,
-  type PlayoffRoundType,
-} from "~/types/utils.types";
 import createPlayoffRound from "~/utils/createPlayoffRound";
 import genUniqueId from "~/utils/genUniqueId";
+import {
+  type PlayOffTeamType,
+  type PlayGameType,
+  type PlayoffMapType,
+} from "~/types/playoff.types";
 
 const formatTeamsToPlayoffTree = (
   players: SelectedProperties[] | undefined,
   selectedRoundsCount: number
 ) => {
+  const playoffMap: PlayoffMapType = new Map();
+
   if (!players) {
-    return undefined;
+    return playoffMap;
   }
 
   const firstRound = createPlayoffRound({
     players,
     selectedRoundsCount,
   });
-
-  const playoffMap: PlayoffMapType = new Map();
 
   // create empty playoffMap
   for (let i = 0; i <= selectedRoundsCount; i++) {
@@ -30,13 +31,13 @@ const formatTeamsToPlayoffTree = (
   for (const [key, value] of playoffMap) {
     if (key === 0) {
       for (let i = 0; i < firstRound.length; i++) {
-        const [player1, player2] = firstRound[i] || [];
+        const [player1, player2] = firstRound[i] as PlayOffTeamType[];
 
         if (!player1 || !player2) {
           continue;
         }
 
-        const playoffMatch: PlayoffRoundType = {
+        const playoffMatch: PlayGameType = {
           round: key,
           match: i,
           id: genUniqueId(),
@@ -49,7 +50,7 @@ const formatTeamsToPlayoffTree = (
           // add players to nex round
           const nextRound = playoffMap.get(key + 1);
 
-          const nextPlayoffMatch: PlayoffRoundType = {
+          const nextPlayoffMatch: PlayGameType = {
             round: key + 1,
             match: i,
             id: genUniqueId(),
@@ -75,7 +76,7 @@ const formatTeamsToPlayoffTree = (
 
       if (previousRound) {
         for (let i = 0; i < half; i++) {
-          const playoffMatch: PlayoffRoundType = {
+          const playoffMatch: PlayGameType = {
             round: key,
             match: i,
             id: genUniqueId(),

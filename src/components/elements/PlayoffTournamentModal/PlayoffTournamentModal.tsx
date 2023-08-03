@@ -7,7 +7,7 @@ import usePlayers from "~/hooks/usePlayers";
 import useTeams from "~/hooks/useTeams";
 import useTournament from "~/hooks/useTournament";
 import { type PlayerType, type TeamType } from "~/types/tournament.types";
-import { type PlayoffMapType } from "~/types/utils.types";
+import { type PlayGameType, type PlayoffMapType } from "~/types/playoff.types";
 import countDivisionsByTwo from "~/utils/countDivisionsByTwo";
 import formatTeamsToPlayoffTree from "~/utils/formatTeamsToPlayoffTree";
 
@@ -31,7 +31,7 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
 
   const handlePlayOffSave = () => {
     const values = Array.from(playoffTree.values());
-    const flatValues = values.flat();
+    const flatValues: PlayGameType[] = values.flat();
 
     console.log("flatValues", flatValues);
   };
