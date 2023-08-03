@@ -13,7 +13,9 @@ const createPlayoffRounds = (length: number) => {
 
   const playoffRounds = Array.from({ length: rounds }, (_, i) => i + 1);
 
-  return playoffRounds;
+  const largestPossibleTeams = playoffRounds[playoffRounds.length - 1] || 0;
+
+  return { playoffRounds, largestPossibleTeams };
 };
 
 export default createPlayoffRounds;

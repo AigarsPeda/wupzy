@@ -39,20 +39,20 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
   useEffect(() => {
     if (players) {
       const length = players.length;
-      const playoffRounds = createPlayoffRounds(length);
-      const rounds = playoffRounds[playoffRounds.length - 1] || 0;
+      const { playoffRounds, largestPossibleTeams } =
+        createPlayoffRounds(length);
 
       setPlayoffRounds(playoffRounds);
-      selectedRoundsCount === 0 && setSelectedRoundsCount(rounds);
+      selectedRoundsCount === 0 && setSelectedRoundsCount(largestPossibleTeams);
     }
 
     if (teams) {
       const length = teams.length;
-      const playoffRounds = createPlayoffRounds(length);
-      const rounds = playoffRounds[playoffRounds.length - 1] || 0;
+      const { playoffRounds, largestPossibleTeams } =
+        createPlayoffRounds(length);
 
       setPlayoffRounds(playoffRounds);
-      selectedRoundsCount === 0 && setSelectedRoundsCount(rounds);
+      selectedRoundsCount === 0 && setSelectedRoundsCount(largestPossibleTeams);
     }
   }, [teams, players, selectedRoundsCount]);
 
