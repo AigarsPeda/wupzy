@@ -73,21 +73,21 @@ enum TournamentKind {
 }
 
 model Tournament {
-  id        String         @id @default(cuid())
-  userId    String
-  type      TournamentType @default(king)
-  name      String
-  sets      Int
-  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  teams     Team[]
-  games     Game[]
-  players   Player[]
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
-  rounds    Int            @default(1)
-  kind      TournamentKind @default(FREE)
-
-  shareLink ShareLink?
+  id          String         @id @default(cuid())
+  userId      String
+  type        TournamentType @default(king)
+  name        String
+  sets        Int
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teams       Team[]
+  games       Game[]
+  players     Player[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  rounds      Int            @default(1)
+  kind        TournamentKind @default(FREE)
+  shareLink   ShareLink?
+  PlayoffGame PlayoffGame[]
 }
 
 model ShareLink {
@@ -154,20 +154,22 @@ model Game {
 }
 
 model PlayoffGame {
-  id                 String   @id @default(cuid())
-  match              Int
-  round              Int
-  teamOneSetScore    Int      @default(0)
-  teamTwoSetScore    Int      @default(0)
-  gameSets           Json     @default("{}")
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  winnerId           String?
-  playoffTeamWinner  Team?    @relation("playoffTeamWinner", fields: [winnerId], references: [id])
-  teamOneId          String
-  teamOnePlayoffGame Team?    @relation("teamOnePlayoffGame", fields: [teamOneId], references: [id])
-  teamTwoId          String
-  teamTwoPlayoffGame Team?    @relation("teamTwoPlayoffGame", fields: [teamTwoId], references: [id])
+  id                String     @id @default(cuid())
+  match             Int
+  round             Int
+  teamOneSetScore   Int        @default(0)
+  teamTwoSetScore   Int        @default(0)
+  gameSets          Json       @default("{}")
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  winnerId          String?
+  tournamentId      String
+  tournament        Tournament @relation(fields: [tournamentId], references: [id])
+  playoffTeamWinner Team?      @relation("playoffTeamWinner", fields: [winnerId], references: [id])
+  teamOneId         String
+  teamOne           Team?      @relation("teamOnePlayoffGame", fields: [teamOneId], references: [id])
+  teamTwoId         String
+  teamTwo           Team?      @relation("teamTwoPlayoffGame", fields: [teamTwoId], references: [id])
 }
 
 model EmailList {

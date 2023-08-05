@@ -10,6 +10,7 @@ import { type PlayGameType, type PlayoffMapType } from "~/types/playoff.types";
 import { type PlayerType, type TeamType } from "~/types/tournament.types";
 import createPlayoffRounds from "~/utils/createPlayoffRounds";
 import formatTeamsToPlayoffTree from "~/utils/formatTeamsToPlayoffTree";
+import { api } from "../../../utils/api";
 
 export type SelectedProperties = Pick<PlayerType | TeamType, "id" | "name">;
 
@@ -28,12 +29,22 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
   const [playoffRounds, setPlayoffRounds] = useState<number[]>([]);
   const [selectedRoundsCount, setSelectedRoundsCount] = useState(0);
   const [playoffTree, setPlayoffTree] = useState<PlayoffMapType>(new Map());
+  const { mutate } = api.playoffs.createPlayoffGames.useMutation();
 
   const handlePlayOffSave = () => {
+    if (!tournament?.id) {
+      return;
+    }
+
     const values = Array.from(playoffTree.values());
-    const flatValues: PlayGameType[] = values.flat();
+    const flatValues = values.flat();
 
     console.log("flatValues", flatValues);
+
+    mutate({
+      playoffGames: flatValues,
+      tournamentId: tournament?.id,
+    });
   };
 
   useEffect(() => {

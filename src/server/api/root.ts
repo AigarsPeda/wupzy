@@ -1,7 +1,7 @@
 import { emailListRouter } from "~/server/api/routers/emailList";
-import { exampleRouter } from "~/server/api/routers/example";
 import { gameRouter } from "~/server/api/routers/games";
 import { playerRouter } from "~/server/api/routers/players";
+import { playoffsRouter } from "~/server/api/routers/playoffs";
 import { shareLinkRouter } from "~/server/api/routers/shareLink";
 import { stripeRouter } from "~/server/api/routers/stripe";
 import { teamRouter } from "~/server/api/routers/teams";
@@ -21,7 +21,7 @@ export const appRouter = createTRPCRouter({
   teams: teamRouter,
   stripe: stripeRouter,
   player: playerRouter,
-  example: exampleRouter,
+  playoffs: playoffsRouter,
   shareLink: shareLinkRouter,
   tournament: tournamentRouter,
 });
