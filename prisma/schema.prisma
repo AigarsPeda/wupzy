@@ -88,6 +88,7 @@ model Tournament {
   kind        TournamentKind @default(FREE)
   shareLink   ShareLink?
   PlayoffGame PlayoffGame[]
+  isPlayoffs  Boolean        @default(false)
 }
 
 model ShareLink {
@@ -166,9 +167,9 @@ model PlayoffGame {
   tournamentId      String
   tournament        Tournament @relation(fields: [tournamentId], references: [id])
   playoffTeamWinner Team?      @relation("playoffTeamWinner", fields: [winnerId], references: [id])
-  teamOneId         String
+  teamOneId         String?
   teamOne           Team?      @relation("teamOnePlayoffGame", fields: [teamOneId], references: [id])
-  teamTwoId         String
+  teamTwoId         String?
   teamTwo           Team?      @relation("teamTwoPlayoffGame", fields: [teamTwoId], references: [id])
 }
 

@@ -6,11 +6,11 @@ import ModalLayout from "~/components/layout/ModalLayout/ModalLayout";
 import usePlayers from "~/hooks/usePlayers";
 import useTeams from "~/hooks/useTeams";
 import useTournament from "~/hooks/useTournament";
-import { type PlayGameType, type PlayoffMapType } from "~/types/playoff.types";
+import { type PlayoffMapType } from "~/types/playoff.types";
 import { type PlayerType, type TeamType } from "~/types/tournament.types";
+import { api } from "~/utils/api";
 import createPlayoffRounds from "~/utils/createPlayoffRounds";
 import formatTeamsToPlayoffTree from "~/utils/formatTeamsToPlayoffTree";
-import { api } from "../../../utils/api";
 
 export type SelectedProperties = Pick<PlayerType | TeamType, "id" | "name">;
 
@@ -94,6 +94,7 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
       <div className="h-full px-3 py-2 pb-2 md:px-6 md:py-4">
         <div className="flex">
           <SetSelect
+            isFormatted
             options={playoffRounds}
             selectedSetCount={selectedRoundsCount}
             handleSetSelect={setSelectedRoundsCount}

@@ -29,6 +29,16 @@ const SettingsDrawer: FC = () => {
     updateTournamentToPro,
   } = useTournament();
 
+  const playoffsTooltipText = () => {
+    if (tournament?.kind === "FREE") {
+      return "Play offs is only available for pro tournaments";
+    }
+    if (tournament?.isPlayoffs) {
+      return "Play offs already created";
+    }
+    return "Create play offs.";
+  };
+
   return (
     <>
       <TopDrawerLayout>
@@ -69,87 +79,87 @@ const SettingsDrawer: FC = () => {
               </div>
             )}
           </div>
-          <div className="mt-5 space-y-3 sm:flex sm:space-x-4 sm:space-y-0">
-            <Tooltip
-              isNowrap
-              position="-top-10"
-              content="Delete tournament and all its data."
-            >
-              <SmallButton
-                isFullWidth
-                color="red"
-                title="Delete"
-                iconMaxWidth="max-w-[7rem] w-full"
-                icon={<AiOutlineDelete className="ml-3 h-6 w-6" />}
-                handleClick={() => {
-                  setIsDeleteModal((sate) => !sate);
-                }}
-              />
-            </Tooltip>
+          {tournament && (
+            <div className="mt-5 space-y-3 sm:flex sm:space-x-4 sm:space-y-0">
+              <Tooltip
+                isNowrap
+                position="-top-10"
+                content="Delete tournament and all its data."
+              >
+                <SmallButton
+                  isFullWidth
+                  color="red"
+                  title="Delete"
+                  iconMaxWidth="max-w-[7rem] w-full"
+                  icon={<AiOutlineDelete className="ml-3 h-6 w-6" />}
+                  handleClick={() => {
+                    setIsDeleteModal((sate) => !sate);
+                  }}
+                />
+              </Tooltip>
 
-            <Tooltip
-              isNowrap
-              position="-top-10"
-              content="Edit tournament name, description, and more."
-            >
-              <SmallButton
-                isFullWidth
-                color="gray"
-                title="Edit"
-                iconMaxWidth="max-w-[7rem] w-full"
-                icon={<AiOutlineEdit className="ml-4 h-6 w-6" />}
-                handleClick={() => {
-                  setIsEditModal((state) => !state);
-                }}
-              />
-            </Tooltip>
+              <Tooltip
+                isNowrap
+                position="-top-10"
+                content="Edit tournament name, description, and more."
+              >
+                <SmallButton
+                  isFullWidth
+                  color="gray"
+                  title="Edit"
+                  iconMaxWidth="max-w-[7rem] w-full"
+                  icon={<AiOutlineEdit className="ml-4 h-6 w-6" />}
+                  handleClick={() => {
+                    setIsEditModal((state) => !state);
+                  }}
+                />
+              </Tooltip>
 
-            <Tooltip
-              isNowrap
-              position="-top-10"
-              content={
-                tournament?.kind === "FREE"
-                  ? "Splitting is only available for pro tournaments"
-                  : "Divide participants into groups."
-              }
-            >
-              <SmallButton
-                isFullWidth
-                color="gray"
-                title="Split"
-                iconMaxWidth="max-w-[7rem] w-full"
-                isDisabled={tournament?.kind === "FREE"}
-                icon={<LuSplitSquareHorizontal className="ml-4 h-6 w-6" />}
-                handleClick={() => {
-                  setIsSplitModal((state) => !state);
-                }}
-              />
-            </Tooltip>
-
-            {!isKingTournament && (
               <Tooltip
                 isNowrap
                 position="-top-10"
                 content={
                   tournament?.kind === "FREE"
-                    ? "Play offs is only available for pro tournaments"
-                    : "Create play offs."
+                    ? "Splitting is only available for pro tournaments"
+                    : "Divide participants into groups."
                 }
               >
                 <SmallButton
                   isFullWidth
                   color="gray"
-                  title="Play Offs"
+                  title="Split"
                   iconMaxWidth="max-w-[7rem] w-full"
                   isDisabled={tournament?.kind === "FREE"}
-                  icon={<AiOutlinePartition className="ml-4 h-6 w-6" />}
+                  icon={<LuSplitSquareHorizontal className="ml-4 h-6 w-6" />}
                   handleClick={() => {
-                    setIsPlayOffModal((state) => !state);
+                    setIsSplitModal((state) => !state);
                   }}
                 />
               </Tooltip>
-            )}
-          </div>
+
+              {!isKingTournament && (
+                <Tooltip
+                  isNowrap
+                  position="-top-10"
+                  content={playoffsTooltipText()}
+                >
+                  <SmallButton
+                    isFullWidth
+                    color="gray"
+                    title="Play Offs"
+                    iconMaxWidth="max-w-[7rem] w-full"
+                    isDisabled={
+                      tournament.kind === "FREE" || tournament.isPlayoffs
+                    }
+                    icon={<AiOutlinePartition className="ml-4 h-6 w-6" />}
+                    handleClick={() => {
+                      setIsPlayOffModal((state) => !state);
+                    }}
+                  />
+                </Tooltip>
+              )}
+            </div>
+          )}
         </div>
       </TopDrawerLayout>
 

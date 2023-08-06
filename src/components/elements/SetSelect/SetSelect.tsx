@@ -7,12 +7,14 @@ import getTeamsCountPerRound from "~/utils/getTeamsCountPerRound";
 
 interface SetSelectProps {
   options: number[];
+  isFormatted?: boolean;
   selectedSetCount: number;
   handleSetSelect: (setCount: number) => void;
 }
 
 const SetSelect: FC<SetSelectProps> = ({
   options,
+  isFormatted,
   handleSetSelect,
   selectedSetCount,
 }) => {
@@ -34,7 +36,9 @@ const SetSelect: FC<SetSelectProps> = ({
           className="flex w-full justify-between rounded-md border-0 bg-white px-2 py-1.5 text-gray-900 outline-none outline-1 outline-offset-2 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:max-w-xs sm:text-sm sm:leading-6"
         >
           <span className="block truncate">
-            {formatPlayoffRoundNames(getTeamsCountPerRound(selectedSetCount))}
+            {isFormatted
+              ? formatPlayoffRoundNames(getTeamsCountPerRound(selectedSetCount))
+              : selectedSetCount}
           </span>
           <IoIosArrowDown
             className={classNames(
@@ -59,8 +63,9 @@ const SetSelect: FC<SetSelectProps> = ({
                 handleDropdownClose();
               }}
             >
-              {formatPlayoffRoundNames(getTeamsCountPerRound(option))}
-              {/* {Math.pow(2, option) * 2} */}
+              {isFormatted
+                ? formatPlayoffRoundNames(getTeamsCountPerRound(option))
+                : option}
             </button>
           );
         })}

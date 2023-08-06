@@ -11,39 +11,50 @@ export const playoffsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      // TODO: create playoff games
-      console.log("createPlayoffGames", input);
-
       const { prisma } = ctx;
 
-      // const playoffGames = await prisma.playoffGame.createMany({
-      //   data: input.playoffGames,
-      // });
-
       for (const playoffGame of input.playoffGames) {
+        const [teamOne, teamTwo] = playoffGame.teams;
+
         await prisma.playoffGame.create({
           data: {
-            // id: playoffGame.id,
             match: playoffGame.match,
             round: playoffGame.round,
-            teamOne: {
-              connect: {
-                id: playoffGame.teams[0]?.id,
-              },
-            },
-            teamTwo: {
-              connect: {
-                id: playoffGame.teams[1]?.id,
-              },
-            },
+
+            ...(teamOne &&
+              teamOne.id !== "" && {
+                teamOne: {
+                  connect: {
+                    id: teamOne?.id,
+                  },
+                },
+              }),
+            ...(teamTwo &&
+              teamTwo.id !== "" && {
+                teamTwo: {
+                  connect: {
+                    id: teamTwo?.id,
+                  },
+                },
+              }),
             tournament: {
               connect: {
                 id: input.tournamentId,
               },
             },
-            // tournamentId: "1",
           },
         });
       }
+
+      await prisma.tournament.update({
+        where: {
+          id: input.tournamentId,
+        },
+        data: {
+          isPlayoffs: true,
+        },
+      });
+
+      return { success: true };
     }),
 });
