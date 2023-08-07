@@ -10,7 +10,6 @@ import { type PlayerType, type TeamType } from "~/types/tournament.types";
 import { api } from "~/utils/api";
 import createPlayoffRounds from "~/utils/createPlayoffRounds";
 import formatTeamsToPlayoffTree from "~/utils/formatTeamsToPlayoffTree";
-import createPlayoffTree from "../../../utils/createPlayoffTree";
 
 export type SelectedProperties = Pick<PlayerType | TeamType, "id" | "name">;
 
@@ -23,9 +22,8 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
   isPlayOffModal,
   handleCancelClicks,
 }) => {
-  const { teams, isFetched } = useTeams();
-  // const { players } = usePlayers();
   const { tournament } = useTournament();
+  const { teams, isFetched } = useTeams();
   const [playoffRounds, setPlayoffRounds] = useState<number[]>([]);
   const [selectedRoundsCount, setSelectedRoundsCount] = useState(0);
   const [playoffTree, setPlayoffTree] = useState<PlayoffMapType>(new Map());
@@ -50,21 +48,25 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
   };
 
   useEffect(() => {
+    if (teams) {
+      const { playoffRounds, largestPossibleTeams } = createPlayoffRounds(
+        teams.length
+      );
+
+      setPlayoffRounds(playoffRounds);
+      selectedRoundsCount === 0 && setSelectedRoundsCount(largestPossibleTeams);
+    }
+  }, [isFetched, selectedRoundsCount, teams]);
+
+  useEffect(() => {
     if (!teams || !isFetched) {
       return;
     }
-    const { playoffRounds, largestPossibleTeams } = createPlayoffRounds(
-      teams.length
-    );
-
-    setPlayoffRounds(playoffRounds);
-    selectedRoundsCount === 0 && setSelectedRoundsCount(largestPossibleTeams);
 
     const playoffTree = formatTeamsToPlayoffTree(teams, selectedRoundsCount);
+    const playoffMapKeys = Array.from(playoffTree.keys());
 
-    console.log("--->", createPlayoffTree(teams, selectedRoundsCount));
-
-    if (playoffTree) {
+    if (playoffTree && playoffMapKeys.length > 1) {
       setPlayoffTree(playoffTree);
     }
   }, [isFetched, selectedRoundsCount, teams]);
@@ -83,7 +85,7 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
       <div className="h-full px-3 py-2 pb-2 md:px-6 md:py-4">
         <div className="flex">
           <SetSelect
-            isFormatted
+            // isFormatted
             options={playoffRounds}
             selectedSetCount={selectedRoundsCount}
             handleSetSelect={setSelectedRoundsCount}

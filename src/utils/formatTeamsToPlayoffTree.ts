@@ -1,11 +1,11 @@
 import { type SelectedProperties } from "~/components/elements/PlayoffTournamentModal/PlayoffTournamentModal";
-import createPlayoffRound from "~/utils/createPlayoffRound";
-import genUniqueId from "~/utils/genUniqueId";
 import {
-  type PlayOffTeamType,
   type PlayGameType,
+  type PlayOffTeamType,
   type PlayoffMapType,
 } from "~/types/playoff.types";
+import createPlayoffRound from "~/utils/createPlayoffRound";
+import genUniqueId from "~/utils/genUniqueId";
 
 const formatTeamsToPlayoffTree = (
   players: SelectedProperties[] | undefined,
@@ -23,7 +23,7 @@ const formatTeamsToPlayoffTree = (
   });
 
   // create empty playoffMap
-  for (let i = 0; i <= selectedRoundsCount; i++) {
+  for (let i = 0; i < selectedRoundsCount; i++) {
     playoffMap.set(i, []);
   }
 
@@ -100,21 +100,24 @@ const formatTeamsToPlayoffTree = (
     }
   }
 
-  const lastRound = playoffMap.get(selectedRoundsCount);
+  // If previous round has only one match, remove current round
+  // removing unnecessary rounds
+  for (const [key] of playoffMap) {
+    // const currentRound = playoffMap.get(key);
+    const previousRound = playoffMap.get(key - 1);
 
-  if (lastRound && lastRound.length > 1) {
-    // find index of match with empty teams
-    const index = lastRound?.findIndex((match) => {
-      const [team1, team2] = match?.teams || [];
-
-      return team1?.id === "" && team2?.id === "";
-    });
-
-    // remove teams in index
-    if (index) {
-      lastRound?.splice(index, 1);
+    if (previousRound?.length === 1) {
+      // remove current round
+      playoffMap.delete(key);
     }
   }
+
+  // get keys of playoffMap
+  // const playoffMapKeys = Array.from(playoffMap.keys());
+
+  // if (playoffMapKeys.length === 1) {
+  //   return [];
+  // }
 
   return playoffMap;
 };

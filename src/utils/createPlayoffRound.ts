@@ -1,22 +1,10 @@
 import { type SelectedProperties } from "~/components/elements/PlayoffTournamentModal/PlayoffTournamentModal";
 import { type PlayOffTeamType } from "~/types/playoff.types";
-import getTeamsCountPerRound from "~/utils/getTeamsCountPerRound";
 
 type CreatePlayoffRoundArrayType = {
   selectedRoundsCount: number;
   players: SelectedProperties[] | undefined;
 };
-
-const TEAMS_IN_ROUNDS = {
-  2: 4,
-  4: 8,
-  8: 16,
-  16: 32,
-};
-
-// const getTeamsCountPerRound = (num: number) => {
-//   return Math.pow(2, num) * 2;
-// };
 
 const createPlayoffRound = ({
   players,
@@ -45,17 +33,10 @@ const createPlayoffRound = ({
   }
 
   const playoffTree: PlayOffTeamType[][] = [];
-  // const playersCount = getTeamsCountPerRound(selectedRoundsCount);
-
-  // const playersCount = TEAMS_IN_ROUNDS[selectedRoundsCount] as number;
   const playersCount = selectedRoundsCount * 2;
-
-  console.log("playersCount ---->", playersCount);
 
   // select players for the first round based on playoff rounds count
   const selectedPlayers = newPlayers.slice(0, playersCount);
-
-  console.log("selectedPlayers ---->", selectedPlayers);
 
   const middleIndex = Math.floor(selectedPlayers.length / 2);
 
