@@ -3,7 +3,6 @@ import Button from "~/components/elements/Button/Button";
 import PlayoffsTree from "~/components/elements/PlayoffsTree/PlayoffsTree";
 import SetSelect from "~/components/elements/SetSelect/SetSelect";
 import ModalLayout from "~/components/layout/ModalLayout/ModalLayout";
-import usePlayers from "~/hooks/usePlayers";
 import useTeams from "~/hooks/useTeams";
 import useTournament from "~/hooks/useTournament";
 import { type PlayoffMapType } from "~/types/playoff.types";
@@ -11,6 +10,7 @@ import { type PlayerType, type TeamType } from "~/types/tournament.types";
 import { api } from "~/utils/api";
 import createPlayoffRounds from "~/utils/createPlayoffRounds";
 import formatTeamsToPlayoffTree from "~/utils/formatTeamsToPlayoffTree";
+import createPlayoffTree from "../../../utils/createPlayoffTree";
 
 export type SelectedProperties = Pick<PlayerType | TeamType, "id" | "name">;
 
@@ -23,8 +23,8 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
   isPlayOffModal,
   handleCancelClicks,
 }) => {
-  const { teams } = useTeams();
-  const { players } = usePlayers();
+  const { teams, isFetched } = useTeams();
+  // const { players } = usePlayers();
   const { tournament } = useTournament();
   const [playoffRounds, setPlayoffRounds] = useState<number[]>([]);
   const [selectedRoundsCount, setSelectedRoundsCount] = useState(0);
@@ -50,37 +50,24 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
   };
 
   useEffect(() => {
-    if (players) {
-      const length = players.length;
-      const { playoffRounds, largestPossibleTeams } =
-        createPlayoffRounds(length);
-
-      setPlayoffRounds(playoffRounds);
-      selectedRoundsCount === 0 && setSelectedRoundsCount(largestPossibleTeams);
+    if (!teams || !isFetched) {
+      return;
     }
+    const { playoffRounds, largestPossibleTeams } = createPlayoffRounds(
+      teams.length
+    );
 
-    if (teams) {
-      const length = teams.length;
-      const { playoffRounds, largestPossibleTeams } =
-        createPlayoffRounds(length);
+    setPlayoffRounds(playoffRounds);
+    selectedRoundsCount === 0 && setSelectedRoundsCount(largestPossibleTeams);
 
-      setPlayoffRounds(playoffRounds);
-      selectedRoundsCount === 0 && setSelectedRoundsCount(largestPossibleTeams);
+    const playoffTree = formatTeamsToPlayoffTree(teams, selectedRoundsCount);
+
+    console.log("--->", createPlayoffTree(teams, selectedRoundsCount));
+
+    if (playoffTree) {
+      setPlayoffTree(playoffTree);
     }
-  }, [teams, players, selectedRoundsCount]);
-
-  useEffect(() => {
-    if (players || teams) {
-      const playoffTree = formatTeamsToPlayoffTree(
-        tournament?.type === "king" ? players : teams,
-        selectedRoundsCount
-      );
-
-      if (playoffTree) {
-        setPlayoffTree(playoffTree);
-      }
-    }
-  }, [players, selectedRoundsCount, teams, tournament?.type]);
+  }, [isFetched, selectedRoundsCount, teams]);
 
   return (
     <ModalLayout

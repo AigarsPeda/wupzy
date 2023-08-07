@@ -7,8 +7,8 @@ const createPlayoffRounds = (length: number) => {
     rounds--;
   }
 
-  if (rounds >= 4) {
-    rounds = 3;
+  if (rounds === 0) {
+    rounds = 1;
   }
 
   const playoffRounds = Array.from({ length: rounds }, (_, i) => i + 1);
