@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-const useSelectedValueQuery = (initialValue: string, queryKey: string) => {
+const useQueryValue = (initialValue: string, queryKey: string) => {
   const router = useRouter();
   const [selectedValue, setSelectedValue] = useState(initialValue);
 
@@ -37,7 +37,7 @@ const useSelectedValueQuery = (initialValue: string, queryKey: string) => {
     updateSelectedValue,
   ]);
 
-  return { selectedValue, updateSelectedValue };
+  return [selectedValue, updateSelectedValue] as const;
 };
 
-export default useSelectedValueQuery;
+export default useQueryValue;

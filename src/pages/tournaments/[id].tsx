@@ -14,7 +14,7 @@ import SmallButton from "~/components/elements/SmallButton/SmallButton";
 import TeamTable from "~/components/elements/TeamTable/TeamTable";
 import Tooltip from "~/components/elements/Tooltip/Tooltip";
 import usePlayers from "~/hooks/usePlayers";
-import useSelectedValueQuery from "~/hooks/useSelectedValueQuery";
+import useQueryValue from "~/hooks/useQueryValue";
 import useTeams from "~/hooks/useTeams";
 import useTournament from "~/hooks/useTournament";
 import useTournamentGames from "~/hooks/useTournamentGames";
@@ -27,7 +27,6 @@ const TournamentPage: NextPage = () => {
   const { teams } = useTeams();
   const { players } = usePlayers();
   const [isQRModal, setIsQRModal] = useState(false);
-  const [isPlayOffMode, setIsPlayOffMode] = useState(false);
   const { tournament, isLoading: isTournamentLoading } = useTournament();
 
   // TODO: Fetch games only for selected group
@@ -40,9 +39,11 @@ const TournamentPage: NextPage = () => {
     handleScoreChange,
   } = useTournamentGames();
 
-  const { selectedValue, updateSelectedValue } = useSelectedValueQuery(
-    "A",
-    "group"
+  const [selectedValue, updateSelectedValue] = useQueryValue("A", "group");
+
+  const [isPlayoffMode, updateIsPlayoffMode] = useQueryValue(
+    "false",
+    "isplayoffmode"
   );
 
   return (
@@ -83,7 +84,12 @@ const TournamentPage: NextPage = () => {
                   color="dark"
                   icon={<AiOutlinePartition className="h-6 w-6" />}
                   handleClick={() => {
-                    setIsPlayOffMode((state) => !state);
+                    updateIsPlayoffMode(
+                      isPlayoffMode === "true" ? "false" : "true"
+                    );
+                    // updateIsPlayoffMode((state) =>
+                    //   return state === "true" ? "false" : "true";
+                    // );
                   }}
                 />
               </Tooltip>
