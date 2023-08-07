@@ -1,6 +1,7 @@
 import { type NextPage } from "next";
 import dynamic from "next/dynamic";
 import { useState } from "react";
+import { AiOutlinePartition } from "react-icons/ai";
 import { IoQrCodeOutline } from "react-icons/io5";
 import CircleProgress from "~/components/elements/CircleProgress/CircleProgress";
 import DisplayGames from "~/components/elements/DisplayGames/DisplayGames";
@@ -26,6 +27,7 @@ const TournamentPage: NextPage = () => {
   const { teams } = useTeams();
   const { players } = usePlayers();
   const [isQRModal, setIsQRModal] = useState(false);
+  const [isPlayOffMode, setIsPlayOffMode] = useState(false);
   const { tournament, isLoading: isTournamentLoading } = useTournament();
 
   // TODO: Fetch games only for selected group
@@ -70,7 +72,22 @@ const TournamentPage: NextPage = () => {
             />
           </div>
 
-          <div className="mt-4 md:mt-0">
+          <div className="mt-4 flex space-x-2 md:mt-0">
+            {tournament?.isPlayoffs && (
+              <Tooltip
+                isNowrap
+                position="md:right-0 -top-10"
+                content="Switch to playoffs"
+              >
+                <SmallButton
+                  color="dark"
+                  icon={<AiOutlinePartition className="h-6 w-6" />}
+                  handleClick={() => {
+                    setIsPlayOffMode((state) => !state);
+                  }}
+                />
+              </Tooltip>
+            )}
             <Tooltip
               isNowrap
               position="md:right-0 -top-10"

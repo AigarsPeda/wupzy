@@ -39,12 +39,12 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
     const values = Array.from(playoffTree.values());
     const flatValues = values.flat();
 
-    console.log("flatValues", flatValues);
-
     mutate({
       playoffGames: flatValues,
       tournamentId: tournament?.id,
     });
+
+    handleCancelClicks();
   };
 
   useEffect(() => {
