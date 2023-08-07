@@ -29,7 +29,11 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
   const [playoffRounds, setPlayoffRounds] = useState<number[]>([]);
   const [selectedRoundsCount, setSelectedRoundsCount] = useState(0);
   const [playoffTree, setPlayoffTree] = useState<PlayoffMapType>(new Map());
-  const { mutate } = api.playoffs.createPlayoffGames.useMutation();
+  const { mutate, isLoading } = api.playoffs.createPlayoffGames.useMutation({
+    onSuccess: () => {
+      handleCancelClicks();
+    },
+  });
 
   const handlePlayOffSave = () => {
     if (!tournament?.id) {
@@ -43,8 +47,6 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
       playoffGames: flatValues,
       tournamentId: tournament?.id,
     });
-
-    handleCancelClicks();
   };
 
   useEffect(() => {
@@ -104,11 +106,9 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
             <Button
               size="sm"
               type="button"
+              isLoading={isLoading}
               title="Create playoff"
-              // isLoading={isLoading}
-              // handleClick={() => mutate(newTournament)}
               handleClick={handlePlayOffSave}
-              // isDisabled={newTournament.name.trim() === ""}
             />
           </div>
         </div>
