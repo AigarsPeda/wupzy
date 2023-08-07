@@ -87,9 +87,6 @@ const TournamentPage: NextPage = () => {
                     updateIsPlayoffMode(
                       isPlayoffMode === "true" ? "false" : "true"
                     );
-                    // updateIsPlayoffMode((state) =>
-                    //   return state === "true" ? "false" : "true";
-                    // );
                   }}
                 />
               </Tooltip>
