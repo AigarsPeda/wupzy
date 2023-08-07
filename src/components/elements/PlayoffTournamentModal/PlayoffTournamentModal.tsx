@@ -85,7 +85,6 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
       <div className="h-full px-3 py-2 pb-2 md:px-6 md:py-4">
         <div className="flex">
           <SetSelect
-            // isFormatted
             options={playoffRounds}
             selectedSetCount={selectedRoundsCount}
             handleSetSelect={setSelectedRoundsCount}

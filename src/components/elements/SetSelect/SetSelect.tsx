@@ -2,19 +2,15 @@ import { useState, type FC } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import Dropdown from "~/components/elements/Dropdown/Dropdown";
 import classNames from "~/utils/classNames";
-import formatPlayoffRoundNames from "~/utils/formatPlayoffRoundNames";
-import getTeamsCountPerRound from "~/utils/getTeamsCountPerRound";
 
 interface SetSelectProps {
   options: number[];
-  isFormatted?: boolean;
   selectedSetCount: number;
   handleSetSelect: (setCount: number) => void;
 }
 
 const SetSelect: FC<SetSelectProps> = ({
   options,
-  isFormatted,
   handleSetSelect,
   selectedSetCount,
 }) => {
@@ -35,11 +31,7 @@ const SetSelect: FC<SetSelectProps> = ({
           onClick={updateState}
           className="flex w-full justify-between rounded-md border-0 bg-white px-2 py-1.5 text-gray-900 outline-none outline-1 outline-offset-2 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:max-w-xs sm:text-sm sm:leading-6"
         >
-          <span className="block truncate">
-            {isFormatted
-              ? formatPlayoffRoundNames(getTeamsCountPerRound(selectedSetCount))
-              : selectedSetCount}
-          </span>
+          <span className="block truncate">{selectedSetCount}</span>
           <IoIosArrowDown
             className={classNames(
               isDropdownOpen ? "-rotate-180" : "-rotate-0",
@@ -63,9 +55,7 @@ const SetSelect: FC<SetSelectProps> = ({
                 handleDropdownClose();
               }}
             >
-              {isFormatted
-                ? formatPlayoffRoundNames(getTeamsCountPerRound(option))
-                : option}
+              {option}
             </button>
           );
         })}
