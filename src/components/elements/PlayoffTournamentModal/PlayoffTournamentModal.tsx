@@ -22,13 +22,14 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
   isPlayOffModal,
   handleCancelClicks,
 }) => {
-  const { tournament } = useTournament();
+  const { refetch, tournament } = useTournament();
   const { teams, isFetched } = useTeams();
   const [playoffRounds, setPlayoffRounds] = useState<number[]>([]);
   const [selectedRoundsCount, setSelectedRoundsCount] = useState(0);
   const [playoffTree, setPlayoffTree] = useState<PlayoffMapType>(new Map());
   const { mutate, isLoading } = api.playoffs.createPlayoffGames.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
+      await refetch();
       handleCancelClicks();
     },
   });

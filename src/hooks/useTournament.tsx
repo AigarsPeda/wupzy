@@ -50,6 +50,7 @@ const useTournament = () => {
   }, [router.query.id, setTournamentId]);
 
   return {
+    refetch,
     isLoading,
     isDeleting,
     isUpdatingKind,
