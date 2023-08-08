@@ -4,18 +4,13 @@ import { useState } from "react";
 import { AiOutlinePartition } from "react-icons/ai";
 import { IoQrCodeOutline } from "react-icons/io5";
 import CircleProgress from "~/components/elements/CircleProgress/CircleProgress";
-import DisplayGames from "~/components/elements/DisplayGames/DisplayGames";
-import DisplayGroupSelect from "~/components/elements/DisplayGroupSelect/DisplayGroupSelect";
 import LoadingSkeleton from "~/components/elements/LoadingSkeleton/LoadingSkeleton";
 import PageHead from "~/components/elements/PageHead/PageHead";
 import PageHeadLine from "~/components/elements/PageHeadLine/PageHeadLine";
-import PlayerTable from "~/components/elements/PlayerTable/PlayerTable";
+import RegularTournament from "~/components/elements/RegularTournament/RegularTournament";
 import SmallButton from "~/components/elements/SmallButton/SmallButton";
-import TeamTable from "~/components/elements/TeamTable/TeamTable";
 import Tooltip from "~/components/elements/Tooltip/Tooltip";
-import usePlayers from "~/hooks/usePlayers";
 import useQueryValue from "~/hooks/useQueryValue";
-import useTeams from "~/hooks/useTeams";
 import useTournament from "~/hooks/useTournament";
 import useTournamentGames from "~/hooks/useTournamentGames";
 import getGamesLeft from "~/utils/getGamesLeft";
@@ -24,23 +19,13 @@ import getPercentagesOfFinishedGames from "~/utils/getPercentagesOfFinishedGames
 const QRModal = dynamic(() => import("~/components/elements/QRModal/QRModal"));
 
 const TournamentPage: NextPage = () => {
-  const { teams } = useTeams();
-  const { players } = usePlayers();
   const [isQRModal, setIsQRModal] = useState(false);
   const { tournament, isLoading: isTournamentLoading } = useTournament();
 
   // TODO: Fetch games only for selected group
-  const {
-    games,
-    groups,
-    isLoading,
-    gamesScores,
-    handleScoreSave,
-    handleScoreChange,
-  } = useTournamentGames();
+  const { games } = useTournamentGames();
 
-  const [selectedValue, updateSelectedValue] = useQueryValue("A", "group");
-
+  const [selectedGroup, updateSelectedGroup] = useQueryValue("A", "group");
   const [isPlayoffMode, updateIsPlayoffMode] = useQueryValue(
     "false",
     "isplayoffmode"
@@ -63,12 +48,12 @@ const TournamentPage: NextPage = () => {
             <div className="max-w-[16rem] md:max-w-none">
               <PageHeadLine title={tournament?.name} />
               <p className="text-sm text-gray-500">
-                {getGamesLeft(games, selectedValue)} games left
+                {getGamesLeft(games, selectedGroup)} games left
               </p>
             </div>
             <CircleProgress
               progress={
-                getPercentagesOfFinishedGames(games, selectedValue).progress
+                getPercentagesOfFinishedGames(games, selectedGroup).progress
               }
             />
           </div>
@@ -112,27 +97,13 @@ const TournamentPage: NextPage = () => {
         </div>
       )}
 
-      <DisplayGroupSelect
-        groups={groups}
-        selectedGroup={selectedValue}
-        setSelectedGroup={updateSelectedValue}
-      />
+      {isPlayoffMode === "true" ? <div>Playoffs</div> : <>Groups</>}
 
-      <DisplayGames
-        gamesScores={gamesScores}
-        isGamesLoading={isLoading}
-        handleScoreSave={handleScoreSave}
-        handleScoreChange={handleScoreChange}
-        games={games?.filter((game) => game.group === selectedValue) || []}
+      <RegularTournament
+        selectedGroup={selectedGroup}
+        updateSelectedGroup={updateSelectedGroup}
+        tournamentType={tournament?.type || "king"}
       />
-
-      <div className="mt-5">
-        {tournament?.type === "king" ? (
-          <PlayerTable selectedGroup={selectedValue} players={players || []} />
-        ) : (
-          <TeamTable selectedGroup={selectedValue} teams={teams || []} />
-        )}
-      </div>
 
       {isQRModal && (
         <QRModal
