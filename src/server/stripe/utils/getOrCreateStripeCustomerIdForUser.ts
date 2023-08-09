@@ -7,8 +7,8 @@ const getOrCreateStripeCustomerIdForUser = async ({
   userId,
 }: {
   stripe: Stripe;
-  prisma: PrismaClient;
   userId: string;
+  prisma: PrismaClient;
 }) => {
   const user = await prisma.user.findUnique({
     where: {
@@ -24,8 +24,8 @@ const getOrCreateStripeCustomerIdForUser = async ({
 
   // create a new customer
   const customer = await stripe.customers.create({
-    email: user.email ?? undefined,
     name: user.name ?? undefined,
+    email: user.email ?? undefined,
     // use metadata to link this Stripe customer to internal user id
     metadata: {
       userId,
