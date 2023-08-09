@@ -24,7 +24,7 @@ const TopDrawerLayout: FC<TopDrawerLayoutProps> = ({ children }) => {
         )}
       >
         {children}
-        <div className="absolute -bottom-5 right-0 z-40 flex justify-end px-4 transition-all md:right-32 md:px-12">
+        <div className="absolute -bottom-5 right-0 z-40 flex justify-end px-4 transition-all md:right-[12.5rem] md:px-12">
           <TabButton
             handleClick={() => {
               setIsDrawerOpen((state) => !state);

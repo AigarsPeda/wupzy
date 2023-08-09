@@ -11,7 +11,15 @@ interface SmallButtonProps {
   iconMaxWidth?: string;
   handleClick?: () => void;
   type?: "button" | "submit" | "reset";
-  color?: "red" | "gray" | "green" | "blue" | "orange" | "dark" | "pink";
+  color?:
+    | "red"
+    | "gray"
+    | "green"
+    | "blue"
+    | "orange"
+    | "dark"
+    | "pink"
+    | "purple";
 }
 
 const SmallButton: FC<SmallButtonProps> = ({
@@ -40,6 +48,7 @@ const SmallButton: FC<SmallButtonProps> = ({
         color === "green" && "bg-green-500 text-white hover:bg-green-600",
         color === "blue" && "bg-indigo-500 text-white hover:bg-indigo-600",
         color === "orange" && "bg-orange-500 text-white hover:bg-orange-600",
+        color === "purple" && "bg-purple-500 text-white hover:bg-purple-600",
         "inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium"
       )}
     >

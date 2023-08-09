@@ -15,21 +15,24 @@ import useTournament from "~/hooks/useTournament";
 import useTournamentGames from "~/hooks/useTournamentGames";
 import getGamesLeft from "~/utils/getGamesLeft";
 import getPercentagesOfFinishedGames from "~/utils/getPercentagesOfFinishedGames";
+import { AiOutlineTable } from "react-icons/ai";
 
 const QRModal = dynamic(() => import("~/components/elements/QRModal/QRModal"));
 
 const TournamentPage: NextPage = () => {
-  const [isQRModal, setIsQRModal] = useState(false);
-  const { tournament, isLoading: isTournamentLoading } = useTournament();
-
   // TODO: Fetch games only for selected group
   const { games } = useTournamentGames();
-
+  const [isQRModal, setIsQRModal] = useState(false);
+  const { tournament, isLoading: isTournamentLoading } = useTournament();
   const [selectedGroup, updateSelectedGroup] = useQueryValue("A", "group");
   const [isPlayoffMode, updateIsPlayoffMode] = useQueryValue(
-    "false",
+    tournament?.isPlayoffs ? "true" : "false",
     "isplayoffmode"
   );
+
+  const isRegularTournamentSelected = () => {
+    return isPlayoffMode === "false";
+  };
 
   return (
     <>
@@ -47,27 +50,40 @@ const TournamentPage: NextPage = () => {
           <div className="flex items-center justify-between space-x-4">
             <div className="max-w-[16rem] md:max-w-none">
               <PageHeadLine title={tournament?.name} />
-              <p className="text-sm text-gray-500">
-                {getGamesLeft(games, selectedGroup)} games left
-              </p>
+              {isRegularTournamentSelected() && (
+                <p className="text-sm text-gray-500">
+                  {getGamesLeft(games, selectedGroup)} games left
+                </p>
+              )}
             </div>
-            <CircleProgress
-              progress={
-                getPercentagesOfFinishedGames(games, selectedGroup).progress
-              }
-            />
+            <div className="h-14 w-14">
+              {isRegularTournamentSelected() && (
+                <CircleProgress
+                  progress={
+                    getPercentagesOfFinishedGames(games, selectedGroup).progress
+                  }
+                />
+              )}
+            </div>
           </div>
 
-          <div className="mt-4 flex space-x-2 md:mt-0">
+          <div className="mt-4 flex w-full justify-end space-x-2 overflow-hidden md:mt-0">
             {tournament?.isPlayoffs && (
               <Tooltip
                 isNowrap
                 position="md:right-0 -top-10"
-                content="Switch to playoffs"
+                content={isRegularTournamentSelected() ? "Playoffs" : "Groups"}
               >
                 <SmallButton
                   color="dark"
-                  icon={<AiOutlinePartition className="h-6 w-6" />}
+                  icon={
+                    isRegularTournamentSelected() ? (
+                      <AiOutlinePartition className="ml-2 h-6 w-6" />
+                    ) : (
+                      <AiOutlineTable className="ml-2 h-6 w-6" />
+                    )
+                  }
+                  title={isRegularTournamentSelected() ? "Playoffs" : "Groups"}
                   handleClick={() => {
                     updateIsPlayoffMode(
                       isPlayoffMode === "true" ? "false" : "true"
@@ -97,13 +113,13 @@ const TournamentPage: NextPage = () => {
         </div>
       )}
 
-      {isPlayoffMode === "true" ? <div>Playoffs</div> : <>Groups</>}
-
-      <RegularTournament
-        selectedGroup={selectedGroup}
-        updateSelectedGroup={updateSelectedGroup}
-        tournamentType={tournament?.type || "king"}
-      />
+      {isRegularTournamentSelected() && (
+        <RegularTournament
+          selectedGroup={selectedGroup}
+          updateSelectedGroup={updateSelectedGroup}
+          tournamentType={tournament?.type || "king"}
+        />
+      )}
 
       {isQRModal && (
         <QRModal
