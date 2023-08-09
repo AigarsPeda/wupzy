@@ -1,13 +1,23 @@
 import { type FC } from "react";
-import { type PlayGameType } from "~/types/playoff.types";
+import { type PlayGameType, type PlayOffTeamType } from "~/types/playoff.types";
 import classNames from "~/utils/classNames";
 import genUniqueId from "~/utils/genUniqueId";
 
 interface PlayoffsTreeProps {
+  displayTeamsComponent: ({
+    team,
+    isLast,
+  }: {
+    isLast: boolean;
+    team: PlayOffTeamType;
+  }) => JSX.Element;
   playoffTree: Map<number, PlayGameType[]> | never[];
 }
 
-const PlayoffsTree: FC<PlayoffsTreeProps> = ({ playoffTree }) => {
+const PlayoffsTree: FC<PlayoffsTreeProps> = ({
+  playoffTree,
+  displayTeamsComponent,
+}) => {
   return (
     <div className="flex lg:justify-center">
       {[...playoffTree].map(([_key, value], i) => {
@@ -44,15 +54,8 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({ playoffTree }) => {
                       const isLast = i === match.teams.length - 1;
 
                       return (
-                        <div
-                          key={genUniqueId()}
-                          className={classNames(
-                            !isLast && "mb-2",
-                            "flex space-x-1 rounded bg-gray-200 px-2 py-2"
-                          )}
-                        >
-                          <p className="min-h-[1.2rem]">{team?.name || ""}</p>
-                          {/* <span>{team.score}</span> */}
+                        <div key={genUniqueId()}>
+                          {displayTeamsComponent({ team, isLast })}
                         </div>
                       );
                     })}

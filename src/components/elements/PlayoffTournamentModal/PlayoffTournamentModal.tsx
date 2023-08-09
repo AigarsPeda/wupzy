@@ -10,6 +10,7 @@ import { type PlayerType, type TeamType } from "~/types/tournament.types";
 import { api } from "~/utils/api";
 import createPlayoffRounds from "~/utils/createPlayoffRounds";
 import formatTeamsToPlayoffTree from "~/utils/formatTeamsToPlayoffTree";
+import CreatePlayoffs from "../CreatePlayoffs/CreatePlayoffs";
 
 export type SelectedProperties = Pick<PlayerType | TeamType, "id" | "name">;
 
@@ -110,7 +111,8 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
               stroke="black"
             /> */}
         <div className="mt-10 overflow-x-auto overflow-y-auto pb-10">
-          <PlayoffsTree playoffTree={playoffTree} />
+          {/* <PlayoffsTree playoffTree={playoffTree} /> */}
+          <CreatePlayoffs playoffTree={playoffTree} />
         </div>
       </div>
     </ModalLayout>
