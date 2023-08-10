@@ -1,6 +1,5 @@
 import { useEffect, useState, type FC } from "react";
 import Button from "~/components/elements/Button/Button";
-import PlayoffsTree from "~/components/elements/PlayoffsTree/PlayoffsTree";
 import SetSelect from "~/components/elements/SetSelect/SetSelect";
 import ModalLayout from "~/components/layout/ModalLayout/ModalLayout";
 import useTeams from "~/hooks/useTeams";
