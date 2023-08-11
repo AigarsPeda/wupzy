@@ -3,17 +3,13 @@ import { type PlayOffTeamType } from "~/types/playoff.types";
 
 type CreatePlayoffRoundArrayType = {
   selectedRoundsCount: number;
-  players: SelectedProperties[] | undefined;
+  players: SelectedProperties[];
 };
 
 const createPlayoffRound = ({
   players,
   selectedRoundsCount,
 }: CreatePlayoffRoundArrayType) => {
-  if (!players) {
-    return [];
-  }
-
   const emptyPlayer: PlayOffTeamType = {
     id: "",
     score: 0,
@@ -29,7 +25,7 @@ const createPlayoffRound = ({
   });
 
   if (newPlayers.length % 2 !== 0) {
-    players.push(emptyPlayer);
+    newPlayers.push(emptyPlayer);
   }
 
   const playoffTree: PlayOffTeamType[][] = [];
@@ -37,7 +33,6 @@ const createPlayoffRound = ({
 
   // select players for the first round based on playoff rounds count
   const selectedPlayers = newPlayers.slice(0, playersCount);
-
   const middleIndex = Math.floor(selectedPlayers.length / 2);
 
   for (let i = 0; i < middleIndex; i++) {

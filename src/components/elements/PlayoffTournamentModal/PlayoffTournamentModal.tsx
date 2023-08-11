@@ -1,5 +1,7 @@
 import { useEffect, useState, type FC } from "react";
 import Button from "~/components/elements/Button/Button";
+import PlayoffTeamSelect from "~/components/elements/PlayoffTeamSelect/PlayoffTeamSelect";
+import PlayoffsTree from "~/components/elements/PlayoffsTree/PlayoffsTree";
 import SetSelect from "~/components/elements/SetSelect/SetSelect";
 import ModalLayout from "~/components/layout/ModalLayout/ModalLayout";
 import useTeams from "~/hooks/useTeams";
@@ -9,7 +11,6 @@ import { type PlayerType, type TeamType } from "~/types/tournament.types";
 import { api } from "~/utils/api";
 import createPlayoffRounds from "~/utils/createPlayoffRounds";
 import formatTeamsToPlayoffTree from "~/utils/formatTeamsToPlayoffTree";
-import CreatePlayoffs from "../CreatePlayoffs/CreatePlayoffs";
 
 export type SelectedProperties = Pick<PlayerType | TeamType, "id" | "name">;
 
@@ -22,8 +23,8 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
   isPlayOffModal,
   handleCancelClicks,
 }) => {
-  const { refetch, tournament } = useTournament();
   const { teams, isFetched } = useTeams();
+  const { refetch, tournament } = useTournament();
   const [playoffRounds, setPlayoffRounds] = useState<number[]>([]);
   const [selectedRoundsCount, setSelectedRoundsCount] = useState(0);
   const [playoffTree, setPlayoffTree] = useState<PlayoffMapType>(new Map());
@@ -49,7 +50,7 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
   };
 
   useEffect(() => {
-    if (teams) {
+    if (teams.length > 0) {
       const { playoffRounds, largestPossibleTeams } = createPlayoffRounds(
         teams.length
       );
@@ -57,10 +58,10 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
       setPlayoffRounds(playoffRounds);
       selectedRoundsCount === 0 && setSelectedRoundsCount(largestPossibleTeams);
     }
-  }, [isFetched, selectedRoundsCount, teams]);
+  }, [selectedRoundsCount, teams]);
 
   useEffect(() => {
-    if (!teams || !isFetched) {
+    if (selectedRoundsCount === 0) {
       return;
     }
 
@@ -110,8 +111,10 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
               stroke="black"
             /> */}
         <div className="mt-10 overflow-x-auto overflow-y-auto pb-10">
-          {/* <PlayoffsTree playoffTree={playoffTree} /> */}
-          <CreatePlayoffs playoffTree={playoffTree} />
+          <PlayoffsTree
+            playoffTree={playoffTree}
+            displayTeamsComponent={PlayoffTeamSelect}
+          />
         </div>
       </div>
     </ModalLayout>

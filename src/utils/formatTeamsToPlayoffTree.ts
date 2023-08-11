@@ -8,14 +8,10 @@ import createPlayoffRound from "~/utils/createPlayoffRound";
 import genUniqueId from "~/utils/genUniqueId";
 
 const formatTeamsToPlayoffTree = (
-  players: SelectedProperties[] | undefined,
+  players: SelectedProperties[],
   selectedRoundsCount: number
 ) => {
   const playoffMap: PlayoffMapType = new Map();
-
-  if (!players) {
-    return playoffMap;
-  }
 
   const firstRound = createPlayoffRound({
     players,
@@ -38,8 +34,8 @@ const formatTeamsToPlayoffTree = (
         }
 
         const playoffMatch: PlayGameType = {
-          round: key,
           match: i,
+          round: key,
           id: genUniqueId(),
           teams: [player1, player2],
         };
@@ -51,8 +47,8 @@ const formatTeamsToPlayoffTree = (
           const nextRound = playoffMap.get(key + 1);
 
           const nextPlayoffMatch: PlayGameType = {
-            round: key + 1,
             match: i,
+            round: key + 1,
             id: genUniqueId(),
             teams: [player1, player2],
           };

@@ -1,7 +1,7 @@
 import { type NextPage } from "next";
 import dynamic from "next/dynamic";
 import { useState } from "react";
-import { AiOutlinePartition } from "react-icons/ai";
+import { AiOutlinePartition, AiOutlineTable } from "react-icons/ai";
 import { IoQrCodeOutline } from "react-icons/io5";
 import CircleProgress from "~/components/elements/CircleProgress/CircleProgress";
 import LoadingSkeleton from "~/components/elements/LoadingSkeleton/LoadingSkeleton";
@@ -15,7 +15,6 @@ import useTournament from "~/hooks/useTournament";
 import useTournamentGames from "~/hooks/useTournamentGames";
 import getGamesLeft from "~/utils/getGamesLeft";
 import getPercentagesOfFinishedGames from "~/utils/getPercentagesOfFinishedGames";
-import { AiOutlineTable } from "react-icons/ai";
 
 const QRModal = dynamic(() => import("~/components/elements/QRModal/QRModal"));
 
