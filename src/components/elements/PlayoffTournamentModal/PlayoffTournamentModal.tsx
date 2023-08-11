@@ -68,6 +68,8 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
     const playoffTree = formatTeamsToPlayoffTree(teams, selectedRoundsCount);
     const playoffMapKeys = Array.from(playoffTree.keys());
 
+    console.log(playoffTree);
+
     if (playoffTree && playoffMapKeys.length > 1) {
       setPlayoffTree(playoffTree);
     }
