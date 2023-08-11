@@ -15,6 +15,7 @@ import useTournament from "~/hooks/useTournament";
 import useTournamentGames from "~/hooks/useTournamentGames";
 import getGamesLeft from "~/utils/getGamesLeft";
 import getPercentagesOfFinishedGames from "~/utils/getPercentagesOfFinishedGames";
+import PlayoffTournament from "../../components/elements/PlayoffTournament/PlayoffTournament";
 
 const QRModal = dynamic(() => import("~/components/elements/QRModal/QRModal"));
 
@@ -112,12 +113,14 @@ const TournamentPage: NextPage = () => {
         </div>
       )}
 
-      {isRegularTournamentSelected() && (
+      {isRegularTournamentSelected() ? (
         <RegularTournament
           selectedGroup={selectedGroup}
           updateSelectedGroup={updateSelectedGroup}
           tournamentType={tournament?.type || "king"}
         />
+      ) : (
+        <PlayoffTournament tournamentId={tournament?.id} />
       )}
 
       {isQRModal && (

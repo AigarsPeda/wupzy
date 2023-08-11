@@ -57,4 +57,22 @@ export const playoffsRouter = createTRPCRouter({
 
       return { success: true };
     }),
+
+  getPlayoffGames: protectedProcedure
+    .input(z.object({ tournamentId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const { prisma } = ctx;
+
+      const playoffGames = await prisma.playoffGame.findMany({
+        where: {
+          tournamentId: input.tournamentId,
+        },
+        include: {
+          teamOne: true,
+          teamTwo: true,
+        },
+      });
+
+      return { playoffGames };
+    }),
 });
