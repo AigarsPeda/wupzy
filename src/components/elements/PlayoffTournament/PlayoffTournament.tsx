@@ -1,8 +1,9 @@
 import { useEffect, useState, type FC } from "react";
 import PlayoffTeamSelect from "~/components/elements/PlayoffTeamSelect/PlayoffTeamSelect";
 import PlayoffsTree from "~/components/elements/PlayoffsTree/PlayoffsTree";
-import { type PlayoffMapType } from "~/types/playoff.types";
+import { PlayoffGameSchema, type PlayoffMapType } from "~/types/playoff.types";
 import { api } from "~/utils/api";
+import organizePlayoffGames from "~/utils/organizePlayoffGames";
 
 interface PlayoffTournamentProps {
   tournamentId: string | undefined;
@@ -16,34 +17,15 @@ const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
   );
 
   useEffect(() => {
-    const tree: PlayoffMapType = new Map();
+    if (!data?.playoffGames) {
+      return;
+    }
 
-    data?.playoffGames.forEach((game) => {
-      const { round } = game;
+    const validatedPlayoffGames = PlayoffGameSchema.array().parse(
+      data?.playoffGames
+    );
 
-      if (!tree.has(round)) {
-        tree.set(round, []);
-      }
-
-      tree.get(round)?.push({
-        id: game.id,
-        match: game.match,
-        round: game.round,
-
-        teams: [
-          {
-            score: 0,
-            id: game.teamOne?.id || "",
-            name: game.teamOne?.name || "n/a",
-          },
-          {
-            score: 0,
-            id: game.teamTwo?.id || "",
-            name: game.teamTwo?.name || "n/a",
-          },
-        ],
-      });
-    });
+    const tree = organizePlayoffGames(validatedPlayoffGames);
 
     setPlayoffTree(tree);
   }, [data]);

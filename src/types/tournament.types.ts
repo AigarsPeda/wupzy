@@ -12,8 +12,8 @@ export const NewPlayerSchema = z.object({
 
 export const NewTeamsSchema = z.object({
   id: z.string(),
-  name: z.string().nullish(),
   group: z.string(),
+  name: z.string().nullish(),
   players: z.array(NewPlayerSchema),
 });
 
@@ -37,7 +37,6 @@ export const PlayerSchema = z.object({
   id: z.string(),
   name: z.string(),
   group: z.string(),
-  // teamId: z.string(),
   updatedAt: z.date(),
   createdAt: z.date(),
   tournamentId: z.string().nullish(),
@@ -48,9 +47,9 @@ export const TournamentSchema = z.object({
   name: z.string(),
   sets: z.number(),
   userId: z.string(),
+  rounds: z.number(),
   createdAt: z.date(),
   updatedAt: z.date(),
-  rounds: z.number(),
   type: TournamentTypeEnum,
 });
 
@@ -59,9 +58,9 @@ export const TeamSchema = z.object({
   group: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
+  tournamentId: z.string(),
   name: z.string().nullish(),
   players: z.array(PlayerSchema),
-  tournamentId: z.string(),
 });
 
 export const GameSets = z.record(
@@ -85,11 +84,11 @@ export const GameSchema = z.object({
   updatedAt: z.date(),
   teamOneId: z.string(),
   teamTwoId: z.string(),
+  tournamentId: z.string(),
   teamOneSetScore: z.number(),
   teamTwoSetScore: z.number(),
   gameSets: GameSets, // How to make JSON type?
   winnerId: z.string().nullish(),
-  tournamentId: z.string(),
 });
 
 export const GameSchemaArray = z.array(GameSchema);
