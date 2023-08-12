@@ -25,9 +25,7 @@ const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
       data?.playoffGames
     );
 
-    const tree = organizePlayoffGames(validatedPlayoffGames);
-
-    setPlayoffTree(tree);
+    setPlayoffTree(organizePlayoffGames(validatedPlayoffGames));
   }, [data]);
 
   return (

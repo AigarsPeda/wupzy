@@ -7,6 +7,7 @@ import CircleProgress from "~/components/elements/CircleProgress/CircleProgress"
 import LoadingSkeleton from "~/components/elements/LoadingSkeleton/LoadingSkeleton";
 import PageHead from "~/components/elements/PageHead/PageHead";
 import PageHeadLine from "~/components/elements/PageHeadLine/PageHeadLine";
+import PlayoffTournament from "~/components/elements/PlayoffTournament/PlayoffTournament";
 import RegularTournament from "~/components/elements/RegularTournament/RegularTournament";
 import SmallButton from "~/components/elements/SmallButton/SmallButton";
 import Tooltip from "~/components/elements/Tooltip/Tooltip";
@@ -15,7 +16,6 @@ import useTournament from "~/hooks/useTournament";
 import useTournamentGames from "~/hooks/useTournamentGames";
 import getGamesLeft from "~/utils/getGamesLeft";
 import getPercentagesOfFinishedGames from "~/utils/getPercentagesOfFinishedGames";
-import PlayoffTournament from "../../components/elements/PlayoffTournament/PlayoffTournament";
 
 const QRModal = dynamic(() => import("~/components/elements/QRModal/QRModal"));
 
