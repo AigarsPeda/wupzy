@@ -22,12 +22,12 @@ const organizePlayoffGames = (games: PlayoffGameType[]) => {
         {
           score: 0,
           id: game.teamOne?.id || "",
-          name: game.teamOne?.name || "n/a",
+          name: game.teamOne?.name || "",
         },
         {
           score: 0,
           id: game.teamTwo?.id || "",
-          name: game.teamTwo?.name || "n/a",
+          name: game.teamTwo?.name || "",
         },
       ],
     });

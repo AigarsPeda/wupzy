@@ -13,7 +13,8 @@ const createPlayoffRound = ({
   const emptyPlayer: PlayOffTeamType = {
     id: "",
     score: 0,
-    name: "n/a",
+    // name: "n/a",
+    name: "",
   };
 
   const newPlayers = players.map((player) => {

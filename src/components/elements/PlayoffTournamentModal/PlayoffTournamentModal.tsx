@@ -115,7 +115,7 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
         <div className="mt-10 overflow-x-auto overflow-y-auto pb-10">
           <PlayoffsTree
             playoffTree={playoffTree}
-            displayTeamsComponent={(team, isLast) => {
+            displayTeamsComponent={({ team, isLast }) => {
               return <PlayoffTeamSelect isLast={isLast} team={team} />;
             }}
           />

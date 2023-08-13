@@ -5,6 +5,7 @@ import classNames from "~/utils/classNames";
 
 export interface PlayoffTeamScoreProps {
   isLast: boolean;
+  isBothTeams: boolean;
   team: PlayOffTeamType;
   updateTeamsScore: (teamId: string, score: number) => void;
 }
@@ -12,6 +13,7 @@ export interface PlayoffTeamScoreProps {
 const PlayoffTeamScore: FC<PlayoffTeamScoreProps> = ({
   team,
   isLast,
+  isBothTeams,
   updateTeamsScore,
 }) => {
   return (
@@ -19,17 +21,19 @@ const PlayoffTeamScore: FC<PlayoffTeamScoreProps> = ({
       <div
         className={classNames(
           !isLast && "mb-2",
-          "flex items-center justify-between rounded bg-gray-200 px-2 py-2"
+          "flex min-h-[3.7rem] min-w-[5rem] items-center justify-between rounded bg-gray-200 px-2 py-2"
         )}
       >
-        <p className="min-h-[1.2rem] min-w-[5rem]">{team?.name || ""}</p>
-        <NumberInput
-          isBorder
-          value={team.score}
-          onChange={(num) => {
-            updateTeamsScore(team.id, num);
-          }}
-        />
+        <p className="">{team?.name || ""}</p>
+        {isBothTeams && (
+          <NumberInput
+            isBorder
+            value={team.score}
+            onChange={(num) => {
+              updateTeamsScore(team.id, num);
+            }}
+          />
+        )}
       </div>
     </div>
   );

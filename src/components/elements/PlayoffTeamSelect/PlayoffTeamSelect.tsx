@@ -12,10 +12,10 @@ const PlayoffTeamSelect: FC<PlayoffTeamSelectProps> = ({ team, isLast }) => {
     <div
       className={classNames(
         !isLast && "mb-2",
-        "flex space-x-1 rounded bg-gray-200 px-2 py-2"
+        "flex min-h-[3.7rem] min-w-[5rem] items-center space-x-1 rounded bg-gray-200 px-2 py-2"
       )}
     >
-      <p className="min-h-[1.2rem]">{team?.name || ""}</p>
+      <p>{team?.name || ""}</p>
     </div>
   );
 };

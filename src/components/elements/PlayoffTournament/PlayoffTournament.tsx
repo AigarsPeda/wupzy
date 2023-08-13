@@ -65,12 +65,12 @@ const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
     <div>
       <PlayoffsTree
         playoffTree={playoffTree}
-        displayTeamsComponent={(team, isLast) => {
-          console.log("team --->", team);
+        displayTeamsComponent={({ team, isLast, isBothTeams }) => {
           return (
             <PlayoffTeamScore
               team={team}
               isLast={isLast}
+              isBothTeams={isBothTeams}
               updateTeamsScore={updateTeamsScore}
             />
           );

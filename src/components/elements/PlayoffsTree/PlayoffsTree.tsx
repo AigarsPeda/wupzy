@@ -4,13 +4,15 @@ import { type PlayGameType, type PlayOffTeamType } from "~/types/playoff.types";
 import classNames from "~/utils/classNames";
 import genUniqueId from "~/utils/genUniqueId";
 
+type DisplayTeamsArgs = {
+  isLast: boolean;
+  isBothTeams: boolean;
+  team: PlayOffTeamType;
+};
+
 interface PlayoffsTreeProps {
-  // DisplayTeamsComponent: FC<PlayoffTeamSelectProps | PlayoffTeamScoreProps>;
   playoffTree: Map<number, PlayGameType[]> | never[];
-  displayTeamsComponent: (
-    team: PlayOffTeamType,
-    isLast: boolean
-  ) => JSX.Element;
+  displayTeamsComponent: ({ team, isLast }: DisplayTeamsArgs) => JSX.Element;
 }
 
 const PlayoffsTree: FC<PlayoffsTreeProps> = ({
@@ -33,8 +35,9 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({
             {/* <h1 className="text-center">{round.name}</h1> */}
             {value.map((match, i) => {
               const isLast = i === value.length - 1;
-              const firstTeamName = match.teams?.[0]?.name || "";
-              const secondTeamName = match.teams?.[1]?.name || "";
+              const firstTeamName = match.teams?.[0]?.name;
+              const secondTeamName = match.teams?.[1]?.name;
+              const isBothTeams = Boolean(firstTeamName && secondTeamName);
 
               return (
                 <div key={match.id} className={classNames(!isLast && "mb-10")}>
@@ -46,18 +49,17 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({
                     )}
                   >
                     {/* <h2>Name {match.name}</h2> */}
-                    <div className="min-w-[10rem] md:min-w-[12rem]">
+                    <div className="w-full min-w-[10rem] md:min-w-[12rem]">
                       {match.teams?.map((team, i) => {
                         const isLast = i === match.teams.length - 1;
 
                         return (
                           <div key={genUniqueId()}>
-                            {displayTeamsComponent(team, isLast)}
-                            {/* <DisplayTeamsComponent
-                              team={team}
-                              isLast={isLast}
-                            /> */}
-                            {/* {displayTeamsComponent({ team, isLast })} */}
+                            {displayTeamsComponent({
+                              team,
+                              isLast,
+                              isBothTeams,
+                            })}
                           </div>
                         );
                       })}
@@ -66,8 +68,8 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({
 
                   <div className="mt-2">
                     <DisplaySetScore
-                      teamOneName={firstTeamName}
-                      teamTwoName={secondTeamName}
+                      teamOneName={firstTeamName || ""}
+                      teamTwoName={secondTeamName || ""}
                       gameSets={match.gameSets || {}}
                     />
                   </div>
