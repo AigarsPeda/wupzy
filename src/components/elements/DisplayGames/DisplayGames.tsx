@@ -157,7 +157,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                 )}
 
                 <DisplaySetScore
-                  game={game}
+                  gameSets={game.gameSets}
                   teamOneName={game?.teamOne?.name || firstTeamName}
                   teamTwoName={game?.teamTwo?.name || secondTeamName}
                 />

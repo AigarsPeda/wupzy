@@ -1,13 +1,13 @@
+import { type FC } from "react";
 import { type PlayOffTeamType } from "~/types/playoff.types";
 import classNames from "~/utils/classNames";
 
-const PlayoffTeamSelect = ({
-  team,
-  isLast,
-}: {
+export interface PlayoffTeamSelectProps {
   isLast: boolean;
   team: PlayOffTeamType;
-}) => {
+}
+
+const PlayoffTeamSelect: FC<PlayoffTeamSelectProps> = ({ team, isLast }) => {
   return (
     <div
       className={classNames(
@@ -16,7 +16,6 @@ const PlayoffTeamSelect = ({
       )}
     >
       <p className="min-h-[1.2rem]">{team?.name || ""}</p>
-      {/* <span>{team.score}</span> */}
     </div>
   );
 };

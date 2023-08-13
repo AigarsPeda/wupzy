@@ -1,5 +1,5 @@
 import z from "zod";
-import { GameSets } from "./tournament.types";
+import { GameSets } from "~/types/tournament.types";
 
 export const PlayOffTeamSchema = z.object({
   id: z.string(),
@@ -11,6 +11,7 @@ export const PlayGameSchema = z.object({
   id: z.string(),
   match: z.number(),
   round: z.number(),
+  gameSets: GameSets.nullish(),
   teams: z.array(PlayOffTeamSchema),
 });
 

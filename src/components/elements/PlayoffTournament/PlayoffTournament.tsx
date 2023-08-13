@@ -1,7 +1,11 @@
 import { useEffect, useState, type FC } from "react";
-import PlayoffTeamSelect from "~/components/elements/PlayoffTeamSelect/PlayoffTeamSelect";
+import PlayoffTeamScore from "~/components/elements/PlayoffTeamScore/PlayoffTeamScore";
 import PlayoffsTree from "~/components/elements/PlayoffsTree/PlayoffsTree";
-import { PlayoffGameSchema, type PlayoffMapType } from "~/types/playoff.types";
+import {
+  PlayoffGameSchema,
+  type PlayGameType,
+  type PlayoffMapType,
+} from "~/types/playoff.types";
 import { api } from "~/utils/api";
 import organizePlayoffGames from "~/utils/organizePlayoffGames";
 
@@ -15,6 +19,35 @@ const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
     { tournamentId: tournamentId || "" },
     { enabled: Boolean(tournamentId) }
   );
+
+  const updateTeamsScore = (teamId: string, score: number) => {
+    const newPlayoffTree: [number, PlayGameType[]][] = [...playoffTree].map(
+      ([key, value]) => {
+        return [
+          key,
+          value.map((game) => {
+            const newTeams = game.teams.map((team) => {
+              if (team.id === teamId) {
+                return {
+                  ...team,
+                  score,
+                };
+              }
+
+              return team;
+            });
+
+            return {
+              ...game,
+              teams: newTeams,
+            };
+          }),
+        ];
+      }
+    );
+
+    setPlayoffTree(new Map(newPlayoffTree));
+  };
 
   useEffect(() => {
     if (!data?.playoffGames) {
@@ -32,7 +65,16 @@ const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
     <div>
       <PlayoffsTree
         playoffTree={playoffTree}
-        displayTeamsComponent={PlayoffTeamSelect}
+        displayTeamsComponent={(team, isLast) => {
+          console.log("team --->", team);
+          return (
+            <PlayoffTeamScore
+              team={team}
+              isLast={isLast}
+              updateTeamsScore={updateTeamsScore}
+            />
+          );
+        }}
       />
     </div>
   );

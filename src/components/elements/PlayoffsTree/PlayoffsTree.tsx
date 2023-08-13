@@ -1,17 +1,16 @@
 import { type FC } from "react";
+import DisplaySetScore from "~/components/elements/DisplaySetScore/DisplaySetScore";
 import { type PlayGameType, type PlayOffTeamType } from "~/types/playoff.types";
 import classNames from "~/utils/classNames";
 import genUniqueId from "~/utils/genUniqueId";
 
 interface PlayoffsTreeProps {
-  displayTeamsComponent: ({
-    team,
-    isLast,
-  }: {
-    isLast: boolean;
-    team: PlayOffTeamType;
-  }) => JSX.Element;
+  // DisplayTeamsComponent: FC<PlayoffTeamSelectProps | PlayoffTeamScoreProps>;
   playoffTree: Map<number, PlayGameType[]> | never[];
+  displayTeamsComponent: (
+    team: PlayOffTeamType,
+    isLast: boolean
+  ) => JSX.Element;
 }
 
 const PlayoffsTree: FC<PlayoffsTreeProps> = ({
@@ -34,34 +33,85 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({
             {/* <h1 className="text-center">{round.name}</h1> */}
             {value.map((match, i) => {
               const isLast = i === value.length - 1;
-              return (
-                // <div
-                //   key={match.id}
-                //   className="mx-auto mt-10 rounded-[0.475rem] bg-gradient-to-r from-purple-400 to-pink-600 p-[0.1rem] shadow"
-                // >
-                <div
-                  key={match.id}
-                  className={classNames(
-                    !isLast && "mb-10",
-                    // match.right && "border-l-2 border-black",
-                    // match.left && "border-r-2 border-black",
-                    "flex flex-col items-center justify-center rounded-md bg-gray-100 p-1 shadow-md"
-                  )}
-                >
-                  {/* <h2>Name {match.name}</h2> */}
-                  <div className="min-w-[10rem] md:min-w-[12rem]">
-                    {match.teams?.map((team, i) => {
-                      const isLast = i === match.teams.length - 1;
+              const firstTeamName = match.teams?.[0]?.name || "";
+              const secondTeamName = match.teams?.[1]?.name || "";
 
-                      return (
-                        <div key={genUniqueId()}>
-                          {displayTeamsComponent({ team, isLast })}
-                        </div>
-                      );
-                    })}
+              return (
+                <div key={match.id} className={classNames(!isLast && "mb-10")}>
+                  <div
+                    className={classNames(
+                      // match.right && "border-l-2 border-black",
+                      // match.left && "border-r-2 border-black",
+                      "flex flex-col items-center justify-center rounded-md bg-gray-100 p-1 shadow-md"
+                    )}
+                  >
+                    {/* <h2>Name {match.name}</h2> */}
+                    <div className="min-w-[10rem] md:min-w-[12rem]">
+                      {match.teams?.map((team, i) => {
+                        const isLast = i === match.teams.length - 1;
+
+                        return (
+                          <div key={genUniqueId()}>
+                            {displayTeamsComponent(team, isLast)}
+                            {/* <DisplayTeamsComponent
+                              team={team}
+                              isLast={isLast}
+                            /> */}
+                            {/* {displayTeamsComponent({ team, isLast })} */}
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
+
+                  <div className="mt-2">
+                    <DisplaySetScore
+                      teamOneName={firstTeamName}
+                      teamTwoName={secondTeamName}
+                      gameSets={match.gameSets || {}}
+                    />
+                  </div>
+
+                  {/* <div className="mt-2 grid grid-cols-12 gap-x-3 gap-y-1">
+                    {Object.entries(GameSets.parse(match.gameSets) || {}).map(
+                      ([key, value], i) => {
+                        return (
+                          <Fragment key={i}>
+                            <div className="col-span-4 text-center">
+                              <p className="font-primary text-xs text-gray-900">
+                                {key}
+                              </p>
+                            </div>
+                            <div className="col-span-4 text-center">
+                              <p
+                                className={classNames(
+                                  value.teamOne > value.teamTwo
+                                    ? "text-gray-900"
+                                    : "text-gray-900",
+                                  "font-primary text-xs"
+                                )}
+                              >
+                                {value.teamOne}
+                              </p>
+                            </div>
+                            <div className="col-span-4 text-center">
+                              <p
+                                className={classNames(
+                                  value.teamOne < value.teamTwo
+                                    ? "text-gray-900"
+                                    : "text-gray-900",
+                                  "font-primary text-xs"
+                                )}
+                              >
+                                {value.teamTwo}
+                              </p>
+                            </div>
+                          </Fragment>
+                        );
+                      }
+                    )}
+                  </div> */}
                 </div>
-                // </div>
               );
             })}
           </div>
