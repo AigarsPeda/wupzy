@@ -20,7 +20,7 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({
   displayTeamsComponent,
 }) => {
   return (
-    <div className="flex lg:justify-center">
+    <div className={classNames("flex overflow-x-auto px-14 py-5")}>
       {[...playoffTree].map(([_key, value], i) => {
         const isLast = i === [...playoffTree].length - 1;
 
@@ -29,7 +29,7 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({
             key={genUniqueId()}
             className={classNames(
               !isLast && "mr-14 md:mr-16",
-              "flex flex-col justify-center"
+              "mx-auto flex flex-col justify-center"
             )}
           >
             {/* <h1 className="text-center">{round.name}</h1> */}

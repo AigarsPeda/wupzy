@@ -62,21 +62,20 @@ const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
   }, [data]);
 
   return (
-    <div>
-      <PlayoffsTree
-        playoffTree={playoffTree}
-        displayTeamsComponent={({ team, isLast, isBothTeams }) => {
-          return (
-            <PlayoffTeamScore
-              team={team}
-              isLast={isLast}
-              isBothTeams={isBothTeams}
-              updateTeamsScore={updateTeamsScore}
-            />
-          );
-        }}
-      />
-    </div>
+    <PlayoffsTree
+      // isCenter
+      playoffTree={playoffTree}
+      displayTeamsComponent={({ team, isLast, isBothTeams }) => {
+        return (
+          <PlayoffTeamScore
+            team={team}
+            isLast={isLast}
+            isBothTeams={isBothTeams}
+            updateTeamsScore={updateTeamsScore}
+          />
+        );
+      }}
+    />
   );
 };
 
