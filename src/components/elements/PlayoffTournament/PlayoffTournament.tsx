@@ -1,4 +1,5 @@
 import { useEffect, useState, type FC } from "react";
+import DisplaySetScore from "~/components/elements/DisplaySetScore/DisplaySetScore";
 import PlayoffTeamScore from "~/components/elements/PlayoffTeamScore/PlayoffTeamScore";
 import PlayoffsTree from "~/components/elements/PlayoffsTree/PlayoffsTree";
 import {
@@ -63,7 +64,6 @@ const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
 
   return (
     <PlayoffsTree
-      // isCenter
       playoffTree={playoffTree}
       displayTeamsComponent={({ team, isLast, isBothTeams }) => {
         return (
@@ -72,6 +72,15 @@ const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
             isLast={isLast}
             isBothTeams={isBothTeams}
             updateTeamsScore={updateTeamsScore}
+          />
+        );
+      }}
+      displaySetResult={({ gameSets, teamOneName, teamTwoName }) => {
+        return (
+          <DisplaySetScore
+            gameSets={gameSets}
+            teamOneName={teamOneName}
+            teamTwoName={teamTwoName}
           />
         );
       }}

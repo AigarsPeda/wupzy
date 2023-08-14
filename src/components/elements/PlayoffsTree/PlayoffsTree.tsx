@@ -1,6 +1,6 @@
 import { type FC } from "react";
-import DisplaySetScore from "~/components/elements/DisplaySetScore/DisplaySetScore";
 import { type PlayGameType, type PlayOffTeamType } from "~/types/playoff.types";
+import { type GameSetsType } from "~/types/tournament.types";
 import classNames from "~/utils/classNames";
 import genUniqueId from "~/utils/genUniqueId";
 
@@ -10,13 +10,25 @@ type DisplayTeamsArgs = {
   team: PlayOffTeamType;
 };
 
+type DisplaySetResultArgs = {
+  teamOneName: string;
+  teamTwoName: string;
+  gameSets: GameSetsType;
+};
+
 interface PlayoffsTreeProps {
   playoffTree: Map<number, PlayGameType[]> | never[];
   displayTeamsComponent: ({ team, isLast }: DisplayTeamsArgs) => JSX.Element;
+  displaySetResult?: ({
+    gameSets,
+    teamOneName,
+    teamTwoName,
+  }: DisplaySetResultArgs) => JSX.Element;
 }
 
 const PlayoffsTree: FC<PlayoffsTreeProps> = ({
   playoffTree,
+  displaySetResult,
   displayTeamsComponent,
 }) => {
   return (
@@ -65,54 +77,15 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({
                       })}
                     </div>
                   </div>
-
-                  <div className="mt-2">
-                    <DisplaySetScore
-                      teamOneName={firstTeamName || ""}
-                      teamTwoName={secondTeamName || ""}
-                      gameSets={match.gameSets || {}}
-                    />
-                  </div>
-
-                  {/* <div className="mt-2 grid grid-cols-12 gap-x-3 gap-y-1">
-                    {Object.entries(GameSets.parse(match.gameSets) || {}).map(
-                      ([key, value], i) => {
-                        return (
-                          <Fragment key={i}>
-                            <div className="col-span-4 text-center">
-                              <p className="font-primary text-xs text-gray-900">
-                                {key}
-                              </p>
-                            </div>
-                            <div className="col-span-4 text-center">
-                              <p
-                                className={classNames(
-                                  value.teamOne > value.teamTwo
-                                    ? "text-gray-900"
-                                    : "text-gray-900",
-                                  "font-primary text-xs"
-                                )}
-                              >
-                                {value.teamOne}
-                              </p>
-                            </div>
-                            <div className="col-span-4 text-center">
-                              <p
-                                className={classNames(
-                                  value.teamOne < value.teamTwo
-                                    ? "text-gray-900"
-                                    : "text-gray-900",
-                                  "font-primary text-xs"
-                                )}
-                              >
-                                {value.teamTwo}
-                              </p>
-                            </div>
-                          </Fragment>
-                        );
-                      }
-                    )}
-                  </div> */}
+                  {displaySetResult && (
+                    <div className="mt-5">
+                      {displaySetResult({
+                        gameSets: match.gameSets || {},
+                        teamOneName: firstTeamName || "",
+                        teamTwoName: secondTeamName || "",
+                      })}
+                    </div>
+                  )}
                 </div>
               );
             })}
