@@ -2,6 +2,7 @@ import { useEffect, type FC } from "react";
 import Button from "~/components/elements/Button/Button";
 import NewKingTournament from "~/components/elements/NewKingTournament/NewKingTournament";
 import NewTeamsTournament from "~/components/elements/NewTeamsTournament/NewTeamsTournament";
+import TextButton from "~/components/elements/TextButton/TextButton";
 import ModalLayout from "~/components/layout/ModalLayout/ModalLayout";
 import useCreateNewTournament from "~/hooks/useCreateTournament";
 import useEditTournament from "~/hooks/useEditTournament";
@@ -75,13 +76,7 @@ const EditTournamentModal: FC<EditTournamentModalModalProps> = ({
           />
         </div>
         <div className="mt-6 flex items-center justify-end gap-x-6">
-          <button
-            type="button"
-            className="text-sm font-semibold leading-6 text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-800"
-            onClick={handleCancelClicks}
-          >
-            Cancel
-          </button>
+          <TextButton title="Cancel" handleClick={handleCancelClicks} />
           <div className="w-20">
             <Button
               size="sm"

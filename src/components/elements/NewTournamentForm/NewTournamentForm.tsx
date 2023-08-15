@@ -5,6 +5,7 @@ import NewKingTournament from "~/components/elements/NewKingTournament/NewKingTo
 import NewTeamsTournament from "~/components/elements/NewTeamsTournament/NewTeamsTournament";
 import RadioSelect from "~/components/elements/RadioSelect/RadioSelect";
 import SetSelect from "~/components/elements/SetSelect/SetSelect";
+import TextButton from "~/components/elements/TextButton/TextButton";
 import useCreateTournament from "~/hooks/useCreateTournament";
 import useRedirect from "~/hooks/useRedirect";
 import { api } from "~/utils/api";
@@ -178,13 +179,11 @@ const NewTournamentForm: FC = () => {
       </div>
 
       <div className="mt-6 flex items-center justify-end gap-x-6">
-        <button
-          type="button"
-          className="text-sm font-semibold leading-6 text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-800"
-          onClick={() => redirectToPath("/tournaments")}
-        >
-          Cancel
-        </button>
+        <TextButton
+          title="Cancel"
+          handleClick={() => redirectToPath("/tournaments")}
+        />
+
         <div className="w-20">
           <Button
             size="sm"

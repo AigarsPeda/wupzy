@@ -2,6 +2,8 @@ import { useEffect, useState, type FC } from "react";
 import DisplaySetScore from "~/components/elements/DisplaySetScore/DisplaySetScore";
 import PlayoffTeamScore from "~/components/elements/PlayoffTeamScore/PlayoffTeamScore";
 import PlayoffsTree from "~/components/elements/PlayoffsTree/PlayoffsTree";
+import SmallButton from "~/components/elements/SmallButton/SmallButton";
+import TextButton from "~/components/elements/TextButton/TextButton";
 import {
   PlayoffGameSchema,
   type PlayGameType,
@@ -50,6 +52,21 @@ const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
     setPlayoffTree(new Map(newPlayoffTree));
   };
 
+  const savePlayoffGames = (gameId: string) => {
+    // // find game by id
+    // const round = [...playoffTree].find(([_key, value]) => {
+    //   return value.find((game) => game.id === gameId);
+    // });
+
+    // const game = round?.[1].find((game) => game.id === gameId);
+
+    const targetGame = [...playoffTree]
+      .flatMap(([_key, value]) => value)
+      .find((game) => game.id === gameId);
+
+    console.log("targetGame --->", targetGame);
+  };
+
   useEffect(() => {
     if (!data?.playoffGames) {
       return;
@@ -82,6 +99,27 @@ const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
             teamOneName={teamOneName}
             teamTwoName={teamTwoName}
           />
+        );
+      }}
+      gameOptions={({ gameId }) => {
+        return (
+          <div className="flex justify-end">
+            <TextButton
+              title="Reset"
+              handleClick={() => {
+                console.log("Reset", gameId);
+              }}
+            />
+            <div className="ml-3">
+              <SmallButton
+                title="Save"
+                color="dark"
+                handleClick={() => {
+                  savePlayoffGames(gameId);
+                }}
+              />
+            </div>
+          </div>
         );
       }}
     />

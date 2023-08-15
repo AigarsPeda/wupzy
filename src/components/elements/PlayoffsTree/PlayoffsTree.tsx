@@ -16,8 +16,13 @@ type DisplaySetResultArgs = {
   gameSets: GameSetsType;
 };
 
+type gameOptionsArgs = {
+  gameId: string;
+};
+
 interface PlayoffsTreeProps {
   playoffTree: Map<number, PlayGameType[]> | never[];
+  gameOptions?: ({ gameId }: gameOptionsArgs) => JSX.Element;
   displayTeamsComponent: ({ team, isLast }: DisplayTeamsArgs) => JSX.Element;
   displaySetResult?: ({
     gameSets,
@@ -28,6 +33,7 @@ interface PlayoffsTreeProps {
 
 const PlayoffsTree: FC<PlayoffsTreeProps> = ({
   playoffTree,
+  gameOptions,
   displaySetResult,
   displayTeamsComponent,
 }) => {
@@ -76,6 +82,13 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({
                         );
                       })}
                     </div>
+                    {gameOptions && (
+                      <div className="my-2 w-full">
+                        {gameOptions({
+                          gameId: match.id,
+                        })}
+                      </div>
+                    )}
                   </div>
                   {displaySetResult && (
                     <div className="mt-5">

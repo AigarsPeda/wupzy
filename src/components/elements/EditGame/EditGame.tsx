@@ -1,6 +1,7 @@
 import { Fragment, type FC } from "react";
 import Button from "~/components/elements/Button/Button";
 import NumberInput from "~/components/elements/NumberInput/NumberInput";
+import TextButton from "~/components/elements/TextButton/TextButton";
 import Tooltip from "~/components/elements/Tooltip/Tooltip";
 import ModalLayout from "~/components/layout/ModalLayout/ModalLayout";
 import useGame from "~/hooks/useGame";
@@ -119,13 +120,7 @@ const EditGame: FC<EditGameProps> = ({ gameId, handleModalClose }) => {
             )}
         </div>
         <div className="mt-6 flex items-center justify-end gap-x-6">
-          <button
-            type="button"
-            className="text-sm font-semibold leading-6 text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-800"
-            onClick={handleModalClose}
-          >
-            Cancel
-          </button>
+          <TextButton title="Cancel" handleClick={handleModalClose} />
           <div className="w-20">
             <Button
               size="sm"
