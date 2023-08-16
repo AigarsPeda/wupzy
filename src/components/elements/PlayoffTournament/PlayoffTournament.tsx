@@ -3,7 +3,6 @@ import DisplaySetScore from "~/components/elements/DisplaySetScore/DisplaySetSco
 import PlayoffTeamScore from "~/components/elements/PlayoffTeamScore/PlayoffTeamScore";
 import PlayoffsTree from "~/components/elements/PlayoffsTree/PlayoffsTree";
 import SmallButton from "~/components/elements/SmallButton/SmallButton";
-import TextButton from "~/components/elements/TextButton/TextButton";
 import {
   PlayoffGameSchema,
   type PlayGameType,
@@ -108,35 +107,42 @@ const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
           />
         );
       }}
-      displaySetResult={({ gameSets, teamOneName, teamTwoName }) => {
-        return (
-          <DisplaySetScore
-            gameSets={gameSets}
-            teamOneName={teamOneName}
-            teamTwoName={teamTwoName}
-          />
-        );
-      }}
-      gameOptions={({ gameId, isWinner }) => {
+      gameOptions={({
+        gameId,
+        isWinner,
+        gameSets,
+        isBothTeams,
+        teamOneName,
+        teamTwoName,
+      }) => {
         return (
           <>
-            {!isWinner && (
-              <div className="my-2 flex justify-end">
-                <TextButton
-                  title="Reset"
-                  handleClick={() => {
-                    console.log("Reset", gameId);
-                  }}
+            {isBothTeams && (
+              <div className="mt-3">
+                <DisplaySetScore
+                  gameSets={gameSets}
+                  teamOneName={teamOneName}
+                  teamTwoName={teamTwoName}
                 />
-                <div className="ml-3">
-                  <SmallButton
-                    title="Save"
-                    color="dark"
-                    handleClick={() => {
-                      savePlayoffGames(gameId);
-                    }}
-                  />
-                </div>
+                {!isWinner && (
+                  <div className="my-3 flex justify-end">
+                    {/* <TextButton
+                      title="Reset"
+                      handleClick={() => {
+                        console.log("Reset", gameId);
+                      }}
+                    /> */}
+                    <div className="ml-3">
+                      <SmallButton
+                        title="Save"
+                        color="dark"
+                        handleClick={() => {
+                          savePlayoffGames(gameId);
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </>

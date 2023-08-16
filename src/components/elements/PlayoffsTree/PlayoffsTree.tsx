@@ -7,44 +7,41 @@ import genUniqueId from "~/utils/genUniqueId";
 type DisplayTeamsArgs = {
   isLast: boolean;
   isWinner: boolean;
+  teamScore: number;
   isBothTeams: boolean;
   team: PlayOffTeamType;
-  teamScore: number;
-  // teamOneSetScore: number;
-  // teamTwoSetScore: number;
-};
-
-type DisplaySetResultArgs = {
-  teamOneName: string;
-  teamTwoName: string;
-  gameSets: GameSetsType;
 };
 
 type gameOptionsArgs = {
   gameId: string;
   isWinner: boolean;
+  teamOneName: string;
+  teamTwoName: string;
+  isBothTeams: boolean;
+  gameSets: GameSetsType;
 };
 
 interface PlayoffsTreeProps {
   playoffTree: Map<number, PlayGameType[]> | never[];
-  gameOptions?: ({ gameId, isWinner }: gameOptionsArgs) => JSX.Element;
+  gameOptions?: ({
+    gameId,
+    isWinner,
+    gameSets,
+    isBothTeams,
+    teamOneName,
+    teamTwoName,
+  }: gameOptionsArgs) => JSX.Element;
   displayTeamsComponent: ({
     team,
     isLast,
     isWinner,
     teamScore,
   }: DisplayTeamsArgs) => JSX.Element;
-  displaySetResult?: ({
-    gameSets,
-    teamOneName,
-    teamTwoName,
-  }: DisplaySetResultArgs) => JSX.Element;
 }
 
 const PlayoffsTree: FC<PlayoffsTreeProps> = ({
   playoffTree,
   gameOptions,
-  displaySetResult,
   displayTeamsComponent,
 }) => {
   return (
@@ -66,15 +63,17 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({
               const isWinner = Boolean(match.winnerId);
               const firstTeamName = match.teams?.[0]?.name;
               const secondTeamName = match.teams?.[1]?.name;
-              // const teamOneSetScore = match.teamOneSetScore;
-              // const teamTwoSetScore = match.teamTwoSetScore;
-
               const score = [match.teamOneSetScore, match.teamTwoSetScore];
-
               const isBothTeams = Boolean(firstTeamName && secondTeamName);
 
               return (
-                <div key={match.id} className={classNames(!isLast && "mb-10")}>
+                <div
+                  key={match.id}
+                  className={classNames(
+                    !isLast && "mb-10",
+                    !isBothTeams && "mt-40"
+                  )}
+                >
                   <div
                     className={classNames(
                       // match.right && "border-l-2 border-black",
@@ -94,10 +93,8 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({
                               team,
                               isLast,
                               isWinner,
-                              isBothTeams,
                               teamScore,
-                              // teamOneSetScore,
-                              // teamTwoSetScore,
+                              isBothTeams,
                             })}
                           </div>
                         );
@@ -107,20 +104,15 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({
                       <div className="w-full">
                         {gameOptions({
                           isWinner,
+                          isBothTeams,
                           gameId: match.id,
+                          gameSets: match.gameSets || {},
+                          teamOneName: firstTeamName || "",
+                          teamTwoName: secondTeamName || "",
                         })}
                       </div>
                     )}
                   </div>
-                  {displaySetResult && (
-                    <div className="mt-5">
-                      {displaySetResult({
-                        gameSets: match.gameSets || {},
-                        teamOneName: firstTeamName || "",
-                        teamTwoName: secondTeamName || "",
-                      })}
-                    </div>
-                  )}
                 </div>
               );
             })}

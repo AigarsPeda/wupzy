@@ -36,7 +36,11 @@ const formatTeamsToPlayoffTree = (
         const playoffMatch: PlayGameType = {
           match: i,
           round: key,
+          gameSets: {},
+          winnerId: "",
           id: genUniqueId(),
+          teamOneSetScore: 0,
+          teamTwoSetScore: 0,
           teams: [player1, player2],
         };
 
@@ -48,8 +52,12 @@ const formatTeamsToPlayoffTree = (
 
           const nextPlayoffMatch: PlayGameType = {
             match: i,
+            gameSets: {},
+            winnerId: "",
             round: key + 1,
             id: genUniqueId(),
+            teamOneSetScore: 0,
+            teamTwoSetScore: 0,
             teams: [player1, player2],
           };
 
@@ -73,9 +81,13 @@ const formatTeamsToPlayoffTree = (
       if (previousRound) {
         for (let i = 0; i < half; i++) {
           const playoffMatch: PlayGameType = {
-            round: key,
             match: i,
+            round: key,
+            gameSets: {},
+            winnerId: "",
             id: genUniqueId(),
+            teamOneSetScore: 0,
+            teamTwoSetScore: 0,
             teams: [
               {
                 score: 0,
