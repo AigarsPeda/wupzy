@@ -12,6 +12,7 @@ export const PlayGameSchema = z.object({
   match: z.number(),
   round: z.number(),
   gameSets: GameSets.nullish(),
+  winnerId: z.string().nullish(),
   teams: z.array(PlayOffTeamSchema),
 });
 

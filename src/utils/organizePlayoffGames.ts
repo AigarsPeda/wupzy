@@ -17,6 +17,7 @@ const organizePlayoffGames = (games: PlayoffGameType[]) => {
       id: game.id,
       match: game.match,
       round: game.round,
+      winnerId: game.winnerId,
       gameSets: game.gameSets,
       teams: [
         {

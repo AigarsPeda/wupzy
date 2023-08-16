@@ -2,7 +2,6 @@ import z from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { PlayGameSchema } from "~/types/playoff.types";
 import { GameSets } from "~/types/tournament.types";
-import countWinsPerTeam from "~/utils/countWinsPerTeam";
 import createGameSetJson from "~/utils/createGameSetJson";
 
 export const playoffsRouter = createTRPCRouter({
@@ -74,6 +73,7 @@ export const playoffsRouter = createTRPCRouter({
           teamOne: true,
           teamTwo: true,
         },
+        orderBy: [{ round: "asc" }, { match: "asc" }],
       });
 
       return { playoffGames };
@@ -95,6 +95,24 @@ export const playoffsRouter = createTRPCRouter({
         throw new Error("No teams");
       }
 
+      // const teamOneDB = await prisma.team.findUnique({
+      //   where: {
+      //     id: teamOne.id,
+      //   },
+      //   include: {
+      //     players: true,
+      //   },
+      // });
+
+      // const teamTwoDB = await prisma.team.findUnique({
+      //   where: {
+      //     id: teamTwo.id,
+      //   },
+      //   include: {
+      //     players: true,
+      //   },
+      // });
+
       const tournament = await prisma.tournament.findUnique({
         where: {
           id: input.tournamentId,
@@ -105,12 +123,9 @@ export const playoffsRouter = createTRPCRouter({
         throw new Error("Tournament not found");
       }
 
-      const { firstTeamPoints, secondTeamPoints } = countWinsPerTeam({
-        teamOneId: teamOne.id,
-        teamTwoId: teamTwo.id,
-        setsToWin: tournament.sets,
-        gameSets: GameSets.parse(playoffGame.gameSets),
-      });
+      // if (!teamOneDB || !teamTwoDB) {
+      //   throw new Error("Team not found");
+      // }
 
       const { winner, finishedGames, firstTeamWins, secondTeamWins } =
         createGameSetJson({
@@ -122,40 +137,50 @@ export const playoffsRouter = createTRPCRouter({
           teamTwoScore: teamTwo?.score || 0,
         });
 
-      console.log("playoffGame --->", playoffGame);
-      console.log("firstTeamPoints --->", firstTeamPoints);
-      console.log("secondTeamPoints --->", secondTeamPoints);
-      console.log("winner --->", winner);
-      console.log("finishedGames --->", finishedGames);
-      console.log("firstTeamWins --->", firstTeamWins);
-      console.log("secondTeamWins --->", secondTeamWins);
+      const updateGame = await prisma.playoffGame.update({
+        where: {
+          id: input.playoffGame.id,
+        },
+        data: {
+          winnerId: winner,
+          gameSets: finishedGames,
+          teamOneSetScore: firstTeamWins,
+          teamTwoSetScore: secondTeamWins,
+        },
+      });
 
-      // await prisma.playoffGame.update({
-      //   where: {
-      //     id: playoffGame.id,
-      //   },
-      //   data: {
-      //     ...(teamOne &&
-      //       teamOne.id !== "" && {
-      //         teamOne: {
-      //           connect: {
-      //             id: teamOne?.id,
-      //           },
-      //         },
-      //       }),
-      //     ...(teamTwo &&
-      //       teamTwo.id !== "" && {
-      //         teamTwo: {
-      //           connect: {
-      //             id: teamTwo?.id,
-      //           },
-      //         },
-      //       }),
-      //     teamOneScore: playoffGame.teamOneScore,
-      //     teamTwoScore: playoffGame.teamTwoScore,
-      //   },
+      // await updateTeamsScore({
+      //   prisma,
+      //   team: teamOneDB,
+      //   winnerId: winner,
+      //   setsWon: firstTeamWins,
+      //   teamScore: teamOne.score,
       // });
 
-      return { success: true };
+      // await updateTeamsScore({
+      //   prisma,
+      //   team: teamTwoDB,
+      //   winnerId: winner,
+      //   setsWon: secondTeamWins,
+      //   teamScore: teamTwo.score,
+      // });
+
+      // await updatePlayerScores({
+      //   prisma,
+      //   winner,
+      //   team: teamOneDB,
+      //   setsWon: firstTeamWins,
+      //   teamScore: teamOne.score,
+      // });
+
+      // await updatePlayerScores({
+      //   prisma,
+      //   winner,
+      //   team: teamTwoDB,
+      //   setsWon: secondTeamWins,
+      //   teamScore: teamTwo.score,
+      // });
+
+      return { success: true, updateGame };
     }),
 });

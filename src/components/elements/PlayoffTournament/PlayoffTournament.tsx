@@ -73,8 +73,6 @@ const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
       playoffGame: targetGame,
       tournamentId: tournamentId || "",
     });
-
-    console.log("targetGame --->", targetGame);
   };
 
   useEffect(() => {
@@ -111,8 +109,8 @@ const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
           />
         );
       }}
-      gameOptions={({ gameId }) => {
-        return (
+      gameOptions={({ gameId, isWinner }) => {
+        return !isWinner ? (
           <div className="flex justify-end">
             <TextButton
               title="Reset"
@@ -130,6 +128,8 @@ const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
               />
             </div>
           </div>
+        ) : (
+          <> </>
         );
       }}
     />

@@ -18,11 +18,12 @@ type DisplaySetResultArgs = {
 
 type gameOptionsArgs = {
   gameId: string;
+  isWinner: boolean;
 };
 
 interface PlayoffsTreeProps {
   playoffTree: Map<number, PlayGameType[]> | never[];
-  gameOptions?: ({ gameId }: gameOptionsArgs) => JSX.Element;
+  gameOptions?: ({ gameId, isWinner }: gameOptionsArgs) => JSX.Element;
   displayTeamsComponent: ({ team, isLast }: DisplayTeamsArgs) => JSX.Element;
   displaySetResult?: ({
     gameSets,
@@ -56,6 +57,7 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({
               const firstTeamName = match.teams?.[0]?.name;
               const secondTeamName = match.teams?.[1]?.name;
               const isBothTeams = Boolean(firstTeamName && secondTeamName);
+              const isWinner = Boolean(match.winnerId);
 
               return (
                 <div key={match.id} className={classNames(!isLast && "mb-10")}>
@@ -85,6 +87,7 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({
                     {gameOptions && (
                       <div className="my-2 w-full">
                         {gameOptions({
+                          isWinner,
                           gameId: match.id,
                         })}
                       </div>
