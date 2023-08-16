@@ -90,11 +90,19 @@ const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
   return (
     <PlayoffsTree
       playoffTree={playoffTree}
-      displayTeamsComponent={({ team, isLast, isBothTeams }) => {
+      displayTeamsComponent={({
+        team,
+        isLast,
+        isWinner,
+        teamScore,
+        isBothTeams,
+      }) => {
         return (
           <PlayoffTeamScore
             team={team}
             isLast={isLast}
+            isWinner={isWinner}
+            teamScore={teamScore}
             isBothTeams={isBothTeams}
             updateTeamsScore={updateTeamsScore}
           />
@@ -110,26 +118,28 @@ const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
         );
       }}
       gameOptions={({ gameId, isWinner }) => {
-        return !isWinner ? (
-          <div className="flex justify-end">
-            <TextButton
-              title="Reset"
-              handleClick={() => {
-                console.log("Reset", gameId);
-              }}
-            />
-            <div className="ml-3">
-              <SmallButton
-                title="Save"
-                color="dark"
-                handleClick={() => {
-                  savePlayoffGames(gameId);
-                }}
-              />
-            </div>
-          </div>
-        ) : (
-          <> </>
+        return (
+          <>
+            {!isWinner && (
+              <div className="my-2 flex justify-end">
+                <TextButton
+                  title="Reset"
+                  handleClick={() => {
+                    console.log("Reset", gameId);
+                  }}
+                />
+                <div className="ml-3">
+                  <SmallButton
+                    title="Save"
+                    color="dark"
+                    handleClick={() => {
+                      savePlayoffGames(gameId);
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+          </>
         );
       }}
     />

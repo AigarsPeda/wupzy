@@ -5,6 +5,8 @@ import classNames from "~/utils/classNames";
 
 export interface PlayoffTeamScoreProps {
   isLast: boolean;
+  isWinner: boolean;
+  teamScore: number;
   isBothTeams: boolean;
   team: PlayOffTeamType;
   updateTeamsScore: (teamId: string, score: number) => void;
@@ -13,6 +15,8 @@ export interface PlayoffTeamScoreProps {
 const PlayoffTeamScore: FC<PlayoffTeamScoreProps> = ({
   team,
   isLast,
+  isWinner,
+  teamScore,
   isBothTeams,
   updateTeamsScore,
 }) => {
@@ -25,7 +29,7 @@ const PlayoffTeamScore: FC<PlayoffTeamScoreProps> = ({
         )}
       >
         <p className="">{team?.name || ""}</p>
-        {isBothTeams && (
+        {isBothTeams && !isWinner && (
           <NumberInput
             isBorder
             value={team.score}
@@ -33,6 +37,11 @@ const PlayoffTeamScore: FC<PlayoffTeamScoreProps> = ({
               updateTeamsScore(team.id, num);
             }}
           />
+        )}
+        {isWinner && (
+          <p className="text-center text-3xl font-bold text-gray-900">
+            {teamScore}
+          </p>
         )}
       </div>
     </div>

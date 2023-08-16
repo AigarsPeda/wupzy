@@ -6,8 +6,12 @@ import genUniqueId from "~/utils/genUniqueId";
 
 type DisplayTeamsArgs = {
   isLast: boolean;
+  isWinner: boolean;
   isBothTeams: boolean;
   team: PlayOffTeamType;
+  teamScore: number;
+  // teamOneSetScore: number;
+  // teamTwoSetScore: number;
 };
 
 type DisplaySetResultArgs = {
@@ -24,7 +28,12 @@ type gameOptionsArgs = {
 interface PlayoffsTreeProps {
   playoffTree: Map<number, PlayGameType[]> | never[];
   gameOptions?: ({ gameId, isWinner }: gameOptionsArgs) => JSX.Element;
-  displayTeamsComponent: ({ team, isLast }: DisplayTeamsArgs) => JSX.Element;
+  displayTeamsComponent: ({
+    team,
+    isLast,
+    isWinner,
+    teamScore,
+  }: DisplayTeamsArgs) => JSX.Element;
   displaySetResult?: ({
     gameSets,
     teamOneName,
@@ -54,10 +63,15 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({
             {/* <h1 className="text-center">{round.name}</h1> */}
             {value.map((match, i) => {
               const isLast = i === value.length - 1;
+              const isWinner = Boolean(match.winnerId);
               const firstTeamName = match.teams?.[0]?.name;
               const secondTeamName = match.teams?.[1]?.name;
+              // const teamOneSetScore = match.teamOneSetScore;
+              // const teamTwoSetScore = match.teamTwoSetScore;
+
+              const score = [match.teamOneSetScore, match.teamTwoSetScore];
+
               const isBothTeams = Boolean(firstTeamName && secondTeamName);
-              const isWinner = Boolean(match.winnerId);
 
               return (
                 <div key={match.id} className={classNames(!isLast && "mb-10")}>
@@ -72,20 +86,25 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({
                     <div className="w-full min-w-[10rem] md:min-w-[12rem]">
                       {match.teams?.map((team, i) => {
                         const isLast = i === match.teams.length - 1;
+                        const teamScore = score[i] || 0;
 
                         return (
                           <div key={genUniqueId()}>
                             {displayTeamsComponent({
                               team,
                               isLast,
+                              isWinner,
                               isBothTeams,
+                              teamScore,
+                              // teamOneSetScore,
+                              // teamTwoSetScore,
                             })}
                           </div>
                         );
                       })}
                     </div>
                     {gameOptions && (
-                      <div className="my-2 w-full">
+                      <div className="w-full">
                         {gameOptions({
                           isWinner,
                           gameId: match.id,
