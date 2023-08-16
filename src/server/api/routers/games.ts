@@ -228,7 +228,9 @@ export const gameRouter = createTRPCRouter({
         secondTeamPoints: secondTeamOldPoints,
       } = countWinsPerTeam({
         setsToWin: tournament.sets,
-        game: GameSchema.parse(oldGame),
+        teamOneId: oldGame.teamOneId,
+        teamTwoId: oldGame.teamTwoId,
+        gameSets: GameSets.parse(oldGame.gameSets),
       });
 
       const {
@@ -238,8 +240,10 @@ export const gameRouter = createTRPCRouter({
         firstTeamPoints,
         secondTeamPoints,
       } = countWinsPerTeam({
-        game: input.game,
         setsToWin: tournament.sets,
+        teamOneId: input.game.teamOneId,
+        teamTwoId: input.game.teamTwoId,
+        gameSets: GameSets.parse(input.game.gameSets),
       });
 
       const game = await prisma.game.update({

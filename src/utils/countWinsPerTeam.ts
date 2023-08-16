@@ -1,23 +1,25 @@
-import { GameSets, type GameType } from "~/types/tournament.types";
+import { type GameSetsType } from "~/types/tournament.types";
 
 type CountWinsPerTeamArgsType = {
-  game: GameType | null;
   setsToWin: number;
-  // finishedGames: GameSetsType;
+  teamOneId: string;
+  teamTwoId: string;
+  gameSets: GameSetsType;
 };
 
 const countWinsPerTeam = ({
-  game,
+  gameSets,
   setsToWin,
-}: // finishedGames,
-CountWinsPerTeamArgsType): {
+  teamOneId,
+  teamTwoId,
+}: CountWinsPerTeamArgsType): {
   firstTeamWins: number;
   secondTeamWins: number;
   winnerId: string | null;
   firstTeamPoints: number;
   secondTeamPoints: number;
 } => {
-  const finishedGames = game?.gameSets ? GameSets.parse(game.gameSets) : {};
+  const finishedGames = gameSets || {};
 
   const firstTeamPoints = Object.values(finishedGames).reduce((acc, set) => {
     return acc + (set?.teamOne || 0);
@@ -40,7 +42,7 @@ CountWinsPerTeamArgsType): {
 
   if (firstTeamWins === setsToWin) {
     return {
-      winnerId: game?.teamOneId || null,
+      winnerId: teamOneId || null,
       firstTeamWins,
       secondTeamWins,
       firstTeamPoints,
@@ -50,7 +52,7 @@ CountWinsPerTeamArgsType): {
 
   if (secondTeamWins === setsToWin) {
     return {
-      winnerId: game?.teamTwoId || null,
+      winnerId: teamTwoId || null,
       firstTeamWins,
       secondTeamWins,
       firstTeamPoints,

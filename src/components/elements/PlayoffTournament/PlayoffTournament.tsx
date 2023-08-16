@@ -22,6 +22,7 @@ const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
     { tournamentId: tournamentId || "" },
     { enabled: Boolean(tournamentId) }
   );
+  const { mutate } = api.playoffs.updatePlayoffGame.useMutation();
 
   const updateTeamsScore = (teamId: string, score: number) => {
     const newPlayoffTree: [number, PlayGameType[]][] = [...playoffTree].map(
@@ -63,6 +64,15 @@ const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
     const targetGame = [...playoffTree]
       .flatMap(([_key, value]) => value)
       .find((game) => game.id === gameId);
+
+    if (!targetGame) {
+      return;
+    }
+
+    mutate({
+      playoffGame: targetGame,
+      tournamentId: tournamentId || "",
+    });
 
     console.log("targetGame --->", targetGame);
   };
