@@ -54,7 +54,7 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({
             key={genUniqueId()}
             className={classNames(
               !isLast && "mr-14 md:mr-16",
-              "mx-auto flex flex-col justify-center"
+              "mx-auto flex flex-col justify-around"
             )}
           >
             {/* <h1 className="text-center">{round.name}</h1> */}
@@ -67,13 +67,7 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({
               const isBothTeams = Boolean(firstTeamName && secondTeamName);
 
               return (
-                <div
-                  key={match.id}
-                  className={classNames(
-                    !isLast && "mb-10"
-                    // !isBothTeams && "mt-40"
-                  )}
-                >
+                <div key={match.id} className={classNames(!isLast && "mb-10")}>
                   <div
                     className={classNames(
                       // match.right && "border-l-2 border-black",
