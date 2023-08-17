@@ -75,6 +75,8 @@ const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
       return;
     }
 
+    console.log("data?.playoffGames", data?.playoffGames);
+
     const validatedPlayoffGames = PlayoffGameSchema.array().parse(
       data?.playoffGames
     );
