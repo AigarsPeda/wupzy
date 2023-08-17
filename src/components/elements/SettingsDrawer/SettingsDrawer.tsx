@@ -149,10 +149,9 @@ const SettingsDrawer: FC = () => {
                     title="Play Offs"
                     iconMaxWidth="max-w-[7rem] w-full"
                     icon={<AiOutlinePartition className="ml-4 h-6 w-6" />}
-                    // isDisabled={
-                    //   tournament.kind === "FREE" || tournament.isPlayoffs
-                    // }
-                    isDisabled
+                    isDisabled={
+                      tournament.kind === "FREE" || tournament.isPlayoffs
+                    }
                     handleClick={() => {
                       setIsPlayOffModal((state) => !state);
                     }}

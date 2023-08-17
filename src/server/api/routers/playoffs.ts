@@ -123,19 +123,27 @@ export const playoffsRouter = createTRPCRouter({
         throw new Error("Tournament not found");
       }
 
-      // if (!teamOneDB || !teamTwoDB) {
-      //   throw new Error("Team not found");
-      // }
-
       const { winner, finishedGames, firstTeamWins, secondTeamWins } =
         createGameSetJson({
-          json: GameSets.parse(playoffGame.gameSets),
-          setToWin: tournament.sets,
           teamOneId: teamOne.id,
           teamTwoId: teamTwo.id,
+          setToWin: tournament.sets,
           teamOneScore: teamOne?.score || 0,
           teamTwoScore: teamTwo?.score || 0,
+          json: GameSets.parse(playoffGame.gameSets),
         });
+
+      // TODO: If winner we need to winner team move to next round
+      if (winner) {
+        const nextRound = playoffGame.round + 1;
+        // const nextMatch = Math.ceil(playoffGame.match / 2);
+
+        // match 0 and 1 goes to 0, 2 and 3 goes to 1, 4 and 5 goes to 2
+        const nextMatch = Math.floor(playoffGame.match / 2);
+
+        console.log("nextRound", nextRound);
+        console.log("nextMatch", nextMatch);
+      }
 
       const updateGame = await prisma.playoffGame.update({
         where: {

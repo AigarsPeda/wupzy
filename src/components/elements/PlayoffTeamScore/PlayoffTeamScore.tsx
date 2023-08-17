@@ -20,6 +20,10 @@ const PlayoffTeamScore: FC<PlayoffTeamScoreProps> = ({
   isBothTeams,
   updateTeamsScore,
 }) => {
+  // useEffect(() => {
+  //   console.log("Running");
+  // }, []);
+
   return (
     <div>
       <div

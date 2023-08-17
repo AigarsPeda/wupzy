@@ -70,8 +70,8 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({
                 <div
                   key={match.id}
                   className={classNames(
-                    !isLast && "mb-10",
-                    !isBothTeams && "mt-40"
+                    !isLast && "mb-10"
+                    // !isBothTeams && "mt-40"
                   )}
                 >
                   <div
@@ -84,8 +84,8 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({
                     {/* <h2>Name {match.name}</h2> */}
                     <div className="w-full min-w-[10rem] md:min-w-[12rem]">
                       {match.teams?.map((team, i) => {
-                        const isLast = i === match.teams.length - 1;
                         const teamScore = score[i] || 0;
+                        const isLast = i === match.teams.length - 1;
 
                         return (
                           <div key={genUniqueId()}>

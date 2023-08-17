@@ -3,11 +3,7 @@ import DisplaySetScore from "~/components/elements/DisplaySetScore/DisplaySetSco
 import PlayoffTeamScore from "~/components/elements/PlayoffTeamScore/PlayoffTeamScore";
 import PlayoffsTree from "~/components/elements/PlayoffsTree/PlayoffsTree";
 import SmallButton from "~/components/elements/SmallButton/SmallButton";
-import {
-  PlayoffGameSchema,
-  type PlayGameType,
-  type PlayoffMapType,
-} from "~/types/playoff.types";
+import { PlayoffGameSchema, type PlayoffMapType } from "~/types/playoff.types";
 import { api } from "~/utils/api";
 import organizePlayoffGames from "~/utils/organizePlayoffGames";
 
@@ -17,39 +13,39 @@ interface PlayoffTournamentProps {
 
 const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
   const [playoffTree, setPlayoffTree] = useState<PlayoffMapType>(new Map());
-  const { data } = api.playoffs.getPlayoffGames.useQuery(
+  const { data, refetch } = api.playoffs.getPlayoffGames.useQuery(
     { tournamentId: tournamentId || "" },
     { enabled: Boolean(tournamentId) }
   );
-  const { mutate } = api.playoffs.updatePlayoffGame.useMutation();
+  const { mutate } = api.playoffs.updatePlayoffGame.useMutation({
+    onSuccess: async () => {
+      await refetch();
+    },
+  });
 
   const updateTeamsScore = (teamId: string, score: number) => {
-    const newPlayoffTree: [number, PlayGameType[]][] = [...playoffTree].map(
-      ([key, value]) => {
-        return [
-          key,
-          value.map((game) => {
-            const newTeams = game.teams.map((team) => {
-              if (team.id === teamId) {
-                return {
-                  ...team,
-                  score,
-                };
-              }
+    setPlayoffTree((prevPlayoffTree) => {
+      const newPlayoffTree = new Map(prevPlayoffTree);
 
-              return team;
-            });
+      newPlayoffTree.forEach((games) => {
+        games.forEach((game) => {
+          const newTeams = game.teams.map((team) => {
+            if (team.id === teamId) {
+              return {
+                ...team,
+                score,
+              };
+            }
 
-            return {
-              ...game,
-              teams: newTeams,
-            };
-          }),
-        ];
-      }
-    );
+            return team;
+          });
 
-    setPlayoffTree(new Map(newPlayoffTree));
+          game.teams = newTeams;
+        });
+      });
+
+      return newPlayoffTree;
+    });
   };
 
   const savePlayoffGames = (gameId: string) => {
@@ -126,12 +122,6 @@ const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
                 />
                 {!isWinner && (
                   <div className="my-3 flex justify-end">
-                    {/* <TextButton
-                      title="Reset"
-                      handleClick={() => {
-                        console.log("Reset", gameId);
-                      }}
-                    /> */}
                     <div className="ml-3">
                       <SmallButton
                         title="Save"
