@@ -9,7 +9,7 @@ import { type TeamsMapType } from "~/types/utils.types";
 import { api } from "~/utils/api";
 import changeTeamsGroup from "~/utils/changeTeamsGroup";
 import classNames from "~/utils/classNames";
-import genUniqueId from "~/utils/genUniqueId";
+import getUniqueId from "~/utils/getUniqueId";
 import groupTeamsByGroup from "~/utils/groupTeamsByGroup";
 
 interface TeamsSplitProps {
@@ -88,7 +88,7 @@ const TeamsSplit: FC<TeamsSplitProps> = ({ handleModalClose }) => {
 
           return (
             <div
-              key={genUniqueId()}
+              key={getUniqueId()}
               className="min-h-[17rem] w-full overflow-x-auto rounded border border-gray-200 p-2 shadow-md"
             >
               <div className="mb-4 grid grid-cols-12 gap-4">
@@ -102,7 +102,7 @@ const TeamsSplit: FC<TeamsSplitProps> = ({ handleModalClose }) => {
                 {teams.map((team, i) => {
                   return (
                     <li
-                      key={genUniqueId()}
+                      key={getUniqueId()}
                       className={classNames(
                         i !== teams.length - 1 &&
                           "mb-2 border-b border-gray-200",
@@ -118,7 +118,7 @@ const TeamsSplit: FC<TeamsSplitProps> = ({ handleModalClose }) => {
                           if (group === team.group) return null;
 
                           return (
-                            <div key={genUniqueId()} className="max-w-[5rem]">
+                            <div key={getUniqueId()} className="max-w-[5rem]">
                               <SmallButton
                                 title={group}
                                 isFullWidth

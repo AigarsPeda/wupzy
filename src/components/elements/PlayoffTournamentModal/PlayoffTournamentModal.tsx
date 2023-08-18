@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useEffect, useState, type FC } from "react";
 import Button from "~/components/elements/Button/Button";
 import PlayoffTeamSelect from "~/components/elements/PlayoffTeamSelect/PlayoffTeamSelect";
@@ -23,6 +24,7 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
   isPlayOffModal,
   handleCancelClicks,
 }) => {
+  const router = useRouter();
   const { teams, isFetched } = useTeams();
   const { refetch, tournament } = useTournament();
   const [playoffRounds, setPlayoffRounds] = useState<number[]>([]);
@@ -31,6 +33,9 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
   const { mutate, isLoading } = api.playoffs.createPlayoffGames.useMutation({
     onSuccess: async () => {
       await refetch();
+      await router.replace({
+        query: { ...router.query, isplayoffmode: true },
+      });
       handleCancelClicks();
     },
   });
@@ -67,8 +72,6 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
 
     const playoffTree = formatTeamsToPlayoffTree(teams, selectedRoundsCount);
     const playoffMapKeys = Array.from(playoffTree.keys());
-
-    console.log(playoffTree);
 
     if (playoffTree && playoffMapKeys.length > 1) {
       setPlayoffTree(playoffTree);

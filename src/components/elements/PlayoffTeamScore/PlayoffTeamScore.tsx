@@ -1,4 +1,4 @@
-import { type FC } from "react";
+import { useEffect, useRef, type FC } from "react";
 import NumberInput from "~/components/elements/NumberInput/NumberInput";
 import { type PlayOffTeamType } from "~/types/playoff.types";
 import classNames from "~/utils/classNames";
@@ -9,6 +9,8 @@ export interface PlayoffTeamScoreProps {
   teamScore: number;
   isBothTeams: boolean;
   team: PlayOffTeamType;
+  clickedTeamsId: string;
+  setClickedTeamsId: (teamId: string) => void;
   updateTeamsScore: (teamId: string, score: number) => void;
 }
 
@@ -18,11 +20,17 @@ const PlayoffTeamScore: FC<PlayoffTeamScoreProps> = ({
   isWinner,
   teamScore,
   isBothTeams,
+  clickedTeamsId,
   updateTeamsScore,
+  setClickedTeamsId,
 }) => {
-  // useEffect(() => {
-  //   console.log("Running");
-  // }, []);
+  const ref = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (clickedTeamsId === team.id) {
+      ref.current?.focus();
+    }
+  }, [clickedTeamsId, team.id]);
 
   return (
     <div>
@@ -36,8 +44,10 @@ const PlayoffTeamScore: FC<PlayoffTeamScoreProps> = ({
         {isBothTeams && !isWinner && (
           <NumberInput
             isBorder
+            ref={ref}
             value={team.score}
             onChange={(num) => {
+              setClickedTeamsId(team.id);
               updateTeamsScore(team.id, num);
             }}
           />

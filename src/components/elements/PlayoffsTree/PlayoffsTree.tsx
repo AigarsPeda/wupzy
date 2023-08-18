@@ -2,7 +2,7 @@ import { type FC } from "react";
 import { type PlayGameType, type PlayOffTeamType } from "~/types/playoff.types";
 import { type GameSetsType } from "~/types/tournament.types";
 import classNames from "~/utils/classNames";
-import genUniqueId from "~/utils/genUniqueId";
+import getUniqueId from "~/utils/getUniqueId";
 
 type DisplayTeamsArgs = {
   isLast: boolean;
@@ -51,7 +51,7 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({
 
         return (
           <div
-            key={genUniqueId()}
+            key={getUniqueId()}
             className={classNames(
               !isLast && "mr-14 md:mr-16",
               "mx-auto flex flex-col justify-around"
@@ -82,7 +82,7 @@ const PlayoffsTree: FC<PlayoffsTreeProps> = ({
                         const isLast = i === match.teams.length - 1;
 
                         return (
-                          <div key={genUniqueId()}>
+                          <div key={getUniqueId()}>
                             {displayTeamsComponent({
                               team,
                               isLast,

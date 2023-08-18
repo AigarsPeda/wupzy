@@ -46,7 +46,6 @@ const NumberInput = forwardRef<Ref, NumberInputProps>(
           value={value || "0"}
           className="text-md md:text-basecursor-default flex w-full items-center bg-gray-200 text-center font-primary text-lg font-semibold text-gray-700 outline-none hover:text-black focus:text-black focus:outline-none"
           onFocus={(e) => {
-            // onFocus && onFocus();
             if (e.target.value === "0") {
               e.target.value = "";
             }

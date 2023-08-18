@@ -12,6 +12,7 @@ interface PlayoffTournamentProps {
 }
 
 const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
+  const [clickedTeamsId, setClickedTeamsId] = useState("");
   const [playoffTree, setPlayoffTree] = useState<PlayoffMapType>(new Map());
   const { data, refetch } = api.playoffs.getPlayoffGames.useQuery(
     { tournamentId: tournamentId || "" },
@@ -49,13 +50,6 @@ const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
   };
 
   const savePlayoffGames = (gameId: string) => {
-    // // find game by id
-    // const round = [...playoffTree].find(([_key, value]) => {
-    //   return value.find((game) => game.id === gameId);
-    // });
-
-    // const game = round?.[1].find((game) => game.id === gameId);
-
     const targetGame = [...playoffTree]
       .flatMap(([_key, value]) => value)
       .find((game) => game.id === gameId);
@@ -74,8 +68,6 @@ const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
     if (!data?.playoffGames) {
       return;
     }
-
-    console.log("data?.playoffGames", data?.playoffGames);
 
     const validatedPlayoffGames = PlayoffGameSchema.array().parse(
       data?.playoffGames
@@ -101,7 +93,9 @@ const PlayoffTournament: FC<PlayoffTournamentProps> = ({ tournamentId }) => {
             isWinner={isWinner}
             teamScore={teamScore}
             isBothTeams={isBothTeams}
+            clickedTeamsId={clickedTeamsId}
             updateTeamsScore={updateTeamsScore}
+            setClickedTeamsId={setClickedTeamsId}
           />
         );
       }}

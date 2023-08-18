@@ -10,7 +10,7 @@ import { type PlayersMapType } from "~/types/utils.types";
 import { api } from "~/utils/api";
 import changePlayersGroup from "~/utils/changePlayersGroup";
 import classNames from "~/utils/classNames";
-import genUniqueId from "~/utils/genUniqueId";
+import getUniqueId from "~/utils/getUniqueId";
 import groupPlayerByGroup from "~/utils/groupPlayerByGroup";
 
 interface PlayerSplitProps {
@@ -85,7 +85,7 @@ const PlayerSplit: FC<PlayerSplitProps> = ({ handleModalClose }) => {
 
           return (
             <div
-              key={genUniqueId()}
+              key={getUniqueId()}
               className="w-full overflow-x-auto rounded border border-gray-200 p-2 shadow-md"
             >
               <div className="mb-4 grid grid-cols-12 gap-4">
@@ -99,7 +99,7 @@ const PlayerSplit: FC<PlayerSplitProps> = ({ handleModalClose }) => {
                 {players.map((player, i) => {
                   return (
                     <li
-                      key={genUniqueId()}
+                      key={getUniqueId()}
                       className={classNames(
                         i !== players.length - 1 &&
                           "mb-2 border-b border-gray-200",
@@ -115,7 +115,7 @@ const PlayerSplit: FC<PlayerSplitProps> = ({ handleModalClose }) => {
                           if (group === player.group) return null;
 
                           return (
-                            <div key={genUniqueId()} className="max-w-[5rem]">
+                            <div key={getUniqueId()} className="max-w-[5rem]">
                               <SmallButton
                                 title={group}
                                 isFullWidth

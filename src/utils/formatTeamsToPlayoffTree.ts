@@ -5,7 +5,7 @@ import {
   type PlayoffMapType,
 } from "~/types/playoff.types";
 import createPlayoffRound from "~/utils/createPlayoffRound";
-import genUniqueId from "~/utils/genUniqueId";
+import getUniqueId from "~/utils/getUniqueId";
 
 const formatTeamsToPlayoffTree = (
   players: SelectedProperties[],
@@ -38,7 +38,7 @@ const formatTeamsToPlayoffTree = (
           round: key,
           gameSets: {},
           winnerId: "",
-          id: genUniqueId(),
+          id: getUniqueId(),
           teamOneSetScore: 0,
           teamTwoSetScore: 0,
           teams: [player1, player2],
@@ -55,7 +55,7 @@ const formatTeamsToPlayoffTree = (
             gameSets: {},
             winnerId: "",
             round: key + 1,
-            id: genUniqueId(),
+            id: getUniqueId(),
             teamOneSetScore: 0,
             teamTwoSetScore: 0,
             teams: [player1, player2],
@@ -85,7 +85,7 @@ const formatTeamsToPlayoffTree = (
             round: key,
             gameSets: {},
             winnerId: "",
-            id: genUniqueId(),
+            id: getUniqueId(),
             teamOneSetScore: 0,
             teamTwoSetScore: 0,
             teams: [
