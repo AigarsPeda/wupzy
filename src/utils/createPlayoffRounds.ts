@@ -1,7 +1,8 @@
 import countDivisionsByTwo from "~/utils/countDivisionsByTwo";
 
 const createPlayoffRounds = (length: number) => {
-  let rounds = countDivisionsByTwo(length);
+  const evenLength = length % 2 === 0 ? length : length + 1;
+  let rounds = countDivisionsByTwo(evenLength);
 
   if (rounds % 2 !== 0) {
     rounds++;

@@ -83,7 +83,7 @@ const HomePage: NextPage = () => {
             />
           </div>
 
-          <div className="absolute left-1/2 top-1/2 -z-10 h-[32rem] w-screen -translate-x-1/2 -translate-y-1/2 transform bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500"></div>
+          <div className="absolute left-1/2 top-1/2 -z-10 h-[85%] w-screen -translate-x-1/2 -translate-y-1/2 transform bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500 "></div>
         </div>
 
         <Pricing />

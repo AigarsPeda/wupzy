@@ -19,11 +19,11 @@ const NavBar: FC = () => {
         <Logo />
         {isNavBar() && (
           <>
-            <div className="hidden w-full md:block">
+            <div className="hidden w-full lg:block">
               <DesktopNav links={LINKS} />
             </div>
 
-            <div className="w-full md:hidden">
+            <div className="w-full lg:hidden">
               <MobileNav links={LINKS} />
             </div>
           </>
