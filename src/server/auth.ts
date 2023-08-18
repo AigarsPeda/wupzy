@@ -8,6 +8,7 @@ import {
 import DiscordProvider from "next-auth/providers/discord";
 import GoogleProvider from "next-auth/providers/google";
 import TwitterProvider from "next-auth/providers/twitter";
+import FacebookProvider from "next-auth/providers/facebook";
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
 
@@ -65,10 +66,10 @@ export const authOptions: NextAuthOptions = {
       clientSecret: env.TWITTER_CLIENT_SECRET,
       version: "2.0",
     }),
-    // FacebookProvider({
-    //   clientId: env.FACEBOOK_CLIENT_ID,
-    //   clientSecret: env.FACEBOOK_CLIENT_SECRET,
-    // }),
+    FacebookProvider({
+      clientId: env.FACEBOOK_CLIENT_ID,
+      clientSecret: env.FACEBOOK_CLIENT_SECRET,
+    }),
     /**
      * ...add more providers here.
      *

@@ -28,8 +28,8 @@ export const env = createEnv({
     DISCORD_CLIENT_SECRET: z.string().min(1),
     TWITTER_CLIENT_ID: z.string().min(1),
     TWITTER_CLIENT_SECRET: z.string().min(1),
-    // FACEBOOK_CLIENT_ID: z.string().min(1),
-    // FACEBOOK_CLIENT_SECRET: z.string().min(1),
+    FACEBOOK_CLIENT_ID: z.string().min(1),
+    FACEBOOK_CLIENT_SECRET: z.string().min(1),
     // Stripe
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().min(1),
     STRIPE_SECRET_KEY: z.string().min(1),
@@ -62,8 +62,8 @@ export const env = createEnv({
     DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
     TWITTER_CLIENT_ID: process.env.TWITTER_CLIENT_ID,
     TWITTER_CLIENT_SECRET: process.env.TWITTER_CLIENT_SECRET,
-    // FACEBOOK_CLIENT_ID: process.env.FACEBOOK_CLIENT_ID,
-    // FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT_SECRET,
+    FACEBOOK_CLIENT_ID: process.env.FACEBOOK_CLIENT_ID,
+    FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT_SECRET,
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
