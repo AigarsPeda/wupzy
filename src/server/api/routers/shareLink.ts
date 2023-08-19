@@ -72,4 +72,31 @@ export const shareLinkRouter = createTRPCRouter({
         players: shareLink?.tournament.players,
       };
     }),
+
+  getSharePlayoff: publicProcedure
+    .input(z.object({ slug: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const { prisma } = ctx;
+
+      const tournament = await prisma.shareLink.findUnique({
+        where: {
+          slug: input.slug,
+        },
+        include: {
+          tournament: {
+            include: {
+              playoffGame: {
+                include: {
+                  teamOne: true,
+                  teamTwo: true,
+                },
+                orderBy: [{ round: "asc" }, { match: "asc" }],
+              },
+            },
+          },
+        },
+      });
+
+      return { playoffGames: tournament?.tournament.playoffGame };
+    }),
 });

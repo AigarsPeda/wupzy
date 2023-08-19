@@ -38,7 +38,7 @@ const HomePage: NextPage = () => {
           <GradientButton
             type="button"
             bgColor="bg-gray-100"
-            title={sessionData ? "Your tournaments" : "Try it now"}
+            title={sessionData ? "Your tournaments" : "Try for free"}
             icon={
               <HiArrowRight className="h-5 w-5 text-gray-900 group-hover:text-white" />
             }

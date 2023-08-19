@@ -87,7 +87,7 @@ model Tournament {
   rounds      Int            @default(1)
   kind        TournamentKind @default(FREE)
   shareLink   ShareLink?
-  PlayoffGame PlayoffGame[]
+  playoffGame PlayoffGame[]
   isPlayoffs  Boolean        @default(false)
 }
 
