@@ -6,6 +6,8 @@ import GradientButton from "~/components/elements/GradientButton/GradientButton"
 import PageHead from "~/components/elements/PageHead/PageHead";
 import Pricing from "~/components/elements/Pricing/Pricing";
 import useRedirect from "~/hooks/useRedirect";
+import GridLayout from "../components/layout/GridLayout/GridLayout";
+import FeatureCard from "../components/elements/FeatureCard/FeatureCard";
 
 const HomePage: NextPage = () => {
   const { redirectToPath } = useRedirect();
@@ -83,7 +85,77 @@ const HomePage: NextPage = () => {
             />
           </div>
 
-          <div className="absolute left-1/2 top-1/2 -z-10 h-[85%] w-screen -translate-x-1/2 -translate-y-1/2 transform bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500 "></div>
+          <div className="absolute left-1/2 top-1/2 -z-10 h-[85%] w-screen -translate-x-1/2 -translate-y-1/2 transform bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500"></div>
+        </div>
+
+        <div className="my-10 md:my-20">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+            <FeatureCard
+              icon={
+                <div className="mx-auto w-full overflow-hidden rounded-lg border border-white/5 bg-slate-800/50 p-1.5">
+                  <Image
+                    width={300}
+                    height={300}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "fill",
+                      position: "relative",
+                    }}
+                    className="shadow-[inset_0_0_8px_rgb(255, 255, 255)] rounded-md  border border-white/5 shadow"
+                    src="/asset/cloud_hand.webp"
+                    alt="hand with cloud"
+                  />
+                </div>
+              }
+              title="Share Your Competition Easily"
+              explanation="Empower users to effortlessly share competition updates with participants and fans through unique links, ensuring easy access to real-time results and leaderboards."
+            />
+
+            <FeatureCard
+              icon={
+                <div className="mx-auto w-full overflow-hidden rounded-lg border border-white/5 bg-slate-800/50 p-1.5">
+                  <Image
+                    width={300}
+                    height={300}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "fill",
+                      position: "relative",
+                    }}
+                    className="shadow-[inset_0_0_8px_rgb(255, 255, 255)] rounded-md  border border-white/5 shadow"
+                    src="/asset/rocket.webp"
+                    alt="rocket"
+                  />
+                </div>
+              }
+              title="Instant Results and Rankings"
+              explanation="Streamline Competition Management: Rapidly Input Results, Instantly View Player Rankings, and Access Scheduled Games – All at Your Fingertips!"
+            />
+
+            <FeatureCard
+              icon={
+                <div className="mx-auto w-full overflow-hidden rounded-lg border border-white/5 bg-slate-800/50 p-1.5">
+                  <Image
+                    width={300}
+                    height={300}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "fill",
+                      position: "relative",
+                    }}
+                    className="shadow-[inset_0_0_8px_rgb(255, 255, 255)] rounded-md  border border-white/5 shadow"
+                    src="/asset/cup.webp"
+                    alt="cup"
+                  />
+                </div>
+              }
+              title="Track Progress and Celebrate Success"
+              explanation="Effortlessly display competition standings, making it simple for participants and fans to track progress and witness the excitement unfold through our user-friendly leaderboard."
+            />
+          </div>
         </div>
 
         <Pricing />

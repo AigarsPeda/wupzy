@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { GameSchemaArray } from "~/types/tournament.types";
 import { api } from "~/utils/api";
-import { PlayoffGameSchema } from "../types/playoff.types";
+import { PlayoffGameSchema } from "~/types/playoff.types";
 
 const useShareLink = () => {
   const { query } = useRouter();

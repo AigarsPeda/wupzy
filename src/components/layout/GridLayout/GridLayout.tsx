@@ -16,6 +16,7 @@ interface GridLayoutProps {
     | "320"
     | "350"
     | "400"
+    | "500"
     | "700"
     | "150-033";
 }
@@ -35,6 +36,7 @@ const GridLayout = forwardRef<Ref, GridLayoutProps>(
         isDivideX && "divide-x divide-gray-200",
         minWith === "350" &&
           "md:grid-cols-[repeat(auto-fit,minmax(350px,1fr))]",
+        minWith === "500" && "grid-cols-[repeat(auto-fit,minmax(500px,1fr))]",
         minWith === "300" && "grid-cols-[repeat(auto-fit,minmax(300px,1fr))]",
         minWith === "400" && "grid-cols-[repeat(auto-fit,minmax(400px,1fr))]",
         minWith === "700" && "grid-cols-[repeat(auto-fit,minmax(700px,1fr))]",
