@@ -6,7 +6,6 @@ import GradientButton from "~/components/elements/GradientButton/GradientButton"
 import PageHead from "~/components/elements/PageHead/PageHead";
 import Pricing from "~/components/elements/Pricing/Pricing";
 import useRedirect from "~/hooks/useRedirect";
-import GridLayout from "../components/layout/GridLayout/GridLayout";
 import FeatureCard from "../components/elements/FeatureCard/FeatureCard";
 
 const HomePage: NextPage = () => {
