@@ -57,7 +57,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
   return (
     <div
       ref={parent}
-      className="mt-4 flex w-full space-x-3 overflow-x-auto px-[8%] pb-5 md:px-0"
+      className="relative mt-4 flex w-full space-x-3 overflow-x-auto px-[8%] pb-5 md:px-0"
     >
       {!isGamesLoading ? (
         games.map((game) => {
@@ -76,8 +76,124 @@ const DisplayGames: FC<DisplayGamesProps> = ({
           const isWinnerFound = Boolean(game.winnerId);
 
           return (
-            <div key={game.id} className="relative">
-              <div
+            <div
+              key={game.id}
+              className="relative z-0 mx-auto flex items-center justify-center rounded-xl bg-slate-200"
+            >
+              {/* <div
+                style={{ width: `${cardsWidth(windowSize.width)}vw` }}
+                className="absolute left-1/2 top-1/2 -z-10 h-56 -translate-x-1/2 -translate-y-1/2 transform bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500"
+              ></div> */}
+
+              <div className="mx-auto w-full rounded-xl border border-white/25 bg-gray-200 bg-white/5 p-6 shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] backdrop-blur-xl will-change-transform">
+                <div style={{ width: `${cardsWidth(windowSize.width)}vw` }}>
+                  {/* <div className="absolute left-1/2 top-1/2 -z-50 h-[85%] w-screen -translate-x-1/2 -translate-y-1/2 transform bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500"></div> */}
+
+                  <div className="flex justify-between">
+                    <div className="flex space-x-1">
+                      <p className="rounded-md py-0.5 font-primary text-xs font-normal capitalize text-pink-500">
+                        Game {game?.order}
+                      </p>
+                      <p className="rounded-md p-1 py-0.5 font-primary text-xs font-normal capitalize text-pink-500">
+                        Round {game?.round}
+                      </p>
+                    </div>
+                    {handleScoreChange && <GameOption id={game.id} />}
+                  </div>
+                  <div className="mb-2 mt-2">
+                    <div className="grid grid-cols-10">
+                      <div className="col-span-4 border-b-2 text-center">
+                        <TeamName
+                          isLeftText
+                          name={game?.teamOne?.name || firstTeamName}
+                        />
+                      </div>
+                      <div className="col-span-2 text-center" />
+                      <div className="col-span-4 border-b-2 text-center ">
+                        <TeamName
+                          name={game?.teamTwo?.name || secondTeamName}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {isWinnerFound || !handleScoreChange ? (
+                    <div className="mb-5 grid grid-cols-10">
+                      <div className="col-span-4 text-center">
+                        <DisplayScore
+                          score={game.teamOneSetScore}
+                          isWinner={game.teamOneId === game.winnerId}
+                        />
+                      </div>
+                      <div className="col-span-2 text-center" />
+                      <div className="col-span-4 text-center">
+                        <DisplayScore
+                          isTextLeft
+                          score={game.teamTwoSetScore}
+                          isWinner={game.teamTwoId === game.winnerId}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="mx-auto mb-4 grid grid-cols-10">
+                      <div className="col-span-4">
+                        <NumberInput
+                          isFullWidth
+                          value={gameScore?.teamOneScore || 0}
+                          onChange={(num) => {
+                            handleScoreChange({
+                              num,
+                              gameId: game?.id,
+                              teamId: game?.teamOne?.id,
+                            });
+                          }}
+                        />
+                      </div>
+                      <div className="col-span-2 flex items-center justify-center text-center">
+                        <p className="text-sm text-gray-800">vs</p>
+                      </div>
+
+                      <div className="col-span-4">
+                        <NumberInput
+                          isFullWidth
+                          value={gameScore?.teamTwoScore || 0}
+                          onChange={(num) => {
+                            handleScoreChange({
+                              num,
+                              gameId: game?.id,
+                              teamId: game?.teamTwo?.id,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  <DisplaySetScore
+                    gameSets={game.gameSets}
+                    teamOneName={game?.teamOne?.name || firstTeamName}
+                    teamTwoName={game?.teamTwo?.name || secondTeamName}
+                  />
+
+                  {!isWinnerFound && handleScoreSave && (
+                    <div className="absolute bottom-2 right-2 mt-2 flex min-h-[2.5rem] items-center justify-end">
+                      <SecondaryButton
+                        color="dark"
+                        title="Save"
+                        type="button"
+                        isLoading={gameScore?.isSaving}
+                        handleClick={() =>
+                          handleScoreSave({
+                            game,
+                          })
+                        }
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* <div
                 className="h-full rounded-md border border-gray-200 bg-white p-2 shadow shadow-gray-300"
                 style={{ width: `${cardsWidth(windowSize.width)}vw` }}
               >
@@ -92,13 +208,16 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                   </div>
                   {handleScoreChange && <GameOption id={game.id} />}
                 </div>
-                <div className="mb-2 mt-4">
+                <div className="mb-2 mt-2">
                   <div className="grid grid-cols-10">
-                    <div className="col-span-4 text-center">
-                      <TeamName name={game?.teamOne?.name || firstTeamName} />
+                    <div className="col-span-4 border-b-2 text-center">
+                      <TeamName
+                        isLeftText
+                        name={game?.teamOne?.name || firstTeamName}
+                      />
                     </div>
                     <div className="col-span-2 text-center" />
-                    <div className="col-span-4 text-center">
+                    <div className="col-span-4 border-b-2 text-center ">
                       <TeamName name={game?.teamTwo?.name || secondTeamName} />
                     </div>
                   </div>
@@ -177,7 +296,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                     />
                   </div>
                 )}
-              </div>
+              </div> */}
             </div>
           );
         })
