@@ -33,7 +33,7 @@ const SecondaryButton: FC<SecondaryButtonProps> = ({
           "bg-gray-100 text-gray-800 hover:bg-gray-300 focus:ring-gray-800",
         color === "dark" && "bg-gray-800 text-gray-50 hover:bg-gray-700",
         isFullWidth && "w-full",
-        "min-h-[2rem] min-w-[4rem] px-4 py-2",
+        "min-h-[2rem] min-w-[4.5rem] px-4 py-2",
         "relative inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-normal tracking-[0.055em] transition-all focus:outline-none focus:ring-2 focus:ring-inset"
       )}
     >

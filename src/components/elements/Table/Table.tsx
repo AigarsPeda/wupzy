@@ -102,7 +102,7 @@ const Table: FC<TableProps> = ({ exclude, isLoading, tableContents }) => {
             <tr>
               {formatKey(tableHead).map((key) => (
                 <th
-                  className="border-b-2 border-gray-200 bg-gray-900 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                  className="border-b-2 border-gray-200 bg-gray-900 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                   key={key}
                 >
                   {key}

@@ -1,6 +1,6 @@
 import { type FC } from "react";
-import classNames from "~/utils/classNames";
 import Tooltip from "~/components/elements/Tooltip/Tooltip";
+import classNames from "~/utils/classNames";
 
 interface TeamNameProps {
   name: string;
@@ -14,7 +14,7 @@ const TeamName: FC<TeamNameProps> = ({ name, isLeftText }) => {
         <p
           className={classNames(
             isLeftText ? "text-left" : "text-right",
-            "truncate"
+            "truncate font-alumni text-2xl font-medium text-gray-800"
           )}
         >
           {name}

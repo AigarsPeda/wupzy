@@ -1,4 +1,5 @@
-import { type ReactNode, type FC } from "react";
+import { type FC, type ReactNode } from "react";
+import GradientLine from "~/components/elements/GradientLine/GradientLine";
 
 interface FeatureCardProps {
   title: string;
@@ -12,7 +13,8 @@ const FeatureCard: FC<FeatureCardProps> = ({ title, icon, explanation }) => {
       <div className="mb-4 w-full">
         <div>
           <h4 className="text-lg font-normal tracking-wider">{title}</h4>
-          <div className="my-2 h-0.5 w-full rounded-lg bg-gradient-to-r from-pink-500 to-red-500 md:w-[50%]" />
+          <GradientLine />
+          {/* <div className="my-2 h-0.5 w-full rounded-lg bg-gradient-to-r from-pink-500 to-red-500 md:w-[50%]" /> */}
         </div>
 
         <p className="font-primary font-light tracking-wider text-gray-200">

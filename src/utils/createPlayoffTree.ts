@@ -7,8 +7,6 @@ const createPlayoffTree = (
 ) => {
   const playoffMap: PlayoffMapType = new Map();
 
-  console.log("selectedRoundsCount", selectedRoundsCount);
-
   if (!players) {
     return playoffMap;
   }

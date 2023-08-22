@@ -7,7 +7,6 @@ import LoadingSkeleton from "~/components/elements/LoadingSkeleton/LoadingSkelet
 import NumberInput from "~/components/elements/NumberInput/NumberInput";
 import SecondaryButton from "~/components/elements/SecondaryButton/SecondaryButton";
 import TeamName from "~/components/elements/TeamName/TeamName";
-import useWindowSize from "~/hooks/useWindowSize";
 import { type GameType } from "~/types/tournament.types";
 import {
   type GamesScoresType,
@@ -35,29 +34,11 @@ const DisplayGames: FC<DisplayGamesProps> = ({
   handleScoreChange,
 }) => {
   const [parent] = useAutoAnimate();
-  const { windowSize } = useWindowSize();
-
-  // calculate the width of the one game card based on the window size so that the last card is cut off
-  const cardsWidth = (wind: number) => {
-    if (wind > 1100) {
-      return 25;
-    }
-
-    if (wind > 810) {
-      return 35;
-    }
-
-    if (wind > 668) {
-      return 50;
-    }
-
-    return 75;
-  };
 
   return (
     <div
       ref={parent}
-      className="relative mt-4 flex w-full space-x-3 overflow-x-auto px-[8%] pb-5 md:px-0"
+      className="relative mt-4 flex w-full gap-3 overflow-x-auto pb-5 md:gap-10 md:px-0"
     >
       {!isGamesLoading ? (
         games.map((game) => {
@@ -78,43 +59,37 @@ const DisplayGames: FC<DisplayGamesProps> = ({
           return (
             <div
               key={game.id}
-              className="relative z-0 mx-auto flex items-center justify-center rounded-xl bg-slate-200"
+              className="relative z-0 mx-auto flex items-center justify-center rounded-xl border border-slate-200/50 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-200 shadow-lg shadow-slate-200"
             >
-              {/* <div
-                style={{ width: `${cardsWidth(windowSize.width)}vw` }}
-                className="absolute left-1/2 top-1/2 -z-10 h-56 -translate-x-1/2 -translate-y-1/2 transform bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500"
-              ></div> */}
-
-              <div className="mx-auto w-full rounded-xl border border-white/25 bg-gray-200 bg-white/5 p-6 shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] backdrop-blur-xl will-change-transform">
-                <div style={{ width: `${cardsWidth(windowSize.width)}vw` }}>
-                  {/* <div className="absolute left-1/2 top-1/2 -z-50 h-[85%] w-screen -translate-x-1/2 -translate-y-1/2 transform bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500"></div> */}
-
+              <div className="mx-auto rounded-xl border border-white/25 bg-gray-200 bg-white/5 px-6 py-3 shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] backdrop-blur-xl will-change-transform">
+                <div className="w-[70vw] sm:w-[45vw] md:w-[24vw]">
                   <div className="flex justify-between">
-                    <div className="flex space-x-1">
-                      <p className="rounded-md py-0.5 font-primary text-xs font-normal capitalize text-pink-500">
+                    <div className="flex gap-1">
+                      <p className="rounded-md font-primary text-xs font-normal capitalize text-gray-900">
                         Game {game?.order}
                       </p>
-                      <p className="rounded-md p-1 py-0.5 font-primary text-xs font-normal capitalize text-pink-500">
+                      <p className="rounded-md font-primary text-xs font-normal capitalize text-gray-900">
                         Round {game?.round}
                       </p>
                     </div>
                     {handleScoreChange && <GameOption id={game.id} />}
                   </div>
-                  <div className="mb-2 mt-2">
+                  <div className="mb-2 mt-0.5">
                     <div className="grid grid-cols-10">
-                      <div className="col-span-4 border-b-2 text-center">
+                      <div className="col-span-4 mt-2">
                         <TeamName
                           isLeftText
                           name={game?.teamOne?.name || firstTeamName}
                         />
                       </div>
                       <div className="col-span-2 text-center" />
-                      <div className="col-span-4 border-b-2 text-center ">
+                      <div className="col-span-4 mt-2">
                         <TeamName
                           name={game?.teamTwo?.name || secondTeamName}
                         />
                       </div>
                     </div>
+                    <div className="my-1 h-0.5 rounded-full bg-gradient-to-l from-orange-50 via-orange-600 to-orange-50" />
                   </div>
 
                   {isWinnerFound || !handleScoreChange ? (
@@ -135,7 +110,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                       </div>
                     </div>
                   ) : (
-                    <div className="mx-auto mb-4 grid grid-cols-10">
+                    <div className="mx-auto mb-3 grid grid-cols-10">
                       <div className="col-span-4">
                         <NumberInput
                           isFullWidth
@@ -150,7 +125,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                         />
                       </div>
                       <div className="col-span-2 flex items-center justify-center text-center">
-                        <p className="text-sm text-gray-800">vs</p>
+                        <p className="text-sm text-gray-800"></p>
                       </div>
 
                       <div className="col-span-4">
@@ -176,7 +151,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                   />
 
                   {!isWinnerFound && handleScoreSave && (
-                    <div className="absolute bottom-2 right-2 mt-2 flex min-h-[2.5rem] items-center justify-end">
+                    <div className="absolute bottom-2 right-6 mt-2 flex min-h-[2.5rem] items-center justify-end">
                       <SecondaryButton
                         color="dark"
                         title="Save"
@@ -192,111 +167,6 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                   )}
                 </div>
               </div>
-
-              {/* <div
-                className="h-full rounded-md border border-gray-200 bg-white p-2 shadow shadow-gray-300"
-                style={{ width: `${cardsWidth(windowSize.width)}vw` }}
-              >
-                <div className="flex justify-between">
-                  <div className="flex space-x-1">
-                    <p className="rounded-md px-1 py-0.5 font-primary text-xs font-normal capitalize text-pink-500">
-                      Game {game?.order}
-                    </p>
-                    <p className="rounded-md p-1 py-0.5 font-primary text-xs font-normal capitalize text-pink-500">
-                      Round {game?.round}
-                    </p>
-                  </div>
-                  {handleScoreChange && <GameOption id={game.id} />}
-                </div>
-                <div className="mb-2 mt-2">
-                  <div className="grid grid-cols-10">
-                    <div className="col-span-4 border-b-2 text-center">
-                      <TeamName
-                        isLeftText
-                        name={game?.teamOne?.name || firstTeamName}
-                      />
-                    </div>
-                    <div className="col-span-2 text-center" />
-                    <div className="col-span-4 border-b-2 text-center ">
-                      <TeamName name={game?.teamTwo?.name || secondTeamName} />
-                    </div>
-                  </div>
-                </div>
-
-                {isWinnerFound || !handleScoreChange ? (
-                  <div className="mb-5 grid grid-cols-10">
-                    <div className="col-span-4 text-center">
-                      <DisplayScore
-                        score={game.teamOneSetScore}
-                        isWinner={game.teamOneId === game.winnerId}
-                      />
-                    </div>
-                    <div className="col-span-2 text-center" />
-                    <div className="col-span-4 text-center">
-                      <DisplayScore
-                        isTextLeft
-                        score={game.teamTwoSetScore}
-                        isWinner={game.teamTwoId === game.winnerId}
-                      />
-                    </div>
-                  </div>
-                ) : (
-                  <div className="mx-auto mb-4 grid grid-cols-10">
-                    <div className="col-span-4">
-                      <NumberInput
-                        isFullWidth
-                        value={gameScore?.teamOneScore || 0}
-                        onChange={(num) => {
-                          handleScoreChange({
-                            num,
-                            gameId: game?.id,
-                            teamId: game?.teamOne?.id,
-                          });
-                        }}
-                      />
-                    </div>
-                    <div className="col-span-2 flex items-center justify-center text-center">
-                      <p className="text-sm text-gray-800">vs</p>
-                    </div>
-
-                    <div className="col-span-4">
-                      <NumberInput
-                        isFullWidth
-                        value={gameScore?.teamTwoScore || 0}
-                        onChange={(num) => {
-                          handleScoreChange({
-                            num,
-                            gameId: game?.id,
-                            teamId: game?.teamTwo?.id,
-                          });
-                        }}
-                      />
-                    </div>
-                  </div>
-                )}
-
-                <DisplaySetScore
-                  gameSets={game.gameSets}
-                  teamOneName={game?.teamOne?.name || firstTeamName}
-                  teamTwoName={game?.teamTwo?.name || secondTeamName}
-                />
-
-                {!isWinnerFound && handleScoreSave && (
-                  <div className="absolute bottom-2 right-2 mt-2 flex min-h-[2.5rem] items-center justify-end">
-                    <SecondaryButton
-                      color="dark"
-                      title="Save"
-                      type="button"
-                      isLoading={gameScore?.isSaving}
-                      handleClick={() =>
-                        handleScoreSave({
-                          game,
-                        })
-                      }
-                    />
-                  </div>
-                )}
-              </div> */}
             </div>
           );
         })

@@ -2,7 +2,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
-import { Cabin, Koulen, Roboto } from "next/font/google";
+import { Alumni_Sans, Cabin, Roboto } from "next/font/google";
 import CookieConsentModal from "~/components/elements/CookieConsentModal/CookieConsentModal";
 import MainLayout from "~/components/layout/MainLayout/MainLayout";
 import "~/styles/globals.css";
@@ -16,19 +16,18 @@ const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700", "900"],
 });
 
-// Secondary font
-const koulen = Koulen({
-  weight: "400",
-  display: "swap",
-  subsets: ["latin"],
-  variable: "--font-koulen",
-});
-
 // Fonts for logo
 const cabin = Cabin({
   display: "swap",
   subsets: ["latin"],
   variable: "--font-cabin",
+  weight: ["400", "500", "600", "700"],
+});
+
+const alumni = Alumni_Sans({
+  display: "swap",
+  subsets: ["latin"],
+  variable: "--font-alumni",
   weight: ["400", "500", "600", "700"],
 });
 
@@ -42,8 +41,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
         {`
           :root {
             --font-cabin: ${cabin.style.fontFamily};
-            --font-koulen: ${koulen.style.fontFamily};
             --font-roboto: ${roboto.style.fontFamily};
+            --font-alumni: ${alumni.style.fontFamily};
           }
         `}
       </style>

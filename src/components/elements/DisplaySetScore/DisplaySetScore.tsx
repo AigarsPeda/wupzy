@@ -16,7 +16,7 @@ const DisplaySetScore: FC<DisplaySetScoreProps> = ({
   teamTwoName,
 }) => {
   return (
-    <div className="mx-auto min-h-[5rem] w-56 md:w-52">
+    <div className="mx-auto min-h-[4rem] w-56 md:w-52">
       <div className="grid grid-cols-12 gap-x-3">
         <div className="col-span-4 text-center">
           <p className="font-primary text-xs text-gray-900">Sets</p>

@@ -2,6 +2,7 @@ import { type Player, type Team } from "@prisma/client";
 import { type CreateGameType } from "~/types/utils.types";
 import isAnyIdTheSame from "~/utils/isAnyIdTheSame";
 import shuffleArray from "~/utils/shuffleArray";
+import updateGameOrder from "./updatGameOrder";
 
 const createKingGames = (
   teams: (Team & {
@@ -40,12 +41,7 @@ const createKingGames = (
 
   const gamesShuffle = shuffleArray(games);
 
-  // Update the order property
-  gamesShuffle.forEach((game, index) => {
-    game.order = index + 1;
-  });
-
-  return gamesShuffle;
+  return updateGameOrder(gamesShuffle);
 };
 
 export default createKingGames;

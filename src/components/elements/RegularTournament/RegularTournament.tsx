@@ -45,7 +45,7 @@ const RegularTournament: FC<RegularTournamentProps> = ({
         games={games?.filter((game) => game.group === selectedGroup) || []}
       />
 
-      <div className="mt-5">
+      <div className="mt-5 ">
         {tournamentType === "king" ? (
           <PlayerTable selectedGroup={selectedGroup} players={players || []} />
         ) : (

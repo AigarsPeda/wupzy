@@ -25,7 +25,7 @@ const NumberInput = forwardRef<Ref, NumberInputProps>(
       >
         <button
           data-action="decrement"
-          className="flex h-full w-20 cursor-pointer items-center justify-center rounded-l-[0.05rem] bg-gray-200 text-gray-800 outline-none transition-all hover:bg-gray-700 hover:text-gray-100"
+          className="flex h-full w-20 cursor-pointer items-center justify-center rounded-l-[0.05rem] bg-slate-300 text-gray-800 outline-none transition-all hover:bg-gray-700 hover:text-gray-100"
           onClick={() => {
             if (value > 0) {
               onChange(value - 1);
@@ -44,7 +44,7 @@ const NumberInput = forwardRef<Ref, NumberInputProps>(
           pattern="[0-9]*"
           name="input-number"
           value={value || "0"}
-          className="text-md md:text-basecursor-default flex w-full items-center bg-gray-200 text-center font-primary text-lg font-semibold text-gray-700 outline-none hover:text-black focus:text-black focus:outline-none"
+          className="text-md md:text-basecursor-default flex w-full items-center bg-slate-300 text-center font-primary text-lg font-semibold text-gray-700 outline-none hover:text-black focus:text-black focus:outline-none"
           onFocus={(e) => {
             if (e.target.value === "0") {
               e.target.value = "";
@@ -56,7 +56,7 @@ const NumberInput = forwardRef<Ref, NumberInputProps>(
         ></input>
         <button
           data-action="increment"
-          className="flex h-full w-20 cursor-pointer items-center justify-center rounded-r-[0.05rem] bg-gray-200 text-gray-800 transition-all hover:bg-gray-700 hover:text-gray-100"
+          className="flex h-full w-20 cursor-pointer items-center justify-center rounded-r-[0.05rem] bg-slate-300 text-gray-800 transition-all hover:bg-gray-700 hover:text-gray-100"
           onClick={() => {
             onChange(value + 1);
           }}

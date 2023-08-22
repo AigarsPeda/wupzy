@@ -1,6 +1,7 @@
 import { type Team } from "@prisma/client";
 import { type CreateGameType } from "~/types/utils.types";
 import shuffleArray from "~/utils/shuffleArray";
+import updateGameOrder from "./updatGameOrder";
 
 const createGames = (teams: Team[], tournamentId: string, round: number) => {
   let order = 1;
@@ -29,7 +30,7 @@ const createGames = (teams: Team[], tournamentId: string, round: number) => {
 
   const gamesShuffle = shuffleArray(games);
 
-  return gamesShuffle;
+  return updateGameOrder(gamesShuffle);
 };
 
 export default createGames;

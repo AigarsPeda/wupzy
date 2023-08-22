@@ -56,12 +56,12 @@ const HomePage: NextPage = () => {
         <div className="relative z-10 mx-auto flex items-center justify-center rounded-xl bg-slate-200">
           <div className="relative mx-auto w-full rounded-xl border border-white/25 bg-gray-200 bg-white/5 p-6 shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] backdrop-blur-xl will-change-transform">
             <Image
-              width={1000}
-              height={1000}
+              width={1300}
+              height={1300}
               priority={true}
-              className="hidden md:block"
+              className="hidden rounded md:block"
               alt="Picture wupzy dashboard"
-              src="/asset/main_desktop_2.webp"
+              src="/asset/desktop.webp"
               style={{
                 width: "100%",
                 height: "100%",
@@ -72,8 +72,8 @@ const HomePage: NextPage = () => {
             <Image
               width={1000}
               height={1000}
-              src="/asset/main_mob.webp"
-              className="block md:hidden"
+              src="/asset/mob_3.webp"
+              className="block rounded md:hidden"
               alt="Picture wupzy dashboard"
               style={{
                 width: "100%",
