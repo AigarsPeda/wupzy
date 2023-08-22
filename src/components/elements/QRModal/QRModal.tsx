@@ -15,7 +15,6 @@ interface QRModalProps {
 }
 
 const QRModal: FC<QRModalProps> = ({ isQRModal, handleCancelClicks }) => {
-  // const { windowSize } = useWindowSize();
   const { tournament } = useTournament();
 
   const downloadQRCode = () => {
@@ -69,7 +68,6 @@ const QRModal: FC<QRModalProps> = ({ isQRModal, handleCancelClicks }) => {
     <SmallModalLayout
       isModalVisible={isQRModal}
       modalTitle="Scan the QR code"
-      // isFullScreen={windowSize.width < 768}
       handleCancelClick={handleCancelClicks}
     >
       <div className="w-[22rem] px-3 pb-2 text-left md:w-full md:max-w-[28rem] md:px-6 md:pb-4">

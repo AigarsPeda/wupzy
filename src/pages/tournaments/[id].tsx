@@ -103,6 +103,7 @@ const TournamentPage: NextPage = () => {
             >
               <SmallButton
                 color="dark"
+                isDisabled={tournament?.kind === "FREE"}
                 icon={<IoQrCodeOutline className="h-6 w-6" />}
                 handleClick={() => {
                   setIsQRModal((state) => !state);

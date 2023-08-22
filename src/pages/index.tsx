@@ -2,11 +2,11 @@ import { type NextPage } from "next";
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import { HiArrowRight } from "react-icons/hi";
+import FeatureCard from "~/components/elements/FeatureCard/FeatureCard";
 import GradientButton from "~/components/elements/GradientButton/GradientButton";
 import PageHead from "~/components/elements/PageHead/PageHead";
 import Pricing from "~/components/elements/Pricing/Pricing";
 import useRedirect from "~/hooks/useRedirect";
-import FeatureCard from "../components/elements/FeatureCard/FeatureCard";
 
 const HomePage: NextPage = () => {
   const { redirectToPath } = useRedirect();
