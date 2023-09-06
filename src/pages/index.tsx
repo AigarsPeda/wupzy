@@ -59,9 +59,9 @@ const HomePage: NextPage = () => {
               width={1300}
               height={1300}
               priority={true}
-              className="hidden rounded md:block"
-              alt="Picture wupzy dashboard"
               src="/asset/desktop.webp"
+              alt="Picture wupzy dashboard"
+              className="hidden rounded md:block"
               style={{
                 width: "100%",
                 height: "100%",
@@ -73,8 +73,8 @@ const HomePage: NextPage = () => {
               width={1000}
               height={1000}
               src="/asset/mob_3.webp"
-              className="block rounded md:hidden"
               alt="Picture wupzy dashboard"
+              className="block rounded md:hidden"
               style={{
                 width: "100%",
                 height: "100%",
@@ -84,7 +84,7 @@ const HomePage: NextPage = () => {
             />
           </div>
 
-          <div className="animate-background absolute left-1/2 top-1/2 -z-10 h-[85%] w-screen -translate-x-1/2 -translate-y-1/2 transform bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500 bg-400"></div>
+          <div className="absolute left-1/2 top-1/2 -z-10 h-[85%] w-screen -translate-x-1/2 -translate-y-1/2 transform animate-background bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500 bg-400"></div>
         </div>
 
         <div className="my-10 md:my-20">
