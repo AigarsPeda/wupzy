@@ -26,7 +26,7 @@ const TournamentPage: NextPage = () => {
   const { tournament, isLoading: isTournamentLoading } = useTournament();
   const [selectedGroup, updateSelectedGroup] = useQueryValue("A", "group");
   const [isPlayoffMode, updateIsPlayoffMode] = useQueryValue(
-    tournament?.isPlayoffs ? "true" : "false",
+    "false",
     "isplayoffmode"
   );
 

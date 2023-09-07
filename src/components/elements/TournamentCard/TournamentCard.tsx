@@ -1,6 +1,6 @@
+import Link from "next/link";
 import { type FC } from "react";
 import TournamentTypeIconDisplay from "~/components/elements/TournamentTypeIconDisplay/TournamentTypeIconDisplay";
-import useRedirect from "~/hooks/useRedirect";
 import { type TournamentType } from "~/types/tournament.types";
 import formatDate from "~/utils/formatDate";
 
@@ -9,10 +9,12 @@ interface TournamentCardProps {
 }
 
 const TournamentCard: FC<TournamentCardProps> = ({ tournament }) => {
-  const { redirectToPath } = useRedirect();
   return (
-    <button
-      onClick={() => redirectToPath(`/tournaments/${tournament.id}`)}
+    <Link
+      href={{
+        pathname: `/tournaments/${tournament.id}`,
+        query: { group: "A", isplayoffmode: tournament.isPlayoffs },
+      }}
       className="flex w-full items-start justify-start rounded-md border border-gray-300 p-4 text-left transition duration-300 ease-in-out hover:shadow-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-800"
     >
       <div className="flex h-full w-full flex-col justify-between">
@@ -35,7 +37,7 @@ const TournamentCard: FC<TournamentCardProps> = ({ tournament }) => {
           </p>
         </div>
       </div>
-    </button>
+    </Link>
   );
 };
 

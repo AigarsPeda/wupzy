@@ -50,6 +50,7 @@ export const TournamentSchema = z.object({
   rounds: z.number(),
   createdAt: z.date(),
   updatedAt: z.date(),
+  isPlayoffs: z.boolean(),
   type: TournamentTypeEnum,
 });
 

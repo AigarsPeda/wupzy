@@ -7,6 +7,7 @@ import { GameSchema, GameSets } from "~/types/tournament.types";
 import { GamesScoresSchema } from "~/types/utils.types";
 import countWinsPerTeam from "~/utils/countWinsPerTeam";
 import createGameSetJson from "~/utils/createGameSetJson";
+import getTournamentGames from "../utils/getTournamentGames";
 
 export const gameRouter = createTRPCRouter({
   updateGameScore: protectedProcedure
@@ -140,18 +141,7 @@ export const gameRouter = createTRPCRouter({
         orderBy: [{ round: "asc" }, { order: "asc" }],
       });
 
-      const players = await prisma.player.findMany({
-        where: {
-          tournamentId: input.id,
-        },
-      });
-
-      // const playerGroups = new Set<string>();
-      const playerGroups = new Set<string>();
-
-      for (const player of players) {
-        playerGroups.add(player.group);
-      }
+      const playerGroups = await getTournamentGames(prisma, input.id);
 
       return { games, groups: [...playerGroups] };
     }),
