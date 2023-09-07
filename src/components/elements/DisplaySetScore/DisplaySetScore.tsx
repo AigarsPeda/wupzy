@@ -4,10 +4,9 @@ import { type GameSetsType } from "~/types/tournament.types";
 import classNames from "~/utils/classNames";
 
 interface DisplaySetScoreProps {
-  // game: GameType;
-  gameSets: GameSetsType;
   teamOneName: string;
   teamTwoName: string;
+  gameSets: GameSetsType;
 }
 
 const DisplaySetScore: FC<DisplaySetScoreProps> = ({

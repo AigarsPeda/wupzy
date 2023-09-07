@@ -6,6 +6,7 @@ import createGamesNTimes from "~/server/api/utils/createGamesNTimes";
 import createKingGamesNTimes from "~/server/api/utils/createKingGamesNTimes";
 import filterPlayers from "~/server/api/utils/filterPlayers";
 import filteredTeams from "~/server/api/utils/filteredTeams";
+import getTournamentGames from "~/server/api/utils/getTournamentGames";
 import { NewTournamentSchema } from "~/types/tournament.types";
 import createTeams from "~/utils/createTeams";
 
@@ -454,5 +455,19 @@ export const tournamentRouter = createTRPCRouter({
 
         return { id: input.id };
       }
+    }),
+
+  getTournamentGroups: protectedProcedure
+    .input(
+      z.object({
+        tournamentId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { prisma } = ctx;
+
+      const playerGroups = await getTournamentGames(prisma, input.tournamentId);
+
+      return { groups: [...playerGroups] };
     }),
 });

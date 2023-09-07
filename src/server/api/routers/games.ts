@@ -1,13 +1,13 @@
 import z from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import editScore from "~/server/api/utils/editScore";
+import getTournamentGames from "~/server/api/utils/getTournamentGames";
 import updatePlayerScores from "~/server/api/utils/updatePlayerScores";
 import updateTeamsScore from "~/server/api/utils/updateTeamsScore";
 import { GameSchema, GameSets } from "~/types/tournament.types";
 import { GamesScoresSchema } from "~/types/utils.types";
 import countWinsPerTeam from "~/utils/countWinsPerTeam";
 import createGameSetJson from "~/utils/createGameSetJson";
-import getTournamentGames from "../utils/getTournamentGames";
 
 export const gameRouter = createTRPCRouter({
   updateGameScore: protectedProcedure

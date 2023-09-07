@@ -43,7 +43,6 @@ const PlayoffTeamScore: FC<PlayoffTeamScoreProps> = ({
         <p className="">{team?.name || ""}</p>
         {isBothTeams && !isWinner && (
           <NumberInput
-            isBorder
             ref={ref}
             value={team.score}
             onChange={(num) => {
