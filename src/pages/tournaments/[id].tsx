@@ -21,10 +21,13 @@ const QRModal = dynamic(() => import("~/components/elements/QRModal/QRModal"));
 
 const TournamentPage: NextPage = () => {
   // TODO: Fetch games only for selected group
-  const { games } = useTournamentGames();
+  const { games, groups } = useTournamentGames();
   const [isQRModal, setIsQRModal] = useState(false);
   const { tournament, isLoading: isTournamentLoading } = useTournament();
-  const [selectedGroup, updateSelectedGroup] = useQueryValue("A", "group");
+  const [selectedGroup, updateSelectedGroup] = useQueryValue(
+    groups[0] || "A",
+    "group"
+  );
   const [isPlayoffMode, updateIsPlayoffMode] = useQueryValue(
     "false",
     "isplayoffmode"

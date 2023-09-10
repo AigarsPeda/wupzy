@@ -115,7 +115,7 @@ const useTournamentGames = () => {
     gamesScores,
     handleScoreSave,
     handleScoreChange,
-    groups: data?.groups,
+    groups: data?.groups || [],
     games: data?.games ? GameSchemaArray.parse(data?.games) : undefined,
   };
 };
