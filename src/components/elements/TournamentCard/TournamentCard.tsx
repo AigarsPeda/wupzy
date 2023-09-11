@@ -20,12 +20,12 @@ const TournamentCard: FC<TournamentCardProps> = ({ tournament }) => {
         pathname: `/tournaments/${tournament.id}`,
         query: { group: data?.groups[0], isplayoffmode: tournament.isPlayoffs },
       }}
-      className="flex w-full items-start justify-start rounded-md border border-gray-300 p-4 text-left transition duration-300 ease-in-out hover:shadow-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-800"
+      className="flex w-full items-start justify-start rounded-lg border border-gray-100 bg-gray-100 p-4 text-left shadow transition duration-300 ease-in-out hover:shadow-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-800"
     >
       <div className="flex h-full w-full flex-col justify-between">
-        <div className="flex items-center space-x-1">
+        <div className="flex w-24 items-center justify-between rounded-md bg-gray-50 px-3 py-1">
           <TournamentTypeIconDisplay tournamentType={tournament.type} />
-          <p className="rounded-md px-2 py-1 font-primary text-xs font-semibold capitalize text-gray-700">
+          <p className="rounded-md font-primary text-xs font-semibold capitalize text-gray-700">
             {tournament.type}
           </p>
         </div>
@@ -33,7 +33,10 @@ const TournamentCard: FC<TournamentCardProps> = ({ tournament }) => {
           {tournament.name}
         </h1>
 
-        <div className="mt-2 flex space-x-3">
+        <div className="mt-2 flex space-x-2">
+          <p className="rounded-md bg-gray-400 px-2 py-1 font-primary text-xs font-normal capitalize text-gray-50">
+            {tournament.isPlayoffs ? "Playoffs" : "Groups"}
+          </p>
           <p className="rounded-md bg-gray-400 px-2 py-1 font-primary text-xs font-normal capitalize text-gray-50">
             {tournament.sets} sets
           </p>
