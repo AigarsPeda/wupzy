@@ -18,7 +18,7 @@
   a,
   li,
   button {
-    @apply font-primary font-medium tracking-wider text-gray-700;
+    @apply font-primary font-normal tracking-wider text-gray-700;
   }
 
   html {

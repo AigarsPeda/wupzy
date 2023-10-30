@@ -2,6 +2,11 @@ import { type LinkType } from "~/types/utils.types";
 
 export const LINKS: LinkType[] = [
   {
+    public: true,
+    href: "/pricing",
+    label: "Pricing",
+  },
+  {
     public: false,
     href: "/tournaments",
     label: "Tournaments",
@@ -14,6 +19,7 @@ export const LINKS: LinkType[] = [
   {
     public: false,
     href: "/tournaments/[id]",
+    // label: "Tournament",
   },
 ];
 
@@ -27,7 +33,7 @@ export const ONE_TOURNAMENT_COST = 18;
 
 export const STRIPE_PRICE_ID =
   process.env.NODE_ENV === "development"
-    ? "price_1NP7sDFTT3aSVLG6wBWIJrXN"
-    : "price_1NPyuIFTT3aSVLG6lVGK9JMN";
+    ? "price_1O6UXdFTT3aSVLG6UaXB9XuR"
+    : "price_1O6UYqFTT3aSVLG6ZcIcnYvx";
 
 // export const TEST_STRIPE_PRICE_ID = "price_1NP7sDFTT3aSVLG6wBWIJrXN";

@@ -1,27 +1,36 @@
 import { signIn, useSession } from "next-auth/react";
 import { type FC } from "react";
 import { BsCheckLg } from "react-icons/bs";
-import { IoIosArrowForward } from "react-icons/io";
-import GradientButton from "~/components/elements/GradientButton/GradientButton";
 import Mailto from "~/components/elements/Mailto/Mailto";
+import PrimaryButton from "~/components/elements/PrimaryButton/PrimaryButton";
 import GridLayout from "~/components/layout/GridLayout/GridLayout";
 import useRedirect from "~/hooks/useRedirect";
+import classNames from "~/utils/classNames";
+
+type OptionType = {
+  title: string;
+  price: string;
+  info: string;
+  options: string[];
+};
 
 const OPTIONS = [
   {
     title: "Hobby",
     price: "Free",
     options: ["Unlimited tournaments", "Unlimited king tournaments"],
+    info: "Ideal for friend gatherings.",
   },
   {
     title: "Pro",
-    price: "3.45€",
+    price: "0.50€",
     options: [
       "Unlimited tournaments",
       "Unlimited king tournaments",
       "5 share tournament link",
       "5 split players into groups",
     ],
+    info: "Great for bigger tournaments, ensuring essential result tracking.",
   },
   {
     title: "Business",
@@ -33,6 +42,7 @@ const OPTIONS = [
       "Unlimited split players into groups",
       "Custom solutions",
     ],
+    info: "Ideal for companies in need of customized solutions.",
   },
 ];
 
@@ -40,72 +50,78 @@ const Pricing: FC = () => {
   const { redirectToPath } = useRedirect();
   const { data: sessionData } = useSession();
 
+  const isPro = (opt: OptionType) => {
+    return opt.title === "Pro";
+  };
+
   return (
-    <div className="mt-6">
-      <GridLayout isGap minWith="300">
-        {OPTIONS.map((option) => (
-          <div
-            key={option.title}
-            className="relative z-10 mx-auto w-full rounded-xl bg-slate-200"
-          >
-            <div className="relative mx-auto flex h-full w-full flex-col justify-between rounded-xl border border-white/25 bg-gray-200 bg-white/5 p-6 shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] backdrop-blur-xl will-change-transform">
-              <div className="border-b-2 border-white">
-                <div className="pb-2 text-center">
-                  <p className="font-medium text-gray-500">{option.title}</p>
-                </div>
-
-                <div className="pb-5 text-center">
-                  <p className="text-3xl font-semibold text-gray-800">
-                    {option.price}
-                  </p>
-                </div>
-              </div>
-
-              <div className="h-full pt-5">
-                <ul className="space-y-2 text-gray-800">
-                  {option.options.map((opt) => (
-                    <li key={opt} className="flex w-full items-center">
-                      <BsCheckLg className="mr-2 h-5 w-5 text-green-500" />{" "}
-                      {opt}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="mt-10">
-                {option.title === "Business" ? (
-                  <Mailto
-                    bgColor="bg-slate-200"
-                    email="wupzy@wupzy.com"
-                    subject="Custom solutions"
-                    body="Business. Custom solutions:"
-                  >
-                    Talk to us
-                    <IoIosArrowForward className="ml-2 h-5 w-5 text-pink-500 group-hover:text-white" />
-                  </Mailto>
-                ) : (
-                  <GradientButton
-                    type="button"
-                    bgColor="bg-slate-200"
-                    icon={
-                      <IoIosArrowForward className="ml-2 h-5 w-5 text-pink-500 group-hover:text-white" />
-                    }
-                    handleClick={() => {
-                      if (!sessionData) {
-                        void signIn();
-                        return;
-                      }
-                      void redirectToPath("/tournaments");
-                    }}
-                    title={sessionData ? "Your tournaments" : "Try it now"}
-                  />
+    <GridLayout isGap minWith="275">
+      {OPTIONS.map((option) => (
+        <div
+          key={option.title}
+          className={classNames(
+            isPro(option)
+              ? "scale-100 border-2 border-gray-800"
+              : "scale-100 md:scale-95",
+            "flex w-full flex-col justify-between rounded-3xl bg-white p-8 shadow-lg ring-1 ring-gray-200 xl:p-10"
+          )}
+        >
+          <div className="flex h-52 flex-col justify-between">
+            <div>
+              <p className="text-sm text-gray-700">{option.info}</p>
+            </div>
+            <div className="flex items-end">
+              <p className="text-3xl font-semibold text-gray-800">
+                {option.price}
+                {isPro(option) && (
+                  <span className="pl-2 text-sm font-normal text-gray-700">
+                    / tournament
+                  </span>
                 )}
-              </div>
+              </p>
             </div>
           </div>
-        ))}
-      </GridLayout>
-    </div>
+          <div className="my-5 w-full">
+            {option.title === "Business" ? (
+              <div className="flex w-full justify-start">
+                <Mailto
+                  email="wupzy@wupzy.com"
+                  subject="Custom solutions"
+                  body="Business. Custom solutions:"
+                >
+                  Talk to us
+                </Mailto>
+              </div>
+            ) : (
+              <PrimaryButton
+                isFullWidth
+                handleClick={() => {
+                  if (!sessionData) {
+                    void signIn();
+                    return;
+                  }
+                  void redirectToPath("/tournaments");
+                }}
+                isSelected={isPro(option)}
+              >
+                Get started
+              </PrimaryButton>
+            )}
+          </div>
+
+          <div className="h-full pt-5">
+            <ul className="space-y-4">
+              {option.options.map((opt) => (
+                <li key={opt} className="flex w-full items-center text-sm">
+                  <BsCheckLg className="mr-2 h-5 w-5 text-green-500" />
+                  {opt}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ))}
+    </GridLayout>
   );
 };
 

@@ -3,9 +3,8 @@ import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import { HiArrowRight } from "react-icons/hi";
 import FeatureCard from "~/components/elements/FeatureCard/FeatureCard";
-import GradientButton from "~/components/elements/GradientButton/GradientButton";
 import PageHead from "~/components/elements/PageHead/PageHead";
-import Pricing from "~/components/elements/Pricing/Pricing";
+import PrimaryButton from "~/components/elements/PrimaryButton/PrimaryButton";
 import useRedirect from "~/hooks/useRedirect";
 
 const HomePage: NextPage = () => {
@@ -36,13 +35,8 @@ const HomePage: NextPage = () => {
           </h2>
         </div>
         <div className="mb-10 mt-10 md:mb-16">
-          <GradientButton
-            type="button"
-            bgColor="bg-gray-100"
-            title={sessionData ? "Your tournaments" : "Try for free"}
-            icon={
-              <HiArrowRight className="h-5 w-5 text-gray-900 group-hover:text-white" />
-            }
+          <PrimaryButton
+            color="dark"
             handleClick={() => {
               if (!sessionData) {
                 void signIn();
@@ -50,7 +44,10 @@ const HomePage: NextPage = () => {
               }
               void redirectToPath("/tournaments");
             }}
-          />
+          >
+            <span className="mr-4">Get started</span>
+            <HiArrowRight className="h-4 w-4 text-white" />
+          </PrimaryButton>
         </div>
 
         <div className="relative z-10 mx-auto flex items-center justify-center rounded-xl bg-slate-200">
@@ -157,7 +154,7 @@ const HomePage: NextPage = () => {
           </div>
         </div>
 
-        <Pricing />
+        {/* <Pricing /> */}
       </main>
     </>
   );

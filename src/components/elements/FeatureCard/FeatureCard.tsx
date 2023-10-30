@@ -7,17 +7,20 @@ interface FeatureCardProps {
   explanation: string;
 }
 
+// bg-gradient-to-r from-gray-800 to-gray-900
+
 const FeatureCard: FC<FeatureCardProps> = ({ title, icon, explanation }) => {
   return (
-    <div className="shadow-black/45 justify-between rounded-xl bg-gradient-to-r from-gray-800 to-gray-900 p-6 text-white shadow-2xl md:flex">
+    <div className="shadow-zinc-950/45 justify-between rounded-xl bg-zinc-950  p-6 text-white shadow-xl md:flex">
       <div className="mb-4 w-full">
         <div>
-          <h4 className="text-lg font-normal tracking-wider">{title}</h4>
+          <h4 className="text-lg font-normal tracking-wider text-gray-100">
+            {title}
+          </h4>
           <GradientLine />
-          {/* <div className="my-2 h-0.5 w-full rounded-lg bg-gradient-to-r from-pink-500 to-red-500 md:w-[50%]" /> */}
         </div>
 
-        <p className="font-primary font-light tracking-wider text-gray-200">
+        <p className="font-primary font-light tracking-wider text-gray-300">
           {explanation}
         </p>
       </div>
