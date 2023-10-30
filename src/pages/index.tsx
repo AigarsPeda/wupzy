@@ -20,34 +20,36 @@ const HomePage: NextPage = () => {
           tournament tables, save game scores, view real-time results, and share
           them with all participants in just a few clicks."
       />
-      <main className="px-4 py-4">
-        <div className="mb-5 mt-0 md:mt-10">
-          <h1 className="max-w-4xl font-primary text-6xl font-semibold tracking-tight">
-            Create your{" "}
-            <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-6xl font-semibold  text-transparent">
-              Tournament
-            </span>
-          </h1>
-          <h2 className="mb-5 mt-8 max-w-2xl font-primary font-medium text-gray-800">
-            Wupzy: Simplifying sports tournament organization. Save scores,
-            access results, stay updated, and share your game tables with
-            participants.
-          </h2>
-        </div>
-        <div className="mb-10 mt-10 md:mb-16">
-          <PrimaryButton
-            color="dark"
-            handleClick={() => {
-              if (!sessionData) {
-                void signIn();
-                return;
-              }
-              void redirectToPath("/tournaments");
-            }}
-          >
-            <span className="mr-4">Get started</span>
-            <HiArrowRight className="h-4 w-4 text-white" />
-          </PrimaryButton>
+      <main>
+        <div className="pb-16 md:pb-44 md:pt-28">
+          <div>
+            <h1 className="max-w-4xl font-primary text-6xl font-semibold tracking-tight">
+              Create your{" "}
+              <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-6xl font-semibold  text-transparent">
+                Tournament
+              </span>
+            </h1>
+            <h2 className="mb-5 mt-8 max-w-2xl font-primary font-medium text-gray-800">
+              Wupzy: Simplifying sports tournament organization. Save scores,
+              access results, stay updated, and share your game tables with
+              participants.
+            </h2>
+          </div>
+          <div className="pt-8">
+            <PrimaryButton
+              color="dark"
+              handleClick={() => {
+                if (!sessionData) {
+                  void signIn();
+                  return;
+                }
+                void redirectToPath("/tournaments");
+              }}
+            >
+              <span className="mr-4">Get started</span>
+              <HiArrowRight className="h-4 w-4 text-white" />
+            </PrimaryButton>
+          </div>
         </div>
 
         <div className="relative z-10 mx-auto flex items-center justify-center rounded-xl bg-slate-200">

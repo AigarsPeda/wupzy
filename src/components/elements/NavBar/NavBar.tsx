@@ -1,21 +1,40 @@
 import { LINKS, PAGES_WITHOUT_HEADER } from "hardcoded";
 import { useRouter } from "next/router";
-import type { FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import Logo from "~/components/elements/Logo/Logo";
 import DesktopNav from "~/components/elements/NavBar/DesktopNav";
 import MobileNav from "~/components/elements/NavBar/MobileNav";
 import SettingsDrawer from "~/components/elements/SettingsDrawer/SettingsDrawer";
+import classNames from "~/utils/classNames";
 
 const NavBar: FC = () => {
   const router = useRouter();
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const isNavBar = () => {
     return !PAGES_WITHOUT_HEADER.includes(router.pathname);
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <>
-      <nav className="relative z-[50] flex items-center justify-between bg-slate-50 px-4 py-4 shadow-[0_2px_5px_rgba(0,0,0,0.07)] md:px-12 md:py-4">
+      <nav
+        className={classNames(
+          isScrolled && "bg-slate-50 shadow-[0_2px_5px_rgba(0,0,0,0.07)]",
+          "top-0 z-[150] flex w-full items-center justify-between px-4 py-4 md:sticky md:px-12 md:py-2"
+        )}
+      >
         <Logo />
         {isNavBar() && (
           <>

@@ -9,12 +9,12 @@ const Logo: FC = () => {
   return (
     <Link
       href="/"
-      className="rounded-md bg-black font-koulen text-4xl text-gray-900"
+      className="font-koulen rounded-md bg-black text-4xl text-gray-900"
     >
       {windowSize.width && windowSize.width <= 700 ? (
         <LogoMark className="h-11" />
       ) : (
-        <LogoMarkDesktop className="h-11" />
+        <LogoMarkDesktop className="h-9" />
       )}
     </Link>
   );

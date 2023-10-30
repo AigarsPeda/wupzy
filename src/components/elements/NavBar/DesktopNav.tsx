@@ -1,51 +1,24 @@
-import { STRIPE_ONE_TIME_PURCHASE_PRICE_ID } from "hardcoded";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
 import { type FC } from "react";
-import AuthenticateUser from "~/components/elements/AuthenticateUser/AuthenticateUser";
-import Button from "~/components/elements/Button/Button";
 import NavLink from "~/components/elements/NavBar/NavLink";
+import ProfileDropdown from "~/components/elements/ProfileDropdown/ProfileDropdown";
 import { type LinkType } from "~/types/utils.types";
-import { api } from "~/utils/api";
 
 interface DesktopNavProps {
   links: LinkType[];
 }
 
 const DesktopNav: FC<DesktopNavProps> = ({ links }) => {
-  const router = useRouter();
-  const { data: sessionData, status } = useSession();
-  const { mutateAsync } = api.stripe.createCheckoutSession.useMutation();
-
-  const checkout = async (priceId: string) => {
-    const { checkoutUrl } = await mutateAsync({ priceId });
-
-    if (checkoutUrl) {
-      router.push(checkoutUrl).catch((err) => {
-        console.error("Error redirecting to checkout", err);
-      });
-    }
-  };
+  const { data: sessionData } = useSession();
 
   return (
     <>
       <div className="flex w-full items-center justify-between">
-        <div className="ml-8 flex w-full">
+        <div className="ml-8">
           <NavLink isFlex links={links} sessionData={sessionData} />
         </div>
-        <div className="flex space-x-2">
-          {sessionData?.user.id && (
-            <Button
-              color="light"
-              title="Buy 100 credits"
-              handleClick={() => {
-                checkout(STRIPE_ONE_TIME_PURCHASE_PRICE_ID).catch((err) => {
-                  console.error("Error creating checkout session", err);
-                });
-              }}
-            />
-          )}
-          <AuthenticateUser sessionData={sessionData} status={status} />
+        <div>
+          <ProfileDropdown />
         </div>
       </div>
     </>

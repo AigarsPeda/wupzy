@@ -1,7 +1,7 @@
 import { type Session } from "next-auth";
 import { signIn, signOut } from "next-auth/react";
 import { useEffect, useState, type FC } from "react";
-import Button from "~/components/elements/Button/Button";
+import PrimaryButton from "~/components/elements/PrimaryButton/PrimaryButton";
 
 interface AuthenticateUserProps {
   sessionData: Session | null;
@@ -24,10 +24,9 @@ const AuthenticateUser: FC<AuthenticateUserProps> = ({
 
   return (
     <div>
-      <Button
-        isLoading={isLoading}
+      <PrimaryButton
+        isFullWidth
         color="light"
-        title={sessionData ? "Sign out" : "Sign in"}
         handleClick={
           sessionData
             ? () => {
@@ -38,7 +37,9 @@ const AuthenticateUser: FC<AuthenticateUserProps> = ({
               }
             : () => void signIn()
         }
-      />
+      >
+        {sessionData ? "Sign out" : "Sign in"}
+      </PrimaryButton>
     </div>
   );
 };

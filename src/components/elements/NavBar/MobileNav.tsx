@@ -1,35 +1,21 @@
-import { STRIPE_ONE_TIME_PURCHASE_PRICE_ID } from "hardcoded";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import { signIn, useSession } from "next-auth/react";
 import { useState, type FC } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { TiThMenu } from "react-icons/ti";
 import DrawerLayout from "~/components//layout/DrawerLayout/DrawerLayout";
-import AuthenticateUser from "~/components/elements/AuthenticateUser/AuthenticateUser";
 import Button from "~/components/elements/Button/Button";
 import NavLink from "~/components/elements/NavBar/NavLink";
+import PrimaryButton from "~/components/elements/PrimaryButton/PrimaryButton";
+import Profile from "~/components/elements/Profile/Profile";
 import { type LinkType } from "~/types/utils.types";
-import { api } from "~/utils/api";
 
 interface MobileNavProps {
   links: LinkType[];
 }
 
 const MobileNav: FC<MobileNavProps> = ({ links }) => {
-  const router = useRouter();
-  const { data: sessionData, status } = useSession();
+  const { data: sessionData } = useSession();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const { mutateAsync } = api.stripe.createCheckoutSession.useMutation();
-
-  const checkout = async (priceId: string) => {
-    const { checkoutUrl } = await mutateAsync({ priceId });
-
-    if (checkoutUrl) {
-      router.push(checkoutUrl).catch((err) => {
-        console.error(err);
-      });
-    }
-  };
 
   return (
     <DrawerLayout
@@ -73,18 +59,17 @@ const MobileNav: FC<MobileNavProps> = ({ links }) => {
         />
 
         <div className="mt-10 space-y-3">
-          {sessionData?.user.id && (
-            <Button
-              color="light"
-              title="Buy 100 credits"
-              handleClick={() => {
-                checkout(STRIPE_ONE_TIME_PURCHASE_PRICE_ID).catch((err) => {
-                  console.error(err);
-                });
-              }}
-            />
+          {sessionData ? (
+            <Profile />
+          ) : (
+            <PrimaryButton
+              isFullWidth
+              color="dark"
+              handleClick={() => void signIn()}
+            >
+              Sign in
+            </PrimaryButton>
           )}
-          <AuthenticateUser sessionData={sessionData} status={status} />
         </div>
       </div>
     </DrawerLayout>
