@@ -30,16 +30,16 @@ export const stripeRouter = createTRPCRouter({
 
       const checkoutSession = await stripe.checkout.sessions.create({
         customer: customerId,
-        client_reference_id: session.user?.id,
         payment_method_types: ["card"],
+        client_reference_id: session.user?.id,
         mode: "payment",
         metadata: {
           amount: "1",
         },
         line_items: [
           {
-            price: input.priceId,
             quantity: 1,
+            price: input.priceId,
           },
         ],
         success_url: baseUrl,

@@ -1,4 +1,3 @@
-import { PRICE_FOR_100_CREDITS } from "hardcoded";
 import { buffer } from "micro";
 import type { NextApiRequest, NextApiResponse } from "next";
 import type Stripe from "stripe";
@@ -29,16 +28,20 @@ export default async function handler(
     try {
       event = stripe.webhooks.constructEvent(buf, sig as string, webhookSecret);
 
+      console.log("event", event);
+
       // Handle the event
       switch (event.type) {
         case "charge.succeeded":
+          console.log("charge.succeeded ----->");
+
           const payment = event.data.object as Stripe.Charge;
 
           // validate userId with zod tat it is string
           const userId = z.string().parse(payment.customer);
 
           if (!userId) {
-            throw new Error("No userId");
+            throw new Error("No user id found in stripe customer");
           }
 
           await prisma.user.update({
@@ -47,7 +50,7 @@ export default async function handler(
             },
             data: {
               credits: {
-                increment: payment.amount === PRICE_FOR_100_CREDITS ? 100 : 0,
+                increment: payment.status === "succeeded" ? 100 : 0,
               },
             },
           });

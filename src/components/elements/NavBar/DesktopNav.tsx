@@ -1,4 +1,4 @@
-import { STRIPE_PRICE_ID } from "hardcoded";
+import { STRIPE_ONE_TIME_PURCHASE_PRICE_ID } from "hardcoded";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { type FC } from "react";
@@ -39,7 +39,7 @@ const DesktopNav: FC<DesktopNavProps> = ({ links }) => {
               color="light"
               title="Buy 100 credits"
               handleClick={() => {
-                checkout(STRIPE_PRICE_ID).catch((err) => {
+                checkout(STRIPE_ONE_TIME_PURCHASE_PRICE_ID).catch((err) => {
                   console.error("Error creating checkout session", err);
                 });
               }}
