@@ -35,7 +35,7 @@ const DrawerLayout: FC<DrawerLayoutProps> = ({
             isAnimation
               ? "translate-x-0 opacity-100 transition-opacity duration-500"
               : "translate-x-full opacity-0 transition-all delay-500",
-            "fixed inset-0 z-10 transform overflow-hidden bg-gray-900 bg-opacity-25 ease-in-out"
+            "fixed inset-0 z-[9999] transform overflow-hidden bg-gray-900 bg-opacity-25 ease-in-out"
           )}
         >
           <section

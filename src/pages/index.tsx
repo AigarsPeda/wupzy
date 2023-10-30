@@ -21,7 +21,7 @@ const HomePage: NextPage = () => {
           them with all participants in just a few clicks."
       />
       <main>
-        <div className="pb-16 md:pb-44 md:pt-28">
+        <div className="pb-12 pt-3 md:pb-28 md:pt-16">
           <div>
             <h1 className="max-w-4xl font-primary text-6xl font-semibold tracking-tight">
               Create your{" "}
@@ -38,6 +38,7 @@ const HomePage: NextPage = () => {
           <div className="pt-8">
             <PrimaryButton
               color="dark"
+              padding="lg"
               handleClick={() => {
                 if (!sessionData) {
                   void signIn();
