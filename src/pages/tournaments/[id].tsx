@@ -9,6 +9,7 @@ import PageHead from "~/components/elements/PageHead/PageHead";
 import PageHeadLine from "~/components/elements/PageHeadLine/PageHeadLine";
 import PlayoffTournament from "~/components/elements/PlayoffTournament/PlayoffTournament";
 import RegularTournament from "~/components/elements/RegularTournament/RegularTournament";
+import SettingDropdown from "~/components/elements/SettingDropdown/SettingDropdown";
 import SmallButton from "~/components/elements/SmallButton/SmallButton";
 import Tooltip from "~/components/elements/Tooltip/Tooltip";
 import useQueryValue from "~/hooks/useQueryValue";
@@ -70,7 +71,7 @@ const TournamentPage: NextPage = () => {
             </div>
           </div>
 
-          <div className="mt-4 flex w-full justify-end space-x-2 overflow-hidden md:mt-0">
+          <div className="mt-4 flex w-full justify-end space-x-2 md:mt-0">
             {tournament?.isPlayoffs && (
               <Tooltip
                 isNowrap
@@ -95,7 +96,8 @@ const TournamentPage: NextPage = () => {
                 />
               </Tooltip>
             )}
-            <Tooltip
+            <SettingDropdown />
+            {/* <Tooltip
               isNowrap
               position="md:right-0 -top-10"
               content={
@@ -112,7 +114,7 @@ const TournamentPage: NextPage = () => {
                   setIsQRModal((state) => !state);
                 }}
               />
-            </Tooltip>
+            </Tooltip> */}
           </div>
         </div>
       )}

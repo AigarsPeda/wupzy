@@ -18,6 +18,8 @@ const EmailCollector: FC = () => {
         </p>
       ) : (
         <form
+          id="email-collector"
+          name="email-collector"
           onSubmit={(e) => {
             e.preventDefault();
             mutate({ email });

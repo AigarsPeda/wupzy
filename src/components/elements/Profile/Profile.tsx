@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import PrimaryButton from "~/components/elements/PrimaryButton/PrimaryButton";
 import { api } from "~/utils/api";
+import DisplayCredits from "../DisplayCredits/DisplayCredits";
 
 const Profile = () => {
   const router = useRouter();
@@ -37,7 +38,8 @@ const Profile = () => {
       </div>
       <div className="py-4">
         <p>{sessionData?.user.name}</p>
-        <p className="text-xs">credits: {sessionData?.user.credits || 0}</p>
+        {/* <p className="text-xs">credits: {sessionData?.user.credits || 0}</p> */}
+        <DisplayCredits credits={sessionData?.user.credits} />
       </div>
       <div>
         <PrimaryButton

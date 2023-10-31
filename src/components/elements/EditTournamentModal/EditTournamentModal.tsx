@@ -54,6 +54,8 @@ const EditTournamentModal: FC<EditTournamentModalModalProps> = ({
       header={<h1 className="truncate text-3xl">Edit {tournament?.name}</h1>}
     >
       <form
+        id="edit-tournament"
+        name="edit-tournament"
         className="mx-auto mt-4 max-w-lg rounded-md bg-white p-2 shadow md:mt-6"
         onSubmit={(e) => {
           e.preventDefault();
