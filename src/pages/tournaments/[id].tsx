@@ -2,7 +2,6 @@ import { type NextPage } from "next";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { AiOutlinePartition, AiOutlineTable } from "react-icons/ai";
-import { IoQrCodeOutline } from "react-icons/io5";
 import CircleProgress from "~/components/elements/CircleProgress/CircleProgress";
 import LoadingSkeleton from "~/components/elements/LoadingSkeleton/LoadingSkeleton";
 import PageHead from "~/components/elements/PageHead/PageHead";

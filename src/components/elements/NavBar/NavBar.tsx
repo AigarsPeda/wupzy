@@ -4,7 +4,6 @@ import { useEffect, useState, type FC } from "react";
 import Logo from "~/components/elements/Logo/Logo";
 import DesktopNav from "~/components/elements/NavBar/DesktopNav";
 import MobileNav from "~/components/elements/NavBar/MobileNav";
-import SettingsDrawer from "~/components/elements/SettingsDrawer/SettingsDrawer";
 import classNames from "~/utils/classNames";
 
 const NavBar: FC = () => {
@@ -34,7 +33,7 @@ const NavBar: FC = () => {
           isScrolled
             ? "bg-slate-50 shadow-[0_2px_5px_rgba(0,0,0,0.07)]"
             : "bg-gray-50",
-          "top-0 z-[9999] flex w-full items-center justify-between px-4 py-4 md:sticky md:px-12 md:py-2"
+          "top-0 z-[99] flex w-full items-center justify-between px-4 pb-0 pt-4 md:sticky md:px-12 md:py-2"
         )}
       >
         <Logo />
@@ -50,7 +49,6 @@ const NavBar: FC = () => {
           </>
         )}
       </nav>
-      {router.pathname === "/tournaments/[id]" && <SettingsDrawer />}
     </>
   );
 };

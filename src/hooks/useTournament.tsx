@@ -13,7 +13,7 @@ const useTournament = () => {
   );
   const {
     mutate: upTournamentToPro,
-    isLoading: isUpdatingKind,
+    isLoading: isUpdatingToPro,
     error: errorUpdatingKind,
   } = api.tournament.updateTournamentToPro.useMutation({
     onSuccess: async () => {
@@ -53,7 +53,8 @@ const useTournament = () => {
     refetch,
     isLoading,
     isDeleting,
-    isUpdatingKind,
+    sessionData,
+    isUpdatingToPro,
     deleteTournament,
     updateTournamentToPro,
     tournament: data?.tournament,

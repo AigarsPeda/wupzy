@@ -23,7 +23,7 @@ const SettingsDrawer: FC = () => {
 
   const {
     tournament,
-    isUpdatingKind,
+    isUpdatingToPro,
     isKingTournament,
     errorUpdatingKind,
     updateTournamentToPro,
@@ -68,7 +68,7 @@ const SettingsDrawer: FC = () => {
                 <SmallButton
                   color="gray"
                   title="Upgrade to Pro"
-                  isDisabled={isUpdatingKind}
+                  isDisabled={isUpdatingToPro}
                   handleClick={updateTournamentToPro}
                 />
                 {errorUpdatingKind && (
