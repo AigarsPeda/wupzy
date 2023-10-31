@@ -4,6 +4,7 @@ import { RiArrowUpSLine } from "react-icons/ri";
 import Dropdown from "~/components/elements/Dropdown/Dropdown";
 import PrimaryButton from "~/components/elements/PrimaryButton/PrimaryButton";
 import Profile from "~/components/elements/Profile/Profile";
+import Spinner from "~/components/elements/Spinner/Spinner";
 
 const ProfileDropdown = () => {
   const { data: sessionData, status } = useSession();
@@ -41,8 +42,18 @@ const ProfileDropdown = () => {
           </div>
         </Dropdown>
       ) : (
-        <PrimaryButton color="dark" handleClick={() => void signIn()}>
-          Sign in
+        <PrimaryButton
+          color="dark"
+          isDisabled={status === "loading"}
+          handleClick={() => void signIn()}
+        >
+          <span className="min-h-[19px] min-w-[50px]">
+            {status === "loading" ? (
+              <Spinner size="xs" color="light" />
+            ) : (
+              "Sign in"
+            )}
+          </span>
         </PrimaryButton>
       )}
     </div>

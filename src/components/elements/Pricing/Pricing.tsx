@@ -66,11 +66,11 @@ const Pricing: FC = () => {
             "flex w-full flex-col justify-between rounded-3xl bg-white p-8 shadow-lg ring-1 ring-gray-200 xl:p-10"
           )}
         >
-          <div className="flex h-52 flex-col justify-between">
+          <div className="flex h-52 flex-col md:justify-between">
             <div>
-              <p className="text-sm text-gray-700">{option.info}</p>
+              <p className="text-sm text-gray-700 md:pt-10">{option.info}</p>
             </div>
-            <div className="flex items-end">
+            <div className="flex items-end pt-10">
               <p className="text-3xl font-semibold text-gray-800">
                 {option.price}
                 {isPro(option) && (

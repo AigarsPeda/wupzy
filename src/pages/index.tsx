@@ -29,10 +29,9 @@ const HomePage: NextPage = () => {
                 Tournament
               </span>
             </h1>
-            <h2 className="mb-5 mt-8 max-w-2xl font-primary font-medium text-gray-800">
-              Wupzy: Simplifying sports tournament organization. Save scores,
-              access results, stay updated, and share your game tables with
-              participants.
+            <h2 className="mb-5 mt-8 max-w-2xl font-primary text-xl font-normal text-gray-600">
+              Efficiently coordinate matches, track results, and share updates
+              with participants.
             </h2>
           </div>
           <div className="pt-8">

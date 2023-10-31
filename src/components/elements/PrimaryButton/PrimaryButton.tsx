@@ -4,6 +4,7 @@ import classNames from "~/utils/classNames";
 interface PrimaryButtonProps {
   isMailto?: boolean;
   isSelected?: boolean;
+  isDisabled?: boolean;
   isFullWidth?: boolean;
   handleClick: () => void;
   color?: "dark" | "light";
@@ -14,6 +15,7 @@ interface PrimaryButtonProps {
 
 const PrimaryButton: FC<PrimaryButtonProps> = ({
   children,
+  isDisabled,
   isSelected,
   isFullWidth,
   handleClick,
@@ -24,6 +26,7 @@ const PrimaryButton: FC<PrimaryButtonProps> = ({
   return (
     <button
       type={btnType}
+      disabled={isDisabled}
       onClick={handleClick}
       className={classNames(
         isSelected && color === "light" && "bg-gray-900 text-white",

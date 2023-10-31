@@ -44,7 +44,7 @@ const SettingsDrawer: FC = () => {
       <TopDrawerLayout>
         <div
           className={classNames(
-            "w-screen bg-gray-800 px-4 pb-6 pt-4 text-white shadow-[0_2px_5px_rgba(0,0,0,0.07)] outline-none transition-all duration-300 ease-in-out md:px-12 md:pb-6 md:pt-4"
+            "w-screen bg-gray-950 px-4 pb-6 pt-4 text-white shadow-[0_2px_5px_rgba(0,0,0,0.07)] outline-none transition-all duration-300 ease-in-out md:px-12 md:pb-6 md:pt-4"
           )}
         >
           <div className="flex">
