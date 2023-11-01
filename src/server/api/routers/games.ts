@@ -138,7 +138,12 @@ export const gameRouter = createTRPCRouter({
             },
           },
         },
-        orderBy: [{ round: "asc" }, { order: "asc" }],
+        orderBy: [
+          { round: "asc" },
+          { order: "asc" },
+          { teamOne: { name: "asc" } },
+          { teamTwo: { name: "asc" } },
+        ],
       });
 
       const playerGroups = await getTournamentGames(prisma, input.id);

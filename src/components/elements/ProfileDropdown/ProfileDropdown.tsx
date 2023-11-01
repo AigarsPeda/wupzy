@@ -38,7 +38,7 @@ const ProfileDropdown = () => {
           }}
         >
           <div className="min-w-[18rem] p-4">
-            <Profile />
+            <Profile userId={sessionData.user.id} />
           </div>
         </Dropdown>
       ) : (

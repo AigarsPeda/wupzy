@@ -5,19 +5,22 @@ import { api } from "~/utils/api";
 
 const useTournament = () => {
   const router = useRouter();
+  const { player } = api.useContext();
   const { data: sessionData } = useSession();
   const [tournamentId, setTournamentId] = useState("");
   const { data, isLoading, refetch } = api.tournament.getTournament.useQuery(
     { id: tournamentId },
     { enabled: Boolean(tournamentId) && sessionData?.user !== undefined }
   );
+
   const {
+    error: errorUpdatingKind,
     mutate: upTournamentToPro,
     isLoading: isUpdatingToPro,
-    error: errorUpdatingKind,
   } = api.tournament.updateTournamentToPro.useMutation({
     onSuccess: async () => {
       await refetch();
+      await player.invalidate();
     },
   });
   const { mutate: delTournament, isLoading: isDeleting } =

@@ -58,7 +58,7 @@ const HomePage: NextPage = () => {
               width={1300}
               height={1300}
               priority={true}
-              src="/asset/desktop.webp"
+              src="/asset/desktop_1.webp"
               alt="Picture wupzy dashboard"
               className="hidden rounded md:block"
               style={{

@@ -1,20 +1,20 @@
 import { useState } from "react";
-import {
-  AiOutlineDelete,
-  AiOutlinePartition,
-  AiOutlinePlus,
-} from "react-icons/ai";
-import { BsLayoutSplit } from "react-icons/bs";
 import { IoSettingsOutline } from "react-icons/io5";
 import DisplayCredits from "~/components/elements/DisplayCredits/DisplayCredits";
 import Divider from "~/components/elements/Divider/Divider";
 import Dropdown from "~/components/elements/Dropdown/Dropdown";
+import QRCode from "~/components/elements/QRCode/QRCode";
 import {
   SettingButton,
   SettingButtonContent,
 } from "~/components/elements/SettingButton/SettingButton";
+import {
+  CommandType,
+  SETTING_OPTION,
+} from "~/components/elements/SettingDropdown/SettingOptions";
 import SettingsDrawerModals from "~/components/elements/SettingsDrawerModals/SettingsDrawerModals";
 import useTournament from "~/hooks/useTournament";
+import { TournamentKindType } from "~/types/tournament.types";
 
 const SettingDropdown = () => {
   const [isEditModal, setIsEditModal] = useState(false);
@@ -22,10 +22,41 @@ const SettingDropdown = () => {
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [isPlayOffModal, setIsPlayOffModal] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { tournament, sessionData, isUpdatingToPro, updateTournamentToPro } =
-    useTournament();
+  const { tournament, sessionData, updateTournamentToPro } = useTournament();
 
   const isPro = tournament?.kind === "PRO";
+
+  const handleSettingButtonClick = (command: CommandType) => {
+    console.log(command);
+
+    if (command === "DeleteTournament") {
+      setIsDeleteModal(true);
+      setIsDropdownOpen(false);
+    }
+
+    if (command === "AddRemoveParticipant") {
+      setIsEditModal(true);
+      setIsDropdownOpen(false);
+    }
+
+    if (command === "DivideIntoGroups") {
+      setIsSplitModal(true);
+      setIsDropdownOpen(false);
+    }
+
+    if (command === "CreatePlayoffs") {
+      setIsPlayOffModal(true);
+      setIsDropdownOpen(false);
+    }
+  };
+
+  const isDisabled = (isProOnly: boolean, kind: TournamentKindType) => {
+    if (isProOnly) {
+      return kind !== "PRO";
+    }
+
+    return false;
+  };
 
   return (
     <>
@@ -40,7 +71,7 @@ const SettingDropdown = () => {
               setIsDropdownOpen((state) => !state);
             }}
           >
-            <span className="mr-2 max-w-[100px] truncate text-gray-900">
+            <span className="mr-3 max-w-[100px] truncate text-gray-900">
               Settings
             </span>
             <IoSettingsOutline className="h-6 w-6" />
@@ -57,102 +88,49 @@ const SettingDropdown = () => {
               <Divider />
             </>
           )}
-          <p className="text-xs text-gray-500">Kind:</p>
-          <div className="pt-2">
+          <div>
             <SettingButton
               handleClick={() => {
-                if (isUpdatingToPro) return;
-                updateTournamentToPro();
+                if (!isPro) {
+                  updateTournamentToPro();
+                }
               }}
               isDisables={isPro}
             >
               <SettingButtonContent
-                title={isPro ? "Pro" : "Free"}
-                action={
-                  !isPro ? (isUpdatingToPro ? "Updating..." : "Change") : ""
-                }
-              />
-            </SettingButton>
-          </div>
-          <Divider />
-          <p className="text-xs text-gray-500">Edit:</p>
-          <div className="pt-2">
-            <SettingButton
-              handleClick={() => {
-                setIsEditModal(true);
-                setIsDropdownOpen(false);
-              }}
-            >
-              <SettingButtonContent
-                action="Edit"
-                title={
-                  <>
-                    <AiOutlinePlus className="mr-2 h-5" />
-                    Add / Remove participant
-                  </>
-                }
-              />
-            </SettingButton>
-          </div>
-          <div className="pt-2">
-            <SettingButton
-              handleClick={() => {
-                setIsSplitModal(true);
-                setIsDropdownOpen(false);
-              }}
-            >
-              <SettingButtonContent
-                action="Edit"
-                title={
-                  <>
-                    <BsLayoutSplit className="mr-2 h-4 " />
-                    Dividing it into groups
-                  </>
-                }
+                title={tournament?.kind === "FREE" ? "Free" : "Pro"}
+                action={tournament?.kind === "FREE" ? "Upgrade" : ""}
               />
             </SettingButton>
           </div>
 
-          {tournament?.type === "teams" && (
-            <div className="pt-2">
+          {tournament?.shareLink && (
+            <QRCode
+              name={tournament?.name || ""}
+              slug={tournament?.shareLink?.slug || ""}
+            />
+          )}
+
+          {SETTING_OPTION.map((item) => (
+            <div key={item.id} className="mt-2">
               <SettingButton
                 handleClick={() => {
-                  setIsPlayOffModal(true);
-                  setIsDropdownOpen(false);
+                  handleSettingButtonClick(item.command);
                 }}
+                isDisables={isDisabled(item.isProOnly, tournament?.kind)}
               >
                 <SettingButtonContent
-                  action="Edit"
                   title={
                     <>
-                      <AiOutlinePartition className="mr-2 h-5" />
-                      Create playoffs
+                      {item.icon}
+                      {item.title}
                     </>
                   }
+                  action={item.action}
                 />
               </SettingButton>
             </div>
-          )}
-          <Divider />
-          <p className="text-xs text-gray-500">Delete:</p>
-          <div className="pt-2">
-            <SettingButton
-              handleClick={() => {
-                setIsDeleteModal(true);
-                setIsDropdownOpen(false);
-              }}
-            >
-              <SettingButtonContent
-                action="Delete"
-                title={
-                  <>
-                    <AiOutlineDelete className="mr-2" />
-                    Delete tournament
-                  </>
-                }
-              />
-            </SettingButton>
-          </div>
+          ))}
         </div>
       </Dropdown>
       <SettingsDrawerModals

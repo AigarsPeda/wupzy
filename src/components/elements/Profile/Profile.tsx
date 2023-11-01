@@ -1,15 +1,21 @@
 import { STRIPE_ONE_TIME_PURCHASE_PRICE_ID } from "hardcoded";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { FC } from "react";
+import DisplayCredits from "~/components/elements/DisplayCredits/DisplayCredits";
 import PrimaryButton from "~/components/elements/PrimaryButton/PrimaryButton";
 import { api } from "~/utils/api";
-import DisplayCredits from "../DisplayCredits/DisplayCredits";
 
-const Profile = () => {
+interface ProfileProps {
+  userId: string;
+}
+
+const Profile: FC<ProfileProps> = ({ userId }) => {
   const router = useRouter();
-  const { data: sessionData, status } = useSession();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { data: user } = api.user.getUser.useQuery(
+    { id: userId || "" },
+    { enabled: Boolean(userId) }
+  );
   const { mutateAsync } = api.stripe.createCheckoutSession.useMutation();
 
   const checkout = async (priceId: string) => {
@@ -21,10 +27,11 @@ const Profile = () => {
       });
     }
   };
+
   return (
     <>
       <div className="flex justify-between">
-        <p className="text-xs text-gray-500">{sessionData?.user.email}</p>
+        <p className="text-xs text-gray-500">{user?.user?.email}</p>
         <button
           className="text-xs text-gray-500 hover:text-gray-900"
           onClick={() => {
@@ -37,9 +44,8 @@ const Profile = () => {
         </button>
       </div>
       <div className="py-4">
-        <p>{sessionData?.user.name}</p>
-        {/* <p className="text-xs">credits: {sessionData?.user.credits || 0}</p> */}
-        <DisplayCredits credits={sessionData?.user.credits} />
+        <p>{user?.user?.name}</p>
+        <DisplayCredits credits={user?.user?.credits} />
       </div>
       <div>
         <PrimaryButton

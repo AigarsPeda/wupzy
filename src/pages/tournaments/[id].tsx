@@ -1,5 +1,4 @@
 import { type NextPage } from "next";
-import dynamic from "next/dynamic";
 import { useState } from "react";
 import { AiOutlinePartition, AiOutlineTable } from "react-icons/ai";
 import CircleProgress from "~/components/elements/CircleProgress/CircleProgress";
@@ -16,8 +15,6 @@ import useTournament from "~/hooks/useTournament";
 import useTournamentGames from "~/hooks/useTournamentGames";
 import getGamesLeft from "~/utils/getGamesLeft";
 import getPercentagesOfFinishedGames from "~/utils/getPercentagesOfFinishedGames";
-
-const QRModal = dynamic(() => import("~/components/elements/QRModal/QRModal"));
 
 const TournamentPage: NextPage = () => {
   // TODO: Fetch games only for selected group
@@ -96,24 +93,6 @@ const TournamentPage: NextPage = () => {
               </Tooltip>
             )}
             <SettingDropdown />
-            {/* <Tooltip
-              isNowrap
-              position="md:right-0 -top-10"
-              content={
-                tournament?.kind === "FREE"
-                  ? "Share tournament is only available for pro tournaments"
-                  : "Share tournament QR code."
-              }
-            >
-              <SmallButton
-                color="dark"
-                isDisabled={tournament?.kind === "FREE"}
-                icon={<IoQrCodeOutline className="h-6 w-6" />}
-                handleClick={() => {
-                  setIsQRModal((state) => !state);
-                }}
-              />
-            </Tooltip> */}
           </div>
         </div>
       )}
@@ -126,15 +105,6 @@ const TournamentPage: NextPage = () => {
         />
       ) : (
         <PlayoffTournament tournamentId={tournament?.id} />
-      )}
-
-      {isQRModal && (
-        <QRModal
-          isQRModal={isQRModal}
-          handleCancelClicks={() => {
-            setIsQRModal((state) => !state);
-          }}
-        />
       )}
     </>
   );

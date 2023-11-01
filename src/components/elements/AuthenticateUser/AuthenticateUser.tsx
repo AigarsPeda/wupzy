@@ -1,6 +1,6 @@
 import { type Session } from "next-auth";
 import { signIn, signOut } from "next-auth/react";
-import { useEffect, useState, type FC } from "react";
+import { type FC } from "react";
 import PrimaryButton from "~/components/elements/PrimaryButton/PrimaryButton";
 
 interface AuthenticateUserProps {
@@ -8,19 +8,16 @@ interface AuthenticateUserProps {
   status: "authenticated" | "loading" | "unauthenticated";
 }
 
-const AuthenticateUser: FC<AuthenticateUserProps> = ({
-  status,
-  sessionData,
-}) => {
-  const [isLoading, setIsLoading] = useState(false);
+const AuthenticateUser: FC<AuthenticateUserProps> = ({ sessionData }) => {
+  // const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (status === "loading") {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [status]);
+  // useEffect(() => {
+  //   if (status === "loading") {
+  //     setIsLoading(true);
+  //   } else {
+  //     setIsLoading(false);
+  //   }
+  // }, [status]);
 
   return (
     <div>
@@ -30,7 +27,7 @@ const AuthenticateUser: FC<AuthenticateUserProps> = ({
         handleClick={
           sessionData
             ? () => {
-                setIsLoading(true);
+                // setIsLoading(true);
                 void signOut({
                   callbackUrl: "/",
                 });

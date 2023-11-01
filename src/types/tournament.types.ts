@@ -3,6 +3,9 @@ import z from "zod";
 export const TournamentTypeEnum = z.enum(["king", "teams"]);
 export type TournamentTypeType = z.infer<typeof TournamentTypeEnum>;
 
+export const TournamentKindEnum = z.enum(["PRO", "FREE", "CUSTOM"]).nullish();
+export type TournamentKindType = z.infer<typeof TournamentKindEnum>;
+
 // Creating tournament
 export const NewPlayerSchema = z.object({
   id: z.string(),

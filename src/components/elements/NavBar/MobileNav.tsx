@@ -1,9 +1,8 @@
 import { signIn, useSession } from "next-auth/react";
 import { useState, type FC } from "react";
 import { IoCloseSharp } from "react-icons/io5";
-import { TiThMenu } from "react-icons/ti";
+import { SlMenu } from "react-icons/sl";
 import DrawerLayout from "~/components//layout/DrawerLayout/DrawerLayout";
-import Button from "~/components/elements/Button/Button";
 import NavLink from "~/components/elements/NavBar/NavLink";
 import PrimaryButton from "~/components/elements/PrimaryButton/PrimaryButton";
 import Profile from "~/components/elements/Profile/Profile";
@@ -26,15 +25,14 @@ const MobileNav: FC<MobileNavProps> = ({ links }) => {
       }}
       drawerBtn={
         <div className="flex w-full justify-end">
-          <div className="w-20">
-            <Button
-              size="sm"
-              title={<TiThMenu className="h-6 w-6" />}
-              handleClick={() => {
-                setIsDrawerOpen((state) => !state);
-              }}
-            />
-          </div>
+          <button
+            className="rounded-md bg-gray-950 p-2"
+            onClick={() => {
+              setIsDrawerOpen((state) => !state);
+            }}
+          >
+            <SlMenu className="h-6 w-6 text-white" />
+          </button>
         </div>
       }
       header={
@@ -60,7 +58,7 @@ const MobileNav: FC<MobileNavProps> = ({ links }) => {
 
         <div className="mt-10 space-y-3">
           {sessionData ? (
-            <Profile />
+            <Profile userId={sessionData.user.id} />
           ) : (
             <PrimaryButton
               isFullWidth

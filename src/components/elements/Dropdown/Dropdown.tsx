@@ -61,7 +61,7 @@ const Dropdown: FC<DropdownProps> = ({
         >
           <div
             className={classNames(
-              "max-h-80 w-full overflow-y-auto rounded border border-gray-100"
+              "w-full overflow-y-auto rounded border border-gray-100"
             )}
           >
             {children}
