@@ -25,7 +25,7 @@ const TournamentsPage: NextPage = () => {
       tournament tables, save game scores, view real-time results, and share
       them with all participants in just a few clicks."
       />
-      <GridLayout isGap minWith="250">
+      <GridLayout isGap minWith="320">
         {isLoading ? (
           <>
             {[...Array(4).keys()].map((_, index) => (

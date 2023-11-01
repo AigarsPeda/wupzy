@@ -9,12 +9,12 @@ import {
   SettingButtonContent,
 } from "~/components/elements/SettingButton/SettingButton";
 import {
-  CommandType,
   SETTING_OPTION,
+  type CommandType,
 } from "~/components/elements/SettingDropdown/SettingOptions";
 import SettingsDrawerModals from "~/components/elements/SettingsDrawerModals/SettingsDrawerModals";
 import useTournament from "~/hooks/useTournament";
-import { TournamentKindType } from "~/types/tournament.types";
+import { type TournamentKindType } from "~/types/tournament.types";
 
 const SettingDropdown = () => {
   const [isEditModal, setIsEditModal] = useState(false);
@@ -34,7 +34,7 @@ const SettingDropdown = () => {
       setIsDropdownOpen(false);
     }
 
-    if (command === "AddRemoveParticipant") {
+    if (command === "EditTournament") {
       setIsEditModal(true);
       setIsDropdownOpen(false);
     }

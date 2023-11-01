@@ -1,5 +1,5 @@
 import { QRCodeSVG } from "qrcode.react";
-import { FC } from "react";
+import { type FC } from "react";
 import { HiDownload } from "react-icons/hi";
 import { LuClipboardCopy } from "react-icons/lu";
 import Divider from "~/components/elements/Divider/Divider";

@@ -6,6 +6,7 @@ import TextButton from "~/components/elements/TextButton/TextButton";
 import ModalLayout from "~/components/layout/ModalLayout/ModalLayout";
 import useCreateNewTournament from "~/hooks/useCreateTournament";
 import useEditTournament from "~/hooks/useEditTournament";
+import Input from "../Input/Input";
 
 interface EditTournamentModalModalProps {
   isEditModal: boolean;
@@ -24,6 +25,7 @@ const EditTournamentModal: FC<EditTournamentModalModalProps> = ({
     loadTournament,
     handleAddPlayer,
     addPlayerToTeam,
+    changeTournamentName,
     updateTeamsTeamName,
     updateKingsPlayerName,
     updateTeamsPlayerName,
@@ -62,6 +64,21 @@ const EditTournamentModal: FC<EditTournamentModalModalProps> = ({
         }}
       >
         <div className="space-y-10">
+          <div className="mt-4 border-b border-gray-900/10 pb-12">
+            <legend className="text-base font-semibold leading-7 text-gray-900">
+              Tournaments name
+            </legend>
+            <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+              <div className="sm:col-span-4">
+                <Input
+                  inputLabel=""
+                  inputFor="Tournaments Name"
+                  inputVal={newTournament.name}
+                  handleInputChange={changeTournamentName}
+                />
+              </div>
+            </div>
+          </div>
           <NewKingTournament
             handleAddPlayer={handleAddPlayer}
             players={newTournament.king.players}

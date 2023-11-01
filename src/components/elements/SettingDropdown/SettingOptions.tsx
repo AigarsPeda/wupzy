@@ -1,12 +1,13 @@
 import { AiOutlinePartition, AiOutlinePlus } from "react-icons/ai";
 import { BsLayoutSplit } from "react-icons/bs";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { FiEdit2 } from "react-icons/fi";
 
 export type CommandType =
   | "CreatePlayoffs"
+  | "EditTournament"
   | "DeleteTournament"
-  | "DivideIntoGroups"
-  | "AddRemoveParticipant";
+  | "DivideIntoGroups";
 
 type SettingOptionType = {
   id: string;
@@ -20,10 +21,10 @@ type SettingOptionType = {
 export const SETTING_OPTION: SettingOptionType[] = [
   {
     id: "1",
-    title: "Add / Remove participant",
+    title: "Edit tournament",
     action: "Edit",
-    icon: <AiOutlinePlus className="mr-3 h-5" />,
-    command: "AddRemoveParticipant",
+    icon: <FiEdit2 className="mr-3 h-5" />,
+    command: "EditTournament",
     isProOnly: false,
   },
   {

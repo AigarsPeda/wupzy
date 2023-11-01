@@ -287,6 +287,19 @@ export const tournamentRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { prisma } = ctx;
 
+      // await prisma.$transaction([]);
+
+      await prisma.tournament.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          name: input.tournament.name,
+          // sets: input.tournament.sets,
+          // rounds: input.tournament.rounds,
+        },
+      });
+
       if (input.tournament.kind === "king") {
         const oldPlayers = await prisma.player.findMany({
           where: {
@@ -296,8 +309,8 @@ export const tournamentRouter = createTRPCRouter({
 
         const oldGames = await prisma.game.findMany({
           where: {
-            tournamentId: input.id,
             group: input.group,
+            tournamentId: input.id,
           },
         });
 
@@ -341,8 +354,8 @@ export const tournamentRouter = createTRPCRouter({
             if (element) {
               await prisma.team.create({
                 data: {
-                  tournamentId: input.id,
                   group: element.group,
+                  tournamentId: input.id,
                   players: {
                     connect: element.players.map((player) => ({
                       id: player.id,
@@ -355,8 +368,8 @@ export const tournamentRouter = createTRPCRouter({
 
           const teams = await prisma.team.findMany({
             where: {
-              tournamentId: input.id,
               group: input.group,
+              tournamentId: input.id,
             },
             include: {
               players: true,

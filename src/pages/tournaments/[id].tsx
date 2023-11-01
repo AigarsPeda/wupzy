@@ -1,5 +1,4 @@
 import { type NextPage } from "next";
-import { useState } from "react";
 import { AiOutlinePartition, AiOutlineTable } from "react-icons/ai";
 import CircleProgress from "~/components/elements/CircleProgress/CircleProgress";
 import LoadingSkeleton from "~/components/elements/LoadingSkeleton/LoadingSkeleton";
@@ -19,7 +18,6 @@ import getPercentagesOfFinishedGames from "~/utils/getPercentagesOfFinishedGames
 const TournamentPage: NextPage = () => {
   // TODO: Fetch games only for selected group
   const { games, groups } = useTournamentGames();
-  const [isQRModal, setIsQRModal] = useState(false);
   const { tournament, isLoading: isTournamentLoading } = useTournament();
   const [selectedGroup, updateSelectedGroup] = useQueryValue(
     groups[0] || "A",

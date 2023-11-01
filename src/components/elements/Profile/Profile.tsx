@@ -1,5 +1,5 @@
 import { STRIPE_ONE_TIME_PURCHASE_PRICE_ID } from "hardcoded";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { FC } from "react";
 import DisplayCredits from "~/components/elements/DisplayCredits/DisplayCredits";
