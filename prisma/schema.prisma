@@ -49,7 +49,7 @@ model User {
   accounts         Account[]
   sessions         Session[]
   credits          Int          @default(100)
-  Tournament       Tournament[]
+  tournament       Tournament[]
   stripeCustomerId String?      @unique
 }
 

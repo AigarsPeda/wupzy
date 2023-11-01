@@ -203,17 +203,32 @@ export const tournamentRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { prisma } = ctx;
 
-      await prisma.game.deleteMany({
-        where: {
-          tournamentId: input.id,
-        },
-      });
-
-      await prisma.tournament.delete({
-        where: {
-          id: input.id,
-        },
-      });
+      try {
+        await prisma.$transaction([
+          prisma.game.deleteMany({
+            where: {
+              tournamentId: input.id,
+            },
+          }),
+          prisma.team.deleteMany({
+            where: {
+              tournamentId: input.id,
+            },
+          }),
+          prisma.player.deleteMany({
+            where: {
+              tournamentId: input.id,
+            },
+          }),
+          prisma.tournament.delete({
+            where: {
+              id: input.id,
+            },
+          }),
+        ]);
+      } catch (error) {
+        throw new Error("Error during delete tournament transaction");
+      }
 
       return { id: input };
     }),
