@@ -1,7 +1,7 @@
 import { STRIPE_ONE_TIME_PURCHASE_PRICE_ID } from "hardcoded";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
-import { FC } from "react";
+import { type FC } from "react";
 import DisplayCredits from "~/components/elements/DisplayCredits/DisplayCredits";
 import PrimaryButton from "~/components/elements/PrimaryButton/PrimaryButton";
 import { api } from "~/utils/api";

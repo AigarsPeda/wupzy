@@ -1,7 +1,7 @@
-import { AiOutlinePartition, AiOutlinePlus } from "react-icons/ai";
+import { AiOutlinePartition } from "react-icons/ai";
 import { BsLayoutSplit } from "react-icons/bs";
-import { RiDeleteBin6Line } from "react-icons/ri";
 import { FiEdit2 } from "react-icons/fi";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 export type CommandType =
   | "CreatePlayoffs"

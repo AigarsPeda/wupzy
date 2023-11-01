@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { type FC } from "react";
-import TournamentTypeIconDisplay from "~/components/elements/TournamentTypeIconDisplay/TournamentTypeIconDisplay";
 import { type TournamentType } from "~/types/tournament.types";
 import { api } from "~/utils/api";
 import formatDate from "~/utils/formatDate";
