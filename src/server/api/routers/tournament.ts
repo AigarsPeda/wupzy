@@ -295,8 +295,6 @@ export const tournamentRouter = createTRPCRouter({
         },
         data: {
           name: input.tournament.name,
-          // sets: input.tournament.sets,
-          // rounds: input.tournament.rounds,
         },
       });
 
