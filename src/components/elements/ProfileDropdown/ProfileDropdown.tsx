@@ -10,6 +10,10 @@ const ProfileDropdown = () => {
   const { data: sessionData, status } = useSession();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const getFirstLetter = (name: string) => {
+    return name.charAt(0).toUpperCase();
+  };
+
   return (
     <div>
       {sessionData ? (
@@ -24,6 +28,19 @@ const ProfileDropdown = () => {
                 setIsDropdownOpen((state) => !state);
               }}
             >
+              {sessionData?.user.image ? (
+                <img
+                  src={sessionData?.user.image || ""}
+                  className="mr-2 h-8 w-8 rounded-full"
+                />
+              ) : (
+                <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-full bg-gray-300">
+                  <span className="text-2xl text-white">
+                    {getFirstLetter(sessionData?.user.name || "")}
+                  </span>
+                </div>
+              )}
+
               <span className="mr-2 max-w-[100px] truncate">
                 {sessionData?.user.name}
               </span>
@@ -59,6 +76,5 @@ const ProfileDropdown = () => {
     </div>
   );
 };
-RiArrowUpSLine;
 
 export default ProfileDropdown;
