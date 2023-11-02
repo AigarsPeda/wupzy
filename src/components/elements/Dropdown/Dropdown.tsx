@@ -4,7 +4,7 @@ import useOnClickOutside from "~/hooks/useOnClickOutside";
 import classNames from "~/utils/classNames";
 
 interface DropdownProps {
-  top?: "3" | "2.2";
+  top?: "3" | "2.2" | "2.5";
   dropdownClass?: string;
   isDropdownOpen: boolean;
   dropdownBtn: JSX.Element;
@@ -56,6 +56,7 @@ const Dropdown: FC<DropdownProps> = ({
             "absolute right-0 z-[999] origin-top-right -translate-y-2.5 transform-gpu rounded-md bg-white shadow-md transition-all duration-150",
             top === "3" && "top-[3rem]",
             top === "2.2" && "top-[2.2rem]",
+            top === "2.5" && "top-[2.5rem]",
             dropdownClass && dropdownClass
           )}
         >

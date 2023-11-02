@@ -46,6 +46,8 @@ const DisplayGames: FC<DisplayGamesProps> = ({
             (gameScore) => gameScore.gameId === game.id
           );
 
+          const gameSetsCount = Object.keys(game?.gameSets).length || 0;
+
           const firstTeamName = game?.teamOne?.players
             .map((player) => player.name)
             .join(" ");
@@ -59,11 +61,14 @@ const DisplayGames: FC<DisplayGamesProps> = ({
           return (
             <div
               key={game.id}
-              className="relative z-0 mx-auto flex items-center justify-center rounded-xl border border-slate-200/50 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-200 shadow-lg shadow-slate-200"
+              className="relative flex w-full items-start justify-start rounded-lg border border-gray-100 bg-white p-4 text-left shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px] transition duration-300 ease-in-out hover:shadow-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-800"
+              // className="relative z-0 mx-auto flex items-center justify-center rounded-xl border border-slate-200/50 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-200 shadow-lg shadow-slate-200"
             >
-              <div className="mx-auto rounded-xl border border-white/25 bg-gray-200 bg-white/5 px-6 py-3 shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] backdrop-blur-xl will-change-transform">
+              <div
+              // className="mx-auto rounded-xl border border-white/25 bg-gray-200 bg-white/5 px-6 py-3 shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] backdrop-blur-xl will-change-transform"
+              >
                 <div className="w-[70vw] sm:w-[45vw] md:w-[24vw]">
-                  <div className="flex justify-between">
+                  <div className="flex items-center justify-between">
                     <div className="flex gap-1">
                       <p className="rounded-md font-primary text-xs font-normal capitalize text-gray-900">
                         Game {game?.order}
@@ -72,9 +77,13 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                         Round {game?.round}
                       </p>
                     </div>
-                    {handleScoreChange && <GameOption id={game.id} />}
+                    <div className="min-h-[2.25rem]">
+                      {handleScoreChange && gameSetsCount > 0 && (
+                        <GameOption id={game.id} />
+                      )}
+                    </div>
                   </div>
-                  <div className="mb-2 mt-0.5">
+                  <div className="mb-1 mt-3">
                     <div className="grid grid-cols-10">
                       <div className="col-span-4 mt-2">
                         <TeamName
@@ -89,7 +98,8 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                         />
                       </div>
                     </div>
-                    <div className="my-1 h-0.5 rounded-full bg-gradient-to-l from-orange-50 via-orange-600 to-orange-50" />
+                    {/* <div className="my-1 h-0.5 rounded-full bg-gradient-to-l from-gray-50 via-gray-950 to-gray-50" /> */}
+                    {/* <div className="my-1 h-0.5 rounded-full bg-gray-950" /> */}
                   </div>
 
                   {isWinnerFound || !handleScoreChange ? (
@@ -110,7 +120,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                       </div>
                     </div>
                   ) : (
-                    <div className="mx-auto mb-3 grid grid-cols-10">
+                    <div className="mx-auto mb-5 grid grid-cols-10">
                       <div className="col-span-4">
                         <NumberInput
                           isFullWidth
@@ -151,7 +161,7 @@ const DisplayGames: FC<DisplayGamesProps> = ({
                   />
 
                   {!isWinnerFound && handleScoreSave && (
-                    <div className="absolute bottom-2 right-6 mt-2 flex min-h-[2.5rem] items-center justify-end">
+                    <div className="absolute bottom-2 right-3 mt-2 flex min-h-[2.5rem] items-center justify-end">
                       <SecondaryButton
                         color="dark"
                         title="Save"

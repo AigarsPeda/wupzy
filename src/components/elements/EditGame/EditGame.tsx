@@ -18,6 +18,14 @@ const EditGame: FC<EditGameProps> = ({ gameId, handleModalClose }) => {
     handleModalClose
   );
 
+  const firstTeamName = game?.teamOne?.players
+    .map((player) => player.name)
+    .join(" / ");
+
+  const secondTeamName = game?.teamTwo?.players
+    .map((player) => player.name)
+    .join(" / ");
+
   return (
     <ModalLayout
       isFullScreen
@@ -27,10 +35,10 @@ const EditGame: FC<EditGameProps> = ({ gameId, handleModalClose }) => {
         <div className="mb-4">
           <h1 className="text-3xl">Edit Game</h1>
           <div className="flex space-x-1">
-            <p className="rounded-md font-primary text-xs font-normal capitalize text-pink-500">
+            <p className="rounded-md font-primary text-xs font-normal capitalize text-gray-500">
               Game {game?.order}
             </p>
-            <p className="rounded-md font-primary text-xs font-normal capitalize text-pink-500">
+            <p className="rounded-md font-primary text-xs font-normal capitalize text-gray-500">
               Round {game?.round}
             </p>
           </div>
@@ -39,33 +47,37 @@ const EditGame: FC<EditGameProps> = ({ gameId, handleModalClose }) => {
     >
       <div className="mx-auto max-w-sm px-2">
         <div className="grid grid-cols-12 md:gap-x-3">
-          <div className="col-span-2 text-center ">
-            <p className="font-primary text-gray-900">Sets</p>
+          <div className="col-span-2 flex items-center justify-center">
+            <p className="font-primary text-xs text-gray-900"></p>
           </div>
           <div className="col-span-5 text-center">
             <Tooltip isNowrap content={game?.teamOne?.name || ""}>
               <p className="truncate font-primary text-gray-900">
-                {game?.teamOne?.name}
+                {game?.teamOne?.name || firstTeamName}
               </p>
             </Tooltip>
           </div>
           <div className="col-span-5 text-center">
             <Tooltip isNowrap content={game?.teamTwo?.name || ""}>
               <p className="truncate font-primary text-gray-900">
-                {game?.teamTwo?.name}
+                {game?.teamTwo?.name || secondTeamName}
               </p>
             </Tooltip>
           </div>
         </div>
-        <div className="mt-2 grid grid-cols-12 gap-x-3 gap-y-1">
+
+        <div className="mt-2 grid grid-cols-12 gap-x-3 gap-y-5">
           {game &&
             Object.entries(GameSets.parse(game?.gameSets)).map(
               ([key, value], i) => {
+                console.log(game);
+                console.log(key, value);
+
                 return (
                   <Fragment key={i}>
                     <div className="col-span-2 text-center">
-                      <p className="flex h-full items-center justify-center font-primary text-gray-900">
-                        {key}:
+                      <p className="flex h-full items-center justify-center font-primary text-xs text-gray-900">
+                        Set {key}:
                       </p>
                     </div>
                     <div className="col-span-5 text-center">

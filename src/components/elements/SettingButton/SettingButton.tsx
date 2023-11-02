@@ -15,7 +15,7 @@ const SettingButton: FC<SettingButtonProps> = ({
     <button
       disabled={isDisables}
       onClick={handleClick}
-      className="flex w-full justify-between"
+      className="flex w-full items-center justify-between"
     >
       {children}
     </button>

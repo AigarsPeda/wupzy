@@ -18,7 +18,7 @@ const ProfileDropdown = () => {
     <div>
       {sessionData ? (
         <Dropdown
-          top="2.2"
+          top="3"
           width="auto"
           isDropdownOpen={isDropdownOpen}
           dropdownBtn={
@@ -31,22 +31,22 @@ const ProfileDropdown = () => {
               {sessionData?.user.image ? (
                 <img
                   src={sessionData?.user.image || ""}
-                  className="mr-2 h-8 w-8 rounded-full"
+                  className="mr-2 h-8 w-8 rounded-full shadow"
                 />
               ) : (
-                <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-full bg-gray-300">
-                  <span className="text-2xl text-white">
+                <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-full bg-gray-300 shadow">
+                  <span className="text-xl text-white">
                     {getFirstLetter(sessionData?.user.name || "")}
                   </span>
                 </div>
               )}
 
-              <span className="mr-2 max-w-[100px] truncate">
+              {/* <span className="mr-2 max-w-[100px] truncate">
                 {sessionData?.user.name}
-              </span>
+              </span> */}
               <span>
-                <RiArrowUpSLine className="h-3 w-3" />
-                <RiArrowUpSLine className="h-3 w-3 rotate-180" />
+                <RiArrowUpSLine className="h-4 w-4" />
+                <RiArrowUpSLine className="h-4 w-4 rotate-180" />
               </span>
             </button>
           }
