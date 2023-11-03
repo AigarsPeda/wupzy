@@ -57,7 +57,7 @@ const HomePage: NextPage = () => {
             <Image
               width={1300}
               height={1300}
-              priority={true}
+              // priority={true}
               placeholder="blur"
               src="/asset/main.webp"
               alt="Picture wupzy dashboard"

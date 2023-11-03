@@ -13,7 +13,7 @@ interface EditGameProps {
 }
 
 const EditGame: FC<EditGameProps> = ({ gameId, handleModalClose }) => {
-  const { game, mutate, setGame, isLoading } = useGame(
+  const { game, updateGame, setGame, isLoading } = useGame(
     gameId,
     handleModalClose
   );
@@ -149,7 +149,7 @@ const EditGame: FC<EditGameProps> = ({ gameId, handleModalClose }) => {
               handleClick={() => {
                 if (!game) return;
 
-                mutate({
+                updateGame({
                   game,
                 });
               }}

@@ -21,13 +21,18 @@ const editTeamsScore = async ({
   teamsOldScore,
   teamsNewScore,
 }: EditTeamsScoreArgsType) => {
-  const updateGameWon = () => {
+  const updateGameWon = (oldScore: number) => {
     if (oldWinnerId === newWinnerId) {
       return { decrement: 0 };
     }
 
     if (team.id === newWinnerId && oldWinnerId !== newWinnerId) {
       return { increment: 1 };
+    }
+
+    // If the old score was 0 don't decrement it because it's already 0 and we don't want to go negative
+    if (oldScore === 0 && team.id !== newWinnerId) {
+      return { decrement: 0 };
     }
 
     return { decrement: 1 };
@@ -39,7 +44,7 @@ const editTeamsScore = async ({
     },
     data: {
       setsWon: teamsWins,
-      gamesWon: updateGameWon(),
+      gamesWon: updateGameWon(team.gamesWon),
       points: team.points - teamsOldScore + teamsNewScore,
     },
   });
@@ -51,7 +56,7 @@ const editTeamsScore = async ({
       },
       data: {
         setsWon: teamsWins,
-        gamesWon: updateGameWon(),
+        gamesWon: updateGameWon(player.gamesWon),
         points: team.points - teamsOldScore + teamsNewScore,
       },
     });
