@@ -8,7 +8,7 @@ const DesktopImg: FC = () => {
         width={1200}
         height={768}
         loading="lazy"
-        placeholder="blur"
+        // placeholder="blur"
         alt="wupzy desktop view"
         blurDataURL="/asset/blurredImage.avif"
         className="mx-auto rounded-lg"

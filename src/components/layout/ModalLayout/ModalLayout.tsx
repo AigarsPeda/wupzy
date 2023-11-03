@@ -9,6 +9,7 @@ interface ModalLayoutProps {
   isDots?: boolean;
   footer?: ReactNode;
   header?: ReactNode;
+  isMargin?: boolean;
   children: ReactNode;
   isPadding?: boolean;
   isFullScreen?: boolean;
@@ -22,6 +23,7 @@ const ModalLayout: FC<ModalLayoutProps> = ({
   footer,
   isDots,
   children,
+  isMargin,
   isFullScreen,
   isModalVisible,
   handleCancelClick,
@@ -72,6 +74,7 @@ const ModalLayout: FC<ModalLayoutProps> = ({
                 <div
                   className={classNames(
                     isDots && "dots",
+                    isMargin && "m-4",
                     "h-full overflow-x-auto overflow-y-auto"
                   )}
                 >

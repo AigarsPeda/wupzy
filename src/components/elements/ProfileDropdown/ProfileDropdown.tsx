@@ -2,6 +2,7 @@ import { signIn, useSession } from "next-auth/react";
 import { useState } from "react";
 import { RiArrowUpSLine } from "react-icons/ri";
 import Dropdown from "~/components/elements/Dropdown/Dropdown";
+import MyImage from "~/components/elements/MyImage/MyImage";
 import PrimaryButton from "~/components/elements/PrimaryButton/PrimaryButton";
 import Profile from "~/components/elements/Profile/Profile";
 import Spinner from "~/components/elements/Spinner/Spinner";
@@ -29,10 +30,14 @@ const ProfileDropdown = () => {
               }}
             >
               {sessionData?.user.image ? (
-                <img
-                  src={sessionData?.user.image || ""}
-                  className="mr-2 h-8 w-8 rounded-full shadow"
-                />
+                <div className="mr-2 flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-gray-300 shadow">
+                  <MyImage
+                    width={32}
+                    height={32}
+                    alt="profile"
+                    src={sessionData?.user.image || ""}
+                  />
+                </div>
               ) : (
                 <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-full bg-gray-300 shadow">
                   <span className="text-xl text-white">

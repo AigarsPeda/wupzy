@@ -58,8 +58,10 @@ const HomePage: NextPage = () => {
               width={1300}
               height={1300}
               priority={true}
-              src="/asset/desktop_1.webp"
+              placeholder="blur"
+              src="/asset/main.webp"
               alt="Picture wupzy dashboard"
+              blurDataURL="/asset/blur.jpg"
               className="hidden rounded md:block"
               style={{
                 width: "100%",
@@ -71,8 +73,10 @@ const HomePage: NextPage = () => {
             <Image
               width={1000}
               height={1000}
+              placeholder="blur"
               src="/asset/mob_3.webp"
               alt="Picture wupzy dashboard"
+              blurDataURL="/asset/blur.jpg"
               className="block rounded md:hidden"
               style={{
                 width: "100%",
