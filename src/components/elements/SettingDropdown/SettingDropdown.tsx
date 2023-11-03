@@ -27,8 +27,6 @@ const SettingDropdown = () => {
   const isPro = tournament?.kind === "PRO";
 
   const handleSettingButtonClick = (command: CommandType) => {
-    console.log(command);
-
     if (command === "DeleteTournament") {
       setIsDeleteModal(true);
       setIsDropdownOpen(false);
@@ -120,6 +118,7 @@ const SettingDropdown = () => {
                 isDisables={isDisabled(item.isProOnly, tournament?.kind)}
               >
                 <SettingButtonContent
+                  isDanger={item.isDanger}
                   title={
                     <>
                       {item.icon}

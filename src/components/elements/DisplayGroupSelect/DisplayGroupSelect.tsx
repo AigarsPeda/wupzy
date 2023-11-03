@@ -17,8 +17,9 @@ const DisplayGroupSelect: FC<DisplayGroupSelectProps> = ({
     <>
       {groups && groups.length > 1 && (
         <div className="mb-6 mt-4 flex space-x-3">
-          <p className="flex items-center font-semibold">Group:</p>
-          {groups.map((group, i) => (
+          {/* <p className="flex items-center text-sm text-gray-500">Group:</p> */}
+          {/* Sort  alphabetically */}
+          {groups.sort().map((group, i) => (
             <div
               key={i}
               className={classNames(
@@ -35,7 +36,7 @@ const DisplayGroupSelect: FC<DisplayGroupSelectProps> = ({
 
               <div
                 className={classNames(
-                  selectedGroup === group ? "bg-pink-500" : "",
+                  selectedGroup === group && "bg-gray-950",
                   "absolute -bottom-2 flex h-1 w-10 items-center justify-center rounded-md text-xs text-white"
                 )}
               />

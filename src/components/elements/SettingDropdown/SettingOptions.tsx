@@ -15,6 +15,7 @@ type SettingOptionType = {
   action: string;
   icon: JSX.Element;
   isProOnly: boolean;
+  isDanger: boolean;
   command: CommandType;
 };
 
@@ -26,6 +27,7 @@ export const SETTING_OPTION: SettingOptionType[] = [
     icon: <FiEdit2 className="mr-3 h-5" />,
     command: "EditTournament",
     isProOnly: false,
+    isDanger: false,
   },
   {
     id: "2",
@@ -34,6 +36,7 @@ export const SETTING_OPTION: SettingOptionType[] = [
     icon: <BsLayoutSplit className="mr-3 h-4 " />,
     command: "DivideIntoGroups",
     isProOnly: true,
+    isDanger: false,
   },
   {
     id: "3",
@@ -42,6 +45,7 @@ export const SETTING_OPTION: SettingOptionType[] = [
     icon: <AiOutlinePartition className="mr-3 h-5" />,
     command: "CreatePlayoffs",
     isProOnly: true,
+    isDanger: false,
   },
   {
     id: "4",
@@ -50,5 +54,6 @@ export const SETTING_OPTION: SettingOptionType[] = [
     icon: <RiDeleteBin6Line className="mr-3" />,
     command: "DeleteTournament",
     isProOnly: false,
+    isDanger: true,
   },
 ];
