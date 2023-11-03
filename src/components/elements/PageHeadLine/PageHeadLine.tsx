@@ -12,7 +12,7 @@ const PageHeadLine: FC<PageHeadLineProps> = ({ title, isLight }) => {
       <h1
         className={classNames(
           isLight ? "text-white" : "text-gray-900",
-          "truncate text-3xl"
+          "truncate text-4xl"
         )}
       >
         {title || ""}

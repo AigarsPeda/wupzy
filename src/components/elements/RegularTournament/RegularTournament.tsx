@@ -31,11 +31,11 @@ const RegularTournament: FC<RegularTournamentProps> = ({
 
   return (
     <>
-      <DisplayGroupSelect
+      {/* <DisplayGroupSelect
         groups={groups}
         selectedGroup={selectedGroup}
         setSelectedGroup={updateSelectedGroup}
-      />
+      /> */}
 
       <DisplayGames
         gamesScores={gamesScores}

@@ -21,9 +21,7 @@ const SettingButton: FC<SettingButtonProps> = ({
         "flex w-full items-center justify-between"
       )}
     >
-      {/* <span className="flex w-full items-center justify-between"> */}
       {children}
-      {/* </span> */}
     </button>
   );
 };

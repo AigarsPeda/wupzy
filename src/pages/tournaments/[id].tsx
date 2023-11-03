@@ -14,6 +14,7 @@ import useTournament from "~/hooks/useTournament";
 import useTournamentGames from "~/hooks/useTournamentGames";
 import getGamesLeft from "~/utils/getGamesLeft";
 import getPercentagesOfFinishedGames from "~/utils/getPercentagesOfFinishedGames";
+import DisplayGroupSelect from "../../components/elements/DisplayGroupSelect/DisplayGroupSelect";
 
 const TournamentPage: NextPage = () => {
   // TODO: Fetch games only for selected group
@@ -32,6 +33,38 @@ const TournamentPage: NextPage = () => {
     return isPlayoffMode === "false";
   };
 
+  // <div className="flex justify-between space-x-4">
+  //   <div>
+  //     <div className="max-w-[16rem] md:max-w-none">
+  //       <PageHeadLine title={tournament?.name} />
+  //       {isRegularTournamentSelected() && (
+  //         <p className="text-sm text-gray-500">
+  //           {getGamesLeft(games, selectedGroup)} games left
+  //         </p>
+  //       )}
+  //     </div>
+
+  // <DisplayGroupSelect
+  //   groups={groups}
+  //   selectedGroup={selectedGroup}
+  //   setSelectedGroup={updateSelectedGroup}
+  // />
+  //   </div>
+
+  //   {/* <div className="h-14 w-14">
+  //             {isRegularTournamentSelected() && (
+  //               <CircleProgress
+  //                 progress={
+  //                   getPercentagesOfFinishedGames(games, selectedGroup).progress
+  //                 }
+  //               />
+  //             )}
+  //           </div> */}
+  //   <div>
+  //     <SettingDropdown />
+  //   </div>
+  // </div>;
+
   return (
     <>
       <PageHead
@@ -44,9 +77,9 @@ const TournamentPage: NextPage = () => {
       {isTournamentLoading || !games ? (
         <LoadingSkeleton classes="mt-2 h-14 w-72" />
       ) : (
-        <div className="mt-4 items-center rounded py-1 md:mt-0 md:flex md:justify-between">
-          <div className="flex items-center justify-between space-x-4">
-            <div className="max-w-[16rem] md:max-w-none">
+        <div>
+          <div className="flex w-full items-center justify-between md:items-start">
+            <div className="">
               <PageHeadLine title={tournament?.name} />
               {isRegularTournamentSelected() && (
                 <p className="text-sm text-gray-500">
@@ -54,17 +87,17 @@ const TournamentPage: NextPage = () => {
                 </p>
               )}
             </div>
-            <div className="h-14 w-14">
-              {isRegularTournamentSelected() && (
-                <CircleProgress
-                  progress={
-                    getPercentagesOfFinishedGames(games, selectedGroup).progress
-                  }
-                />
-              )}
+            <div className="flex w-full pl-8">
+              <DisplayGroupSelect
+                groups={groups}
+                selectedGroup={selectedGroup}
+                setSelectedGroup={updateSelectedGroup}
+              />
+            </div>
+            <div className="flex w-full justify-end">
+              <SettingDropdown />
             </div>
           </div>
-
           <div className="mt-4 flex w-full justify-end space-x-2 md:mt-0">
             {tournament?.isPlayoffs && (
               <Tooltip
@@ -90,7 +123,6 @@ const TournamentPage: NextPage = () => {
                 />
               </Tooltip>
             )}
-            <SettingDropdown />
           </div>
         </div>
       )}

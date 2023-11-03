@@ -69,10 +69,10 @@ const SettingDropdown = () => {
               setIsDropdownOpen((state) => !state);
             }}
           >
-            <span className="mr-3 max-w-[100px] truncate text-gray-900">
+            <span className="mr-3 hidden max-w-[100px] truncate text-gray-900 md:block">
               Settings
             </span>
-            <IoSettingsOutline className="h-6 w-6" />
+            <IoSettingsOutline className="h-8 w-8 md:h-6 md:w-6" />
           </button>
         }
         handleDropdownClose={() => {
