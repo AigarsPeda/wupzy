@@ -9,16 +9,15 @@ const useEditTournament = () => {
   const [group, setGroup] = useState("A");
   const { data: sessionData } = useSession();
   const [tournamentId, setTournamentId] = useState("");
-  const { teams, player, game: games, tournament } = api.useContext();
-  const { mutate, isLoading: isUpdatingTournament } =
-    api.tournament.updateTournament.useMutation({
-      onSuccess: () => {
-        void games.invalidate();
-        void teams.invalidate();
-        void player.invalidate();
-        void tournament.invalidate();
-      },
-    });
+  const { teams, player, game: games, tournament } = api.useUtils();
+  const { mutate } = api.tournament.updateTournament.useMutation({
+    onSuccess: () => {
+      void games.invalidate();
+      void teams.invalidate();
+      void player.invalidate();
+      void tournament.invalidate();
+    },
+  });
   const { data, isLoading: isGroupLoading } =
     api.tournament.getTournamentToEdit.useQuery(
       { id: tournamentId, group },
@@ -50,7 +49,7 @@ const useEditTournament = () => {
   return {
     isGroupLoading,
     updateTournament,
-    isUpdatingTournament,
+    // isUpdatingTournament,
     tournamentId: tournamentId,
     tournament: data?.tournament,
   };

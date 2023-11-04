@@ -30,7 +30,7 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
   const [playoffRounds, setPlayoffRounds] = useState<number[]>([]);
   const [selectedRoundsCount, setSelectedRoundsCount] = useState(0);
   const [playoffTree, setPlayoffTree] = useState<PlayoffMapType>(new Map());
-  const { mutate, isLoading } = api.playoffs.createPlayoffGames.useMutation({
+  const { mutate } = api.playoffs.createPlayoffGames.useMutation({
     onSuccess: async () => {
       await refetch();
       await router.replace({
@@ -103,7 +103,7 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
             <Button
               size="sm"
               type="button"
-              isLoading={isLoading}
+              // isLoading={isLoading}
               title="Create playoff"
               handleClick={handlePlayOffSave}
             />

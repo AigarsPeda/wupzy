@@ -1,6 +1,5 @@
 import { type FC } from "react";
 import DisplayGames from "~/components/elements/DisplayGames/DisplayGames";
-import DisplayGroupSelect from "~/components/elements/DisplayGroupSelect/DisplayGroupSelect";
 import PlayerTable from "~/components/elements/PlayerTable/PlayerTable";
 import TeamTable from "~/components/elements/TeamTable/TeamTable";
 import {

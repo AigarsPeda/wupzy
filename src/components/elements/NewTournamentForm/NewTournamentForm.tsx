@@ -33,7 +33,7 @@ const NewTournamentForm: FC = () => {
 
   const { redirectToPath } = useRedirect();
   const [gameCount, setGameCount] = useState(0);
-  const { mutate, isLoading } = api.tournament.postNewTournament.useMutation({
+  const { mutate } = api.tournament.postNewTournament.useMutation({
     onSuccess: (data) => {
       redirectToPath(`/tournaments/${data.id}`);
     },
@@ -191,7 +191,7 @@ const NewTournamentForm: FC = () => {
             size="sm"
             title="Save"
             type="button"
-            isLoading={isLoading}
+            // isLoading={isLoading}
             handleClick={() => mutate(newTournament)}
             isDisabled={newTournament.name.trim() === ""}
           />

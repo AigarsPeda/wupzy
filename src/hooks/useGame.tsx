@@ -10,7 +10,7 @@ const useGame = (gameId: string, handleModalClose?: () => void) => {
     { enabled: Boolean(gameId), refetchOnWindowFocus: false }
   );
 
-  const { mutate: updateGame, isLoading } = api.game.updateGame.useMutation({
+  const { mutate: updateGame } = api.game.updateGame.useMutation({
     onSuccess: () => {
       void games.invalidate();
       void teams.invalidate();
@@ -38,7 +38,7 @@ const useGame = (gameId: string, handleModalClose?: () => void) => {
   return {
     game,
     setGame,
-    isLoading,
+    // isLoading,
     updateGame,
   };
 };

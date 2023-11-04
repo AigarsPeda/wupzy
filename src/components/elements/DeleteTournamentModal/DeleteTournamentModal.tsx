@@ -12,7 +12,7 @@ const DeleteTournamentModal: FC<DeleteTournamentModalProps> = ({
   isDeleteModal,
   handleCancelClicks,
 }) => {
-  const { isDeleting, deleteTournament } = useTournament();
+  const { deleteTournament } = useTournament();
 
   return (
     <SmallModalLayout
@@ -30,17 +30,17 @@ const DeleteTournamentModal: FC<DeleteTournamentModalProps> = ({
             <Button
               color="red"
               title="Delete"
-              isLoading={isDeleting}
+              // isLoading={isDeleting}
               handleClick={deleteTournament}
             />
             <div className="w-full">
-              {!isDeleting && (
-                <Button
-                  color="light"
-                  title="Cancel"
-                  handleClick={handleCancelClicks}
-                />
-              )}
+              {/* {!isDeleting && ( */}
+              <Button
+                color="light"
+                title="Cancel"
+                handleClick={handleCancelClicks}
+              />
+              {/* )} */}
             </div>
           </div>
         </div>

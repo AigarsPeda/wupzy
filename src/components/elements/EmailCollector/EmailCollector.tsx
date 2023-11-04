@@ -6,8 +6,7 @@ import isEmail from "~/utils/isEmail";
 
 const EmailCollector: FC = () => {
   const [email, setEmail] = useState("");
-  const { mutate, isSuccess, isLoading } =
-    api.emailListRouter.postEmail.useMutation();
+  const { mutate, isSuccess } = api.emailListRouter.postEmail.useMutation();
 
   return (
     <div className="mx-auto flex w-full justify-center">
@@ -39,7 +38,7 @@ const EmailCollector: FC = () => {
             <GradientButton
               type="submit"
               title="Submit"
-              isLoading={isLoading}
+              // isLoading={isLoading}
               isDisabled={!isEmail(email.trim())}
               handleClick={() => {
                 mutate({ email });

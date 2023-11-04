@@ -17,8 +17,7 @@ const EditTournamentModal: FC<EditTournamentModalModalProps> = ({
   isEditModal,
   handleCancelClicks,
 }) => {
-  const { tournament, updateTournament, isUpdatingTournament } =
-    useEditTournament();
+  const { tournament, updateTournament } = useEditTournament();
   const {
     handleAddTeam,
     newTournament,
@@ -101,7 +100,7 @@ const EditTournamentModal: FC<EditTournamentModalModalProps> = ({
               size="sm"
               title="Save"
               type="button"
-              isLoading={isUpdatingTournament}
+              // isLoading={isUpdatingTournament}
               isDisabled={newTournament.name.trim() === ""}
               handleClick={() => {
                 updateTournament(newTournament);

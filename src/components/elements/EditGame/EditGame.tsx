@@ -13,10 +13,7 @@ interface EditGameProps {
 }
 
 const EditGame: FC<EditGameProps> = ({ gameId, handleModalClose }) => {
-  const { game, updateGame, setGame, isLoading } = useGame(
-    gameId,
-    handleModalClose
-  );
+  const { game, updateGame, setGame } = useGame(gameId, handleModalClose);
 
   const firstTeamName = game?.teamOne?.players
     .map((player) => player.name)
@@ -77,7 +74,7 @@ const EditGame: FC<EditGameProps> = ({ gameId, handleModalClose }) => {
 
           <div className="mt-2 grid grid-cols-11 gap-x-3 gap-y-5">
             {game &&
-              Object.entries(GameSets.parse(game?.gameSets)).map(
+              Object?.entries(GameSets.parse(game?.gameSets)).map(
                 ([key, value], i) => {
                   return (
                     <Fragment key={i}>
@@ -145,7 +142,7 @@ const EditGame: FC<EditGameProps> = ({ gameId, handleModalClose }) => {
               size="sm"
               title="Save"
               type="button"
-              isLoading={isLoading}
+              // isLoading={isLoading}
               handleClick={() => {
                 if (!game) return;
 

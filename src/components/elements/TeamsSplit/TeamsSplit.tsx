@@ -27,16 +27,15 @@ const TeamsSplit: FC<TeamsSplitProps> = ({ handleModalClose }) => {
     game: invalidateGames,
     teams: invalidateTeams,
     player: invalidatePlayers,
-  } = api.useContext();
-  const { mutate, isLoading: isSplitting } =
-    api.teams.splitTeamsInGroups.useMutation({
-      onSuccess: () => {
-        void invalidateGames.invalidate();
-        void invalidateTeams.invalidate();
-        void invalidatePlayers.invalidate();
-        handleModalClose();
-      },
-    });
+  } = api.useUtils();
+  const { mutate } = api.teams.splitTeamsInGroups.useMutation({
+    onSuccess: () => {
+      void invalidateGames.invalidate();
+      void invalidateTeams.invalidate();
+      void invalidatePlayers.invalidate();
+      handleModalClose();
+    },
+  });
 
   const addGroup = () => {
     const newGroup = availableGroups[0];
@@ -150,7 +149,7 @@ const TeamsSplit: FC<TeamsSplitProps> = ({ handleModalClose }) => {
         <div>
           <Button
             title="Split"
-            isLoading={isSplitting}
+            // isLoading={isSplitting}
             handleClick={() => {
               void mutate({
                 tournamentId,

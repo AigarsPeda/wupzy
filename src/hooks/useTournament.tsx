@@ -5,7 +5,7 @@ import { api } from "~/utils/api";
 
 const useTournament = () => {
   const router = useRouter();
-  const { player } = api.useContext();
+  const { player } = api.useUtils();
   const { data: sessionData } = useSession();
   const [tournamentId, setTournamentId] = useState("");
   const { data, isLoading, refetch } = api.tournament.getTournament.useQuery(
@@ -16,19 +16,20 @@ const useTournament = () => {
   const {
     error: errorUpdatingKind,
     mutate: upTournamentToPro,
-    isLoading: isUpdatingToPro,
+    // isLoading: isUpdatingToPro,
   } = api.tournament.updateTournamentToPro.useMutation({
     onSuccess: async () => {
       await refetch();
       await player.invalidate();
     },
   });
-  const { mutate: delTournament, isLoading: isDeleting } =
-    api.tournament.deleteTournament.useMutation({
+  const { mutate: delTournament } = api.tournament.deleteTournament.useMutation(
+    {
       onSuccess: async () => {
         await router.push("/tournaments");
       },
-    });
+    }
+  );
 
   const updateTournamentToPro = () => {
     if (tournamentId) {
@@ -55,9 +56,9 @@ const useTournament = () => {
   return {
     refetch,
     isLoading,
-    isDeleting,
+    // isDeleting,
     sessionData,
-    isUpdatingToPro,
+    // isUpdatingToPro,
     deleteTournament,
     updateTournamentToPro,
     tournament: data?.tournament,
