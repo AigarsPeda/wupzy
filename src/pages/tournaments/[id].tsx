@@ -1,6 +1,6 @@
 import { type NextPage } from "next";
 import { AiOutlinePartition, AiOutlineTable } from "react-icons/ai";
-import CircleProgress from "~/components/elements/CircleProgress/CircleProgress";
+import DisplayGroupSelect from "~/components/elements/DisplayGroupSelect/DisplayGroupSelect";
 import LoadingSkeleton from "~/components/elements/LoadingSkeleton/LoadingSkeleton";
 import PageHead from "~/components/elements/PageHead/PageHead";
 import PageHeadLine from "~/components/elements/PageHeadLine/PageHeadLine";
@@ -13,8 +13,8 @@ import useQueryValue from "~/hooks/useQueryValue";
 import useTournament from "~/hooks/useTournament";
 import useTournamentGames from "~/hooks/useTournamentGames";
 import getGamesLeft from "~/utils/getGamesLeft";
-import getPercentagesOfFinishedGames from "~/utils/getPercentagesOfFinishedGames";
-import DisplayGroupSelect from "../../components/elements/DisplayGroupSelect/DisplayGroupSelect";
+import CircleProgress from "../../components/elements/CircleProgress/CircleProgress";
+import getPercentagesOfFinishedGames from "../../utils/getPercentagesOfFinishedGames";
 
 const TournamentPage: NextPage = () => {
   // TODO: Fetch games only for selected group
@@ -33,37 +33,9 @@ const TournamentPage: NextPage = () => {
     return isPlayoffMode === "false";
   };
 
-  // <div className="flex justify-between space-x-4">
-  //   <div>
-  //     <div className="max-w-[16rem] md:max-w-none">
-  //       <PageHeadLine title={tournament?.name} />
-  //       {isRegularTournamentSelected() && (
-  //         <p className="text-sm text-gray-500">
-  //           {getGamesLeft(games, selectedGroup)} games left
-  //         </p>
-  //       )}
-  //     </div>
-
-  // <DisplayGroupSelect
-  //   groups={groups}
-  //   selectedGroup={selectedGroup}
-  //   setSelectedGroup={updateSelectedGroup}
-  // />
-  //   </div>
-
-  //   {/* <div className="h-14 w-14">
-  //             {isRegularTournamentSelected() && (
-  //               <CircleProgress
-  //                 progress={
-  //                   getPercentagesOfFinishedGames(games, selectedGroup).progress
-  //                 }
-  //               />
-  //             )}
-  //           </div> */}
-  //   <div>
-  //     <SettingDropdown />
-  //   </div>
-  // </div>;
+  // <CircleProgress
+  //   progress={getPercentagesOfFinishedGames(games, selectedGroup).progress}
+  // />;
 
   return (
     <>
@@ -78,22 +50,35 @@ const TournamentPage: NextPage = () => {
         <LoadingSkeleton classes="mt-2 h-14 w-72" />
       ) : (
         <div>
-          <div className="flex w-full items-center justify-between md:items-start">
-            <div className="">
-              <PageHeadLine title={tournament?.name} />
-              {isRegularTournamentSelected() && (
-                <p className="text-sm text-gray-500">
-                  {getGamesLeft(games, selectedGroup)} games left
-                </p>
-              )}
+          <div className="flex w-full justify-between">
+            <div>
+              <div className="flex">
+                <div className="mr-4">
+                  <PageHeadLine title={tournament?.name} />
+                  {isRegularTournamentSelected() && (
+                    <p className="text-xs text-gray-500">
+                      {getGamesLeft(games, selectedGroup)} games left
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <CircleProgress
+                    progress={
+                      getPercentagesOfFinishedGames(games, selectedGroup)
+                        .progress
+                    }
+                  />
+                </div>
+              </div>
+              <div className="mb-4 mt-5">
+                <DisplayGroupSelect
+                  groups={groups}
+                  selectedGroup={selectedGroup}
+                  setSelectedGroup={updateSelectedGroup}
+                />
+              </div>
             </div>
-            <div className="flex w-full pl-8">
-              <DisplayGroupSelect
-                groups={groups}
-                selectedGroup={selectedGroup}
-                setSelectedGroup={updateSelectedGroup}
-              />
-            </div>
+            <div className="flex w-full pl-8"></div>
             <div className="flex w-full justify-end">
               <SettingDropdown />
             </div>

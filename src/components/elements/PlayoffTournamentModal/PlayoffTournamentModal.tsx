@@ -86,7 +86,9 @@ const PlayoffTournamentModal: FC<PlayoffTournamentModalProps> = ({
       isModalVisible={isPlayOffModal}
       handleCancelClick={handleCancelClicks}
       header={
-        <h1 className="truncate text-3xl">Create {tournament?.name} PAYOFFS</h1>
+        <h1 className="truncate text-3xl">
+          Create {tournament?.name} playoffs
+        </h1>
       }
     >
       <div className="h-full px-3 py-2 pb-2 md:px-6 md:py-4">

@@ -1,7 +1,7 @@
 import { type NextPage } from "next";
-import { useState } from "react";
 import { AiOutlinePartition, AiOutlineTable } from "react-icons/ai";
 import CircleProgress from "~/components/elements/CircleProgress/CircleProgress";
+import DisplayGroupSelect from "~/components/elements/DisplayGroupSelect/DisplayGroupSelect";
 import DisplaySetScore from "~/components/elements/DisplaySetScore/DisplaySetScore";
 import DisplaySharePlayoffGame from "~/components/elements/DisplaySharePlayoffGame/DisplaySharePlayoffGame";
 import LoadingSkeleton from "~/components/elements/LoadingSkeleton/LoadingSkeleton";
@@ -18,9 +18,13 @@ import getPercentagesOfFinishedGames from "~/utils/getPercentagesOfFinishedGames
 import organizePlayoffGames from "~/utils/organizePlayoffGames";
 
 const TournamentPage: NextPage = () => {
-  const [selectedGroup, setSelectedGroup] = useState("A");
   const { games, groups, players, teams, isLoading, tournament, playoffGames } =
     useShareLink();
+
+  const [selectedGroup, updateSelectedGroup] = useQueryValue(
+    groups[0] || "A",
+    "group"
+  );
 
   const [isPlayoffMode, updateIsPlayoffMode] = useQueryValue(
     "false",
@@ -44,25 +48,51 @@ const TournamentPage: NextPage = () => {
         <LoadingSkeleton classes="mt-2 h-14 w-72" />
       ) : (
         <div className="mt-4 flex items-center justify-between rounded py-1 md:mt-0">
-          <div className="flex items-center justify-between space-x-4">
-            <div className="h-14 max-w-[16rem] md:max-w-none">
-              <PageHeadLine title={tournament?.name} />
-              {isRegularTournamentSelected() && (
-                <p className="text-sm text-gray-500">
-                  {getGamesLeft(games, selectedGroup)} games left
-                </p>
-              )}
-            </div>
-            <div className="h-14 w-14">
-              {isRegularTournamentSelected() && (
+          <div>
+            <div className="flex">
+              <div className="mr-4">
+                <PageHeadLine title={tournament?.name} />
+                {isRegularTournamentSelected() && (
+                  <p className="text-xs text-gray-500">
+                    {getGamesLeft(games, selectedGroup)} games left
+                  </p>
+                )}
+              </div>
+              <div>
                 <CircleProgress
                   progress={
                     getPercentagesOfFinishedGames(games, selectedGroup).progress
                   }
                 />
-              )}
+              </div>
+            </div>
+            <div className="mb-4 mt-5">
+              <DisplayGroupSelect
+                groups={groups}
+                selectedGroup={selectedGroup}
+                setSelectedGroup={updateSelectedGroup}
+              />
             </div>
           </div>
+          {/* <div className="flex w-full justify-between">
+            <div>
+              <div>
+                <PageHeadLine title={tournament?.name} />
+                {isRegularTournamentSelected() && (
+                  <p className="text-xs text-gray-500">
+                    {getGamesLeft(games, selectedGroup)} games left
+                  </p>
+                )}
+              </div>
+              <div className="mb-4 mt-5">
+                <DisplayGroupSelect
+                  groups={groups}
+                  selectedGroup={selectedGroup}
+                  setSelectedGroup={updateSelectedGroup}
+                />
+              </div>
+            </div>
+          </div> */}
           {tournament?.isPlayoffs && (
             <Tooltip
               isNowrap
@@ -119,11 +149,11 @@ const TournamentPage: NextPage = () => {
         <RegularShareTournament
           teams={teams}
           games={games}
-          groups={groups}
+          // groups={groups}
           players={players}
           isLoading={isLoading}
           selectedGroup={selectedGroup}
-          setSelectedGroup={setSelectedGroup}
+          // setSelectedGroup={updateSelectedGroup}
           tournamentType={tournament?.type || "king"}
         />
       )}

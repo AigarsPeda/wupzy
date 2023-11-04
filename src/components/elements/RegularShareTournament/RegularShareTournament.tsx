@@ -11,33 +11,33 @@ import {
 } from "~/types/tournament.types";
 
 interface RegularShareTournamentProps {
-  groups: string[];
+  // groups: string[];
   games: GameType[];
   teams: TeamType[];
   isLoading: boolean;
   players: PlayerType[];
   selectedGroup: string;
   tournamentType: TournamentTypeType;
-  setSelectedGroup: (group: string) => void;
+  // setSelectedGroup: (group: string) => void;
 }
 
 const RegularShareTournament: FC<RegularShareTournamentProps> = ({
   games,
   teams,
   players,
-  groups,
+  // groups,
   isLoading,
   selectedGroup,
   tournamentType,
-  setSelectedGroup,
+  // setSelectedGroup,
 }) => {
   return (
     <>
-      <DisplayGroupSelect
+      {/* <DisplayGroupSelect
         groups={groups}
         selectedGroup={selectedGroup}
         setSelectedGroup={setSelectedGroup}
-      />
+      /> */}
       <DisplayGames
         gamesScores={[]}
         isGamesLoading={isLoading}

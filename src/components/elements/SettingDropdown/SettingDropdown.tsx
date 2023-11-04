@@ -109,27 +109,34 @@ const SettingDropdown = () => {
             />
           )}
 
-          {SETTING_OPTION.map((item) => (
-            <div key={item.id} className="mt-2">
-              <SettingButton
-                handleClick={() => {
-                  handleSettingButtonClick(item.command);
-                }}
-                isDisables={isDisabled(item.isProOnly, tournament?.kind)}
-              >
-                <SettingButtonContent
-                  isDanger={item.isDanger}
-                  title={
-                    <>
-                      {item.icon}
-                      {item.title}
-                    </>
-                  }
-                  action={item.action}
-                />
-              </SettingButton>
-            </div>
-          ))}
+          {SETTING_OPTION.map((item) => {
+            if (
+              tournament?.type &&
+              item.availableFor.includes(tournament.type)
+            ) {
+              return (
+                <div key={item.id} className="mt-2">
+                  <SettingButton
+                    isDisables={isDisabled(item.isProOnly, tournament?.kind)}
+                    handleClick={() => {
+                      handleSettingButtonClick(item.command);
+                    }}
+                  >
+                    <SettingButtonContent
+                      action={item.action}
+                      isDanger={item.isDanger}
+                      title={
+                        <>
+                          {item.icon}
+                          {item.title}
+                        </>
+                      }
+                    />
+                  </SettingButton>
+                </div>
+              );
+            }
+          })}
         </div>
       </Dropdown>
       <SettingsDrawerModals

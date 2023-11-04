@@ -14,9 +14,10 @@ type SettingOptionType = {
   title: string;
   action: string;
   icon: JSX.Element;
-  isProOnly: boolean;
   isDanger: boolean;
+  isProOnly: boolean;
   command: CommandType;
+  availableFor: ("king" | "teams")[];
 };
 
 export const SETTING_OPTION: SettingOptionType[] = [
@@ -28,6 +29,7 @@ export const SETTING_OPTION: SettingOptionType[] = [
     command: "EditTournament",
     isProOnly: false,
     isDanger: false,
+    availableFor: ["king", "teams"],
   },
   {
     id: "2",
@@ -37,6 +39,7 @@ export const SETTING_OPTION: SettingOptionType[] = [
     command: "DivideIntoGroups",
     isProOnly: true,
     isDanger: false,
+    availableFor: ["king", "teams"],
   },
   {
     id: "3",
@@ -46,6 +49,7 @@ export const SETTING_OPTION: SettingOptionType[] = [
     command: "CreatePlayoffs",
     isProOnly: true,
     isDanger: false,
+    availableFor: ["teams"],
   },
   {
     id: "4",
@@ -55,5 +59,6 @@ export const SETTING_OPTION: SettingOptionType[] = [
     command: "DeleteTournament",
     isProOnly: false,
     isDanger: true,
+    availableFor: ["king", "teams"],
   },
 ];
