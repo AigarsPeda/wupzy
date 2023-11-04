@@ -1,5 +1,6 @@
 import { type NextPage } from "next";
 import { AiOutlinePartition, AiOutlineTable } from "react-icons/ai";
+import CircleProgress from "~/components/elements/CircleProgress/CircleProgress";
 import DisplayGroupSelect from "~/components/elements/DisplayGroupSelect/DisplayGroupSelect";
 import LoadingSkeleton from "~/components/elements/LoadingSkeleton/LoadingSkeleton";
 import PageHead from "~/components/elements/PageHead/PageHead";
@@ -13,8 +14,7 @@ import useQueryValue from "~/hooks/useQueryValue";
 import useTournament from "~/hooks/useTournament";
 import useTournamentGames from "~/hooks/useTournamentGames";
 import getGamesLeft from "~/utils/getGamesLeft";
-import CircleProgress from "../../components/elements/CircleProgress/CircleProgress";
-import getPercentagesOfFinishedGames from "../../utils/getPercentagesOfFinishedGames";
+import getPercentagesOfFinishedGames from "~/utils/getPercentagesOfFinishedGames";
 
 const TournamentPage: NextPage = () => {
   // TODO: Fetch games only for selected group
@@ -115,7 +115,7 @@ const TournamentPage: NextPage = () => {
       {isRegularTournamentSelected() ? (
         <RegularTournament
           selectedGroup={selectedGroup}
-          updateSelectedGroup={updateSelectedGroup}
+          // updateSelectedGroup={updateSelectedGroup}
           tournamentType={tournament?.type || "king"}
         />
       ) : (

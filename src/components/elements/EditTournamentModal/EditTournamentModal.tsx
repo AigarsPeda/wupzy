@@ -1,12 +1,12 @@
 import { useEffect, type FC } from "react";
 import Button from "~/components/elements/Button/Button";
+import Input from "~/components/elements/Input/Input";
 import NewKingTournament from "~/components/elements/NewKingTournament/NewKingTournament";
 import NewTeamsTournament from "~/components/elements/NewTeamsTournament/NewTeamsTournament";
 import TextButton from "~/components/elements/TextButton/TextButton";
 import ModalLayout from "~/components/layout/ModalLayout/ModalLayout";
 import useCreateNewTournament from "~/hooks/useCreateTournament";
 import useEditTournament from "~/hooks/useEditTournament";
-import Input from "../Input/Input";
 
 interface EditTournamentModalModalProps {
   isEditModal: boolean;
@@ -17,7 +17,7 @@ const EditTournamentModal: FC<EditTournamentModalModalProps> = ({
   isEditModal,
   handleCancelClicks,
 }) => {
-  const { tournament, updateTournament } = useEditTournament();
+  const { tournament, updateTournament } = useEditTournament(isEditModal);
   const {
     handleAddTeam,
     newTournament,

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { type NewTournamentType } from "~/types/tournament.types";
 import { api } from "~/utils/api";
 
-const useEditTournament = () => {
+const useEditTournament = (isEditModal: boolean) => {
   const router = useRouter();
   const [group, setGroup] = useState("A");
   const { data: sessionData } = useSession();
@@ -21,7 +21,10 @@ const useEditTournament = () => {
   const { data, isLoading: isGroupLoading } =
     api.tournament.getTournamentToEdit.useQuery(
       { id: tournamentId, group },
-      { enabled: Boolean(tournamentId) && sessionData?.user !== undefined }
+      {
+        enabled: Boolean(tournamentId) && sessionData?.user !== undefined,
+        refetchOnWindowFocus: !isEditModal,
+      }
     );
 
   const updateTournament = (tournament: NewTournamentType) => {

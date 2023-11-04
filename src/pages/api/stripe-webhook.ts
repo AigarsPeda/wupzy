@@ -17,25 +17,21 @@ const webhookSecret = env.STRIPE_WEBHOOK_SECRET;
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   if (req.method === "POST") {
     const buf = await buffer(req);
-    const sig = req.headers["stripe-signature"];
+    const sig = z.string().parse(req.headers["stripe-signature"]);
 
     let event: Stripe.Event;
 
     try {
-      event = stripe.webhooks.constructEvent(buf, sig as string, webhookSecret);
-
-      console.log("event", event);
+      event = stripe.webhooks.constructEvent(buf, sig, webhookSecret);
 
       // Handle the event
       switch (event.type) {
         case "charge.succeeded":
-          console.log("charge.succeeded ----->");
-
-          const payment = event.data.object as Stripe.Charge;
+          const payment = event.data.object;
 
           // validate userId with zod tat it is string
           const userId = z.string().parse(payment.customer);

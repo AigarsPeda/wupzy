@@ -7,14 +7,14 @@ type TableValueType =
   | string
   | number
   | object
-  | boolean
   | ReactNode
+  // | boolean
   | undefined;
 
 interface TableProps {
   exclude?: string[];
   isLoading?: boolean;
-  tableContents: { [key: string]: TableValueType }[] | undefined;
+  tableContents: { [key: string]: TableValueType }[];
 }
 
 const Table: FC<TableProps> = ({ exclude, isLoading, tableContents }) => {
@@ -34,7 +34,7 @@ const Table: FC<TableProps> = ({ exclude, isLoading, tableContents }) => {
 
   const getObjectsValues = (
     arr: { [key: string]: TableValueType }[],
-    exclude?: string[]
+    exclude?: string[],
   ) => {
     if (arr.length === 0 || arr === undefined || arr[0] === undefined) {
       return {

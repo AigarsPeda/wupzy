@@ -9,22 +9,16 @@ import useTournamentGames from "~/hooks/useTournamentGames";
 interface RegularTournamentProps {
   selectedGroup: string;
   tournamentType: "king" | "teams";
-  updateSelectedGroup: (value: string) => void;
+  // updateSelectedGroup: (value: string) => void;
 }
 
 const RegularTournament: FC<RegularTournamentProps> = ({
   selectedGroup,
   tournamentType,
-  updateSelectedGroup,
+  // updateSelectedGroup,
 }) => {
-  const {
-    games,
-    groups,
-    isLoading,
-    gamesScores,
-    handleScoreSave,
-    handleScoreChange,
-  } = useTournamentGames();
+  const { games, isLoading, gamesScores, handleScoreSave, handleScoreChange } =
+    useTournamentGames();
   const { teams } = useTeams();
   const { players } = usePlayers();
 
