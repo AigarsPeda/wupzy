@@ -1,6 +1,5 @@
 import { type NextPage } from "next";
 import { AiOutlinePartition, AiOutlineTable } from "react-icons/ai";
-import CircleProgress from "~/components/elements/CircleProgress/CircleProgress";
 import DisplayGroupSelect from "~/components/elements/DisplayGroupSelect/DisplayGroupSelect";
 import DisplaySetScore from "~/components/elements/DisplaySetScore/DisplaySetScore";
 import DisplaySharePlayoffGame from "~/components/elements/DisplaySharePlayoffGame/DisplaySharePlayoffGame";
@@ -14,7 +13,6 @@ import Tooltip from "~/components/elements/Tooltip/Tooltip";
 import useQueryValue from "~/hooks/useQueryValue";
 import useShareLink from "~/hooks/useShareLink";
 import getGamesLeft from "~/utils/getGamesLeft";
-import getPercentagesOfFinishedGames from "~/utils/getPercentagesOfFinishedGames";
 import organizePlayoffGames from "~/utils/organizePlayoffGames";
 
 const TournamentPage: NextPage = () => {
@@ -23,12 +21,12 @@ const TournamentPage: NextPage = () => {
 
   const [selectedGroup, updateSelectedGroup] = useQueryValue(
     groups[0] || "A",
-    "group"
+    "group",
   );
 
   const [isPlayoffMode, updateIsPlayoffMode] = useQueryValue(
     "false",
-    "isplayoffmode"
+    "isplayoffmode",
   );
 
   const isRegularTournamentSelected = () => {
@@ -58,13 +56,13 @@ const TournamentPage: NextPage = () => {
                   </p>
                 )}
               </div>
-              <div>
+              {/* <div>
                 <CircleProgress
                   progress={
                     getPercentagesOfFinishedGames(games, selectedGroup).progress
                   }
                 />
-              </div>
+              </div> */}
             </div>
             <div className="mb-4 mt-5">
               <DisplayGroupSelect
@@ -74,25 +72,7 @@ const TournamentPage: NextPage = () => {
               />
             </div>
           </div>
-          {/* <div className="flex w-full justify-between">
-            <div>
-              <div>
-                <PageHeadLine title={tournament?.name} />
-                {isRegularTournamentSelected() && (
-                  <p className="text-xs text-gray-500">
-                    {getGamesLeft(games, selectedGroup)} games left
-                  </p>
-                )}
-              </div>
-              <div className="mb-4 mt-5">
-                <DisplayGroupSelect
-                  groups={groups}
-                  selectedGroup={selectedGroup}
-                  setSelectedGroup={updateSelectedGroup}
-                />
-              </div>
-            </div>
-          </div> */}
+
           {tournament?.isPlayoffs && (
             <Tooltip
               isNowrap
@@ -111,7 +91,7 @@ const TournamentPage: NextPage = () => {
                 title={isRegularTournamentSelected() ? "Playoffs" : "Groups"}
                 handleClick={() => {
                   updateIsPlayoffMode(
-                    isPlayoffMode === "true" ? "false" : "true"
+                    isPlayoffMode === "true" ? "false" : "true",
                   );
                 }}
               />

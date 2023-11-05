@@ -8,16 +8,14 @@ interface PageHeadLineProps {
 
 const PageHeadLine: FC<PageHeadLineProps> = ({ title, isLight }) => {
   return (
-    <div className="max-w-md">
-      <h1
-        className={classNames(
-          isLight ? "text-white" : "text-gray-900",
-          "truncate text-4xl"
-        )}
-      >
-        {title || ""}
-      </h1>
-    </div>
+    <h1
+      className={classNames(
+        isLight ? "text-white" : "text-gray-900",
+        "max-w-[288px] truncate text-4xl",
+      )}
+    >
+      {title || ""}
+    </h1>
   );
 };
 

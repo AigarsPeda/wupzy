@@ -1,6 +1,5 @@
 import { type NextPage } from "next";
 import { AiOutlinePartition, AiOutlineTable } from "react-icons/ai";
-import CircleProgress from "~/components/elements/CircleProgress/CircleProgress";
 import DisplayGroupSelect from "~/components/elements/DisplayGroupSelect/DisplayGroupSelect";
 import LoadingSkeleton from "~/components/elements/LoadingSkeleton/LoadingSkeleton";
 import PageHead from "~/components/elements/PageHead/PageHead";
@@ -14,7 +13,6 @@ import useQueryValue from "~/hooks/useQueryValue";
 import useTournament from "~/hooks/useTournament";
 import useTournamentGames from "~/hooks/useTournamentGames";
 import getGamesLeft from "~/utils/getGamesLeft";
-import getPercentagesOfFinishedGames from "~/utils/getPercentagesOfFinishedGames";
 
 const TournamentPage: NextPage = () => {
   // TODO: Fetch games only for selected group
@@ -22,20 +20,16 @@ const TournamentPage: NextPage = () => {
   const { tournament, isLoading: isTournamentLoading } = useTournament();
   const [selectedGroup, updateSelectedGroup] = useQueryValue(
     groups[0] || "A",
-    "group"
+    "group",
   );
   const [isPlayoffMode, updateIsPlayoffMode] = useQueryValue(
     "false",
-    "isplayoffmode"
+    "isplayoffmode",
   );
 
   const isRegularTournamentSelected = () => {
     return isPlayoffMode === "false";
   };
-
-  // <CircleProgress
-  //   progress={getPercentagesOfFinishedGames(games, selectedGroup).progress}
-  // />;
 
   return (
     <>
@@ -49,38 +43,36 @@ const TournamentPage: NextPage = () => {
       {isTournamentLoading || !games ? (
         <LoadingSkeleton classes="mt-2 h-14 w-72" />
       ) : (
-        <div>
+        <>
           <div className="flex w-full justify-between">
-            <div>
-              <div className="flex">
-                <div className="mr-4">
-                  <PageHeadLine title={tournament?.name} />
-                  {isRegularTournamentSelected() && (
-                    <p className="text-xs text-gray-500">
-                      {getGamesLeft(games, selectedGroup)} games left
-                    </p>
-                  )}
+            <div className="flex w-full justify-between">
+              <div className="mr-4">
+                <PageHeadLine title={tournament?.name} />
+                {isRegularTournamentSelected() && (
+                  <p className="text-xs text-gray-500">
+                    {getGamesLeft(games, selectedGroup)} games left
+                  </p>
+                )}
+
+                <div className="mb-4 mt-5">
+                  <DisplayGroupSelect
+                    groups={groups}
+                    selectedGroup={selectedGroup}
+                    setSelectedGroup={updateSelectedGroup}
+                  />
                 </div>
-                <div>
+              </div>
+
+              <SettingDropdown />
+
+              {/* <div>
                   <CircleProgress
                     progress={
                       getPercentagesOfFinishedGames(games, selectedGroup)
                         .progress
                     }
                   />
-                </div>
-              </div>
-              <div className="mb-4 mt-5">
-                <DisplayGroupSelect
-                  groups={groups}
-                  selectedGroup={selectedGroup}
-                  setSelectedGroup={updateSelectedGroup}
-                />
-              </div>
-            </div>
-            <div className="flex w-full pl-8"></div>
-            <div className="flex w-full justify-end">
-              <SettingDropdown />
+                </div> */}
             </div>
           </div>
           <div className="mt-4 flex w-full justify-end space-x-2 md:mt-0">
@@ -102,14 +94,14 @@ const TournamentPage: NextPage = () => {
                   title={isRegularTournamentSelected() ? "Playoffs" : "Groups"}
                   handleClick={() => {
                     updateIsPlayoffMode(
-                      isPlayoffMode === "true" ? "false" : "true"
+                      isPlayoffMode === "true" ? "false" : "true",
                     );
                   }}
                 />
               </Tooltip>
             )}
           </div>
-        </div>
+        </>
       )}
 
       {isRegularTournamentSelected() ? (

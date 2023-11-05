@@ -280,34 +280,34 @@
   dependencies:
     "@tanstack/query-devtools" "5.4.2"
 
-"@tanstack/react-query@^5.4.3":
+"@tanstack/react-query@^5.0.5":
   version "5.4.3"
   resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.4.3.tgz#cf59120690032e44b8c1c4c463cfb43aaad2fc5f"
   integrity sha512-4aSOrRNa6yEmf7mws5QPTVMn8Lp7L38tFoTZ0c1ZmhIvbr8GIA0WT7X5N3yz/nuK8hUtjw9cAzBr4BPDZZ+tzA==
   dependencies:
     "@tanstack/query-core" "5.4.3"
 
-"@trpc/client@^11.0.0-alpha-next-2023-11-03-11-28-35.97":
-  version "11.0.0-next.92"
-  resolved "https://registry.yarnpkg.com/@trpc/client/-/client-11.0.0-next.92.tgz#30e2e03f57ca45ae6e86e1805a3751831be6501a"
-  integrity sha512-B1ZQTFzxMOiLrWInBy6jBI7xMe6u5kMCnOws7jtuYBkNiqpu1abySyAWS10ID6xuTHLGsG50VxBSlyPA7joR4Q==
+"@trpc/client@next":
+  version "11.0.0-alpha-next-2023-11-03-11-28-35.97"
+  resolved "https://registry.yarnpkg.com/@trpc/client/-/client-11.0.0-alpha-next-2023-11-03-11-28-35.97.tgz#b45816fcab8dfdcc66088ec3c1292fc8ad3340d1"
+  integrity sha512-0OASRO/0eH9NBYhHXSP3u8D9WpLQ8Xomisk+04Jib4y9G+LgxQMokDEZWCxogJTGAKYyyXa+yBcpK33X67O9/w==
 
-"@trpc/next@^11.0.0-alpha-next-2023-11-03-11-28-35.97":
-  version "11.0.0-next.92"
-  resolved "https://registry.yarnpkg.com/@trpc/next/-/next-11.0.0-next.92.tgz#0e380a3e3a18bb0f4fe38d7d7653f3ce6bf62c16"
-  integrity sha512-H3o5BhtAzuf3nR92eLJlMPi4jD8OOFdxWqxP+RDLyu0gYcEYn4pXh4nEPgrzGt1djLvlljtEnMEvjuoFrQQQQw==
+"@trpc/next@next":
+  version "11.0.0-alpha-next-2023-11-03-11-28-35.97"
+  resolved "https://registry.yarnpkg.com/@trpc/next/-/next-11.0.0-alpha-next-2023-11-03-11-28-35.97.tgz#62be26ec8916ca55544a5a8a5913ff8b5141a695"
+  integrity sha512-fy/dTQtfp98lDMVrxwbwas4VUjX5PqyRww7ND1Gm1kU31azH0C+zbqttf4GAAZQmoS4CqE3qQ0V24rb7rf0LoQ==
   dependencies:
     react-ssr-prepass "^1.5.0"
 
-"@trpc/react-query@^11.0.0-alpha-next-2023-11-03-11-28-35.97":
-  version "11.0.0-next.92"
-  resolved "https://registry.yarnpkg.com/@trpc/react-query/-/react-query-11.0.0-next.92.tgz#44fcf0b457b6aa4ac83ecbdbba080f72aff51f9a"
-  integrity sha512-W6/AnO68p3MCQ7QnujYOnYnygHzwmmSW57rl4DcQqkLVrcADMdsKz7ZdrULFBasVi2azXMw2rj9kYvs8W2mwQg==
+"@trpc/react-query@next":
+  version "11.0.0-alpha-next-2023-11-03-11-28-35.97"
+  resolved "https://registry.yarnpkg.com/@trpc/react-query/-/react-query-11.0.0-alpha-next-2023-11-03-11-28-35.97.tgz#1796cfdf5ff12a0b18b281e1b2cf57bb88559555"
+  integrity sha512-isk7YI5K/ayZ2c2GAthZ47v1AYPB5YjSp/jJkywUqtwfHmt8Fo7HTzDc/ApFouU5WaLFQ977Ui2L3GhnC6xFRA==
 
-"@trpc/server@^11.0.0-alpha-next-2023-11-03-11-28-35.97":
-  version "11.0.0-next.92"
-  resolved "https://registry.yarnpkg.com/@trpc/server/-/server-11.0.0-next.92.tgz#8ed58ec8fb8570a6a305404f082f99c61dc8ff90"
-  integrity sha512-E1AqdZ7ml25JqWmmPFqp/hOJCqJggl0lPO9OJXxo57gXPYxRnMMdAkRohnvlhqEEHfWT5VtXqwvPUhXb4iaGOA==
+"@trpc/server@next":
+  version "11.0.0-alpha-next-2023-11-03-11-28-35.97"
+  resolved "https://registry.yarnpkg.com/@trpc/server/-/server-11.0.0-alpha-next-2023-11-03-11-28-35.97.tgz#045e7fd707f341699aca7a93dff76c26003488d9"
+  integrity sha512-p/6s1Yxvi+jOEHHLRWkuAyhSe6+lFti4zS1CF7bXH0a9x2+HrbCbCEZu+6TLeBHKQeNXsOkDbYrnoBgpFp3HIA==
 
 "@types/eslint@^8.44.6":
   version "8.44.6"
