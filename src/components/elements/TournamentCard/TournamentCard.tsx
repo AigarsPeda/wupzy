@@ -19,10 +19,10 @@ const TournamentCard: FC<TournamentCardProps> = ({ tournament }) => {
         pathname: `/tournaments/${tournament.id}`,
         query: { group: data?.groups[0], isplayoffmode: tournament.isPlayoffs },
       }}
-      className="flex w-full items-start justify-start rounded-lg border border-gray-100 bg-white p-4 text-left shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px] transition duration-300 ease-in-out hover:shadow-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-800"
+      className="flex w-full items-start justify-start rounded-lg border border-gray-100 bg-white p-4 text-left shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px] transition duration-300 ease-in-out hover:bg-gray-50 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-800"
     >
       <div className="flex h-full w-full flex-col justify-between">
-        <h1 className="truncate font-primary text-3xl font-normal text-gray-900">
+        <h1 className="mt-4 truncate font-primary text-3xl font-normal text-gray-900">
           {tournament.name}
         </h1>
 
