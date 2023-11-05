@@ -22,8 +22,8 @@ const TournamentsPage: NextPage = () => {
         title="Wupzy | Tournaments"
         descriptionShort="Platform that lets you effortlessly create tournament tables."
         descriptionLong="Wupzy is a powerful platform that lets you effortlessly create
-      tournament tables, save game scores, view real-time results, and share
-      them with all participants in just a few clicks."
+                        tournament tables, save game scores, view real-time results, and share
+                        them with all participants in just a few clicks."
       />
       <GridLayout isGap minWith="320">
         {isLoading ? (
