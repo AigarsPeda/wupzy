@@ -13,7 +13,7 @@ const NewTournamentPage: NextPage = () => {
           tournament tables, save game scores, view real-time results, and share
           them with all participants in just a few clicks."
       />
-      <PageHeadLine title="Create new tournament" />
+      {/* <PageHeadLine title="Create new tournament" /> */}
       <NewTournamentForm />
     </>
   );

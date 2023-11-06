@@ -33,7 +33,7 @@ const NavBar: FC = () => {
           isScrolled
             ? "bg-slate-50 shadow-[0_2px_5px_rgba(0,0,0,0.07)]"
             : "bg-gray-50",
-          "top-0 z-[99] flex w-full items-center justify-between px-4 pb-0 pt-4 md:sticky md:px-12 md:py-2"
+          "top-0 z-[99] flex w-full items-center justify-between px-4 pb-2 pt-4 md:sticky md:px-12 md:py-2",
         )}
       >
         <Logo />

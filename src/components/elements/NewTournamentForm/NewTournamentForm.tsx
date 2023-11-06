@@ -43,7 +43,7 @@ const NewTournamentForm: FC = () => {
     if (newTournament.kind === "king") {
       setGameCount(
         kingGameCount(createTeams(newTournament.king.players)) *
-          newTournament.rounds
+          newTournament.rounds,
       );
     } else if (newTournament.kind === "teams") {
       setGameCount(countNewGames(newTournament.teams) * newTournament.rounds);
@@ -59,7 +59,7 @@ const NewTournamentForm: FC = () => {
     <form
       id="new-tournament"
       name="new-tournament"
-      className="mx-auto mt-4 max-w-lg rounded-md bg-white p-2 shadow md:mt-6"
+      className="mx-auto max-w-lg rounded-md bg-white p-2 shadow md:mt-6"
       onSubmit={(e) => {
         e.preventDefault();
       }}
@@ -170,7 +170,7 @@ const NewTournamentForm: FC = () => {
               className={classNames(
                 gameCount <= 10 && "text-gray-800",
                 gameCount > 10 && gameCount < 20 && "text-orange-500",
-                gameCount > 20 && "text-red-600"
+                gameCount > 20 && "text-red-600",
               )}
             >
               {gameCount}

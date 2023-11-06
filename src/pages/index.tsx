@@ -5,6 +5,7 @@ import { HiArrowRight } from "react-icons/hi";
 import PageHead from "~/components/elements/PageHead/PageHead";
 import PrimaryButton from "~/components/elements/PrimaryButton/PrimaryButton";
 import useRedirect from "~/hooks/useRedirect";
+import { HOW_T0_STEPS } from "../../hardcoded";
 
 const HomePage: NextPage = () => {
   const { redirectToPath } = useRedirect();
@@ -92,6 +93,48 @@ const HomePage: NextPage = () => {
           <h2 className="text-2xl font-normal">
             How does this work? It&apos;s straightforward!
           </h2>
+        </div>
+
+        <div className="space-y-3">
+          {HOW_T0_STEPS.map((step, index) => {
+            return (
+              <div
+                key={step.title}
+                className="relative z-10 mx-auto flex items-center justify-center rounded-xl bg-slate-200"
+              >
+                <div className="relative mx-auto grid w-full grid-cols-2 rounded-xl border border-white/25 bg-gray-200 bg-white/5 p-3 shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] backdrop-blur-xl will-change-transform">
+                  <div className="flex flex-col items-center justify-center">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500">
+                      <span className="text-2xl font-semibold text-white">
+                        {index + 1}
+                      </span>
+                    </div>
+                    <h3 className="mt-4 text-xl font-semibold">{step.title}</h3>
+                    <p className="mt-2 text-sm text-gray-600">
+                      {step.description}
+                    </p>
+                  </div>
+                  <div className="max-h-60">
+                    <Image
+                      width={900}
+                      height={900}
+                      placeholder="blur"
+                      src={step.imageDesktop}
+                      alt="Picture wupzy dashboard"
+                      blurDataURL="/asset/blur.jpg"
+                      className="hidden rounded md:block"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "fill",
+                        // position: "relative",
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
 
         {/* <div className="mx-auto my-20 max-w-3xl md:my-48">
