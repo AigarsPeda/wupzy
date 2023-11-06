@@ -90,7 +90,7 @@ const HomePage: NextPage = () => {
 
         <div className="mx-auto my-20 w-full max-w-3xl text-center md:my-40">
           <h2 className="text-2xl font-normal">
-            How does this work? It's straightforward!
+            How does this work? It&apos;s straightforward!
           </h2>
         </div>
 
