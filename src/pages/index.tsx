@@ -102,8 +102,8 @@ const HomePage: NextPage = () => {
                 key={step.title}
                 className="relative z-10 mx-auto flex items-center justify-center rounded-xl bg-slate-200"
               >
-                <div className="relative mx-auto grid w-full grid-cols-2 rounded-xl border border-white/25 bg-gray-200 bg-white/5 p-3 shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] backdrop-blur-xl will-change-transform">
-                  <div className="flex flex-col items-center justify-center">
+                <div className="relative mx-auto grid w-full grid-cols-5 rounded-xl border border-white/25 bg-gray-200 bg-white/5 p-3 shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] backdrop-blur-xl will-change-transform">
+                  <div className="col-span-3 flex flex-col items-center justify-center">
                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500">
                       <span className="text-2xl font-semibold text-white">
                         {index + 1}
@@ -114,7 +114,7 @@ const HomePage: NextPage = () => {
                       {step.description}
                     </p>
                   </div>
-                  <div className="max-h-60">
+                  <div className="col-span-2 ">
                     <Image
                       width={900}
                       height={900}

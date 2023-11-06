@@ -1,7 +1,6 @@
 import { type NextPage } from "next";
 import NewTournamentForm from "~/components/elements/NewTournamentForm/NewTournamentForm";
 import PageHead from "~/components/elements/PageHead/PageHead";
-import PageHeadLine from "~/components/elements/PageHeadLine/PageHeadLine";
 
 const NewTournamentPage: NextPage = () => {
   return (
