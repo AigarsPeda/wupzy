@@ -2,7 +2,6 @@ import { type NextPage } from "next";
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import { HiArrowRight } from "react-icons/hi";
-import FeatureCard from "~/components/elements/FeatureCard/FeatureCard";
 import PageHead from "~/components/elements/PageHead/PageHead";
 import PrimaryButton from "~/components/elements/PrimaryButton/PrimaryButton";
 import useRedirect from "~/hooks/useRedirect";
@@ -57,7 +56,6 @@ const HomePage: NextPage = () => {
             <Image
               width={1300}
               height={1300}
-              // priority={true}
               placeholder="blur"
               src="/asset/main.webp"
               alt="Picture wupzy dashboard"
@@ -90,7 +88,15 @@ const HomePage: NextPage = () => {
           <div className="absolute left-1/2 top-1/2 -z-10 h-[85%] w-screen -translate-x-1/2 -translate-y-1/2 transform animate-background bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500 bg-400"></div>
         </div>
 
-        <div className="my-10 md:my-20">
+        {/* <div className="mx-auto my-20 max-w-3xl md:my-48">
+          <h2 className="text-xl font-normal">
+            Optimize competition management and user experience through our
+            intuitive platform, enabling effortless sharing, real-time tracking,
+            and interactive leaderboards for enhanced engagement.
+          </h2>
+        </div> */}
+
+        {/* <div className="my-10 md:my-20">
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             <FeatureCard
               icon={
@@ -158,9 +164,7 @@ const HomePage: NextPage = () => {
               explanation="Effortlessly display competition standings, making it simple for participants and fans to track progress and witness the excitement unfold through our user-friendly leaderboard."
             />
           </div>
-        </div>
-
-        {/* <Pricing /> */}
+        </div> */}
       </main>
     </>
   );
