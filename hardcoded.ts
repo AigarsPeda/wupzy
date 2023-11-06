@@ -37,20 +37,23 @@ export const STRIPE_ONE_TIME_PURCHASE_PRICE_ID =
 export const HOW_T0_STEPS = [
   {
     title: "Create a tournament",
-    description: "Create a tournament and add players",
+    description:
+      "Create a tournament select the set count to win and the number of rounds to play and add players.",
     imageDesktop: "/asset/create_desktop.webp",
-    imageMobile: "/asset/create_mobile.webp",
+    zoomImageDesktop: "/asset/create_desktop_1.jpg",
   },
   {
     title: "Share the tournament link",
-    description: "Share the tournament link with your friends",
+    description:
+      "Share the tournament link with your friends and participants. Link allows to see the tournament results and upcoming matches.",
     imageDesktop: "/asset/share_tournament_desktop.webp",
-    imageMobile: "/asset/share_tournament_mobile.webp",
+    zoomImageDesktop: "/asset/share_tournament_desktop_1.jpg",
   },
   {
     title: "Play the tournament",
-    description: "Play the tournament and update the results",
+    description:
+      "Play the tournament and update the results. Enter the scores and see the tournament progress and standings in table and bracket views.",
     imageDesktop: "/asset/play_tournament_desktop.webp",
-    imageMobile: "/asset/play_tournament_mobile.webp",
+    zoomImageDesktop: "/asset/play_tournament_desktop_1.jpg",
   },
 ];

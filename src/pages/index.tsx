@@ -89,45 +89,45 @@ const HomePage: NextPage = () => {
           <div className="absolute left-1/2 top-1/2 -z-10 h-[85%] w-screen -translate-x-1/2 -translate-y-1/2 transform animate-background bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500 bg-400"></div>
         </div>
 
-        <div className="mx-auto my-20 w-full max-w-3xl text-center md:my-40">
-          <h2 className="text-2xl font-normal">
-            How does this work? It&apos;s straightforward!
+        <div className="mx-auto my-20 w-full max-w-3xl text-center md:my-36">
+          <h2 className="text-2xl font-normal text-gray-600">
+            How does this work?{" "}
+            <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-2xl font-semibold  text-transparent">
+              It&apos;s straightforward!
+            </span>{" "}
           </h2>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-5 md:space-y-10">
           {HOW_T0_STEPS.map((step, index) => {
             return (
               <div
                 key={step.title}
                 className="relative z-10 mx-auto flex items-center justify-center rounded-xl bg-slate-200"
               >
-                <div className="relative mx-auto grid w-full grid-cols-5 rounded-xl border border-white/25 bg-gray-200 bg-white/5 p-3 shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] backdrop-blur-xl will-change-transform">
+                <div className="relative mx-auto w-full grid-cols-6 gap-4 rounded-xl border border-white/25 bg-gray-200 bg-white/5 p-6 shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] backdrop-blur-xl will-change-transform md:grid">
                   <div className="col-span-3 flex flex-col items-center justify-center">
                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500">
                       <span className="text-2xl font-semibold text-white">
                         {index + 1}
                       </span>
                     </div>
-                    <h3 className="mt-4 text-xl font-semibold">{step.title}</h3>
-                    <p className="mt-2 text-sm text-gray-600">
-                      {step.description}
-                    </p>
+                    <h3 className="mt-5 text-xl font-semibold">{step.title}</h3>
+                    <p className="mt-3 text-gray-600">{step.description}</p>
                   </div>
-                  <div className="col-span-2 ">
+                  <div className="col-span-3 mt-4 overflow-hidden rounded-md md:mt-0">
                     <Image
                       width={900}
                       height={900}
                       placeholder="blur"
-                      src={step.imageDesktop}
+                      src={step.zoomImageDesktop}
                       alt="Picture wupzy dashboard"
                       blurDataURL="/asset/blur.jpg"
-                      className="hidden rounded md:block"
+                      className="scale-125 md:scale-100"
                       style={{
                         width: "100%",
                         height: "100%",
                         objectFit: "fill",
-                        // position: "relative",
                       }}
                     />
                   </div>
