@@ -72,7 +72,7 @@ const HomePage: NextPage = () => {
               width={1000}
               height={1000}
               placeholder="blur"
-              src="/asset/mob_3.webp"
+              src="/asset/main_mob.jpeg"
               alt="Picture wupzy dashboard"
               blurDataURL="/asset/blur.jpg"
               className="block rounded md:hidden"
@@ -86,6 +86,12 @@ const HomePage: NextPage = () => {
           </div>
 
           <div className="absolute left-1/2 top-1/2 -z-10 h-[85%] w-screen -translate-x-1/2 -translate-y-1/2 transform animate-background bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500 bg-400"></div>
+        </div>
+
+        <div className="mx-auto my-20 w-full max-w-3xl text-center md:my-40">
+          <h2 className="text-2xl font-normal">
+            How does this work? It's straightforward!
+          </h2>
         </div>
 
         {/* <div className="mx-auto my-20 max-w-3xl md:my-48">
