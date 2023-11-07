@@ -103,22 +103,29 @@ const HomePage: NextPage = () => {
             return (
               <div
                 key={step.title}
-                className="relative z-10 mx-auto flex items-center justify-center rounded-xl bg-slate-200"
+                className="mx-aut relative z-10 flex items-center justify-center rounded-xl bg-slate-200"
               >
-                <div className="relative mx-auto w-full grid-cols-6 gap-4 rounded-xl border border-white/25 bg-gray-200 bg-white/5 p-4 shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] backdrop-blur-xl will-change-transform md:grid md:p-6">
-                  <div className="col-span-3 flex flex-col items-center justify-center">
+                <div className="relative mx-auto w-full grid-cols-6 place-content-center gap-4 rounded-xl border border-white/25 bg-gray-200 bg-white/5 p-4 shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] backdrop-blur-xl will-change-transform md:grid md:max-h-[28rem]">
+                  <div className="col-span-3 flex flex-col justify-between">
                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500">
                       <span className="text-2xl font-semibold text-white">
                         {index + 1}
                       </span>
                     </div>
-                    <h3 className="mt-5 text-xl font-semibold">{step.title}</h3>
-                    <p className="mt-3 text-gray-600">{step.description}</p>
+                    <div>
+                      <h3 className="mt-4 text-xl font-semibold md:mt-0">
+                        {step.title}
+                      </h3>
+                      <p className="mt-3 max-w-sm text-gray-600">
+                        {step.description}
+                      </p>
+                    </div>
+                    <div />
                   </div>
-                  <div className="col-span-3 mt-4 overflow-hidden rounded-md md:mt-0">
+                  <div className="col-span-3 mt-4 max-h-80 overflow-hidden rounded-md md:mt-0">
                     <Image
-                      width={900}
-                      height={900}
+                      width={384}
+                      height={384}
                       placeholder="blur"
                       src={step.zoomImageDesktop}
                       alt="Picture wupzy dashboard"
@@ -127,7 +134,7 @@ const HomePage: NextPage = () => {
                       style={{
                         width: "100%",
                         height: "100%",
-                        objectFit: "fill",
+                        objectFit: "cover",
                       }}
                     />
                   </div>
