@@ -24,14 +24,15 @@ const HomePage: NextPage = () => {
         <div className="pb-12 pt-3 md:pb-28 md:pt-16">
           <div>
             <h1 className="max-w-4xl font-primary text-6xl font-semibold tracking-tight">
-              Create your{" "}
+              Organize Your tournament in{" "}
               <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-6xl font-semibold  text-transparent">
-                Tournament
+                minutes
               </span>
             </h1>
             <h2 className="mb-5 mt-8 max-w-2xl font-primary text-xl font-normal text-gray-600">
-              Efficiently coordinate matches, track results, and share updates
-              with participants.
+              Seamlessly record match outcomes and monitor rankings in a
+              real-time leaderboard. Share the results with all of your
+              participants in just a few clicks.
             </h2>
           </div>
           <div className="pt-8">
