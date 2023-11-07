@@ -1,3 +1,4 @@
+import { HOW_T0_STEPS } from "hardcoded";
 import { type NextPage } from "next";
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
@@ -5,7 +6,6 @@ import { HiArrowRight } from "react-icons/hi";
 import PageHead from "~/components/elements/PageHead/PageHead";
 import PrimaryButton from "~/components/elements/PrimaryButton/PrimaryButton";
 import useRedirect from "~/hooks/useRedirect";
-import { HOW_T0_STEPS } from "../../hardcoded";
 
 const HomePage: NextPage = () => {
   const { redirectToPath } = useRedirect();
@@ -89,10 +89,10 @@ const HomePage: NextPage = () => {
           <div className="absolute left-1/2 top-1/2 -z-10 h-[85%] w-screen -translate-x-1/2 -translate-y-1/2 transform animate-background bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500 bg-400"></div>
         </div>
 
-        <div className="mx-auto my-20 w-full max-w-3xl text-center md:my-36">
+        <div className="mx-auto mb-10 mt-20 w-full max-w-3xl text-center md:mb-16 md:mt-36">
           <h2 className="text-2xl font-normal text-gray-600">
             How does this work?{" "}
-            <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-2xl font-semibold  text-transparent">
+            <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text font-semibold  text-transparent">
               It&apos;s straightforward!
             </span>{" "}
           </h2>
@@ -103,10 +103,10 @@ const HomePage: NextPage = () => {
             return (
               <div
                 key={step.title}
-                className="mx-aut relative z-10 flex items-center justify-center rounded-xl bg-slate-200"
+                className="relative z-10 mx-auto flex max-w-5xl items-center justify-center rounded-xl bg-slate-200"
               >
-                <div className="relative mx-auto w-full grid-cols-6 place-content-center gap-4 rounded-xl border border-white/25 bg-gray-200 bg-white/5 p-4 shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] backdrop-blur-xl will-change-transform md:grid md:max-h-[28rem]">
-                  <div className="col-span-3 flex flex-col justify-between">
+                <div className="relative mx-auto w-full grid-cols-7 gap-4 rounded-xl border border-white/25 bg-gray-200 bg-white/5 p-4 shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] backdrop-blur-xl will-change-transform md:grid md:max-h-[28rem]">
+                  <div className="col-span-4 flex flex-col justify-between">
                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500">
                       <span className="text-2xl font-semibold text-white">
                         {index + 1}
@@ -116,16 +116,16 @@ const HomePage: NextPage = () => {
                       <h3 className="mt-4 text-xl font-semibold md:mt-0">
                         {step.title}
                       </h3>
-                      <p className="mt-3 max-w-sm text-gray-600">
+                      <p className="mt-4 max-w-sm text-gray-600">
                         {step.description}
                       </p>
                     </div>
                     <div />
                   </div>
-                  <div className="col-span-3 mt-4 max-h-80 overflow-hidden rounded-md md:mt-0">
+                  <div className="col-span-3 mt-4  overflow-hidden rounded-md md:mt-0">
                     <Image
-                      width={384}
-                      height={384}
+                      width={494}
+                      height={484}
                       placeholder="blur"
                       src={step.zoomImageDesktop}
                       alt="Picture wupzy dashboard"
@@ -134,7 +134,8 @@ const HomePage: NextPage = () => {
                       style={{
                         width: "100%",
                         height: "100%",
-                        objectFit: "cover",
+                        // objectFit: "cover",
+                        objectFit: "scale-down",
                       }}
                     />
                   </div>
@@ -143,84 +144,6 @@ const HomePage: NextPage = () => {
             );
           })}
         </div>
-
-        {/* <div className="mx-auto my-20 max-w-3xl md:my-48">
-          <h2 className="text-xl font-normal">
-            Optimize competition management and user experience through our
-            intuitive platform, enabling effortless sharing, real-time tracking,
-            and interactive leaderboards for enhanced engagement.
-          </h2>
-        </div> */}
-
-        {/* <div className="my-10 md:my-20">
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-            <FeatureCard
-              icon={
-                <div className="mx-auto w-full overflow-hidden rounded-lg border border-white/5 bg-slate-800/50 p-1.5">
-                  <Image
-                    width={300}
-                    height={300}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "fill",
-                      position: "relative",
-                    }}
-                    className="shadow-[inset_0_0_8px_rgb(255, 255, 255)] rounded-md  border border-white/5 shadow"
-                    src="/asset/cloud_hand.webp"
-                    alt="hand with cloud"
-                  />
-                </div>
-              }
-              title="Share Your Competition Easily"
-              explanation="Empower users to effortlessly share competition updates with participants and fans through unique links, ensuring easy access to real-time results and leaderboards."
-            />
-
-            <FeatureCard
-              icon={
-                <div className="mx-auto w-full overflow-hidden rounded-lg border border-white/5 bg-slate-800/50 p-1.5">
-                  <Image
-                    width={300}
-                    height={300}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "fill",
-                      position: "relative",
-                    }}
-                    className="shadow-[inset_0_0_8px_rgb(255, 255, 255)] rounded-md  border border-white/5 shadow"
-                    src="/asset/rocket.webp"
-                    alt="rocket"
-                  />
-                </div>
-              }
-              title="Instant Results and Rankings"
-              explanation="Streamline Competition Management: Rapidly Input Results, Instantly View Player Rankings, and Access Scheduled Games – All at Your Fingertips!"
-            />
-
-            <FeatureCard
-              icon={
-                <div className="mx-auto w-full overflow-hidden rounded-lg border border-white/5 bg-slate-800/50 p-1.5">
-                  <Image
-                    width={300}
-                    height={300}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "fill",
-                      position: "relative",
-                    }}
-                    className="shadow-[inset_0_0_8px_rgb(255, 255, 255)] rounded-md  border border-white/5 shadow"
-                    src="/asset/cup.webp"
-                    alt="cup"
-                  />
-                </div>
-              }
-              title="Track Progress and Celebrate Success"
-              explanation="Effortlessly display competition standings, making it simple for participants and fans to track progress and witness the excitement unfold through our user-friendly leaderboard."
-            />
-          </div>
-        </div> */}
       </main>
     </>
   );
