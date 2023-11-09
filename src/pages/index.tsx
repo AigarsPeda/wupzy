@@ -91,7 +91,7 @@ const HomePage: NextPage = () => {
         </div>
 
         <div className="mx-auto mb-10 mt-20 w-full max-w-3xl text-center md:mb-16 md:mt-36">
-          <h2 className="text-2xl font-normal text-gray-600">
+          <h2 className="text-2xl font-normal text-gray-600 md:text-3xl">
             How does this work?{" "}
             <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text font-semibold  text-transparent">
               It&apos;s straightforward!
@@ -104,27 +104,39 @@ const HomePage: NextPage = () => {
             return (
               <div
                 key={step.title}
-                className="relative z-10 mx-auto flex max-w-5xl items-center justify-center rounded-xl bg-slate-200"
+                className="relative z-10 mx-auto flex max-w-5xl items-center justify-center rounded-xl "
               >
-                <div className="relative mx-auto w-full grid-cols-6 gap-4 rounded-xl border border-white/25 bg-gray-200 bg-white/5 p-4 shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] backdrop-blur-xl will-change-transform md:grid md:max-h-[28rem]">
+                <div className="relative mx-auto w-full grid-cols-7 gap-4 rounded-xl border border-white/25 bg-gray-200 bg-white/5 p-4 shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] backdrop-blur-xl will-change-transform md:grid md:max-h-[28rem]">
                   <div className="col-span-3 flex flex-col justify-between">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500">
+                    {/* <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500">
                       <span className="text-2xl font-semibold text-white">
                         {index + 1}
                       </span>
-                    </div>
+                    </div> */}
                     <div className="max-w-sm">
-                      <h3 className="mt-4 text-2xl font-semibold md:mt-0">
-                        {step.title}
-                      </h3>
+                      <div className="flex items-center">
+                        <span>
+                          {step.icon({
+                            style: {
+                              width: "2rem",
+                              height: "2rem",
+                              marginRight: "1rem",
+                              fill: step.iconColor,
+                              color: step.iconColor,
+                              stroke: step.iconColor,
+                            },
+                          })}
+                        </span>
+
+                        <h3 className="text-2xl font-semibold md:mt-0">
+                          {step.title}
+                        </h3>
+                      </div>
                       <p className="mt-4">{step.description}</p>
-                      {/* <p className="mt-4 text-sm text-gray-500">
-                        {step.additionalDescription}
-                      </p> */}
                     </div>
                     <div />
                   </div>
-                  <div className="col-span-3 mt-4 overflow-hidden rounded-md md:mt-0">
+                  <div className="col-span-4 mt-4 overflow-hidden rounded-md border shadow-md md:mt-0">
                     <Image
                       width={494}
                       height={484}
