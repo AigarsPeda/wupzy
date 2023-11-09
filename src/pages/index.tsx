@@ -100,7 +100,7 @@ const HomePage: NextPage = () => {
         </div>
 
         <div className="space-y-5 md:space-y-10">
-          {HOW_T0_STEPS.map((step, index) => {
+          {HOW_T0_STEPS.map((step) => {
             return (
               <div
                 key={step.title}
