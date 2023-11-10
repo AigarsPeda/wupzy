@@ -183,7 +183,7 @@ const HomePage: NextPage = () => {
             </div>
           }
         </div> */}
-        <div className="flex w-full flex-wrap">
+        <div className="flex w-full flex-wrap gap-4">
           {USER_STATEMENTS.map((statement) => {
             return (
               <div
