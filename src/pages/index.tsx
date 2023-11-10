@@ -1,4 +1,4 @@
-import { HOW_T0_STEPS } from "hardcoded";
+import { HOW_T0_STEPS, USER_STATEMENTS } from "hardcoded";
 import { type NextPage } from "next";
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
@@ -158,7 +158,7 @@ const HomePage: NextPage = () => {
             );
           })}
         </div>
-        <div className="mt-14 md:mt-24">
+        <div className="my-12 md:my-24">
           <Image
             width={600}
             height={600}
@@ -168,11 +168,54 @@ const HomePage: NextPage = () => {
             blurDataURL="/asset/blur.jpg"
             className="mx-auto"
             style={{
-              // width: "100%",
-              // height: "100%",
               objectFit: "scale-down",
             }}
           />
+        </div>
+        {/* <div>
+          {
+            <div className="mx-auto mb-10 mt-20 w-full max-w-3xl text-center md:mb-16 md:mt-36">
+              <h2 className="text-2xl font-normal text-gray-600 md:text-3xl">
+                What our users say?{" "}
+                <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text font-semibold  text-transparent">
+                  They love us!
+                </span>{" "}
+              </h2>
+            </div>
+          }
+        </div> */}
+        <div className="flex w-full flex-wrap">
+          {USER_STATEMENTS.map((statement) => {
+            return (
+              <div
+                key={statement.name}
+                className="relative z-10 mx-auto flex max-w-5xl items-center justify-center rounded-xl bg-white"
+              >
+                <div className="relative mx-auto min-h-[15rem] gap-4 rounded-xl border border-white/25 bg-white/5 p-4 shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] backdrop-blur-xl will-change-transform md:grid md:max-h-[28rem]">
+                  <div className="flex flex-col justify-between">
+                    <div className="max-w-sm">
+                      <div className="flex items-center">
+                        <span>
+                          <Image
+                            src={statement.image}
+                            alt="Picture wupzy dashboard"
+                            width={50}
+                            height={50}
+                            className="mr-4 rounded-full"
+                          />
+                        </span>
+
+                        <h3 className="text-xl font-semibold text-gray-600 md:mt-0">
+                          {statement.name}
+                        </h3>
+                      </div>
+                      <p className="mt-4 text-gray-600">{statement.text}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </main>
     </>

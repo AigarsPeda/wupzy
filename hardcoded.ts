@@ -88,3 +88,23 @@ export const HOW_T0_STEPS = [
     zoomImageDesktop: "/asset/playoffs.webp",
   },
 ];
+
+export const USER_STATEMENTS = [
+  {
+    name: "Matthew",
+    text: `I have been using this site for a while now. I use it when I play with my friends and it is very useful.
+            We don't have to write down the results on paper anymore. I can just enter the results on my phone and see the standings.`,
+    image: "/asset/people/matthew.png",
+  },
+  {
+    name: "John",
+    text: `I am a beach volleyball coach and I use this site to organize tournaments for local teams. 
+            I can easily create a tournament and share it with everyone. They can see the games and results on their phones.`,
+    image: "/asset/people/john.png",
+  },
+  {
+    name: "Elena",
+    text: `We use this site to organize tournaments at our company. We have a lot of employees and it is very convenient to use this site.`,
+    image: "/asset/people/elena.png",
+  },
+];
