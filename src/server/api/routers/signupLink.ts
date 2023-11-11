@@ -3,14 +3,16 @@ import z from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { TournamentTypeEnum } from "~/types/tournament.types";
 
-export const tournamentRouter = createTRPCRouter({
-  createSignupLink: protectedProcedure
+export const signupLinkRouter = createTRPCRouter({
+  postSignupLink: protectedProcedure
     .input(
       z.object({
+        name: z.string(),
+        description: z.string(),
         tournamentKind: TournamentTypeEnum,
       }),
     )
-    .query(async ({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
       const { prisma, session } = ctx;
 
       const user = await prisma.user.findUnique({
@@ -23,6 +25,9 @@ export const tournamentRouter = createTRPCRouter({
         throw new Error("User not found");
       }
 
+      console.log("user", user);
+      console.log("input", input);
+
       const signupLink = await prisma.tournamentSignupLink.create({
         data: {
           user: {
@@ -31,7 +36,9 @@ export const tournamentRouter = createTRPCRouter({
             },
           },
           slug: uuidv4(),
+          name: input.name,
           type: input.tournamentKind,
+          description: input.description,
         },
       });
 
@@ -41,7 +48,7 @@ export const tournamentRouter = createTRPCRouter({
   getSignupLink: protectedProcedure
     .input(
       z.object({
-        id: z.string(),
+        slug: z.string(),
       }),
     )
     .query(async ({ ctx, input }) => {
@@ -49,7 +56,7 @@ export const tournamentRouter = createTRPCRouter({
 
       const signupLink = await prisma.tournamentSignupLink.findUnique({
         where: {
-          id: input.id,
+          slug: input.slug,
         },
       });
 

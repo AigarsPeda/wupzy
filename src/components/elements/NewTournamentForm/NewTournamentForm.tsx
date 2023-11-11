@@ -34,9 +34,17 @@ const NewTournamentForm: FC = () => {
   const { redirectToPath } = useRedirect();
   const [gameCount, setGameCount] = useState(0);
   const [signupLink, setSignupLink] = useState(false);
-  const { mutate, isPending } = api.tournament.postNewTournament.useMutation({
+  const [signupDescription, setSignupDescription] = useState("");
+  const { mutate: postNewTournament, isPending } =
+    api.tournament.postNewTournament.useMutation({
+      onSuccess: (data) => {
+        redirectToPath(`/tournaments/${data.id}`);
+      },
+    });
+
+  const { mutate: postSignupLink } = api.signupLink.postSignupLink.useMutation({
     onSuccess: (data) => {
-      redirectToPath(`/tournaments/${data.id}`);
+      redirectToPath(`/tournaments`);
     },
   });
 
@@ -142,7 +150,10 @@ const NewTournamentForm: FC = () => {
         </div>
 
         {signupLink ? (
-          <SignupLinkCreate />
+          <SignupLinkCreate
+            signupDescription={signupDescription}
+            handleDescriptionChange={setSignupDescription}
+          />
         ) : (
           <SlidingAnimationLayout>
             <TournamentOptions
@@ -205,9 +216,22 @@ const NewTournamentForm: FC = () => {
             isLoading={isPending}
             handleClick={() => {
               if (!signupLink) {
-                mutate(newTournament);
+                postNewTournament(newTournament);
                 return;
               }
+
+              console.log(
+                "postSignupLink",
+                newTournament.name,
+                signupDescription,
+                newTournament.kind,
+              );
+
+              postSignupLink({
+                name: newTournament.name,
+                description: signupDescription,
+                tournamentKind: newTournament.kind,
+              });
             }}
             isDisabled={newTournament.name.trim() === ""}
           />

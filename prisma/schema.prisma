@@ -97,9 +97,11 @@ model Tournament {
 model TournamentSignupLink {
   userId       String
   teams        Team[]
+  name         String
+  description  String?
   players      Player[]
   slug         String         @unique
-  tournamentId String         @unique
+  tournamentId String?        @unique
   updatedAt    DateTime       @updatedAt
   isActive     Boolean        @default(true)
   type         TournamentType @default(king)
