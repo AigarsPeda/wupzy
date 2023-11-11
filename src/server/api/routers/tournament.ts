@@ -30,7 +30,7 @@ export const tournamentRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string(),
-      })
+      }),
     )
     .query(async ({ ctx, input }) => {
       const { prisma } = ctx;
@@ -51,7 +51,7 @@ export const tournamentRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const { prisma, session } = ctx;
@@ -102,16 +102,22 @@ export const tournamentRouter = createTRPCRouter({
   postNewTournament: protectedProcedure
     .input(NewTournamentSchema)
     .mutation(async ({ ctx, input }) => {
-      const { prisma } = ctx;
+      const { prisma, session } = ctx;
 
       if (input.kind === "king") {
         const { players, id } = await prisma.tournament.create({
           data: {
+            isStarted: true,
             type: input.kind,
             name: input.name,
             sets: input.sets,
             rounds: input.rounds,
-            userId: ctx.session.user.id,
+            // userId: ctx.session.user.id,
+            user: {
+              connect: {
+                id: session.user.id,
+              },
+            },
             players: {
               create: filterPlayers(input).map((player) => {
                 return {
@@ -163,11 +169,17 @@ export const tournamentRouter = createTRPCRouter({
       } else {
         const { id } = await prisma.tournament.create({
           data: {
+            isStarted: true,
             type: input.kind,
             name: input.name,
             sets: input.sets,
             rounds: input.rounds,
-            userId: ctx.session.user.id,
+            // userId: ctx.session.user.id,
+            user: {
+              connect: {
+                id: session.user.id,
+              },
+            },
           },
         });
 
@@ -187,7 +199,7 @@ export const tournamentRouter = createTRPCRouter({
                 },
               },
             });
-          })
+          }),
         );
 
         await prisma.game.createMany({
@@ -282,7 +294,7 @@ export const tournamentRouter = createTRPCRouter({
         tournament: NewTournamentSchema,
         id: z.string(),
         group: z.string(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const { prisma } = ctx;
@@ -330,7 +342,7 @@ export const tournamentRouter = createTRPCRouter({
                 tournamentId: input.id,
               },
             });
-          })
+          }),
         );
 
         if (oldPlayers.length !== newPlayers.length) {
@@ -377,7 +389,7 @@ export const tournamentRouter = createTRPCRouter({
           const newGames = createKingGamesNTimes(
             teams,
             input.id,
-            input.tournament.rounds
+            input.tournament.rounds,
           );
 
           // remove games that matches round, order and group
@@ -453,14 +465,14 @@ export const tournamentRouter = createTRPCRouter({
                 },
               },
             });
-          })
+          }),
         );
 
         if (oldTeams.length !== newTeams.length) {
           const newGames = createGamesNTimes(
             newTeams,
             input.id,
-            input.tournament.rounds
+            input.tournament.rounds,
           );
 
           // remove games that matches round, order and group
@@ -487,7 +499,7 @@ export const tournamentRouter = createTRPCRouter({
     .input(
       z.object({
         tournamentId: z.string(),
-      })
+      }),
     )
     .query(async ({ ctx, input }) => {
       const { prisma } = ctx;

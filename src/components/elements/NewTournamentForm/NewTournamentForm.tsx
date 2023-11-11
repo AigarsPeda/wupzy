@@ -4,8 +4,10 @@ import Input from "~/components/elements/Input/Input";
 import NewKingTournament from "~/components/elements/NewKingTournament/NewKingTournament";
 import NewTeamsTournament from "~/components/elements/NewTeamsTournament/NewTeamsTournament";
 import RadioSelect from "~/components/elements/RadioSelect/RadioSelect";
-import SetSelect from "~/components/elements/SetSelect/SetSelect";
+import SignupLinkCreate from "~/components/elements/SignupLinkCreate/SignupLinkCreate";
 import TextButton from "~/components/elements/TextButton/TextButton";
+import TournamentOptions from "~/components/elements/TournamentOptions/TournamentOptions";
+import SlidingAnimationLayout from "~/components/layout/SlidingAnimationLayout/SlidingAnimationLayout";
 import useCreateTournament from "~/hooks/useCreateTournament";
 import useRedirect from "~/hooks/useRedirect";
 import { api } from "~/utils/api";
@@ -13,8 +15,6 @@ import classNames from "~/utils/classNames";
 import countNewGames from "~/utils/countNewGames";
 import createTeams from "~/utils/createTeams";
 import kingGameCount from "~/utils/kingGameCount";
-
-const OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const NewTournamentForm: FC = () => {
   const {
@@ -33,7 +33,8 @@ const NewTournamentForm: FC = () => {
 
   const { redirectToPath } = useRedirect();
   const [gameCount, setGameCount] = useState(0);
-  const { mutate } = api.tournament.postNewTournament.useMutation({
+  const [signupLink, setSignupLink] = useState(false);
+  const { mutate, isPending } = api.tournament.postNewTournament.useMutation({
     onSuccess: (data) => {
       redirectToPath(`/tournaments/${data.id}`);
     },
@@ -84,6 +85,38 @@ const NewTournamentForm: FC = () => {
         <div className="border-b border-gray-900/10 pb-12">
           <fieldset>
             <legend className="text-base font-semibold leading-7 text-gray-900">
+              Sign up link
+            </legend>
+            <p className="mt-1 text-sm leading-6 text-gray-600">
+              Create a sign up link for your tournament. Participants can use
+              this to sign up for your tournament.
+            </p>
+            <div className="mt-6 space-y-6">
+              <RadioSelect
+                radioTitle="Don't create sign up link"
+                radioValue="false"
+                radioName="tournament-signup-link"
+                radioSelectedValue={signupLink.toString()}
+                handleRadioChange={() => {
+                  setSignupLink(false);
+                }}
+              />
+              <RadioSelect
+                radioTitle="Create sign up link"
+                radioValue="true"
+                radioName="tournament-signup-link"
+                radioSelectedValue={signupLink.toString()}
+                handleRadioChange={() => {
+                  setSignupLink(true);
+                }}
+              />
+            </div>
+          </fieldset>
+        </div>
+
+        <div className="border-b border-gray-900/10 pb-12">
+          <fieldset>
+            <legend className="text-base font-semibold leading-7 text-gray-900">
               Tournament kind
             </legend>
             <p className="mt-1 text-sm leading-6 text-gray-600">
@@ -108,62 +141,40 @@ const NewTournamentForm: FC = () => {
           </fieldset>
         </div>
 
-        <div className="border-b border-gray-900/10 pb-12">
-          <div className="flex">
-            <fieldset>
-              <legend className="text-base font-semibold leading-7 text-gray-900">
-                Set count
-              </legend>
-              <p className="mt-1 text-sm leading-6 text-gray-600">
-                Select sets count to win game.
-              </p>
-              <div className="mt-4 grid grid-cols-2 sm:grid-cols-4">
-                <SetSelect
-                  options={OPTIONS}
-                  handleSetSelect={handleSetSelect}
-                  selectedSetCount={newTournament.sets}
-                />
-              </div>
-            </fieldset>
-            <fieldset>
-              <legend className="text-base font-semibold leading-7 text-gray-900">
-                Rounds
-              </legend>
-              <p className="mt-1 text-sm leading-6 text-gray-600">
-                Choose rounds for game play.
-              </p>
-              <div className="mt-4 grid grid-cols-2 sm:grid-cols-4">
-                <SetSelect
-                  options={OPTIONS}
-                  handleSetSelect={handleSetRounds}
-                  selectedSetCount={newTournament.rounds}
-                />
-              </div>
-            </fieldset>
-          </div>
-        </div>
+        {signupLink ? (
+          <SignupLinkCreate />
+        ) : (
+          <SlidingAnimationLayout>
+            <TournamentOptions
+              sets={newTournament.sets}
+              rounds={newTournament.rounds}
+              handleSetRounds={handleSetRounds}
+              handleSetSelect={handleSetSelect}
+            />
 
-        <div className="relative mr-3 overflow-hidden border-b border-gray-900/10 pb-12">
-          <NewKingTournament
-            handleAddPlayer={handleAddPlayer}
-            players={newTournament.king.players}
-            isVisible={newTournament.kind === "king"}
-            handleKingsPlayerName={updateKingsPlayerName}
-          />
+            <div className="relative mr-3 overflow-hidden border-b border-gray-900/10 pb-12">
+              <NewKingTournament
+                handleAddPlayer={handleAddPlayer}
+                players={newTournament.king.players}
+                isVisible={newTournament.kind === "king"}
+                handleKingsPlayerName={updateKingsPlayerName}
+              />
 
-          <NewTeamsTournament
-            teams={newTournament.teams}
-            handleAddTeam={handleAddTeam}
-            addPlayerToTeam={addPlayerToTeam}
-            updateTeamsTeamName={updateTeamsTeamName}
-            isVisible={newTournament.kind === "teams"}
-            updateTeamsPlayerName={updateTeamsPlayerName}
-          />
-        </div>
+              <NewTeamsTournament
+                teams={newTournament.teams}
+                handleAddTeam={handleAddTeam}
+                addPlayerToTeam={addPlayerToTeam}
+                updateTeamsTeamName={updateTeamsTeamName}
+                isVisible={newTournament.kind === "teams"}
+                updateTeamsPlayerName={updateTeamsPlayerName}
+              />
+            </div>
+          </SlidingAnimationLayout>
+        )}
       </div>
 
       <div className="mt-4">
-        {gameCount !== 0 && (
+        {gameCount !== 0 && !signupLink && (
           <p className="mt-1 text-sm leading-6 text-gray-600">
             Setting up{" "}
             <span
@@ -191,8 +202,13 @@ const NewTournamentForm: FC = () => {
             size="sm"
             title="Save"
             type="button"
-            // isLoading={isLoading}
-            handleClick={() => mutate(newTournament)}
+            isLoading={isPending}
+            handleClick={() => {
+              if (!signupLink) {
+                mutate(newTournament);
+                return;
+              }
+            }}
             isDisabled={newTournament.name.trim() === ""}
           />
         </div>

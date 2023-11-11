@@ -15,7 +15,6 @@ datasource db {
 
 // Necessary for Next auth
 model Account {
-  id                String  @id @default(cuid())
   userId            String
   type              String
   provider          String
@@ -27,36 +26,38 @@ model Account {
   scope             String?
   id_token          String? // @db.Text
   session_state     String?
+  id                String  @id @default(cuid())
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
 
 model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
   userId       String
   expires      DateTime
+  sessionToken String   @unique
+  id           String   @id @default(cuid())
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
-  id               String       @id @default(cuid())
-  name             String?
-  email            String?      @unique
-  emailVerified    DateTime?
-  image            String?
-  accounts         Account[]
-  sessions         Session[]
-  credits          Int          @default(100)
-  tournament       Tournament[]
-  stripeCustomerId String?      @unique
+  name                 String?
+  emailVerified        DateTime?
+  image                String?
+  accounts             Account[]
+  sessions             Session[]
+  tournament           Tournament[]
+  tournamentSignupLink TournamentSignupLink[]
+  email                String?                @unique
+  stripeCustomerId     String?                @unique
+  credits              Int                    @default(100)
+  id                   String                 @id @default(cuid())
 }
 
 model VerificationToken {
   identifier String
-  token      String   @unique
   expires    DateTime
+  token      String   @unique
 
   @@unique([identifier, token])
 }
@@ -73,109 +74,128 @@ enum TournamentKind {
 }
 
 model Tournament {
-  id          String         @id @default(cuid())
-  userId      String
-  type        TournamentType @default(king)
-  name        String
-  sets        Int
-  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  teams       Team[]
-  games       Game[]
-  players     Player[]
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  rounds      Int            @default(1)
-  kind        TournamentKind @default(FREE)
-  shareLink   ShareLink?
-  playoffGame PlayoffGame[]
-  isPlayoffs  Boolean        @default(false)
+  sets                 Int
+  userId               String
+  name                 String
+  teams                Team[]
+  games                Game[]
+  players              Player[]
+  shareLink            ShareLink?
+  playoffGame          PlayoffGame[]
+  tournamentSignupLink TournamentSignupLink?
+  updatedAt            DateTime              @updatedAt
+  rounds               Int                   @default(1)
+  type                 TournamentType        @default(king)
+  kind                 TournamentKind        @default(FREE)
+  isPlayoffs           Boolean               @default(false)
+  createdAt            DateTime              @default(now())
+  isStarted            Boolean               @default(false)
+  id                   String                @id @default(cuid())
+  user                 User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model TournamentSignupLink {
+  userId       String
+  teams        Team[]
+  players      Player[]
+  slug         String         @unique
+  tournamentId String         @unique
+  updatedAt    DateTime       @updatedAt
+  isActive     Boolean        @default(true)
+  type         TournamentType @default(king)
+  createdAt    DateTime       @default(now())
+  id           String         @id @default(cuid())
+  tournament   Tournament?    @relation(fields: [tournamentId], references: [id])
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model ShareLink {
-  id           String     @id @default(cuid())
   slug         String     @unique
   tournamentId String     @unique
-  createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
+  createdAt    DateTime   @default(now())
+  id           String     @id @default(cuid())
   tournament   Tournament @relation(fields: [tournamentId], references: [id])
 }
 
 model Team {
-  id                 String        @id @default(cuid())
-  tournamentId       String
-  name               String?
-  tournament         Tournament    @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
-  players            Player[]      @relation("TeamPlayers")
-  teamOne            Game[]        @relation("teamOne")
-  teamTwo            Game[]        @relation("teamTwo")
-  winnerTeam         Game[]        @relation("winnerTeam")
-  playoffTeam        PlayoffGame[] @relation("playoffTeamWinner")
-  createdAt          DateTime      @default(now())
-  updatedAt          DateTime      @updatedAt
-  group              String        @default("A")
-  points             Int           @default(0)
-  setsWon            Int           @default(0)
-  gamesWon           Int           @default(0)
-  teamOnePlayoffGame PlayoffGame[] @relation("teamOnePlayoffGame")
-  teamTwoPlayoffGame PlayoffGame[] @relation("teamTwoPlayoffGame")
+  tournamentId         String
+  name                 String?
+  tournamentSignupLink TournamentSignupLink[]
+  points               Int                    @default(0)
+  setsWon              Int                    @default(0)
+  gamesWon             Int                    @default(0)
+  updatedAt            DateTime               @updatedAt
+  group                String                 @default("A")
+  createdAt            DateTime               @default(now())
+  id                   String                 @id @default(cuid())
+  players              Player[]               @relation("TeamPlayers")
+  teamOne              Game[]                 @relation("teamOne")
+  teamTwo              Game[]                 @relation("teamTwo")
+  winnerTeam           Game[]                 @relation("winnerTeam")
+  playoffTeam          PlayoffGame[]          @relation("playoffTeamWinner")
+  teamOnePlayoffGame   PlayoffGame[]          @relation("teamOnePlayoffGame")
+  teamTwoPlayoffGame   PlayoffGame[]          @relation("teamTwoPlayoffGame")
+  tournament           Tournament             @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
 }
 
 model Player {
-  id           String      @id @default(cuid())
-  name         String
-  teams        Team[]      @relation("TeamPlayers")
-  tournament   Tournament? @relation(fields: [tournamentId], references: [id])
-  tournamentId String?
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-  points       Int         @default(0)
-  setsWon      Int         @default(0)
-  gamesWon     Int         @default(0)
-  group        String
+  group                String
+  name                 String
+  tournamentId         String?
+  tournamentSignupLink TournamentSignupLink[]
+  updatedAt            DateTime               @updatedAt
+  points               Int                    @default(0)
+  setsWon              Int                    @default(0)
+  gamesWon             Int                    @default(0)
+  createdAt            DateTime               @default(now())
+  id                   String                 @id @default(cuid())
+  teams                Team[]                 @relation("TeamPlayers")
+  tournament           Tournament?            @relation(fields: [tournamentId], references: [id])
 }
 
 model Game {
-  id              String     @id @default(cuid())
+  order           Int
   group           String
+  teamOneId       String
+  teamTwoId       String
+  tournamentId    String
+  winnerId        String?
+  updatedAt       DateTime   @updatedAt
   teamOneSetScore Int        @default(0)
   teamTwoSetScore Int        @default(0)
   round           Int        @default(1) // How many times the teams have played each other
   gameSets        Json       @default("{}")
   createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @updatedAt
-  teamOneId       String
-  teamOne         Team       @relation("teamOne", fields: [teamOneId], references: [id])
-  teamTwoId       String
-  teamTwo         Team       @relation("teamTwo", fields: [teamTwoId], references: [id])
-  tournamentId    String
+  id              String     @id @default(cuid())
   tournament      Tournament @relation(fields: [tournamentId], references: [id])
-  order           Int
-  winnerId        String?
+  teamOne         Team       @relation("teamOne", fields: [teamOneId], references: [id])
+  teamTwo         Team       @relation("teamTwo", fields: [teamTwoId], references: [id])
   winnerTeamId    Team?      @relation("winnerTeam", fields: [winnerId], references: [id])
 }
 
 model PlayoffGame {
-  id                String     @id @default(cuid())
+  teamOneId         String?
+  teamTwoId         String?
+  winnerId          String?
+  tournamentId      String
   match             Int
   round             Int
+  updatedAt         DateTime   @updatedAt
   teamOneSetScore   Int        @default(0)
   teamTwoSetScore   Int        @default(0)
   gameSets          Json       @default("{}")
   createdAt         DateTime   @default(now())
-  updatedAt         DateTime   @updatedAt
-  winnerId          String?
-  tournamentId      String
+  id                String     @id @default(cuid())
   tournament        Tournament @relation(fields: [tournamentId], references: [id])
   playoffTeamWinner Team?      @relation("playoffTeamWinner", fields: [winnerId], references: [id])
-  teamOneId         String?
   teamOne           Team?      @relation("teamOnePlayoffGame", fields: [teamOneId], references: [id])
-  teamTwoId         String?
   teamTwo           Team?      @relation("teamTwoPlayoffGame", fields: [teamTwoId], references: [id])
 }
 
 model EmailList {
-  id        String   @id @default(cuid())
   email     String   @unique
-  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
 }

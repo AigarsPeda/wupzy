@@ -23,7 +23,7 @@ const NewKingTournament: FC<NewKingTournamentProps> = ({
   handleKingsPlayerName,
 }) => {
   return (
-    <AnimatePresence>
+    <AnimatePresence key="NewKingTournament">
       {isVisible && (
         <SlidingAnimationLayout>
           <h2 className="mb-4 text-base font-semibold leading-7 text-gray-900">

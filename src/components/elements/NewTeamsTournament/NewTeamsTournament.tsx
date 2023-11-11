@@ -36,7 +36,7 @@ const NewTeamsTournament: FC<NewTeamsTournamentProps> = ({
 }) => {
   return (
     <>
-      <AnimatePresence>
+      <AnimatePresence key="NewTeamsTournament">
         {isVisible && (
           <SlidingAnimationLayout>
             <h2 className="mb-4 text-base font-semibold leading-7 text-gray-900">
@@ -45,6 +45,7 @@ const NewTeamsTournament: FC<NewTeamsTournamentProps> = ({
             <ul className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               {teams.map((team, i) => {
                 const label = `${i + 1}${getOrdinal(i + 1)} team`;
+
                 return (
                   <li className="font-normal sm:col-span-4" key={team.id}>
                     <AddingToListAnimationLayout index={i}>
