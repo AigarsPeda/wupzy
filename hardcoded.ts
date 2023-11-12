@@ -17,6 +17,16 @@ export const LINKS: LinkType[] = [
   },
   {
     public: false,
+    href: "/signups",
+    label: "Signup links",
+  },
+  {
+    public: false,
+    href: "/signups/[id]",
+    // label: "Signup links",
+  },
+  {
+    public: false,
     href: "/new-tournament",
     label: "New Tournament",
   },
@@ -27,7 +37,7 @@ export const LINKS: LinkType[] = [
   },
 ];
 
-export const PAGES_WITHOUT_HEADER = ["/share/[slug]"];
+export const PAGES_WITHOUT_HEADER = ["/share/[slug]", "/signup/[slug]"];
 
 export const ALPHABET = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
 

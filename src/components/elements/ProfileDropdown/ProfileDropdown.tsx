@@ -67,7 +67,11 @@ const ProfileDropdown = () => {
         <PrimaryButton
           color="dark"
           isDisabled={status === "loading"}
-          handleClick={() => void signIn()}
+          handleClick={() =>
+            void signIn(undefined, {
+              callbackUrl: "/tournaments",
+            })
+          }
         >
           <span className="min-h-[19px] min-w-[50px]">
             {status === "loading" ? (

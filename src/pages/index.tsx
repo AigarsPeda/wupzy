@@ -41,7 +41,9 @@ const HomePage: NextPage = () => {
               padding="lg"
               handleClick={() => {
                 if (!sessionData) {
-                  void signIn();
+                  void signIn(undefined, {
+                    callbackUrl: "/tournaments",
+                  });
                   return;
                 }
                 void redirectToPath("/tournaments");

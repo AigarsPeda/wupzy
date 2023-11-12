@@ -32,7 +32,10 @@ const AuthenticateUser: FC<AuthenticateUserProps> = ({ sessionData }) => {
                   callbackUrl: "/",
                 });
               }
-            : () => void signIn()
+            : () =>
+                void signIn(undefined, {
+                  callbackUrl: "/tournaments",
+                })
         }
       >
         {sessionData ? "Sign out" : "Sign in"}

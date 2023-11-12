@@ -44,7 +44,7 @@ const NewTournamentForm: FC = () => {
 
   const { mutate: postSignupLink } = api.signupLink.postSignupLink.useMutation({
     onSuccess: (data) => {
-      redirectToPath(`/tournaments`);
+      redirectToPath(`/signups/${data.signupLink.id}`);
     },
   });
 
@@ -110,7 +110,7 @@ const NewTournamentForm: FC = () => {
                 }}
               />
               <RadioSelect
-                radioTitle="Create sign up link"
+                radioTitle="Create signup link"
                 radioValue="true"
                 radioName="tournament-signup-link"
                 radioSelectedValue={signupLink.toString()}

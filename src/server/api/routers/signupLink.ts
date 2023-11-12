@@ -1,6 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 import z from "zod";
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 import { TournamentTypeEnum } from "~/types/tournament.types";
 
 export const signupLinkRouter = createTRPCRouter({
@@ -45,7 +49,7 @@ export const signupLinkRouter = createTRPCRouter({
       return { signupLink };
     }),
 
-  getSignupLink: protectedProcedure
+  getSignupLink: publicProcedure
     .input(
       z.object({
         slug: z.string(),
@@ -57,6 +61,37 @@ export const signupLinkRouter = createTRPCRouter({
       const signupLink = await prisma.tournamentSignupLink.findUnique({
         where: {
           slug: input.slug,
+        },
+        select: {
+          name: true,
+          type: true,
+          description: true,
+        },
+      });
+
+      return { signupLink };
+    }),
+
+  getSignupLinkById: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { prisma } = ctx;
+
+      const signupLink = await prisma.tournamentSignupLink.findUnique({
+        where: {
+          id: input.id,
+        },
+        include: {
+          teams: {
+            include: {
+              players: true,
+            },
+          },
+          players: true,
         },
       });
 

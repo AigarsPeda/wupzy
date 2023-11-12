@@ -63,7 +63,11 @@ const MobileNav: FC<MobileNavProps> = ({ links }) => {
             <PrimaryButton
               isFullWidth
               color="dark"
-              handleClick={() => void signIn()}
+              handleClick={() =>
+                void signIn(undefined, {
+                  callbackUrl: "/tournaments",
+                })
+              }
             >
               Sign in
             </PrimaryButton>

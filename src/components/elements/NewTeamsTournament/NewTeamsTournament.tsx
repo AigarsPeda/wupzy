@@ -16,7 +16,7 @@ import getOrdinal from "~/utils/getOrdinal";
 interface NewTeamsTournamentProps {
   isVisible: boolean;
   teams: NewTeamsType[];
-  handleAddTeam: () => void;
+  handleAddTeam?: () => void;
   addPlayerToTeam: ({ teamId }: AddPlayerToTeamType) => void;
   updateTeamsTeamName: ({ id, name }: HandleInputChangeType) => void;
   updateTeamsPlayerName: ({
@@ -101,14 +101,16 @@ const NewTeamsTournament: FC<NewTeamsTournamentProps> = ({
                 );
               })}
             </ul>
-            <div className="mt-6">
-              <SecondaryButton
-                type="button"
-                title="Add Team"
-                icon={<BiPlus className="mr-2 h-5 w-5" />}
-                handleClick={handleAddTeam}
-              />
-            </div>
+            {handleAddTeam && (
+              <div className="mt-6">
+                <SecondaryButton
+                  type="button"
+                  title="Add Team"
+                  icon={<BiPlus className="mr-2 h-5 w-5" />}
+                  handleClick={handleAddTeam}
+                />
+              </div>
+            )}
           </SlidingAnimationLayout>
         )}
       </AnimatePresence>

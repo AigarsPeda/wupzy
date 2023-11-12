@@ -63,7 +63,7 @@ const Pricing: FC = () => {
             isPro(option)
               ? "scale-100 border-2 border-gray-800"
               : "scale-100 md:scale-95",
-            "flex w-full flex-col justify-between rounded-3xl bg-white p-8 shadow-lg ring-1 ring-gray-200 xl:p-10"
+            "flex w-full flex-col justify-between rounded-3xl bg-white p-8 shadow-lg ring-1 ring-gray-200 xl:p-10",
           )}
         >
           <div className="flex h-52 flex-col md:justify-between">
@@ -97,7 +97,9 @@ const Pricing: FC = () => {
                 isFullWidth
                 handleClick={() => {
                   if (!sessionData) {
-                    void signIn();
+                    void signIn(undefined, {
+                      callbackUrl: "/tournaments",
+                    });
                     return;
                   }
                   void redirectToPath("/tournaments");

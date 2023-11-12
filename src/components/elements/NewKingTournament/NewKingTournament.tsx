@@ -12,7 +12,7 @@ import getOrdinal from "~/utils/getOrdinal";
 interface NewKingTournamentProps {
   isVisible: boolean;
   players: NewPlayerType[];
-  handleAddPlayer: () => void;
+  handleAddPlayer?: () => void;
   handleKingsPlayerName: ({ id, name }: HandleInputChangeType) => void;
 }
 
@@ -51,14 +51,16 @@ const NewKingTournament: FC<NewKingTournamentProps> = ({
               );
             })}
           </ul>
-          <div className="mt-6">
-            <SecondaryButton
-              type="button"
-              title="Add Team"
-              icon={<BiPlus className="mr-2 h-5 w-5" />}
-              handleClick={handleAddPlayer}
-            />
-          </div>
+          {handleAddPlayer && (
+            <div className="mt-6">
+              <SecondaryButton
+                type="button"
+                title="Add player"
+                icon={<BiPlus className="mr-2 h-5 w-5" />}
+                handleClick={handleAddPlayer}
+              />
+            </div>
+          )}
         </SlidingAnimationLayout>
       )}
     </AnimatePresence>

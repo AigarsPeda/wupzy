@@ -11,21 +11,10 @@ const SignupLinkCreate: FC<SignupLinkCreateProps> = ({
   signupDescription,
   handleDescriptionChange,
 }) => {
-  // const [description, setDescription] = useState("");
   return (
     <AnimatePresence key="SignupLink">
       <SlidingAnimationLayout>
-        {/* <div className="border-b border-gray-900/10 pb-12">Sign up link</div> */}
-        {/* <div className="border-b border-gray-900/10 pb-12">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <div className="text-2xl font-bold text-gray-900">
-                Sign up link
-              </div>
-            </div>
-          </div>
-        </div> */}
-
+        {/* <div className="text-2xl font-bold text-gray-900">Sign up link</div> */}
         <fieldset className="mt-8">
           <legend className="text-base font-semibold leading-7 text-gray-900">
             Description
