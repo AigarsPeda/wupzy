@@ -1,13 +1,11 @@
 import { type NextPage } from "next";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import NewKingTournament from "~/components/elements/NewKingTournament/NewKingTournament";
+import NewTeamsTournament from "~/components/elements/NewTeamsTournament/NewTeamsTournament";
 import PageHead from "~/components/elements/PageHead/PageHead";
+import useCreateTournament from "~/hooks/useCreateTournament";
 import { api } from "~/utils/api";
-import NewKingTournament from "../../../components/elements/NewKingTournament/NewKingTournament";
-import NewTeamsTournament from "../../../components/elements/NewTeamsTournament/NewTeamsTournament";
-import newTournament from "../../new-tournament";
-import useCreateTournament from "../../../hooks/useCreateTournament";
-import { NewPlayerType, NewTeamsType } from "../../../types/tournament.types";
 
 const TournamentPage: NextPage = () => {
   const { query } = useRouter();
@@ -19,22 +17,11 @@ const TournamentPage: NextPage = () => {
 
   const {
     newTournament,
-    handleAddTeam,
-    handleAddPlayer,
     addPlayerToTeam,
-    handleSetSelect,
-    handleSetRounds,
     updateTeamsTeamName,
-    changeTournamentName,
-    changeTournamentKind,
     updateKingsPlayerName,
     updateTeamsPlayerName,
   } = useCreateTournament();
-
-  // const getFirstFromArrAndReturnArr =  <T>(arr: T[]) => {
-  //   const first = arr[0];
-  //   return [first];
-  // };
 
   const firstElementFromArray = <T,>(arr: T[]) => {
     const first = arr[0];

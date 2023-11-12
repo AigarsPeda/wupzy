@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { type FC } from "react";
 import SetSelect from "~/components/elements/SetSelect/SetSelect";
 
 const OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
