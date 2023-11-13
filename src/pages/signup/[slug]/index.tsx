@@ -8,11 +8,13 @@ import NewTeamsTournament from "~/components/elements/NewTeamsTournament/NewTeam
 import PageHead from "~/components/elements/PageHead/PageHead";
 import TextButton from "~/components/elements/TextButton/TextButton";
 import useCreateTournament from "~/hooks/useCreateTournament";
+import useRedirect from "~/hooks/useRedirect";
 import { api } from "~/utils/api";
 
 const TournamentPage: NextPage = () => {
   const { query } = useRouter();
   const [slug, setSlug] = useState("");
+  const { redirectToPath } = useRedirect();
   const { data } = api.signupLink.getSignupLink.useQuery(
     { slug: slug },
     { enabled: Boolean(slug) },
@@ -53,10 +55,6 @@ const TournamentPage: NextPage = () => {
         </p>
       </div>
     );
-  }
-
-  function redirectToPath(arg0: string): void {
-    throw new Error("Function not implemented.");
   }
 
   return (
