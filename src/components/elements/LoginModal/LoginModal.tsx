@@ -32,11 +32,7 @@ const LoginModal: FC = () => {
             <Button
               title="Sign in"
               isLoading={status === "loading"}
-              handleClick={() =>
-                void signIn(undefined, {
-                  callbackUrl: "/tournaments",
-                })
-              }
+              handleClick={() => void signIn()}
             />
           </div>
         </div>

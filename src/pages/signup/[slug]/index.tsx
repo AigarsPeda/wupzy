@@ -1,9 +1,12 @@
 import { type NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { BsCheckCircle } from "react-icons/bs";
+import Button from "~/components/elements/Button/Button";
 import NewKingTournament from "~/components/elements/NewKingTournament/NewKingTournament";
 import NewTeamsTournament from "~/components/elements/NewTeamsTournament/NewTeamsTournament";
 import PageHead from "~/components/elements/PageHead/PageHead";
+import TextButton from "~/components/elements/TextButton/TextButton";
 import useCreateTournament from "~/hooks/useCreateTournament";
 import { api } from "~/utils/api";
 
@@ -14,6 +17,9 @@ const TournamentPage: NextPage = () => {
     { slug: slug },
     { enabled: Boolean(slug) },
   );
+
+  const { mutate, isSuccess, isPending } =
+    api.signupLink.postPlayerToSignupLink.useMutation();
 
   const {
     newTournament,
@@ -37,6 +43,22 @@ const TournamentPage: NextPage = () => {
     }
   }, [query.slug]);
 
+  if (isSuccess) {
+    return (
+      // <div className="flex h-screen flex-col items-center justify-center">
+      <div className="mt-40 flex h-screen flex-col items-center md:mt-72">
+        <BsCheckCircle className="mb-4 text-green-500" size={70} />
+        <p className="text-2xl font-bold text-gray-900">
+          You have successfully signed up for the tournament. Thank you!
+        </p>
+      </div>
+    );
+  }
+
+  function redirectToPath(arg0: string): void {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <>
       <PageHead
@@ -46,15 +68,6 @@ const TournamentPage: NextPage = () => {
         tournament tables, save game scores, view real-time results, and share
         them with all participants in just a few clicks."
       />
-
-      {/* <div className="mt-4 flex items-center justify-between rounded py-1 md:mt-0">
-        <h1 className="text-2xl font-bold text-gray-900">Sign up</h1>
-        <p>{data?.signupLink?.name}</p>
-
-        <div>
-          <p>{data?.signupLink?.description}</p>
-        </div>
-      </div> */}
       <form
         id="signup-form"
         name="signup-form"
@@ -63,8 +76,35 @@ const TournamentPage: NextPage = () => {
           e.preventDefault();
         }}
       >
-        <div className="relative mr-3 overflow-hidden border-b border-gray-900/10 pb-12">
+        <div className="mt-4 border-b border-gray-900/10 pb-10">
+          <fieldset>
+            <legend className="text-base font-semibold leading-7 text-gray-900">
+              Tournament name
+            </legend>
+            <p className="mt-1 text-sm leading-6 text-gray-600">
+              {data?.signupLink?.name}
+            </p>
+          </fieldset>
+          <fieldset className="mt-4">
+            <legend className="text-base font-semibold leading-7 text-gray-900">
+              Tournament kind
+            </legend>
+            <p className="mt-1 text-sm capitalize leading-6 text-gray-600">
+              {data?.signupLink?.type}
+            </p>
+          </fieldset>
+          <fieldset className="mt-4">
+            <legend className="text-base font-semibold leading-7 text-gray-900">
+              Description
+            </legend>
+            <p className="mt-1 text-sm leading-6 text-gray-600">
+              {data?.signupLink?.description}
+            </p>
+          </fieldset>
+        </div>
+        <div className="relative mr-3 mt-6 overflow-hidden border-b border-gray-900/10 pb-12">
           <NewKingTournament
+            playerNameVisible="Your name"
             // handleAddPlayer={handleAddPlayer}
             isVisible={newTournament.kind === "king"}
             handleKingsPlayerName={updateKingsPlayerName}
@@ -79,6 +119,31 @@ const TournamentPage: NextPage = () => {
             updateTeamsPlayerName={updateTeamsPlayerName}
             teams={firstElementFromArray(newTournament.teams)}
           />
+        </div>
+
+        <div className="mt-6 flex items-center justify-end gap-x-6">
+          <TextButton title="Cancel" handleClick={() => redirectToPath("/")} />
+
+          <div className="w-20">
+            <Button
+              size="sm"
+              title="Signup"
+              type="button"
+              isLoading={isPending}
+              handleClick={() => {
+                if (!data?.signupLink) {
+                  return;
+                }
+                void mutate({
+                  signupLinkId: data.signupLink.id,
+                  newPlayers: newTournament.king.players.filter(
+                    (player) => player.name !== "",
+                  ),
+                });
+              }}
+              isDisabled={false}
+            />
+          </div>
         </div>
       </form>
     </>

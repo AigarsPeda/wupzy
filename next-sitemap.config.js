@@ -1,13 +1,16 @@
 const siteUrl = "https://www.wupzy.com";
 module.exports = {
   siteUrl,
-  exclude: ["/404"],
   generateRobotsTxt: true,
   exclude: [
-    "/signup",
+    "/404",
     "/tournaments",
-    "/login/forgot",
+    "/tournaments/[id]",
     "/new-tournament",
     "/share/[slug]",
+    "/signup/[slug]",
+    "/signups",
+    "/signups/[id]",
+    "/signups/[slug]",
   ],
 };

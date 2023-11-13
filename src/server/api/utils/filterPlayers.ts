@@ -1,9 +1,10 @@
-import { type NewTournamentType } from "~/types/tournament.types";
+import {
+  NewPlayerType,
+  type NewTournamentType,
+} from "~/types/tournament.types";
 
-const filterPlayers = (input: NewTournamentType) => {
-  const filtered = input.king.players.filter(
-    (player) => player.name.trim() !== ""
-  );
+const filterPlayers = (players: NewPlayerType[]) => {
+  const filtered = players.filter((player) => player.name.trim() !== "");
 
   return filtered;
 };

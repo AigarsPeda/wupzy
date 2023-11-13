@@ -163,7 +163,7 @@ const NewTournamentForm: FC = () => {
               handleSetSelect={handleSetSelect}
             />
 
-            <div className="relative mr-3 overflow-hidden border-b border-gray-900/10 pb-12">
+            <div className="relative mr-3 mt-6 overflow-hidden border-b border-gray-900/10 pb-12">
               <NewKingTournament
                 handleAddPlayer={handleAddPlayer}
                 players={newTournament.king.players}

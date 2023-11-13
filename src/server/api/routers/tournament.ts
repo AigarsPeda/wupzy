@@ -119,7 +119,7 @@ export const tournamentRouter = createTRPCRouter({
               },
             },
             players: {
-              create: filterPlayers(input).map((player) => {
+              create: filterPlayers(input.king.players).map((player) => {
                 return {
                   name: player.name,
                   group: player.group,
@@ -326,7 +326,7 @@ export const tournamentRouter = createTRPCRouter({
 
         // loop through old players and if they are updated, update them or create new ones
         const newPlayers = await Promise.all(
-          filterPlayers(input.tournament).map(async (player) => {
+          filterPlayers(input.tournament.king.players).map(async (player) => {
             return await prisma.player.upsert({
               where: {
                 id: player.id,

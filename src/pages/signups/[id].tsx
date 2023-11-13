@@ -30,7 +30,7 @@ const SignupPage: NextPage = () => {
       />
 
       <div className="mx-auto max-w-lg rounded-md bg-white p-2 shadow md:mt-6">
-        <div className="space-y-10">
+        <div className="space-y-8">
           <div className="mt-4 border-b border-gray-900/10 pb-12">
             <fieldset>
               <legend className="text-base font-semibold leading-7 text-gray-900">
@@ -68,7 +68,9 @@ const SignupPage: NextPage = () => {
           <div className="border-b border-gray-900/10 pb-12">
             <fieldset>
               <legend className="text-base font-semibold leading-7 text-gray-900">
-                Signup {data?.signupLink?.type === "teams" ? "teams" : "player"}
+                Enrolled{" "}
+                {data?.signupLink?.type === "teams" ? "teams" : "player"}:
+                {/* Tournament participant: */}
               </legend>
               {data?.signupLink?.type === "teams"
                 ? data?.signupLink?.teams?.map((team) => {

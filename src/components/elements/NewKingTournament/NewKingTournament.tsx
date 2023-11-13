@@ -12,6 +12,7 @@ import getOrdinal from "~/utils/getOrdinal";
 interface NewKingTournamentProps {
   isVisible: boolean;
   players: NewPlayerType[];
+  playerNameVisible?: string;
   handleAddPlayer?: () => void;
   handleKingsPlayerName: ({ id, name }: HandleInputChangeType) => void;
 }
@@ -19,6 +20,7 @@ interface NewKingTournamentProps {
 const NewKingTournament: FC<NewKingTournamentProps> = ({
   players,
   isVisible,
+  playerNameVisible,
   handleAddPlayer,
   handleKingsPlayerName,
 }) => {
@@ -26,9 +28,9 @@ const NewKingTournament: FC<NewKingTournamentProps> = ({
     <AnimatePresence key="NewKingTournament">
       {isVisible && (
         <SlidingAnimationLayout>
-          <h2 className="mb-4 text-base font-semibold leading-7 text-gray-900">
+          {/* <h2 className="mb-4 text-base font-semibold leading-7 text-gray-900">
             King players
-          </h2>
+          </h2> */}
           <ul className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             {players.map((player, i) => {
               const label = `${i + 1}${getOrdinal(i + 1)} player`;
@@ -37,7 +39,7 @@ const NewKingTournament: FC<NewKingTournamentProps> = ({
                   <AddingToListAnimationLayout index={i}>
                     <Input
                       inputFor={label}
-                      inputLabel={label}
+                      inputLabel={playerNameVisible || label}
                       inputVal={player.name}
                       handleInputChange={(str) => {
                         handleKingsPlayerName({

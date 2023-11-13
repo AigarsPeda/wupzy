@@ -39,9 +39,9 @@ const NewTeamsTournament: FC<NewTeamsTournamentProps> = ({
       <AnimatePresence key="NewTeamsTournament">
         {isVisible && (
           <SlidingAnimationLayout>
-            <h2 className="mb-4 text-base font-semibold leading-7 text-gray-900">
+            {/* <h2 className="mb-4 text-base font-semibold leading-7 text-gray-900">
               Teams
-            </h2>
+            </h2> */}
             <ul className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               {teams.map((team, i) => {
                 const label = `${i + 1}${getOrdinal(i + 1)} team`;

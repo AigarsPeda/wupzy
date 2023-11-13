@@ -5,7 +5,8 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import { TournamentTypeEnum } from "~/types/tournament.types";
+import filterPlayers from "~/server/api/utils/filterPlayers";
+import { NewPlayerSchema, TournamentTypeEnum } from "~/types/tournament.types";
 
 export const signupLinkRouter = createTRPCRouter({
   postSignupLink: protectedProcedure
@@ -28,9 +29,6 @@ export const signupLinkRouter = createTRPCRouter({
       if (!user) {
         throw new Error("User not found");
       }
-
-      console.log("user", user);
-      console.log("input", input);
 
       const signupLink = await prisma.tournamentSignupLink.create({
         data: {
@@ -63,6 +61,7 @@ export const signupLinkRouter = createTRPCRouter({
           slug: input.slug,
         },
         select: {
+          id: true,
           name: true,
           type: true,
           description: true,
@@ -119,4 +118,47 @@ export const signupLinkRouter = createTRPCRouter({
 
     return { signupLinks };
   }),
+
+  postPlayerToSignupLink: publicProcedure
+    .input(
+      z.object({
+        newPlayers: NewPlayerSchema.array(),
+        signupLinkId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { prisma } = ctx;
+
+      const signupLink = await prisma.tournamentSignupLink.findUnique({
+        where: {
+          id: input.signupLinkId,
+        },
+      });
+
+      if (!signupLink) {
+        throw new Error("Signup link not found");
+      }
+
+      for (const player of filterPlayers(input.newPlayers)) {
+        const newPlayer = await prisma.player.create({
+          data: {
+            group: player.group,
+            name: player.name,
+            tournamentSignupLink: {
+              connect: {
+                id: signupLink.id,
+              },
+            },
+          },
+        });
+
+        if (!newPlayer) {
+          throw new Error("Player not created");
+        }
+      }
+
+      return {
+        status: "ok",
+      };
+    }),
 });

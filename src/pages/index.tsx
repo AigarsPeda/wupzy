@@ -138,7 +138,7 @@ const HomePage: NextPage = () => {
                     </div>
                     <div />
                   </div>
-                  <div className="col-span-4 mt-4 overflow-hidden rounded-md border shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px] md:mt-0">
+                  <div className="col-span-4 mt-4 overflow-hidden rounded-md border bg-gray-50 p-1 shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px] md:mt-0">
                     <Image
                       width={494}
                       height={484}
@@ -146,7 +146,7 @@ const HomePage: NextPage = () => {
                       src={step.zoomImageDesktop}
                       alt="Picture wupzy dashboard"
                       blurDataURL="/asset/blur.jpg"
-                      className="scale-125 md:scale-100"
+                      className="scale-125 rounded-[0.2rem] md:scale-100"
                       style={{
                         width: "100%",
                         height: "100%",
