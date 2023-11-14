@@ -8,9 +8,11 @@ import AddingToListAnimationLayout from "~/components/layout/AddingToListAnimati
 import SlidingAnimationLayout from "~/components/layout/SlidingAnimationLayout/SlidingAnimationLayout";
 import { type NewPlayerType } from "~/types/tournament.types";
 import getOrdinal from "~/utils/getOrdinal";
+import classNames from "../../../utils/classNames";
 
 interface NewKingTournamentProps {
   isVisible: boolean;
+  isFullWidth?: boolean;
   players: NewPlayerType[];
   playerNameVisible?: string;
   handleAddPlayer?: () => void;
@@ -20,6 +22,7 @@ interface NewKingTournamentProps {
 const NewKingTournament: FC<NewKingTournamentProps> = ({
   players,
   isVisible,
+  isFullWidth,
   playerNameVisible,
   handleAddPlayer,
   handleKingsPlayerName,
@@ -31,7 +34,13 @@ const NewKingTournament: FC<NewKingTournamentProps> = ({
           {/* <h2 className="mb-4 text-base font-semibold leading-7 text-gray-900">
             King players
           </h2> */}
-          <ul className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+          <ul
+            className={classNames(
+              isFullWidth
+                ? "w-full"
+                : "grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6",
+            )}
+          >
             {players.map((player, i) => {
               const label = `${i + 1}${getOrdinal(i + 1)} player`;
               return (

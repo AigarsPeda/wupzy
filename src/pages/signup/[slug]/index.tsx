@@ -75,57 +75,78 @@ const TournamentPage: NextPage = () => {
         }}
       >
         <div className="mt-4 border-b border-gray-900/10 pb-10">
-          <fieldset>
-            <legend className="text-base font-semibold leading-7 text-gray-900">
-              Tournament name
-            </legend>
-            <p className="mt-1 text-sm leading-6 text-gray-600">
+          {/* <fieldset>
+            <legend className="text-sm leading-7 text-gray-500">Name</legend>
+            <p className="mt-1 text-base leading-6 text-gray-900">
               {data?.signupLink?.name}
             </p>
-          </fieldset>
+          </fieldset> */}
           <fieldset className="mt-4">
-            <legend className="text-base font-semibold leading-7 text-gray-900">
-              Tournament kind
-            </legend>
-            <p className="mt-1 text-sm capitalize leading-6 text-gray-600">
+            <legend className="text-sm leading-7 text-gray-500">Kind</legend>
+            <p className="mt-1 text-base capitalize leading-6 text-gray-900">
               {data?.signupLink?.type}
             </p>
           </fieldset>
           <fieldset className="mt-4">
-            <legend className="text-base font-semibold leading-7 text-gray-900">
+            <legend className="text-sm leading-7 text-gray-500">
               Description
             </legend>
-            <p className="mt-1 text-sm leading-6 text-gray-600">
+            <p className="mt-1 text-base leading-6 text-gray-900">
               {data?.signupLink?.description}
             </p>
           </fieldset>
         </div>
-        <div className="relative mr-3 mt-6 overflow-hidden border-b border-gray-900/10 pb-12">
-          <NewKingTournament
-            playerNameVisible="Your name"
-            // handleAddPlayer={handleAddPlayer}
-            isVisible={newTournament.kind === "king"}
-            handleKingsPlayerName={updateKingsPlayerName}
-            players={firstElementFromArray(newTournament.king.players)}
-          />
+        <div className="flex items-center">
+          <div className="relative mt-[1.09rem] w-full overflow-hidden pb-4">
+            <NewKingTournament
+              isFullWidth
+              playerNameVisible="Your name"
+              // handleAddPlayer={handleAddPlayer}
+              isVisible={data?.signupLink?.type === "king"}
+              handleKingsPlayerName={updateKingsPlayerName}
+              players={firstElementFromArray(newTournament.king.players)}
+            />
 
-          <NewTeamsTournament
-            // handleAddTeam={handleAddTeam}
-            addPlayerToTeam={addPlayerToTeam}
-            updateTeamsTeamName={updateTeamsTeamName}
-            isVisible={newTournament.kind === "teams"}
-            updateTeamsPlayerName={updateTeamsPlayerName}
-            teams={firstElementFromArray(newTournament.teams)}
-          />
+            <NewTeamsTournament
+              isFullWidth
+              teamsNameVisible="Team name"
+              // handleAddTeam={handleAddTeam}
+              addPlayerToTeam={addPlayerToTeam}
+              updateTeamsTeamName={updateTeamsTeamName}
+              isVisible={data?.signupLink?.type === "teams"}
+              updateTeamsPlayerName={updateTeamsPlayerName}
+              teams={firstElementFromArray(newTournament.teams)}
+            />
+          </div>
+          {/* <div>
+            <Button
+              size="sm"
+              title="Join"
+              type="button"
+              isLoading={isPending}
+              handleClick={() => {
+                if (!data?.signupLink) {
+                  return;
+                }
+                void mutate({
+                  signupLinkId: data.signupLink.id,
+                  newPlayers: newTournament.king.players.filter(
+                    (player) => player.name !== "",
+                  ),
+                });
+              }}
+              isDisabled={false}
+            />
+          </div> */}
         </div>
 
-        <div className="mt-6 flex items-center justify-end gap-x-6">
-          <TextButton title="Cancel" handleClick={() => redirectToPath("/")} />
+        <div className="mt-2 flex items-center justify-end gap-x-6 pb-5">
+          {/* <TextButton title="Cancel" handleClick={() => redirectToPath("/")} /> */}
 
           <div className="w-20">
             <Button
               size="sm"
-              title="Signup"
+              title="Join"
               type="button"
               isLoading={isPending}
               handleClick={() => {
