@@ -9,6 +9,7 @@ import createKingGamesNTimes from "~/server/api/utils/createKingGamesNTimes";
 import filterPlayers from "~/server/api/utils/filterPlayers";
 import { NewPlayerSchema, TournamentTypeEnum } from "~/types/tournament.types";
 import createTeams from "~/utils/createTeams";
+import { ONE_TOURNAMENT_COST } from "../../../../hardcoded";
 
 export const signupLinkRouter = createTRPCRouter({
   postSignupLink: protectedProcedure
@@ -141,27 +142,29 @@ export const signupLinkRouter = createTRPCRouter({
         throw new Error("Signup link not found");
       }
 
-      for (const player of filterPlayers(input.newPlayers)) {
-        const newPlayer = await prisma.player.create({
-          data: {
-            group: player.group,
-            name: player.name,
-            tournamentSignupLink: {
-              connect: {
-                id: signupLink.id,
+      if (signupLink.type === "king") {
+        for (const player of filterPlayers(input.newPlayers)) {
+          const newPlayer = await prisma.player.create({
+            data: {
+              group: player.group,
+              name: player.name,
+              tournamentSignupLink: {
+                connect: {
+                  id: signupLink.id,
+                },
               },
             },
-          },
-        });
+          });
 
-        if (!newPlayer) {
-          throw new Error("Player not created");
+          if (!newPlayer) {
+            throw new Error("Player not created");
+          }
         }
-      }
 
-      return {
-        status: "ok",
-      };
+        return {
+          status: "ok",
+        };
+      }
     }),
 
   postNewTournamentFromSignupLink: protectedProcedure
@@ -174,6 +177,16 @@ export const signupLinkRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const { prisma, session } = ctx;
+
+      const user = await prisma.user.findUnique({
+        where: {
+          id: session.user.id,
+        },
+      });
+
+      if (user && user.credits < ONE_TOURNAMENT_COST) {
+        throw new Error("Not enough credits");
+      }
 
       const signupLink = await prisma.tournamentSignupLink.findUnique({
         where: {
@@ -214,6 +227,25 @@ export const signupLinkRouter = createTRPCRouter({
           },
           include: {
             players: true,
+          },
+        });
+
+        await prisma.tournament.update({
+          where: {
+            id: id,
+          },
+          data: {
+            kind: "PRO",
+            shareLink: {
+              connectOrCreate: {
+                where: {
+                  tournamentId: id,
+                },
+                create: {
+                  slug: uuidv4(),
+                },
+              },
+            },
           },
         });
 
