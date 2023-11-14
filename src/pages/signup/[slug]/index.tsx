@@ -6,15 +6,12 @@ import Button from "~/components/elements/Button/Button";
 import NewKingTournament from "~/components/elements/NewKingTournament/NewKingTournament";
 import NewTeamsTournament from "~/components/elements/NewTeamsTournament/NewTeamsTournament";
 import PageHead from "~/components/elements/PageHead/PageHead";
-import TextButton from "~/components/elements/TextButton/TextButton";
 import useCreateTournament from "~/hooks/useCreateTournament";
-import useRedirect from "~/hooks/useRedirect";
 import { api } from "~/utils/api";
 
 const TournamentPage: NextPage = () => {
   const { query } = useRouter();
   const [slug, setSlug] = useState("");
-  const { redirectToPath } = useRedirect();
   const { data } = api.signupLink.getSignupLink.useQuery(
     { slug: slug },
     { enabled: Boolean(slug) },
@@ -118,31 +115,9 @@ const TournamentPage: NextPage = () => {
               teams={firstElementFromArray(newTournament.teams)}
             />
           </div>
-          {/* <div>
-            <Button
-              size="sm"
-              title="Join"
-              type="button"
-              isLoading={isPending}
-              handleClick={() => {
-                if (!data?.signupLink) {
-                  return;
-                }
-                void mutate({
-                  signupLinkId: data.signupLink.id,
-                  newPlayers: newTournament.king.players.filter(
-                    (player) => player.name !== "",
-                  ),
-                });
-              }}
-              isDisabled={false}
-            />
-          </div> */}
         </div>
 
         <div className="mt-2 flex items-center justify-end gap-x-6 pb-5">
-          {/* <TextButton title="Cancel" handleClick={() => redirectToPath("/")} /> */}
-
           <div className="w-20">
             <Button
               size="sm"
