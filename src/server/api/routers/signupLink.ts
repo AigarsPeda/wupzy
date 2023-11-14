@@ -5,8 +5,10 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
+import createKingGamesNTimes from "~/server/api/utils/createKingGamesNTimes";
 import filterPlayers from "~/server/api/utils/filterPlayers";
 import { NewPlayerSchema, TournamentTypeEnum } from "~/types/tournament.types";
+import createTeams from "~/utils/createTeams";
 
 export const signupLinkRouter = createTRPCRouter({
   postSignupLink: protectedProcedure
@@ -160,5 +162,95 @@ export const signupLinkRouter = createTRPCRouter({
       return {
         status: "ok",
       };
+    }),
+
+  postNewTournamentFromSignupLink: protectedProcedure
+    .input(
+      z.object({
+        rounds: z.number(),
+        setCount: z.number(),
+        signupLinkId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { prisma, session } = ctx;
+
+      const signupLink = await prisma.tournamentSignupLink.findUnique({
+        where: {
+          id: input.signupLinkId,
+        },
+        include: {
+          players: true,
+          teams: {
+            include: {
+              players: true,
+            },
+          },
+        },
+      });
+
+      if (!signupLink || signupLink.id) {
+        throw new Error("Signup link not found");
+      }
+
+      if (signupLink.type === "king") {
+        const { id, players } = await prisma.tournament.create({
+          data: {
+            isStarted: true,
+            sets: input.setCount,
+            type: signupLink.type,
+            name: signupLink.name,
+            user: {
+              connect: {
+                id: session.user.id,
+              },
+            },
+            players: {
+              create: signupLink.players.map((player) => ({
+                name: player.name,
+                group: player.group,
+              })),
+            },
+          },
+          include: {
+            players: true,
+          },
+        });
+
+        const newTeams = createTeams(players);
+
+        for (let i = 0; i < newTeams.length; i++) {
+          const element = newTeams[i];
+
+          if (element) {
+            await prisma.team.create({
+              data: {
+                tournamentId: id,
+                group: element.group,
+                players: {
+                  connect: element.players.map((player) => ({
+                    id: player.id,
+                  })),
+                },
+              },
+            });
+          }
+        }
+
+        const teams = await prisma.team.findMany({
+          where: {
+            tournamentId: id,
+          },
+          include: {
+            players: true,
+          },
+        });
+
+        await prisma.game.createMany({
+          data: createKingGamesNTimes(teams, id, input.rounds),
+        });
+
+        return { id };
+      }
     }),
 });

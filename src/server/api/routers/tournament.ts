@@ -112,7 +112,6 @@ export const tournamentRouter = createTRPCRouter({
             name: input.name,
             sets: input.sets,
             rounds: input.rounds,
-            // userId: ctx.session.user.id,
             user: {
               connect: {
                 id: session.user.id,
