@@ -81,7 +81,7 @@ const TournamentPage: NextPage = () => {
           <fieldset className="mt-4">
             <legend className="text-sm leading-7 text-gray-500">Kind</legend>
             <p className="mt-1 text-base capitalize leading-6 text-gray-900">
-              {data?.signupLink?.type}
+              {data?.signupLink?.type === "king" ? "King" : "Regular"}
             </p>
           </fieldset>
           <fieldset className="mt-4">

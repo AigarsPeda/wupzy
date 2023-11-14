@@ -11,8 +11,8 @@ import SecondaryButton from "~/components/elements/SecondaryButton/SecondaryButt
 import AddingToListAnimationLayout from "~/components/layout/AddingToListAnimationLayout/AddingToListAnimationLayout";
 import SlidingAnimationLayout from "~/components/layout/SlidingAnimationLayout/SlidingAnimationLayout";
 import { type NewTeamsType } from "~/types/tournament.types";
+import classNames from "~/utils/classNames";
 import getOrdinal from "~/utils/getOrdinal";
-import classNames from "../../../utils/classNames";
 
 interface NewTeamsTournamentProps {
   isVisible: boolean;
