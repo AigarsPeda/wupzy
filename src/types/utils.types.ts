@@ -1,3 +1,4 @@
+import { type IconType } from "react-icons";
 import z from "zod";
 import {
   type PlayerType,
@@ -9,6 +10,7 @@ export const LinkSchema = z.object({
   public: z.boolean(),
   href: z.string().url(),
   isInDropdown: z.boolean(),
+  icon: z.custom<IconType>().optional(),
   label: z.string().min(1).max(50).optional(),
 });
 

@@ -37,7 +37,7 @@ const CreateNewDropdown: FC<CreateNewDropdownProps> = ({ links }) => {
         setIsDropdownOpen(false);
       }}
     >
-      <ul className="flex min-w-min flex-col justify-between gap-3 whitespace-nowrap px-5 py-3">
+      <ul className="flex min-w-min flex-col justify-between gap-3 whitespace-nowrap px-4 py-3">
         {links.map((link) => {
           if (link.label) {
             return (
@@ -51,9 +51,17 @@ const CreateNewDropdown: FC<CreateNewDropdownProps> = ({ links }) => {
                     router.pathname === link.href
                       ? "text-gray-900 underline"
                       : "text-gray-900 no-underline",
-                    "text-sm text-gray-800 underline-offset-4 transition-all duration-200 ease-in-out hover:text-gray-900 hover:underline focus:ring-gray-800",
+                    "flex items-center text-sm text-gray-800 underline-offset-4 transition-all duration-200 ease-in-out hover:text-gray-900 hover:underline focus:ring-gray-800",
                   )}
                 >
+                  {link.icon &&
+                    link.icon({
+                      style: {
+                        width: "1rem",
+                        height: "1rem",
+                        marginRight: "1rem",
+                      },
+                    })}
                   {link.label}
                 </Link>
               </li>

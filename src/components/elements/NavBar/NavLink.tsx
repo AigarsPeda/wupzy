@@ -61,7 +61,7 @@ const NavLink: FC<NavLinkProps> = ({
         <CreateNewDropdown links={links.filter((link) => link.isInDropdown)} />
       </div>
 
-      <div className="block lg:hidden">
+      <div className="block space-y-4 lg:hidden">
         {links
           .filter((link) => link.isInDropdown)
           .map((link) => {
@@ -75,9 +75,17 @@ const NavLink: FC<NavLinkProps> = ({
                       router.pathname === link.href
                         ? "text-gray-900 underline"
                         : "text-gray-900 no-underline",
-                      "text-sm text-gray-800 underline-offset-8 transition-all hover:text-gray-900 hover:underline focus:ring-gray-800",
+                      "flex items-center text-sm text-gray-800 underline-offset-8 transition-all hover:text-gray-900 hover:underline focus:ring-gray-800",
                     )}
                   >
+                    {/* {link.icon &&
+                      link.icon({
+                        style: {
+                          width: "1rem",
+                          height: "1rem",
+                          marginRight: "1rem",
+                        },
+                      })} */}
                     {link.label}
                   </Link>
                 </li>

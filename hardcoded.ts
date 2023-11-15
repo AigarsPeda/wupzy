@@ -2,6 +2,8 @@ import MagicIcon from "~/components/icons/MagicIcon";
 import PlayoffIcon from "~/components/icons/PlayoffIcon";
 import RocketIcon from "~/components/icons/RocketIcon";
 import TargetIcon from "~/components/icons/TargetIcon";
+import { AiOutlineFileAdd } from "react-icons/ai";
+import { FaLink } from "react-icons/fa6";
 import { type LinkType } from "~/types/utils.types";
 
 export const LINKS: LinkType[] = [
@@ -34,12 +36,14 @@ export const LINKS: LinkType[] = [
     href: "/new-signup-link",
     label: "New signup link",
     isInDropdown: true,
+    icon: FaLink,
   },
   {
     public: false,
     href: "/new-tournament",
     label: "New tournament",
     isInDropdown: true,
+    icon: AiOutlineFileAdd,
   },
   {
     public: false,
