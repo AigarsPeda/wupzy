@@ -62,9 +62,9 @@ export const TeamSchema = z.object({
   group: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
-  tournamentId: z.string(),
   name: z.string().nullish(),
   players: z.array(PlayerSchema),
+  tournamentId: z.string().nullish(),
 });
 
 export const GameSets = z.record(
@@ -72,7 +72,7 @@ export const GameSets = z.record(
   z.object({
     teamOne: z.number(),
     teamTwo: z.number(),
-  })
+  }),
 );
 
 // const GamesStatsUnion = z.union([GameSets, z.unknown()]);
