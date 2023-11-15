@@ -54,7 +54,6 @@ const TournamentPage: NextPage = () => {
 
   if (isSuccess) {
     return (
-      // <div className="flex h-screen flex-col items-center justify-center">
       <div className="mt-40 flex h-screen flex-col items-center md:mt-72">
         <BsCheckCircle className="mb-4 text-green-500" size={70} />
         <p className="text-2xl font-bold text-gray-900">
@@ -68,10 +67,16 @@ const TournamentPage: NextPage = () => {
     <>
       <PageHead
         title={`Wupzy | ${data?.signupLink?.name || "Share"}`}
-        descriptionShort="Platform that lets you effortlessly create tournament tables."
-        descriptionLong="Wupzy is a powerful platform that lets you effortlessly create
-        tournament tables, save game scores, view real-time results, and share
-        them with all participants in just a few clicks."
+        descriptionShort={
+          data.signupLink.description ||
+          `Platform that lets you effortlessly create tournament tables.`
+        }
+        descriptionLong={
+          data.signupLink.description ||
+          `Wupzy is a powerful platform that lets you effortlessly create
+          tournament tables, save game scores, view real-time results, and share
+          them with all participants in just a few clicks.`
+        }
       />
       <form
         id="signup-form"
@@ -82,12 +87,6 @@ const TournamentPage: NextPage = () => {
         }}
       >
         <div className="mt-4 border-b border-gray-900/10 pb-10">
-          {/* <fieldset>
-            <legend className="text-sm leading-7 text-gray-500">Name</legend>
-            <p className="mt-1 text-base leading-6 text-gray-900">
-              {data?.signupLink?.name}
-            </p>
-          </fieldset> */}
           <fieldset className="mt-4">
             <legend className="text-sm leading-7 text-gray-500">Kind</legend>
             <p className="mt-1 text-base capitalize leading-6 text-gray-900">
@@ -108,7 +107,6 @@ const TournamentPage: NextPage = () => {
             <NewKingTournament
               isFullWidth
               playerNameVisible="Your name"
-              // handleAddPlayer={handleAddPlayer}
               isVisible={data?.signupLink?.type === "king"}
               handleKingsPlayerName={updateKingsPlayerName}
               players={firstElementFromArray(newTournament.king.players)}
@@ -117,7 +115,6 @@ const TournamentPage: NextPage = () => {
             <NewTeamsTournament
               isFullWidth
               teamsNameVisible="Team name"
-              // handleAddTeam={handleAddTeam}
               addPlayerToTeam={addPlayerToTeam}
               updateTeamsTeamName={updateTeamsTeamName}
               isVisible={data?.signupLink?.type === "teams"}
@@ -134,6 +131,7 @@ const TournamentPage: NextPage = () => {
               title="Join"
               type="button"
               isLoading={isPending}
+              isDisabled={isPending}
               handleClick={() => {
                 if (!data?.signupLink) {
                   return;
@@ -148,7 +146,6 @@ const TournamentPage: NextPage = () => {
                   ),
                 });
               }}
-              isDisabled={false}
             />
           </div>
         </div>

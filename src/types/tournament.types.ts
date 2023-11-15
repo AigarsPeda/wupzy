@@ -40,8 +40,11 @@ export const PlayerSchema = z.object({
   id: z.string(),
   name: z.string(),
   group: z.string(),
+  points: z.number(),
   updatedAt: z.date(),
   createdAt: z.date(),
+  setsWon: z.number(),
+  gamesWon: z.number(),
   tournamentId: z.string().nullish(),
 });
 
@@ -60,8 +63,11 @@ export const TournamentSchema = z.object({
 export const TeamSchema = z.object({
   id: z.string(),
   group: z.string(),
+  points: z.number(),
   createdAt: z.date(),
   updatedAt: z.date(),
+  setsWon: z.number(),
+  gamesWon: z.number(),
   name: z.string().nullish(),
   players: z.array(PlayerSchema),
   tournamentId: z.string().nullish(),

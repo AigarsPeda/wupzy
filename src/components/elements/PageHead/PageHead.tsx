@@ -4,12 +4,14 @@ import type { FC } from "react";
 
 interface PageHeadProps {
   title: string;
+  image?: string;
   descriptionLong: string;
   descriptionShort: string;
 }
 
 const PageHead: FC<PageHeadProps> = ({
   title,
+  image,
   descriptionLong,
   descriptionShort,
 }) => {
@@ -24,16 +26,16 @@ const PageHead: FC<PageHeadProps> = ({
 
       <meta name="description" content={descriptionLong} />
       <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-      <meta property="og:description" content={descriptionShort} />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
       <meta property="twitter:title" content={title} />
       <meta name="twitter:card" content="summary_large_image" />
-      <meta property="twitter:image" content="/logo_photo.jpg" />
       <meta property="twitter:description" content={descriptionShort} />
+      <meta property="twitter:image" content={image || "/logo_photo.jpg"} />
 
       <meta property="og:title" content={title} />
-      <meta property="og:image" content="/logo_photo.jpg" />
+      <meta property="og:description" content={descriptionShort} />
+      <meta property="og:image" content={image || "/logo_photo.jpg"} />
       <meta property="og:url" content={`https://wupzy.com${router.asPath}`} />
 
       <link rel="icon" href="/favicon.ico" />

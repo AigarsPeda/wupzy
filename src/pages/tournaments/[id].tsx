@@ -107,7 +107,6 @@ const TournamentPage: NextPage = () => {
       {isRegularTournamentSelected() ? (
         <RegularTournament
           selectedGroup={selectedGroup}
-          // updateSelectedGroup={updateSelectedGroup}
           tournamentType={tournament?.type || "king"}
         />
       ) : (

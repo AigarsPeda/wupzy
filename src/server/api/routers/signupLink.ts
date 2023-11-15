@@ -94,7 +94,13 @@ export const signupLinkRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
-        include: {
+        select: {
+          id: true,
+          name: true,
+          type: true,
+          slug: true,
+          isActive: true,
+          description: true,
           teams: {
             include: {
               players: true,
@@ -123,6 +129,9 @@ export const signupLinkRouter = createTRPCRouter({
     const signupLinks = await prisma.tournamentSignupLink.findMany({
       where: {
         userId: user.id,
+      },
+      orderBy: {
+        createdAt: "desc",
       },
     });
 

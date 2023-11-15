@@ -57,42 +57,40 @@ const NavLink: FC<NavLinkProps> = ({
         }
       })}
 
-      <div className="hidden lg:block">
-        <CreateNewDropdown links={links.filter((link) => link.isInDropdown)} />
-      </div>
+      {sessionData?.user && (
+        <>
+          <div className="hidden lg:block">
+            <CreateNewDropdown
+              links={links.filter((link) => link.isInDropdown)}
+            />
+          </div>
 
-      <div className="block space-y-4 lg:hidden">
-        {links
-          .filter((link) => link.isInDropdown)
-          .map((link) => {
-            if (link.label) {
-              return (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    onClick={onLinkClick}
-                    className={classNames(
-                      router.pathname === link.href
-                        ? "text-gray-900 underline"
-                        : "text-gray-900 no-underline",
-                      "flex items-center text-sm text-gray-800 underline-offset-8 transition-all hover:text-gray-900 hover:underline focus:ring-gray-800",
-                    )}
-                  >
-                    {/* {link.icon &&
-                      link.icon({
-                        style: {
-                          width: "1rem",
-                          height: "1rem",
-                          marginRight: "1rem",
-                        },
-                      })} */}
-                    {link.label}
-                  </Link>
-                </li>
-              );
-            }
-          })}
-      </div>
+          <div className="block space-y-4 lg:hidden">
+            {links
+              .filter((link) => link.isInDropdown)
+              .map((link) => {
+                if (link.label) {
+                  return (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        onClick={onLinkClick}
+                        className={classNames(
+                          router.pathname === link.href
+                            ? "text-gray-900 underline"
+                            : "text-gray-900 no-underline",
+                          "flex items-center text-sm text-gray-800 underline-offset-8 transition-all hover:text-gray-900 hover:underline focus:ring-gray-800",
+                        )}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  );
+                }
+              })}
+          </div>
+        </>
+      )}
     </ul>
   );
 };
