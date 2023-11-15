@@ -101,27 +101,29 @@ const SignupPage: NextPage = () => {
                   })}
             </fieldset>
           </div>
-          <div className="mt-2 flex items-center justify-end gap-x-6 pb-5">
-            <div>
-              <Button
-                size="sm"
-                title="Start tournament"
-                type="button"
-                isLoading={isPending}
-                handleClick={() => {
-                  if (!data?.signupLink) {
-                    return;
-                  }
-                  void mutate({
-                    rounds: 2,
-                    setCount: 2,
-                    signupLinkId: data.signupLink.id,
-                  });
-                }}
-                isDisabled={false}
-              />
+          {data?.signupLink?.isActive && (
+            <div className="mt-2 flex items-center justify-end gap-x-6 pb-5">
+              <div>
+                <Button
+                  size="sm"
+                  title="Start tournament"
+                  type="button"
+                  isLoading={isPending}
+                  handleClick={() => {
+                    if (!data?.signupLink) {
+                      return;
+                    }
+                    void mutate({
+                      rounds: 2,
+                      setCount: 2,
+                      signupLinkId: data.signupLink.id,
+                    });
+                  }}
+                  isDisabled={false}
+                />
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </>

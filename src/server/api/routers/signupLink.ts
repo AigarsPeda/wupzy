@@ -150,6 +150,10 @@ export const signupLinkRouter = createTRPCRouter({
         throw new Error("Signup link not found");
       }
 
+      if (!signupLink.isActive) {
+        throw new Error("Signup link is not active");
+      }
+
       if (signupLink.type === "king") {
         for (const player of filterPlayers(input.newPlayers)) {
           const newPlayer = await prisma.player.create({
@@ -250,14 +254,12 @@ export const signupLinkRouter = createTRPCRouter({
         throw new Error("Signup link not found");
       }
 
-      if (!signupLink.isActive) {
-        throw new Error("Signup link is not active");
-      }
-
       if (signupLink.type === "king") {
         const { id, players } = await prisma.tournament.create({
           data: {
+            kind: "PRO",
             isStarted: true,
+            shareLink: uuidv4(),
             sets: input.setCount,
             type: signupLink.type,
             name: signupLink.name,
@@ -282,16 +284,6 @@ export const signupLinkRouter = createTRPCRouter({
           },
           include: {
             players: true,
-          },
-        });
-
-        await prisma.tournament.update({
-          where: {
-            id: id,
-          },
-          data: {
-            kind: "PRO",
-            shareLink: uuidv4(),
           },
         });
 
@@ -334,7 +326,9 @@ export const signupLinkRouter = createTRPCRouter({
       if (signupLink.type === "teams") {
         const { id } = await prisma.tournament.create({
           data: {
+            kind: "PRO",
             isStarted: true,
+            shareLink: uuidv4(),
             sets: input.setCount,
             type: signupLink.type,
             name: signupLink.name,
