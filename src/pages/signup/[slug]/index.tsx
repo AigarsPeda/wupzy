@@ -140,6 +140,9 @@ const TournamentPage: NextPage = () => {
                 }
                 void mutate({
                   signupLinkId: data.signupLink.id,
+                  teams: newTournament.teams.filter(
+                    (team) => team.name !== "" && team.players.length > 0,
+                  ),
                   newPlayers: newTournament.king.players.filter(
                     (player) => player.name !== "",
                   ),

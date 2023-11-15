@@ -122,7 +122,7 @@ model TournamentSignupLink {
 // }
 
 model Team {
-  tournamentId         String
+  tournamentId         String?
   name                 String?
   tournamentSignupLink TournamentSignupLink[]
   points               Int                    @default(0)
@@ -139,7 +139,7 @@ model Team {
   playoffTeam          PlayoffGame[]          @relation("playoffTeamWinner")
   teamOnePlayoffGame   PlayoffGame[]          @relation("teamOnePlayoffGame")
   teamTwoPlayoffGame   PlayoffGame[]          @relation("teamTwoPlayoffGame")
-  tournament           Tournament             @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  tournament           Tournament?            @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
 }
 
 model Player {

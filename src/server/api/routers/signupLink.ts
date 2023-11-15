@@ -1,3 +1,4 @@
+import { ONE_TOURNAMENT_COST } from "hardcoded";
 import { v4 as uuidv4 } from "uuid";
 import z from "zod";
 import {
@@ -5,11 +6,16 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
+import createGamesNTimes from "~/server/api/utils/createGamesNTimes";
 import createKingGamesNTimes from "~/server/api/utils/createKingGamesNTimes";
 import filterPlayers from "~/server/api/utils/filterPlayers";
-import { NewPlayerSchema, TournamentTypeEnum } from "~/types/tournament.types";
+import filteredTeams from "~/server/api/utils/filteredTeams";
+import {
+  NewPlayerSchema,
+  NewTeamsSchema,
+  TournamentTypeEnum,
+} from "~/types/tournament.types";
 import createTeams from "~/utils/createTeams";
-import { ONE_TOURNAMENT_COST } from "../../../../hardcoded";
 
 export const signupLinkRouter = createTRPCRouter({
   postSignupLink: protectedProcedure
@@ -126,8 +132,9 @@ export const signupLinkRouter = createTRPCRouter({
   postPlayerToSignupLink: publicProcedure
     .input(
       z.object({
-        newPlayers: NewPlayerSchema.array(),
         signupLinkId: z.string(),
+        teams: z.array(NewTeamsSchema),
+        newPlayers: NewPlayerSchema.array(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -147,8 +154,8 @@ export const signupLinkRouter = createTRPCRouter({
         for (const player of filterPlayers(input.newPlayers)) {
           const newPlayer = await prisma.player.create({
             data: {
-              group: player.group,
               name: player.name,
+              group: player.group,
               tournamentSignupLink: {
                 connect: {
                   id: signupLink.id,
@@ -161,6 +168,39 @@ export const signupLinkRouter = createTRPCRouter({
             throw new Error("Player not created");
           }
         }
+
+        return {
+          status: "ok",
+        };
+      }
+
+      if (signupLink.type === "teams") {
+        await Promise.all(
+          filteredTeams(input.teams).map(async (team) => {
+            return await prisma.team.create({
+              data: {
+                name: team.name,
+                group: team.group,
+                tournamentSignupLink: {
+                  connect: {
+                    id: signupLink.id,
+                  },
+                },
+                players: {
+                  create: team.players.map((player) => ({
+                    name: player.name,
+                    group: team.group,
+                    tournamentSignupLink: {
+                      connect: {
+                        id: signupLink.id,
+                      },
+                    },
+                  })),
+                },
+              },
+            });
+          }),
+        );
 
         return {
           status: "ok",
@@ -210,6 +250,10 @@ export const signupLinkRouter = createTRPCRouter({
         throw new Error("Signup link not found");
       }
 
+      if (!signupLink.isActive) {
+        throw new Error("Signup link is not active");
+      }
+
       if (signupLink.type === "king") {
         const { id, players } = await prisma.tournament.create({
           data: {
@@ -223,10 +267,6 @@ export const signupLinkRouter = createTRPCRouter({
               },
             },
             players: {
-              // create: signupLink.players.map((player) => ({
-              //   name: player.name,
-              //   group: player.group,
-              // })),
               connectOrCreate: signupLink.players.map((player) => ({
                 where: {
                   id: player.id,
@@ -286,6 +326,61 @@ export const signupLinkRouter = createTRPCRouter({
 
         await prisma.game.createMany({
           data: createKingGamesNTimes(teams, id, input.rounds),
+        });
+
+        return { id };
+      }
+
+      if (signupLink.type === "teams") {
+        const { id } = await prisma.tournament.create({
+          data: {
+            isStarted: true,
+            sets: input.setCount,
+            type: signupLink.type,
+            name: signupLink.name,
+            user: {
+              connect: {
+                id: session.user.id,
+              },
+            },
+          },
+        });
+
+        await Promise.all(
+          filteredTeams(signupLink.teams).map(async (team) => {
+            await prisma.team.updateMany({
+              where: {
+                id: team.id,
+              },
+              data: {
+                tournamentId: id,
+              },
+            });
+
+            team.players.forEach(async (player) => {
+              await prisma.player.updateMany({
+                where: {
+                  id: player.id,
+                },
+                data: {
+                  tournamentId: id,
+                },
+              });
+            });
+          }),
+        );
+
+        const updatedTeams = await prisma.team.findMany({
+          where: {
+            tournamentId: id,
+          },
+          include: {
+            players: true,
+          },
+        });
+
+        await prisma.game.createMany({
+          data: createGamesNTimes(updatedTeams, id, input.rounds),
         });
 
         return { id };

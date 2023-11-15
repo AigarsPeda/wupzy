@@ -1,8 +1,8 @@
-import { type NewTournamentType } from "~/types/tournament.types";
+import { type NewTeamsType } from "~/types/tournament.types";
 
-const filteredTeams = (input: NewTournamentType) => {
+const filteredTeams = (teams: NewTeamsType[]) => {
   // remove teams with empty names and remove players with empty names
-  const filtered = input.teams
+  const filtered = teams
     .filter((team) => team.name?.trim() !== "")
     .map((team) => ({
       ...team,

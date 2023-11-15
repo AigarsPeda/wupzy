@@ -39,9 +39,6 @@ export const tournamentRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
-        // include: {
-        //   shareLink: true,
-        // },
       });
 
       return { tournament };
@@ -73,16 +70,6 @@ export const tournamentRouter = createTRPCRouter({
         data: {
           kind: "PRO",
           shareLink: uuidv4(),
-          // shareLink: {
-          //   connectOrCreate: {
-          //     where: {
-          //       tournamentId: input.id,
-          //     },
-          //     create: {
-          //       slug: uuidv4(),
-          //     },
-          //   },
-          // },
         },
       });
 
@@ -174,7 +161,6 @@ export const tournamentRouter = createTRPCRouter({
             name: input.name,
             sets: input.sets,
             rounds: input.rounds,
-            // userId: ctx.session.user.id,
             user: {
               connect: {
                 id: session.user.id,
@@ -184,7 +170,7 @@ export const tournamentRouter = createTRPCRouter({
         });
 
         const teams = await Promise.all(
-          filteredTeams(input).map(async (team) => {
+          filteredTeams(input.teams).map(async (team) => {
             return await prisma.team.create({
               data: {
                 name: team.name,
@@ -427,7 +413,7 @@ export const tournamentRouter = createTRPCRouter({
         });
 
         const newTeams = await Promise.all(
-          filteredTeams(input.tournament).map(async (team) => {
+          filteredTeams(input.tournament.teams).map(async (team) => {
             return await prisma.team.upsert({
               where: {
                 id: team.id,
