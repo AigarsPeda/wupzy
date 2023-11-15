@@ -9,31 +9,43 @@ export const LINKS: LinkType[] = [
     public: true,
     href: "/pricing",
     label: "Pricing",
+    isInDropdown: false,
   },
   {
     public: false,
     href: "/tournaments",
     label: "Tournaments",
+    isInDropdown: false,
   },
   {
     public: false,
     href: "/signups",
     label: "Signup links",
+    isInDropdown: false,
   },
   {
     public: false,
     href: "/signups/[id]",
+    isInDropdown: false,
     // label: "Signup links",
   },
   {
     public: false,
+    href: "/new-signup-link",
+    label: "New signup link",
+    isInDropdown: true,
+  },
+  {
+    public: false,
     href: "/new-tournament",
-    label: "New Tournament",
+    label: "New tournament",
+    isInDropdown: true,
   },
   {
     public: false,
     href: "/tournaments/[id]",
     // label: "Tournament",
+    isInDropdown: false,
   },
 ];
 

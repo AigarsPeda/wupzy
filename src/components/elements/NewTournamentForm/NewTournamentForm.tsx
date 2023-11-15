@@ -4,7 +4,6 @@ import Input from "~/components/elements/Input/Input";
 import NewKingTournament from "~/components/elements/NewKingTournament/NewKingTournament";
 import NewTeamsTournament from "~/components/elements/NewTeamsTournament/NewTeamsTournament";
 import RadioSelect from "~/components/elements/RadioSelect/RadioSelect";
-import SignupLinkCreate from "~/components/elements/SignupLinkCreate/SignupLinkCreate";
 import TextButton from "~/components/elements/TextButton/TextButton";
 import TournamentOptions from "~/components/elements/TournamentOptions/TournamentOptions";
 import SlidingAnimationLayout from "~/components/layout/SlidingAnimationLayout/SlidingAnimationLayout";
@@ -33,20 +32,13 @@ const NewTournamentForm: FC = () => {
 
   const { redirectToPath } = useRedirect();
   const [gameCount, setGameCount] = useState(0);
-  const [signupLink, setSignupLink] = useState(false);
-  const [signupDescription, setSignupDescription] = useState("");
+
   const { mutate: postNewTournament, isPending } =
     api.tournament.postNewTournament.useMutation({
       onSuccess: (data) => {
         redirectToPath(`/tournaments/${data.id}`);
       },
     });
-
-  const { mutate: postSignupLink } = api.signupLink.postSignupLink.useMutation({
-    onSuccess: (data) => {
-      redirectToPath(`/signups/${data.signupLink.id}`);
-    },
-  });
 
   useEffect(() => {
     if (newTournament.kind === "king") {
@@ -93,38 +85,6 @@ const NewTournamentForm: FC = () => {
         <div className="border-b border-gray-900/10 pb-12">
           <fieldset>
             <legend className="text-base font-semibold leading-7 text-gray-900">
-              Sign up link
-            </legend>
-            <p className="mt-1 text-sm leading-6 text-gray-600">
-              Create a sign up link for your tournament. Participants can use
-              this to sign up for your tournament.
-            </p>
-            <div className="mt-6 space-y-6">
-              <RadioSelect
-                radioTitle="Don't create sign up link"
-                radioValue="false"
-                radioName="tournament-signup-link"
-                radioSelectedValue={signupLink.toString()}
-                handleRadioChange={() => {
-                  setSignupLink(false);
-                }}
-              />
-              <RadioSelect
-                radioTitle="Create signup link"
-                radioValue="true"
-                radioName="tournament-signup-link"
-                radioSelectedValue={signupLink.toString()}
-                handleRadioChange={() => {
-                  setSignupLink(true);
-                }}
-              />
-            </div>
-          </fieldset>
-        </div>
-
-        <div className="border-b border-gray-900/10 pb-12">
-          <fieldset>
-            <legend className="text-base font-semibold leading-7 text-gray-900">
               Tournament kind
             </legend>
             <p className="mt-1 text-sm leading-6 text-gray-600">
@@ -149,43 +109,36 @@ const NewTournamentForm: FC = () => {
           </fieldset>
         </div>
 
-        {signupLink ? (
-          <SignupLinkCreate
-            signupDescription={signupDescription}
-            handleDescriptionChange={setSignupDescription}
+        <SlidingAnimationLayout>
+          <TournamentOptions
+            sets={newTournament.sets}
+            rounds={newTournament.rounds}
+            handleSetRounds={handleSetRounds}
+            handleSetSelect={handleSetSelect}
           />
-        ) : (
-          <SlidingAnimationLayout>
-            <TournamentOptions
-              sets={newTournament.sets}
-              rounds={newTournament.rounds}
-              handleSetRounds={handleSetRounds}
-              handleSetSelect={handleSetSelect}
+
+          <div className="relative mr-3 mt-6 overflow-hidden border-b border-gray-900/10 pb-12">
+            <NewKingTournament
+              handleAddPlayer={handleAddPlayer}
+              players={newTournament.king.players}
+              isVisible={newTournament.kind === "king"}
+              handleKingsPlayerName={updateKingsPlayerName}
             />
 
-            <div className="relative mr-3 mt-6 overflow-hidden border-b border-gray-900/10 pb-12">
-              <NewKingTournament
-                handleAddPlayer={handleAddPlayer}
-                players={newTournament.king.players}
-                isVisible={newTournament.kind === "king"}
-                handleKingsPlayerName={updateKingsPlayerName}
-              />
-
-              <NewTeamsTournament
-                teams={newTournament.teams}
-                handleAddTeam={handleAddTeam}
-                addPlayerToTeam={addPlayerToTeam}
-                updateTeamsTeamName={updateTeamsTeamName}
-                isVisible={newTournament.kind === "teams"}
-                updateTeamsPlayerName={updateTeamsPlayerName}
-              />
-            </div>
-          </SlidingAnimationLayout>
-        )}
+            <NewTeamsTournament
+              teams={newTournament.teams}
+              handleAddTeam={handleAddTeam}
+              addPlayerToTeam={addPlayerToTeam}
+              updateTeamsTeamName={updateTeamsTeamName}
+              isVisible={newTournament.kind === "teams"}
+              updateTeamsPlayerName={updateTeamsPlayerName}
+            />
+          </div>
+        </SlidingAnimationLayout>
       </div>
 
       <div className="mt-4">
-        {gameCount !== 0 && !signupLink && (
+        {gameCount !== 0 && (
           <p className="mt-1 text-sm leading-6 text-gray-600">
             Setting up{" "}
             <span
@@ -215,23 +168,7 @@ const NewTournamentForm: FC = () => {
             type="button"
             isLoading={isPending}
             handleClick={() => {
-              if (!signupLink) {
-                postNewTournament(newTournament);
-                return;
-              }
-
-              console.log(
-                "postSignupLink",
-                newTournament.name,
-                signupDescription,
-                newTournament.kind,
-              );
-
-              postSignupLink({
-                name: newTournament.name,
-                description: signupDescription,
-                tournamentKind: newTournament.kind,
-              });
+              postNewTournament(newTournament);
             }}
             isDisabled={newTournament.name.trim() === ""}
           />

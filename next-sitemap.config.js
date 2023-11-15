@@ -7,6 +7,7 @@ module.exports = {
     "/tournaments",
     "/tournaments/[id]",
     "/new-tournament",
+    "/new-signup-link",
     "/share/[slug]",
     "/signup/[slug]",
     "/signups",

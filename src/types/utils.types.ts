@@ -8,6 +8,7 @@ import {
 export const LinkSchema = z.object({
   public: z.boolean(),
   href: z.string().url(),
+  isInDropdown: z.boolean(),
   label: z.string().min(1).max(50).optional(),
 });
 
