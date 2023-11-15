@@ -80,7 +80,8 @@ model Tournament {
   teams                Team[]
   games                Game[]
   players              Player[]
-  shareLink            ShareLink?
+  shareLink            String?               @unique
+  // shareLink            ShareLink?
   playoffGame          PlayoffGame[]
   tournamentSignupLink TournamentSignupLink?
   updatedAt            DateTime              @updatedAt
@@ -111,14 +112,14 @@ model TournamentSignupLink {
   user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model ShareLink {
-  slug         String     @unique
-  tournamentId String     @unique
-  updatedAt    DateTime   @updatedAt
-  createdAt    DateTime   @default(now())
-  id           String     @id @default(cuid())
-  tournament   Tournament @relation(fields: [tournamentId], references: [id])
-}
+// model ShareLink {
+//   slug         String     @unique
+//   tournamentId String     @unique
+//   updatedAt    DateTime   @updatedAt
+//   createdAt    DateTime   @default(now())
+//   id           String     @id @default(cuid())
+//   tournament   Tournament @relation(fields: [tournamentId], references: [id])
+// }
 
 model Team {
   tournamentId         String

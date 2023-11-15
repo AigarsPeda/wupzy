@@ -1,12 +1,11 @@
 import { type NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Button from "~/components/elements/Button/Button";
 import PageHead from "~/components/elements/PageHead/PageHead";
 import { env } from "~/env.mjs";
-import { api } from "~/utils/api";
-import Button from "~/components/elements/Button/Button";
-import newTournament from "../new-tournament";
 import useRedirect from "~/hooks/useRedirect";
+import { api } from "~/utils/api";
 
 const SignupPage: NextPage = () => {
   const { query } = useRouter();

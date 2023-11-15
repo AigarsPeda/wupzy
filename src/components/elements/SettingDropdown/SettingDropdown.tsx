@@ -105,7 +105,7 @@ const SettingDropdown = () => {
           {tournament?.shareLink && (
             <QRCode
               name={tournament?.name || ""}
-              slug={tournament?.shareLink?.slug || ""}
+              slug={tournament?.shareLink || ""}
             />
           )}
 

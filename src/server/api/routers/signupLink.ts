@@ -236,16 +236,7 @@ export const signupLinkRouter = createTRPCRouter({
           },
           data: {
             kind: "PRO",
-            shareLink: {
-              connectOrCreate: {
-                where: {
-                  tournamentId: id,
-                },
-                create: {
-                  slug: uuidv4(),
-                },
-              },
-            },
+            shareLink: uuidv4(),
           },
         });
 

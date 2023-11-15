@@ -20,7 +20,7 @@ const QRModal: FC<QRModalProps> = ({ isQRModal, handleCancelClicks }) => {
   const downloadQRCode = () => {
     const svg = document.getElementById("qr-code");
     const linkToTournament = `${env.NEXT_PUBLIC_APP_DOMAIN}/share/${
-      tournament?.shareLink?.slug || ""
+      tournament?.shareLink || ""
     }`;
 
     if (svg) {
@@ -80,7 +80,7 @@ const QRModal: FC<QRModalProps> = ({ isQRModal, handleCancelClicks }) => {
             <QRCodeSVG
               id="qr-code"
               value={`${env.NEXT_PUBLIC_APP_DOMAIN}/share/${
-                tournament?.shareLink?.slug || ""
+                tournament?.shareLink || ""
               }`}
             />
           </div>
@@ -95,7 +95,7 @@ const QRModal: FC<QRModalProps> = ({ isQRModal, handleCancelClicks }) => {
             <div className=" rounded-md border px-1 py-2">
               <p className="truncate font-primary">
                 {`${env.NEXT_PUBLIC_APP_DOMAIN}/share/${
-                  tournament?.shareLink?.slug || ""
+                  tournament?.shareLink || ""
                 }`}
               </p>
             </div>
@@ -115,8 +115,8 @@ const QRModal: FC<QRModalProps> = ({ isQRModal, handleCancelClicks }) => {
                       navigator.clipboard
                         .writeText(
                           `${env.NEXT_PUBLIC_APP_DOMAIN}/share/${
-                            tournament?.shareLink?.slug || ""
-                          }`
+                            tournament?.shareLink || ""
+                          }`,
                         )
                         .catch((err) => {
                           console.error(err);
