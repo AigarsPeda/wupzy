@@ -67,6 +67,7 @@ export const signupLinkRouter = createTRPCRouter({
           id: true,
           name: true,
           type: true,
+          isActive: true,
           description: true,
         },
       });
@@ -188,9 +189,12 @@ export const signupLinkRouter = createTRPCRouter({
         throw new Error("Not enough credits");
       }
 
-      const signupLink = await prisma.tournamentSignupLink.findUnique({
+      const signupLink = await prisma.tournamentSignupLink.update({
         where: {
           id: input.signupLinkId,
+        },
+        data: {
+          isActive: false,
         },
         include: {
           players: true,
@@ -202,7 +206,7 @@ export const signupLinkRouter = createTRPCRouter({
         },
       });
 
-      if (!signupLink || signupLink.id) {
+      if (!signupLink) {
         throw new Error("Signup link not found");
       }
 
@@ -219,9 +223,20 @@ export const signupLinkRouter = createTRPCRouter({
               },
             },
             players: {
-              create: signupLink.players.map((player) => ({
-                name: player.name,
-                group: player.group,
+              // create: signupLink.players.map((player) => ({
+              //   name: player.name,
+              //   group: player.group,
+              // })),
+              connectOrCreate: signupLink.players.map((player) => ({
+                where: {
+                  id: player.id,
+                  name: player.name,
+                  group: player.group,
+                },
+                create: {
+                  name: player.name,
+                  group: player.group,
+                },
               })),
             },
           },

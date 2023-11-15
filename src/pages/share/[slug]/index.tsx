@@ -65,11 +65,13 @@ const TournamentPage: NextPage = () => {
               </div> */}
             </div>
             <div className="mb-4 mt-5">
-              <DisplayGroupSelect
-                groups={groups}
-                selectedGroup={selectedGroup}
-                setSelectedGroup={updateSelectedGroup}
-              />
+              {isRegularTournamentSelected() && (
+                <DisplayGroupSelect
+                  groups={groups}
+                  selectedGroup={selectedGroup}
+                  setSelectedGroup={updateSelectedGroup}
+                />
+              )}
             </div>
           </div>
 

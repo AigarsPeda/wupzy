@@ -102,7 +102,7 @@ const SignupPage: NextPage = () => {
             </fieldset>
           </div>
           <div className="mt-2 flex items-center justify-end gap-x-6 pb-5">
-            <div className="w-20">
+            <div>
               <Button
                 size="sm"
                 title="Start tournament"

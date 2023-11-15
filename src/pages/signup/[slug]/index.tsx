@@ -42,6 +42,16 @@ const TournamentPage: NextPage = () => {
     }
   }, [query.slug]);
 
+  if (!data?.signupLink?.isActive) {
+    return (
+      <div className="mt-40 flex h-screen flex-col items-center md:mt-72">
+        <p className="text-2xl font-bold text-gray-900">
+          Signup for this tournament is finished.
+        </p>
+      </div>
+    );
+  }
+
   if (isSuccess) {
     return (
       // <div className="flex h-screen flex-col items-center justify-center">
