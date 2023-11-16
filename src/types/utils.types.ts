@@ -26,6 +26,15 @@ export type HandleScoreSaveTypeArgs = {
 
 export type LinkType = z.infer<typeof LinkSchema>;
 
+export const OptionSchema = z.object({
+  title: z.string(),
+  price: z.string(),
+  info: z.string(),
+  options: z.array(z.string()),
+});
+
+export type OptionType = z.infer<typeof OptionSchema>;
+
 export const GamesScoresSchema = z.object({
   gameId: z.string(),
   teamOneId: z.string(),

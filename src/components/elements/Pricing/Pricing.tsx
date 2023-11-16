@@ -1,3 +1,4 @@
+import { OPTIONS } from "hardcoded";
 import { signIn, useSession } from "next-auth/react";
 import { type FC } from "react";
 import { BsCheckLg } from "react-icons/bs";
@@ -5,46 +6,8 @@ import Mailto from "~/components/elements/Mailto/Mailto";
 import PrimaryButton from "~/components/elements/PrimaryButton/PrimaryButton";
 import GridLayout from "~/components/layout/GridLayout/GridLayout";
 import useRedirect from "~/hooks/useRedirect";
+import { OptionType } from "~/types/utils.types";
 import classNames from "~/utils/classNames";
-
-type OptionType = {
-  title: string;
-  price: string;
-  info: string;
-  options: string[];
-};
-
-const OPTIONS = [
-  {
-    title: "Hobby",
-    price: "Free",
-    options: ["Unlimited tournaments", "Unlimited king tournaments"],
-    info: "Ideal for friend gatherings.",
-  },
-  {
-    title: "Pro",
-    price: "0.50€",
-    options: [
-      "Unlimited tournaments",
-      "Unlimited king tournaments",
-      "5 share tournament link",
-      "5 split players into groups",
-    ],
-    info: "Great for bigger tournaments, ensuring essential result tracking.",
-  },
-  {
-    title: "Business",
-    price: "Custom",
-    options: [
-      "Unlimited tournaments",
-      "Unlimited king tournaments",
-      "Unlimited share tournament link",
-      "Unlimited split players into groups",
-      "Custom solutions",
-    ],
-    info: "Ideal for companies in need of customized solutions.",
-  },
-];
 
 const Pricing: FC = () => {
   const { redirectToPath } = useRedirect();

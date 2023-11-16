@@ -110,11 +110,6 @@ const HomePage: NextPage = () => {
               >
                 <div className="relative mx-auto w-full grid-cols-7 gap-4 rounded-xl border border-white/25 bg-gray-200 bg-white/5 p-4 shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] backdrop-blur-xl will-change-transform md:grid md:max-h-[28rem]">
                   <div className="col-span-3 flex flex-col justify-between">
-                    {/* <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500">
-                      <span className="text-2xl font-semibold text-white">
-                        {index + 1}
-                      </span>
-                    </div> */}
                     <div className="max-w-sm">
                       <div className="flex items-center">
                         <span>
@@ -146,7 +141,7 @@ const HomePage: NextPage = () => {
                       src={step.zoomImageDesktop}
                       alt="Picture wupzy dashboard"
                       blurDataURL="/asset/blur.jpg"
-                      className="scale-125 rounded-[0.2rem] md:scale-100"
+                      className=" max-h-96 rounded-[0.2rem] md:scale-100"
                       style={{
                         width: "100%",
                         height: "100%",

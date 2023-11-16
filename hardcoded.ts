@@ -4,7 +4,7 @@ import RocketIcon from "~/components/icons/RocketIcon";
 import TargetIcon from "~/components/icons/TargetIcon";
 import { AiOutlineFileAdd } from "react-icons/ai";
 import { FaLink } from "react-icons/fa6";
-import { type LinkType } from "~/types/utils.types";
+import { OptionType, type LinkType } from "~/types/utils.types";
 
 export const LINKS: LinkType[] = [
   {
@@ -87,9 +87,18 @@ export const HOW_T0_STEPS = [
     zoomImageDesktop: "/asset/create_desktop_1.jpg",
   },
   {
+    title: "Signup link",
+    icon: FaLink,
+    iconColor: COLORS[1],
+    description: `Create a signup link for your tournament. This link allows participants to sign up for the tournament.
+                  You can share this link with participants and they can sign up for the tournament at any time and from any device.`,
+    imageDesktop: "/asset/signup_link.webp",
+    zoomImageDesktop: "/asset/signup_link.webp",
+  },
+  {
     title: "Sharable tournament link",
     icon: RocketIcon,
-    iconColor: COLORS[1],
+    iconColor: COLORS[2],
     description: `You can create and share special sharable tournament link. This link allows 
       participants or any interested person to see the tournament results and upcoming matches at any time and from any device.`,
     imageDesktop: "/asset/share_tournament_desktop.webp",
@@ -98,7 +107,7 @@ export const HOW_T0_STEPS = [
   {
     title: "Enter the scores",
     icon: TargetIcon,
-    iconColor: COLORS[2],
+    iconColor: COLORS[3],
     description:
       "Play the tournament and enter scores after match. Progress, standings and upcoming matches are updated automatically.",
     imageDesktop: "/asset/play_tournament_desktop.webp",
@@ -107,7 +116,7 @@ export const HOW_T0_STEPS = [
   {
     title: "Playoffs bracket",
     icon: PlayoffIcon,
-    iconColor: COLORS[3],
+    iconColor: COLORS[4],
     description: `With just few clicks at any time you can create playoffs bracket 
     based on the results in the group. This bracket will automatically be available in sharable tournament link.`,
     imageDesktop: "/asset/playoffs.webp",
@@ -132,5 +141,39 @@ export const USER_STATEMENTS = [
     name: "Elena",
     text: `We use this site to organize tournaments at our company. We have a lot of employees and it is very convenient to use this site.`,
     image: "/asset/people/elena.png",
+  },
+];
+
+export const OPTIONS: OptionType[] = [
+  {
+    title: "Hobby",
+    price: "Free",
+    options: ["Unlimited tournaments", "Unlimited king tournaments"],
+    info: "Ideal for friend gatherings.",
+  },
+  {
+    title: "Pro",
+    price: "0.50€",
+    options: [
+      "Unlimited tournaments",
+      "Unlimited king tournaments",
+      "5 signup link",
+      "5 share tournament link",
+      "5 split players into groups",
+    ],
+    info: "Great for bigger tournaments, ensuring essential result tracking.",
+  },
+  {
+    title: "Business",
+    price: "Custom",
+    options: [
+      "Unlimited tournaments",
+      "Unlimited king tournaments",
+      "Unlimited signup link",
+      "Unlimited share tournament link",
+      "Unlimited split players into groups",
+      "Custom solutions",
+    ],
+    info: "Ideal for companies in need of customized solutions.",
   },
 ];
