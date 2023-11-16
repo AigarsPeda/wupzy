@@ -44,51 +44,19 @@ const HomePage: NextPage = () => {
           <div className="space-y-10">
             <div className="mt-4 border-b border-gray-900/10 pb-12">
               <legend className="text-base font-semibold leading-7 text-gray-900">
-                Tournaments name
+                Signup link name
               </legend>
               <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 <div className="sm:col-span-4">
                   <Input
                     inputLabel=""
-                    inputFor="Tournaments Name"
+                    inputFor="Signup link name"
                     inputVal={newTournament.name}
                     handleInputChange={changeTournamentName}
                   />
                 </div>
               </div>
             </div>
-            {/* 
-            <div className="border-b border-gray-900/10 pb-12">
-              <fieldset>
-                <legend className="text-base font-semibold leading-7 text-gray-900">
-                  Sign up link
-                </legend>
-                <p className="mt-1 text-sm leading-6 text-gray-600">
-                  Create a sign up link for your tournament. Participants can
-                  use this to sign up for your tournament.
-                </p>
-                <div className="mt-6 space-y-6">
-                  <RadioSelect
-                    radioTitle="Don't create sign up link"
-                    radioValue="false"
-                    radioName="tournament-signup-link"
-                    radioSelectedValue={signupLink.toString()}
-                    handleRadioChange={() => {
-                      setSignupLink(false);
-                    }}
-                  />
-                  <RadioSelect
-                    radioTitle="Create signup link"
-                    radioValue="true"
-                    radioName="tournament-signup-link"
-                    radioSelectedValue={signupLink.toString()}
-                    handleRadioChange={() => {
-                      setSignupLink(true);
-                    }}
-                  />
-                </div>
-              </fieldset>
-            </div> */}
 
             <div className="border-b border-gray-900/10 pb-12">
               <fieldset>
