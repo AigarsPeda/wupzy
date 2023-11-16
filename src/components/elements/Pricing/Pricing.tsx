@@ -6,7 +6,7 @@ import Mailto from "~/components/elements/Mailto/Mailto";
 import PrimaryButton from "~/components/elements/PrimaryButton/PrimaryButton";
 import GridLayout from "~/components/layout/GridLayout/GridLayout";
 import useRedirect from "~/hooks/useRedirect";
-import { OptionType } from "~/types/utils.types";
+import { type OptionType } from "~/types/utils.types";
 import classNames from "~/utils/classNames";
 
 const Pricing: FC = () => {
