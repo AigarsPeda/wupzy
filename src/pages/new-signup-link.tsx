@@ -1,25 +1,18 @@
 import { type NextPage } from "next";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Button from "~/components/elements/Button/Button";
 import Input from "~/components/elements/Input/Input";
 import PageHead from "~/components/elements/PageHead/PageHead";
 import RadioSelect from "~/components/elements/RadioSelect/RadioSelect";
 import TextButton from "~/components/elements/TextButton/TextButton";
+import TextEditor from "~/components/elements/TextEditor/TextEditor";
 import useCreateTournament from "~/hooks/useCreateTournament";
 import useRedirect from "~/hooks/useRedirect";
 import { api } from "~/utils/api";
 
-// If this stops working for some reason, try to use this:
-// tinymce-react
-// https://www.tiny.cloud/docs/tinymce/6/
-import dynamic from "next/dynamic";
-import "react-quill/dist/quill.snow.css";
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-
 const HomePage: NextPage = () => {
   const { redirectToPath } = useRedirect();
   const [editorState, setEditorState] = useState("");
-  const [signupDescription, setSignupDescription] = useState("");
   const { newTournament, changeTournamentName, changeTournamentKind } =
     useCreateTournament();
 
@@ -29,20 +22,6 @@ const HomePage: NextPage = () => {
         redirectToPath(`/signups/${data.signupLink.id}`);
       },
     });
-
-  const quillModules = {
-    toolbar: [
-      [{ header: [1, 2, 3, false] }],
-      ["bold", "italic", "underline", "strike", "blockquote"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      // ["link", "image"],
-      [{ align: [] }],
-      [{ color: [] }],
-      ["link"],
-      // ["code-block"],
-      // ['clean'],
-    ],
-  };
 
   return (
     <>
@@ -118,11 +97,9 @@ const HomePage: NextPage = () => {
                 etc.
               </p>
               <div className="mt-6 space-y-6">
-                <ReactQuill
-                  theme="snow"
-                  value={editorState}
-                  modules={quillModules}
-                  onChange={setEditorState}
+                <TextEditor
+                  editorState={editorState}
+                  setEditorState={setEditorState}
                 />
               </div>
             </fieldset>
@@ -143,7 +120,7 @@ const HomePage: NextPage = () => {
                 handleClick={() => {
                   postSignupLink({
                     name: newTournament.name,
-                    description: signupDescription,
+                    description: editorState,
                     tournamentKind: newTournament.kind,
                   });
                 }}
