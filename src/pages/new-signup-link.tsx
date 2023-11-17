@@ -1,10 +1,11 @@
+import { Editor } from "@tinymce/tinymce-react";
 import { type NextPage } from "next";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { Editor as TinyMCEEditor } from "tinymce";
 import Button from "~/components/elements/Button/Button";
 import Input from "~/components/elements/Input/Input";
 import PageHead from "~/components/elements/PageHead/PageHead";
 import RadioSelect from "~/components/elements/RadioSelect/RadioSelect";
-import SignupLinkCreate from "~/components/elements/SignupLinkCreate/SignupLinkCreate";
 import TextButton from "~/components/elements/TextButton/TextButton";
 import useCreateTournament from "~/hooks/useCreateTournament";
 import useRedirect from "~/hooks/useRedirect";
@@ -12,6 +13,7 @@ import { api } from "~/utils/api";
 
 const HomePage: NextPage = () => {
   const { redirectToPath } = useRedirect();
+  const editorRef = useRef<TinyMCEEditor | null>(null);
   const [signupDescription, setSignupDescription] = useState("");
   const { newTournament, changeTournamentName, changeTournamentKind } =
     useCreateTournament();
@@ -22,6 +24,12 @@ const HomePage: NextPage = () => {
         redirectToPath(`/signups/${data.signupLink.id}`);
       },
     });
+
+  const log = () => {
+    if (editorRef.current) {
+      console.log(editorRef.current.getContent());
+    }
+  };
 
   return (
     <>
@@ -84,62 +92,58 @@ const HomePage: NextPage = () => {
                 </div>
               </fieldset>
             </div>
-            <SignupLinkCreate
-              signupDescription={signupDescription}
-              handleDescriptionChange={setSignupDescription}
-            />
-            {/* {signupLink ? (
-              <SignupLinkCreate
-                signupDescription={signupDescription}
-                handleDescriptionChange={setSignupDescription}
-              />
-            ) : (
-              <SlidingAnimationLayout>
-                <TournamentOptions
-                  sets={newTournament.sets}
-                  rounds={newTournament.rounds}
-                  handleSetRounds={handleSetRounds}
-                  handleSetSelect={handleSetSelect}
-                />
-
-                <div className="relative mr-3 mt-6 overflow-hidden border-b border-gray-900/10 pb-12">
-                  <NewKingTournament
-                    handleAddPlayer={handleAddPlayer}
-                    players={newTournament.king.players}
-                    isVisible={newTournament.kind === "king"}
-                    handleKingsPlayerName={updateKingsPlayerName}
-                  />
-
-                  <NewTeamsTournament
-                    teams={newTournament.teams}
-                    handleAddTeam={handleAddTeam}
-                    addPlayerToTeam={addPlayerToTeam}
-                    updateTeamsTeamName={updateTeamsTeamName}
-                    isVisible={newTournament.kind === "teams"}
-                    updateTeamsPlayerName={updateTeamsPlayerName}
-                  />
-                </div>
-              </SlidingAnimationLayout>
-            )} */}
-          </div>
-
-          {/* <div className="mt-4">
-            {gameCount !== 0 && !signupLink && (
+            <fieldset>
+              <legend className="text-base font-semibold leading-7 text-gray-900">
+                Description
+              </legend>
               <p className="mt-1 text-sm leading-6 text-gray-600">
-                Setting up{" "}
-                <span
-                  className={classNames(
-                    gameCount <= 10 && "text-gray-800",
-                    gameCount > 10 && gameCount < 20 && "text-orange-500",
-                    gameCount > 20 && "text-red-600",
-                  )}
-                >
-                  {gameCount}
-                </span>{" "}
-                games may take a few seconds when creating a tournament.
+                Write a short description of your tournament. Place, date, time,
+                etc.
               </p>
-            )}
-          </div> */}
+              <div className="mt-6 space-y-6">
+                <Editor
+                  apiKey="zw1n6nj7t4xsnb4gxl58tq7kh5l48005h4ns2lrqfa9vpnmr"
+                  onInit={(_evt, editor) => (editorRef.current = editor)}
+                  // initialValue="<p>Place, date, time, etc.</p>"
+                  init={{
+                    height: 500,
+                    menubar: false,
+                    branding: false,
+
+                    plugins: [
+                      "advlist",
+                      "autolink",
+                      "lists",
+                      "link",
+                      // "image",
+                      "charmap",
+                      "preview",
+                      "anchor",
+                      "searchreplace",
+                      "visualblocks",
+                      // "code",
+                      // "fullscreen",
+                      "insertdatetime",
+                      "media",
+                      // "table",
+                      // "code",
+                      // "help",
+                      "wordcount",
+                    ],
+                    toolbar:
+                      // "undo redo | blocks | " +
+                      // "bold italic forecolor | alignleft aligncenter " +
+                      // "alignright alignjustify | bullist numlist outdent indent | " +
+                      // "removeformat | help",
+                      `undo redo | blocks | bold italic forecolor | alignleft aligncenter`,
+                    content_style:
+                      "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                  }}
+                />
+                {/* <button onClick={log}>Log editor content</button> */}
+              </div>
+            </fieldset>
+          </div>
 
           <div className="mt-6 flex items-center justify-end gap-x-6">
             <TextButton
