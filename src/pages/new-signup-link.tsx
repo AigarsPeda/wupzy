@@ -1,7 +1,5 @@
-import { Editor } from "@tinymce/tinymce-react";
 import { type NextPage } from "next";
 import { useRef, useState } from "react";
-import { Editor as TinyMCEEditor } from "tinymce";
 import Button from "~/components/elements/Button/Button";
 import Input from "~/components/elements/Input/Input";
 import PageHead from "~/components/elements/PageHead/PageHead";
@@ -11,9 +9,16 @@ import useCreateTournament from "~/hooks/useCreateTournament";
 import useRedirect from "~/hooks/useRedirect";
 import { api } from "~/utils/api";
 
+// If this stops working for some reason, try to use this:
+// tinymce-react
+// https://www.tiny.cloud/docs/tinymce/6/
+import dynamic from "next/dynamic";
+import "react-quill/dist/quill.snow.css";
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+
 const HomePage: NextPage = () => {
   const { redirectToPath } = useRedirect();
-  const editorRef = useRef<TinyMCEEditor | null>(null);
+  const [editorState, setEditorState] = useState("");
   const [signupDescription, setSignupDescription] = useState("");
   const { newTournament, changeTournamentName, changeTournamentKind } =
     useCreateTournament();
@@ -25,10 +30,18 @@ const HomePage: NextPage = () => {
       },
     });
 
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-    }
+  const quillModules = {
+    toolbar: [
+      [{ header: [1, 2, 3, false] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      // ["link", "image"],
+      [{ align: [] }],
+      [{ color: [] }],
+      ["link"],
+      // ["code-block"],
+      // ['clean'],
+    ],
   };
 
   return (
@@ -54,7 +67,11 @@ const HomePage: NextPage = () => {
               <legend className="text-base font-semibold leading-7 text-gray-900">
                 Signup link name
               </legend>
-              <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+              <p className="mt-1 text-sm leading-6 text-gray-600">
+                Name is used to identify your tournament. It will be visible to
+                all participants.
+              </p>
+              <div className="mt-3 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 <div className="sm:col-span-4">
                   <Input
                     inputLabel=""
@@ -101,46 +118,12 @@ const HomePage: NextPage = () => {
                 etc.
               </p>
               <div className="mt-6 space-y-6">
-                <Editor
-                  apiKey="zw1n6nj7t4xsnb4gxl58tq7kh5l48005h4ns2lrqfa9vpnmr"
-                  onInit={(_evt, editor) => (editorRef.current = editor)}
-                  // initialValue="<p>Place, date, time, etc.</p>"
-                  init={{
-                    height: 500,
-                    menubar: false,
-                    branding: false,
-
-                    plugins: [
-                      "advlist",
-                      "autolink",
-                      "lists",
-                      "link",
-                      // "image",
-                      "charmap",
-                      "preview",
-                      "anchor",
-                      "searchreplace",
-                      "visualblocks",
-                      // "code",
-                      // "fullscreen",
-                      "insertdatetime",
-                      "media",
-                      // "table",
-                      // "code",
-                      // "help",
-                      "wordcount",
-                    ],
-                    toolbar:
-                      // "undo redo | blocks | " +
-                      // "bold italic forecolor | alignleft aligncenter " +
-                      // "alignright alignjustify | bullist numlist outdent indent | " +
-                      // "removeformat | help",
-                      `undo redo | blocks | bold italic forecolor | alignleft aligncenter`,
-                    content_style:
-                      "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-                  }}
+                <ReactQuill
+                  theme="snow"
+                  value={editorState}
+                  modules={quillModules}
+                  onChange={setEditorState}
                 />
-                {/* <button onClick={log}>Log editor content</button> */}
               </div>
             </fieldset>
           </div>
