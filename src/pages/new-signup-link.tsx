@@ -97,10 +97,7 @@ const HomePage: NextPage = () => {
                 etc.
               </p>
               <div className="mt-6 space-y-6">
-                <TextEditor
-                  editorState={editorState}
-                  setEditorState={setEditorState}
-                />
+                <TextEditor handleGetEditorContent={setEditorState} />
               </div>
             </fieldset>
           </div>

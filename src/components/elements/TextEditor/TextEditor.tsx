@@ -1,39 +1,30 @@
-import dynamic from "next/dynamic";
-import { type FC } from "react";
-import "react-quill/dist/quill.snow.css";
-
-// If this stops working for some reason, try to use this:
-// tinymce-react
-// https://www.tiny.cloud/docs/tinymce/6/
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import { Editor } from "@tinymce/tinymce-react";
+import { FC, useRef } from "react";
+import { Editor as TinyMCEEditor } from "tinymce";
 
 interface TextEditorProps {
-  editorState: string;
-  setEditorState: (value: string) => void;
+  handleGetEditorContent: (str: string) => void;
 }
 
-const TextEditor: FC<TextEditorProps> = ({ editorState, setEditorState }) => {
-  const quillModules = {
-    toolbar: [
-      [{ header: [1, 2, 3, false] }],
-      ["bold", "italic", "underline", "strike", "blockquote"],
-      // [{ list: "ordered" }, { list: "bullet" }],
-      [{ list: "bullet" }],
-      // ["link", "image"],
-      [{ align: [] }],
-      [{ color: [] }],
-      ["link"],
-      // ["code-block"],
-      // ['clean'],
-    ],
-  };
+const TextEditor: FC<TextEditorProps> = ({ handleGetEditorContent }) => {
+  const editorRef = useRef<TinyMCEEditor | null>(null);
 
   return (
-    <ReactQuill
-      theme="snow"
-      value={editorState}
-      modules={quillModules}
-      onChange={setEditorState}
+    <Editor
+      apiKey="zw1n6nj7t4xsnb4gxl58tq7kh5l48005h4ns2lrqfa9vpnmr"
+      onInit={(_evt, editor) => (editorRef.current = editor)}
+      plugins={["textcolor"]}
+      init={{
+        height: 500,
+        menubar: false,
+        branding: false,
+        inline_styles: true,
+        plugins: ["autolink"],
+        toolbar:
+          "blocks fontsize bold italic underline | forecolor backcolor | align lineheight | checklist numlist bullist indent outdent",
+        // Additional configurations...
+      }}
+      onEditorChange={handleGetEditorContent}
     />
   );
 };

@@ -92,8 +92,8 @@ export const HOW_T0_STEPS = [
     iconColor: COLORS[1],
     description: `Create a signup link for your tournament. This link allows participants to sign up for the tournament.
                   You can share this link with participants and they can sign up for the tournament at any time and from any device.`,
-    imageDesktop: "/asset/signup_link.webp",
-    zoomImageDesktop: "/asset/signup_link.webp",
+    imageDesktop: "/asset/signup_link_2.webp",
+    zoomImageDesktop: "/asset/signup_link_2.webp",
   },
   {
     title: "Sharable tournament link",
