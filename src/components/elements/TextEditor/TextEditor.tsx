@@ -17,7 +17,8 @@ const TextEditor: FC<TextEditorProps> = ({ editorState, setEditorState }) => {
     toolbar: [
       [{ header: [1, 2, 3, false] }],
       ["bold", "italic", "underline", "strike", "blockquote"],
-      [{ list: "ordered" }, { list: "bullet" }],
+      // [{ list: "ordered" }, { list: "bullet" }],
+      [{ list: "bullet" }],
       // ["link", "image"],
       [{ align: [] }],
       [{ color: [] }],

@@ -97,9 +97,12 @@ const TournamentPage: NextPage = () => {
             <legend className="text-sm leading-7 text-gray-500">
               Description
             </legend>
-            <p className="mt-1 text-base leading-6 text-gray-900">
-              {data?.signupLink?.description}
-            </p>
+            <div
+              className="mt-1 text-base leading-6 text-gray-900"
+              dangerouslySetInnerHTML={{
+                __html: data?.signupLink?.description,
+              }}
+            />
           </fieldset>
         </div>
         <div className="flex items-center">

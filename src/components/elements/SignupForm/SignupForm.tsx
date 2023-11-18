@@ -47,9 +47,13 @@ const SignupForm: FC<SignupFormProps> = ({ signupLink }) => {
             <legend className="text-base font-semibold leading-7 text-gray-900">
               Description
             </legend>
-            <p className="mt-1 text-sm leading-6 text-gray-600">
+            {/* <p className="mt-1 text-sm leading-6 text-gray-600">
               {signupLink?.description}
-            </p>
+            </p> */}
+            <div
+              className="mt-1 text-sm leading-6 text-gray-600"
+              dangerouslySetInnerHTML={{ __html: signupLink?.description }}
+            />
           </fieldset>
           <fieldset className="mt-4">
             <legend className="text-base font-semibold leading-7 text-gray-900">
