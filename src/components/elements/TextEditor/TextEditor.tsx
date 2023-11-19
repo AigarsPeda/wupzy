@@ -1,6 +1,6 @@
 import { Editor } from "@tinymce/tinymce-react";
-import { FC, useRef } from "react";
-import { Editor as TinyMCEEditor } from "tinymce";
+import { useRef, type FC } from "react";
+import { type Editor as TinyMCEEditor } from "tinymce";
 
 interface TextEditorProps {
   handleGetEditorContent: (str: string) => void;
