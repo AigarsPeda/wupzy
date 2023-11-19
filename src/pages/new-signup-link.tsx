@@ -26,7 +26,7 @@ const HomePage: NextPage = () => {
   return (
     <>
       <PageHead
-        title="Wupzy"
+        title="Wupzy | New signup link"
         descriptionShort="Platform that lets you effortlessly organize and manage tournament."
         descriptionLong="Wupzy is a powerful platform that lets you effortlessly create
           tournament tables, save game scores, view real-time results, and share
