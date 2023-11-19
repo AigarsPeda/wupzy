@@ -13,11 +13,12 @@ const TextEditor: FC<TextEditorProps> = ({ handleGetEditorContent }) => {
     <Editor
       apiKey="zw1n6nj7t4xsnb4gxl58tq7kh5l48005h4ns2lrqfa9vpnmr"
       onInit={(_evt, editor) => (editorRef.current = editor)}
-      plugins={["textcolor"]}
+      // plugins={["textcolor"]}
       init={{
-        height: 500,
+        height: 300,
         menubar: false,
         branding: false,
+        statusbar: false,
         inline_styles: true,
         plugins: ["autolink"],
         toolbar:

@@ -34,7 +34,7 @@ const HomePage: NextPage = () => {
       />
       <main>
         <form
-          id="new-tournament"
+          id="new-signup-link"
           name="new-tournament"
           className="mx-auto max-w-lg rounded-md bg-white p-2 shadow md:mt-6"
           onSubmit={(e) => {

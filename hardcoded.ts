@@ -90,10 +90,10 @@ export const HOW_T0_STEPS = [
     title: "Signup link",
     icon: FaLink,
     iconColor: COLORS[1],
-    description: `Create a signup link for your tournament. This link allows participants to sign up for the tournament.
-                  You can share this link with participants and they can sign up for the tournament at any time and from any device.`,
-    imageDesktop: "/asset/signup_link_2.webp",
-    zoomImageDesktop: "/asset/signup_link_2.webp",
+    description: `To create a signup link, first add a description and specify the type of tournament. Once created, you can distribute this link through social media platforms or email. This link enables participants to conveniently register for the tournament from any location and on any device. 
+                  Share it with potential participants to allow them easy access to the signup process at their convenience.`,
+    imageDesktop: "/asset/signup_link_5.webp",
+    zoomImageDesktop: "/asset/signup_link_5.webp",
   },
   {
     title: "Sharable tournament link",
