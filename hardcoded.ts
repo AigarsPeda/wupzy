@@ -78,10 +78,9 @@ export const HOW_T0_STEPS = [
     title: "Create a tournament",
     icon: MagicIcon,
     iconColor: COLORS[0],
-    description: `When creating a tournament, select set count to win, and the number of rounds to play, add participants.
-    Also, you can choose type of tournament: regular or king. In king tournament every individual player plays with every 
-    other player and in the end there are only one winner. In regular tournament teams are divided into groups 
-    and play with each other in the group. The winners of the groups play in the final stage.
+    description: `When organizing a tournament, choose the required set count to win and the number of rounds. 
+      Add participants, and select the tournament type: 'king', where individuals compete against each other for one winner, 
+      or 'regular', where teams are grouped, and group winners advance to the finals.
     `,
     imageDesktop: "/asset/create_desktop.webp",
     zoomImageDesktop: "/asset/create_desktop_1.jpg",
@@ -91,7 +90,7 @@ export const HOW_T0_STEPS = [
     icon: FaLink,
     iconColor: COLORS[1],
     description: `To create a signup link, first add a description and specify the type of tournament. Once created, you can distribute this link through social media platforms or email. This link enables participants to conveniently register for the tournament from any location and on any device. 
-                  Share it with potential participants to allow them easy access to the signup process at their convenience.`,
+      Share it with potential participants to allow them easy access to the signup process at their convenience.`,
     imageDesktop: "/asset/signup_link_5.webp",
     zoomImageDesktop: "/asset/signup_link_5.webp",
   },
@@ -99,8 +98,8 @@ export const HOW_T0_STEPS = [
     title: "Sharable tournament link",
     icon: RocketIcon,
     iconColor: COLORS[2],
-    description: `You can create and share special sharable tournament link. This link allows 
-      participants or any interested person to see the tournament results and upcoming matches at any time and from any device.`,
+    description: `You can create and share a special tournament link that allows participants and interested individuals 
+      to view the tournament results and upcoming matches at any time from any device.`,
     imageDesktop: "/asset/share_tournament_desktop.webp",
     zoomImageDesktop: "/asset/share_tournament_desktop_1.jpg",
   },
@@ -108,8 +107,8 @@ export const HOW_T0_STEPS = [
     title: "Enter the scores",
     icon: TargetIcon,
     iconColor: COLORS[3],
-    description:
-      "Play the tournament and enter scores after match. Progress, standings and upcoming matches are updated automatically.",
+    description: `Play the tournament and input the scores after each match. The progress, standings, 
+      and schedule for upcoming matches will be updated automatically.`,
     imageDesktop: "/asset/play_tournament_desktop.webp",
     zoomImageDesktop: "/asset/play_tournament_desktop_1.jpg",
   },
@@ -118,7 +117,7 @@ export const HOW_T0_STEPS = [
     icon: PlayoffIcon,
     iconColor: COLORS[4],
     description: `With just few clicks at any time you can create playoffs bracket 
-    based on the results in the group. This bracket will automatically be available in sharable tournament link.`,
+      based on the results in the group. This bracket will automatically be available in sharable tournament link.`,
     imageDesktop: "/asset/playoffs.webp",
     zoomImageDesktop: "/asset/playoffs.webp",
   },
@@ -128,13 +127,13 @@ export const USER_STATEMENTS = [
   {
     name: "Matthew",
     text: `I have been using this site for a while now. I use it when I play with my friends and it is very useful.
-            We don't have to write down the results on paper anymore. I can just enter the results on my phone and see the standings.`,
+      We don't have to write down the results on paper anymore. I can just enter the results on my phone and see the standings.`,
     image: "/asset/people/matthew.png",
   },
   {
     name: "John",
     text: `I am a beach volleyball coach and I use this site to organize tournaments for local teams. 
-            I can easily create a tournament and share it with everyone. They can see the games and results on their phones.`,
+      I can easily create a tournament and share it with everyone. They can see the games and results on their phones.`,
     image: "/asset/people/john.png",
   },
   {
