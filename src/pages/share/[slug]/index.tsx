@@ -64,6 +64,7 @@ const TournamentPage: NextPage = () => {
                 />
               </div> */}
             </div>
+
             <div className="mb-4 mt-5">
               {isRegularTournamentSelected() && (
                 <DisplayGroupSelect
