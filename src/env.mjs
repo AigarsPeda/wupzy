@@ -19,7 +19,7 @@ export const env = createEnv({
       // Since NextAuth.js automatically uses the VERCEL_URL if present.
       (str) => process.env.VERCEL_URL ?? str,
       // VERCEL_URL doesn't include `https` so it cant be validated as a URL
-      process.env.VERCEL ? z.string().min(1) : z.string().url()
+      process.env.VERCEL ? z.string().min(1) : z.string().url(),
     ),
     // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
     GOOGLE_CLIENT_ID: z.string().min(1),
@@ -44,6 +44,7 @@ export const env = createEnv({
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
     NEXT_PUBLIC_APP_DOMAIN: z.string().min(1),
+    NEXT_PUBLIC_TINYMCE_API_KEY: z.string().min(1),
   },
 
   /**
@@ -64,11 +65,11 @@ export const env = createEnv({
     TWITTER_CLIENT_SECRET: process.env.TWITTER_CLIENT_SECRET,
     FACEBOOK_CLIENT_ID: process.env.FACEBOOK_CLIENT_ID,
     FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT_SECRET,
-    STRIPE_PUBLISHABLE_KEY:
-      process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+    STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
     NEXT_PUBLIC_APP_DOMAIN: process.env.NEXT_PUBLIC_APP_DOMAIN,
+    NEXT_PUBLIC_TINYMCE_API_KEY: process.env.NEXT_PUBLIC_TINYMCE_API_KEY,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

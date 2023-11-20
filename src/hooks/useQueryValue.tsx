@@ -14,11 +14,11 @@ const useQueryValue = (initialValue: string, queryKey: string) => {
             query: { ...router.query, [queryKey]: value },
           },
           undefined,
-          { shallow: true }
+          { shallow: true },
         )
         .catch((err) => console.error("Error while updating query: ", err));
     },
-    [queryKey, router]
+    [queryKey, router],
   );
 
   useEffect(() => {

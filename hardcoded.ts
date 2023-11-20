@@ -1,9 +1,9 @@
+import { AiOutlineFileAdd } from "react-icons/ai";
+import { FaLink } from "react-icons/fa6";
 import MagicIcon from "~/components/icons/MagicIcon";
 import PlayoffIcon from "~/components/icons/PlayoffIcon";
 import RocketIcon from "~/components/icons/RocketIcon";
 import TargetIcon from "~/components/icons/TargetIcon";
-import { AiOutlineFileAdd } from "react-icons/ai";
-import { FaLink } from "react-icons/fa6";
 import { OptionType, type LinkType } from "~/types/utils.types";
 
 export const LINKS: LinkType[] = [

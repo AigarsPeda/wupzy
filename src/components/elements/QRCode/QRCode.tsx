@@ -1,13 +1,15 @@
 import { QRCodeSVG } from "qrcode.react";
-import { type FC } from "react";
+import { useState, type FC } from "react";
 import { HiDownload } from "react-icons/hi";
 import { LuClipboardCopy } from "react-icons/lu";
+import Bubble from "~/components/elements/Bubble/Bubble";
 import Divider from "~/components/elements/Divider/Divider";
 import {
   SettingButton,
   SettingButtonContent,
 } from "~/components/elements/SettingButton/SettingButton";
 import { env } from "~/env.mjs";
+import copyToClipboard from "~/utils/copyToClipboard";
 
 const EXPLAIN = "Scan to view tournament or use provided link:";
 
@@ -17,6 +19,8 @@ interface QRCodeProps {
 }
 
 const QRCode: FC<QRCodeProps> = ({ slug, name }) => {
+  const [isSuccessCopy, setIsSuccessCopy] = useState(false);
+
   const downloadQRCode = () => {
     const svg = document.getElementById("qr-code");
     const linkToTournament = `${env.NEXT_PUBLIC_APP_DOMAIN}/share/${
@@ -70,11 +74,16 @@ const QRCode: FC<QRCodeProps> = ({ slug, name }) => {
       <div>
         <SettingButton
           handleClick={() => {
-            navigator.clipboard
-              .writeText(`${env.NEXT_PUBLIC_APP_DOMAIN}/share/${slug || ""}`)
-              .catch((err) => {
-                console.error(err);
-              });
+            copyToClipboard(
+              `${env.NEXT_PUBLIC_APP_DOMAIN}/share/${slug || ""}`,
+              () => {
+                setIsSuccessCopy(true);
+
+                setTimeout(() => {
+                  setIsSuccessCopy(false);
+                }, 2000);
+              },
+            );
           }}
         >
           <SettingButtonContent
@@ -85,6 +94,7 @@ const QRCode: FC<QRCodeProps> = ({ slug, name }) => {
                 <span className="max-w-[12.6rem] truncate">
                   {`${env.NEXT_PUBLIC_APP_DOMAIN}/share/${slug || ""}`}
                 </span>
+                <Bubble message="Copied!" isBubbleVisible={isSuccessCopy} />
               </>
             }
           />

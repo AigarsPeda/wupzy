@@ -1,6 +1,7 @@
 import { Editor } from "@tinymce/tinymce-react";
 import { useRef, type FC } from "react";
 import { type Editor as TinyMCEEditor } from "tinymce";
+import { env } from "~/env.mjs";
 
 interface TextEditorProps {
   handleGetEditorContent: (str: string) => void;
@@ -11,9 +12,9 @@ const TextEditor: FC<TextEditorProps> = ({ handleGetEditorContent }) => {
 
   return (
     <Editor
-      apiKey="zw1n6nj7t4xsnb4gxl58tq7kh5l48005h4ns2lrqfa9vpnmr"
+      onEditorChange={handleGetEditorContent}
+      apiKey={env.NEXT_PUBLIC_TINYMCE_API_KEY}
       onInit={(_evt, editor) => (editorRef.current = editor)}
-      // plugins={["textcolor"]}
       init={{
         height: 300,
         menubar: false,
@@ -23,9 +24,7 @@ const TextEditor: FC<TextEditorProps> = ({ handleGetEditorContent }) => {
         plugins: ["autolink"],
         toolbar:
           "blocks fontsize bold italic underline | forecolor backcolor | align lineheight | checklist numlist bullist indent outdent",
-        // Additional configurations...
       }}
-      onEditorChange={handleGetEditorContent}
     />
   );
 };

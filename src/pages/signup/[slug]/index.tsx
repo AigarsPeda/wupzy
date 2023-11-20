@@ -12,6 +12,8 @@ import { api } from "~/utils/api";
 const TournamentPage: NextPage = () => {
   const { query } = useRouter();
   const [slug, setSlug] = useState("");
+  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+
   const { data } = api.signupLink.getSignupLink.useQuery(
     { slug: slug },
     { enabled: Boolean(slug) },
@@ -35,6 +37,37 @@ const TournamentPage: NextPage = () => {
     }
     return arr;
   };
+
+  useEffect(() => {
+    if (data?.signupLink?.type === "king") {
+      for (const player of newTournament.king.players) {
+        if (player.name.trim() !== "") {
+          setIsButtonEnabled(true);
+          return;
+        }
+
+        setIsButtonEnabled(false);
+      }
+    }
+
+    if (data?.signupLink?.type === "teams") {
+      for (const team of newTournament.teams) {
+        if (team.name?.trim() === "") {
+          setIsButtonEnabled(false);
+          return;
+        }
+
+        for (const player of team.players) {
+          if (player.name.trim() !== "") {
+            setIsButtonEnabled(true);
+            return;
+          }
+        }
+      }
+
+      setIsButtonEnabled(false);
+    }
+  }, [newTournament, data?.signupLink?.type]);
 
   useEffect(() => {
     if (query.slug && typeof query.slug === "string") {
@@ -134,7 +167,7 @@ const TournamentPage: NextPage = () => {
               title="Join"
               type="button"
               isLoading={isPending}
-              isDisabled={isPending}
+              isDisabled={isPending || !isButtonEnabled}
               handleClick={() => {
                 if (!data?.signupLink) {
                   return;

@@ -18,7 +18,7 @@ const SettingButton: FC<SettingButtonProps> = ({
       onClick={handleClick}
       className={classNames(
         isDisables ? "cursor-not-allowed" : "group hover:text-gray-950",
-        "flex w-full items-center justify-between"
+        "flex w-full items-center justify-between",
       )}
     >
       {children}
@@ -45,7 +45,7 @@ const SettingButtonContent: FC<SettingButtonContentProps> = ({
           isDanger
             ? "text-red-500 hover:text-red-600"
             : "text-gray-500 hover:text-gray-900 group-hover:text-gray-900",
-          "flex items-center text-sm"
+          "relative flex items-center text-sm",
         )}
       >
         {action}
