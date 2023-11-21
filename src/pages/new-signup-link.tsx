@@ -1,3 +1,4 @@
+import { ONE_TOURNAMENT_COST } from "hardcoded";
 import { type NextPage } from "next";
 import { useState } from "react";
 import Button from "~/components/elements/Button/Button";
@@ -8,9 +9,11 @@ import TextButton from "~/components/elements/TextButton/TextButton";
 import TextEditor from "~/components/elements/TextEditor/TextEditor";
 import useCreateTournament from "~/hooks/useCreateTournament";
 import useRedirect from "~/hooks/useRedirect";
+import useUser from "~/hooks/useUser";
 import { api } from "~/utils/api";
 
-const HomePage: NextPage = () => {
+const NewSignupLinkPage: NextPage = () => {
+  const { user } = useUser();
   const { redirectToPath } = useRedirect();
   const [editorState, setEditorState] = useState("");
   const { newTournament, changeTournamentName, changeTournamentKind } =
@@ -22,6 +25,8 @@ const HomePage: NextPage = () => {
         redirectToPath(`/signups/${data.signupLink.id}`);
       },
     });
+
+  const isCreditsEnough = (user?.credits || 0) >= ONE_TOURNAMENT_COST;
 
   return (
     <>
@@ -42,7 +47,11 @@ const HomePage: NextPage = () => {
           }}
         >
           <div className="space-y-10">
-            <div className="mt-4 border-b border-gray-900/10 pb-12">
+            <p className="mt-1 text-xs text-gray-600">
+              * This is pro feature. You need to have credits to create signup
+              link.
+            </p>
+            <div className="mt-2 border-b border-gray-900/10 pb-12">
               <legend className="text-base font-semibold leading-7 text-gray-900">
                 Signup link name
               </legend>
@@ -102,27 +111,39 @@ const HomePage: NextPage = () => {
             </fieldset>
           </div>
 
-          <div className="mt-6 flex items-center justify-end gap-x-6">
-            <TextButton
-              title="Cancel"
-              handleClick={() => redirectToPath("/tournaments")}
-            />
-
-            <div className="w-20">
-              <Button
-                size="sm"
-                title="Create"
-                type="button"
-                isLoading={isPending}
-                handleClick={() => {
-                  postSignupLink({
-                    name: newTournament.name,
-                    description: editorState,
-                    tournamentKind: newTournament.kind,
-                  });
-                }}
-                isDisabled={newTournament.name.trim() === ""}
+          <div className="mt-6">
+            {!isCreditsEnough && (
+              <div className="mb-3 flex justify-end">
+                <p className="text-sm text-red-600">
+                  You need to have at least {ONE_TOURNAMENT_COST} credits to
+                  create a link.
+                </p>
+              </div>
+            )}
+            <div className="flex items-center justify-end gap-x-6">
+              <TextButton
+                title="Cancel"
+                handleClick={() => redirectToPath("/tournaments")}
               />
+
+              <div className="w-20">
+                <Button
+                  size="sm"
+                  type="button"
+                  title="Create"
+                  isLoading={isPending}
+                  handleClick={() => {
+                    postSignupLink({
+                      name: newTournament.name,
+                      description: editorState,
+                      tournamentKind: newTournament.kind,
+                    });
+                  }}
+                  isDisabled={
+                    newTournament.name.trim() === "" || !isCreditsEnough
+                  }
+                />
+              </div>
             </div>
           </div>
         </form>
@@ -131,4 +152,4 @@ const HomePage: NextPage = () => {
   );
 };
 
-export default HomePage;
+export default NewSignupLinkPage;
