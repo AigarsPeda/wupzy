@@ -33,6 +33,7 @@ const HomePage: NextPage = () => {
               Seamlessly record match outcomes and monitor rankings in a
               real-time leaderboard. Share the excitement with all participants
               in just a few clicks.
+              {/* We provides a comprehensive solution for organizing and managing tournaments, offering real-time monitoring of match outcomes, leaderboards, and participant engagement features */}
             </h2>
           </div>
           <div className="pt-8">
