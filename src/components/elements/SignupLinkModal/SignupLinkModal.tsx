@@ -35,7 +35,6 @@ const SignupLinkModal: FC<SignupLinkModalProps> = ({
 
   return (
     <SmallModalLayout
-      modalTitle=""
       isModalVisible={isVisible}
       handleCancelClick={handleCancelClick}
     >
