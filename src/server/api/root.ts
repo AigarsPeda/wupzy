@@ -1,4 +1,4 @@
-import { emailListRouter } from "~/server/api/routers/emailList";
+import { feedbackRouter } from "~/server/api/routers/feedback";
 import { gameRouter } from "~/server/api/routers/games";
 import { playerRouter } from "~/server/api/routers/players";
 import { playoffsRouter } from "~/server/api/routers/playoffs";
@@ -16,12 +16,12 @@ import { signupLinkRouter } from "./routers/signupLink";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  emailListRouter,
   user: userRouter,
   game: gameRouter,
   teams: teamRouter,
   stripe: stripeRouter,
   player: playerRouter,
+  feedback: feedbackRouter,
   playoffs: playoffsRouter,
   shareLink: shareLinkRouter,
   tournament: tournamentRouter,

@@ -3,6 +3,7 @@ import { type NextPage } from "next";
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import { HiArrowRight } from "react-icons/hi";
+import Feedback from "~/components/elements/Feedback/Feedback";
 import PageHead from "~/components/elements/PageHead/PageHead";
 import PrimaryButton from "~/components/elements/PrimaryButton/PrimaryButton";
 import useRedirect from "~/hooks/useRedirect";
@@ -213,6 +214,17 @@ const HomePage: NextPage = () => {
               </div>
             );
           })}
+        </div>
+        <div>
+          <div className="mx-auto mb-10 mt-20 w-full max-w-3xl text-center md:mb-16 md:mt-36">
+            <h2 className="text-2xl font-normal text-gray-600 md:text-3xl">
+              What do you think about Wupzy? Need some feature?{" "}
+              <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text font-semibold  text-transparent">
+                Let us know!
+              </span>{" "}
+            </h2>
+          </div>
+          <Feedback />
         </div>
       </main>
     </>

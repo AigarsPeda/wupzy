@@ -186,8 +186,10 @@ model PlayoffGame {
   teamTwo           Team?      @relation("teamTwoPlayoffGame", fields: [teamTwoId], references: [id])
 }
 
-model EmailList {
-  email     String   @unique
+model Feedback {
+  email     String
+  name      String
+  message   String
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
   id        String   @id @default(cuid())
