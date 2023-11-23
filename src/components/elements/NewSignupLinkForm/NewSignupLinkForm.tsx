@@ -4,7 +4,7 @@ import Button from "~/components/elements/Button/Button";
 import Input from "~/components/elements/Input/Input";
 import RadioSelect from "~/components/elements/RadioSelect/RadioSelect";
 import TextEditor from "~/components/elements/TextEditor/TextEditor";
-import { NewTournamentType } from "~/types/tournament.types";
+import { type NewTournamentType } from "~/types/tournament.types";
 
 interface NewSignupLinkFormProps {
   isCreditsEnough: boolean;

@@ -4,7 +4,7 @@ import Button from "~/components/elements/Button/Button";
 import TextButton from "~/components/elements/TextButton/TextButton";
 import SmallModalLayout from "~/components/layout/SmallModalLayout/SmallModalLayout";
 import useRedirect from "~/hooks/useRedirect";
-import { TournamentTypeType } from "~/types/tournament.types";
+import { type TournamentTypeType } from "~/types/tournament.types";
 import { api } from "~/utils/api";
 
 interface SignupLinkModalProps {
