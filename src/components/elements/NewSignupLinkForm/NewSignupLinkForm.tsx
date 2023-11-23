@@ -1,35 +1,28 @@
+import { ONE_TOURNAMENT_COST } from "hardcoded";
 import { type FC } from "react";
+import Button from "~/components/elements/Button/Button";
 import Input from "~/components/elements/Input/Input";
 import RadioSelect from "~/components/elements/RadioSelect/RadioSelect";
 import TextEditor from "~/components/elements/TextEditor/TextEditor";
 import { NewTournamentType } from "~/types/tournament.types";
-import { ONE_TOURNAMENT_COST } from "hardcoded";
-import useRedirect from "~/hooks/useRedirect";
-import newTournament from "~/pages/new-tournament";
-import Button from "../Button/Button";
-import TextButton from "../TextButton/TextButton";
 
 interface NewSignupLinkFormProps {
-  isPending: boolean;
   isCreditsEnough: boolean;
   tournament: NewTournamentType;
-  postSignupLink: () => void;
+  startPostSignupLink: () => void;
   changeTournamentKind: (str: string) => void;
   changeTournamentName: (name: string) => void;
   handleGetEditorContent: (str: string) => void;
 }
 
 const NewSignupLinkForm: FC<NewSignupLinkFormProps> = ({
-  isPending,
   tournament,
   isCreditsEnough,
-  postSignupLink,
+  startPostSignupLink,
   changeTournamentKind,
   changeTournamentName,
   handleGetEditorContent,
 }) => {
-  const { redirectToPath } = useRedirect();
-
   return (
     <form
       id="new-signup-link"
@@ -112,19 +105,13 @@ const NewSignupLinkForm: FC<NewSignupLinkFormProps> = ({
           </div>
         )}
         <div className="flex items-center justify-end gap-x-6">
-          <TextButton
-            title="Cancel"
-            handleClick={() => redirectToPath("/tournaments")}
-          />
-
           <div className="w-20">
             <Button
               size="sm"
               type="button"
               title="Create"
-              isLoading={isPending}
-              handleClick={postSignupLink}
-              isDisabled={newTournament.name.trim() === "" || !isCreditsEnough}
+              handleClick={startPostSignupLink}
+              isDisabled={tournament.name.trim() === "" || !isCreditsEnough}
             />
           </div>
         </div>

@@ -4,23 +4,19 @@ import { useState } from "react";
 import NewSignupLinkForm from "~/components/elements/NewSignupLinkForm/NewSignupLinkForm";
 import PageHead from "~/components/elements/PageHead/PageHead";
 import useCreateTournament from "~/hooks/useCreateTournament";
-import useRedirect from "~/hooks/useRedirect";
 import useUser from "~/hooks/useUser";
-import { api } from "~/utils/api";
+import dynamic from "next/dynamic";
+
+const SignupLinkModal = dynamic(
+  () => import("~/components/elements/SignupLinkModal/SignupLinkModal"),
+);
 
 const NewSignupLinkPage: NextPage = () => {
   const { user } = useUser();
-  const { redirectToPath } = useRedirect();
+  const [isSubmit, setIsSubmit] = useState(false);
   const [editorState, setEditorState] = useState("");
   const { newTournament, changeTournamentName, changeTournamentKind } =
     useCreateTournament();
-
-  const { mutate: postSignupLink, isPending } =
-    api.signupLink.postSignupLink.useMutation({
-      onSuccess: (data) => {
-        redirectToPath(`/signups/${data.signupLink.id}`);
-      },
-    });
 
   const isCreditsEnough = (user?.credits || 0) >= ONE_TOURNAMENT_COST;
 
@@ -33,21 +29,25 @@ const NewSignupLinkPage: NextPage = () => {
           tournament tables, save game scores, view real-time results, and share
           them with all participants in just a few clicks."
       />
-      {/* <SignupLinkModal /> */}
+      <SignupLinkModal
+        isVisible={isSubmit}
+        name={newTournament.name}
+        description={editorState}
+        isCreditsEnough={isCreditsEnough}
+        tournamentKind={newTournament.kind}
+        handleCancelClick={() => {
+          setIsSubmit(false);
+        }}
+      />
       <main>
         <NewSignupLinkForm
-          isPending={isPending}
           tournament={newTournament}
           isCreditsEnough={isCreditsEnough}
           handleGetEditorContent={setEditorState}
           changeTournamentName={changeTournamentName}
           changeTournamentKind={changeTournamentKind}
-          postSignupLink={() => {
-            postSignupLink({
-              name: newTournament.name,
-              description: editorState,
-              tournamentKind: newTournament.kind,
-            });
+          startPostSignupLink={() => {
+            setIsSubmit(true);
           }}
         />
       </main>

@@ -36,14 +36,14 @@ const SmallModalLayout: FC<SmallModalLayoutProps> = ({
           id="menu"
           className={classNames(
             isAnimation ? "opacity-100" : "opacity-0",
-            "fixed right-0 top-0 z-[9999] flex h-full w-full items-center justify-center bg-gray-900 bg-opacity-80 transition-all duration-300 ease-in-out"
+            "fixed right-0 top-0 z-[9999] flex h-full w-full items-center justify-center bg-gray-900 bg-opacity-80 transition-all duration-300 ease-in-out",
           )}
         >
           <div className="relative h-full w-full">
             <div
               className={classNames(
                 isFullScreen && "h-full w-full",
-                "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform p-3"
+                "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform p-3",
               )}
             >
               <div
@@ -51,7 +51,7 @@ const SmallModalLayout: FC<SmallModalLayoutProps> = ({
                 className={classNames(
                   bgColor === "white" && "bg-white",
                   bgColor === "dark" && "bg-gray-900",
-                  "flex h-full w-full flex-col justify-between rounded"
+                  "flex h-full w-full flex-col justify-between rounded",
                 )}
               >
                 <div className="relative flex items-center justify-between px-3 py-2 pb-2 text-left md:px-6 md:py-4">
@@ -72,7 +72,7 @@ const SmallModalLayout: FC<SmallModalLayoutProps> = ({
                           "text-gray-800 hover:text-gray-500",
                         bgColor === "dark" &&
                           "text-gray-200 hover:text-gray-500",
-                        "absolute right-2 top-2 h-8 w-9"
+                        "absolute right-2 top-2 h-8 w-9",
                       )}
                     />
                   </button>
