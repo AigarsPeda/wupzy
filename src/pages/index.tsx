@@ -23,21 +23,21 @@ const HomePage: NextPage = () => {
       />
       <main>
         <div className="pb-12 pt-3 md:pb-28 md:pt-16">
-          <div>
-            <h1 className="max-w-4xl font-primary text-5xl font-semibold tracking-tight md:text-6xl">
+          <div className="text-center">
+            <h1 className="mx-auto max-w-4xl font-primary text-5xl font-semibold tracking-tight md:text-6xl">
               Organize Your tournament in{" "}
               <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text font-semibold  text-transparent">
-                minutes
+                minutes.
               </span>
             </h1>
-            <h2 className="mb-5 mt-8 max-w-2xl font-primary text-xl font-normal text-gray-600">
+            <h2 className="mx-auto mb-5 mt-8 max-w-2xl font-primary text-xl font-normal text-gray-600">
               Seamlessly record match outcomes and monitor rankings in a
               real-time leaderboard. Share the excitement with all participants
               in just a few clicks.
               {/* We provides a comprehensive solution for organizing and managing tournaments, offering real-time monitoring of match outcomes, leaderboards, and participant engagement features */}
             </h2>
           </div>
-          <div className="pt-8">
+          <div className="flex justify-center pt-8">
             <PrimaryButton
               color="dark"
               padding="lg"
@@ -54,6 +54,11 @@ const HomePage: NextPage = () => {
               <span className="mr-4">Get started</span>
               <HiArrowRight className="h-4 w-4 text-white" />
             </PrimaryButton>
+            {/* <div>
+              <p className="mt-4 text-sm text-gray-400">
+                No credit card required.
+              </p>
+            </div> */}
           </div>
         </div>
 
@@ -95,9 +100,9 @@ const HomePage: NextPage = () => {
         </div>
 
         <div className="mx-auto mb-10 mt-20 w-full max-w-3xl text-center md:mb-16 md:mt-36">
-          <h2 className="text-2xl font-normal text-gray-600 md:text-3xl">
+          <h2 className="text-2xl font-normal font-semibold md:text-3xl">
             How does this work?{" "}
-            <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text font-semibold  text-transparent">
+            <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
               It&apos;s straightforward!
             </span>{" "}
           </h2>
@@ -215,16 +220,46 @@ const HomePage: NextPage = () => {
             );
           })}
         </div>
-        <div>
-          <div className="mx-auto mb-10 mt-20 w-full max-w-3xl text-center md:mb-16 md:mt-36">
-            <h2 className="text-2xl font-normal text-gray-600 md:text-3xl">
-              What do you think about Wupzy? Need some feature?{" "}
-              <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text font-semibold  text-transparent">
-                Let us know!
-              </span>{" "}
-            </h2>
+
+        <div className="mx-auto mb-10 mt-20 w-full max-w-3xl text-center md:mb-16 md:mt-36">
+          <h2 className="text-2xl font-semibold md:text-3xl">
+            What do you think about Wupzy? Need some feature?{" "}
+            <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
+              Let us know!
+            </span>{" "}
+          </h2>
+        </div>
+        <Feedback />
+
+        <div className="mx-auto mt-20 text-center">
+          <h3 className="mx-auto max-w-4xl font-primary text-3xl font-semibold tracking-tight md:text-4xl">
+            Try it now for{" "}
+            <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text  text-transparent">
+              free.
+            </span>
+          </h3>
+          <h4 className="mx-auto mb-5 mt-4 max-w-2xl font-primary font-normal text-gray-600">
+            No credit card required.
+          </h4>
+
+          <div className="flex justify-center pt-2 md:pt-4">
+            <PrimaryButton
+              color="dark"
+              padding="lg"
+              handleClick={() => {
+                if (!sessionData) {
+                  void signIn(undefined, {
+                    callbackUrl: "/tournaments",
+                  });
+                  return;
+                }
+                void redirectToPath("/tournaments");
+              }}
+            >
+              <span className="mr-4">Get started</span>
+              <HiArrowRight className="h-4 w-4 text-white" />
+            </PrimaryButton>
           </div>
-          <Feedback />
         </div>
       </main>
     </>
