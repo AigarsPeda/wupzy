@@ -100,7 +100,7 @@ const HomePage: NextPage = () => {
         </div>
 
         <div className="mx-auto mb-10 mt-20 w-full max-w-3xl text-center md:mb-16 md:mt-36">
-          <h2 className="text-2xl font-normal font-semibold md:text-3xl">
+          <h2 className="text-2xl font-semibold md:text-3xl">
             How does this work?{" "}
             <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
               It&apos;s straightforward!
