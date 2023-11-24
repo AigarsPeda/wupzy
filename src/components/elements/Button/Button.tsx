@@ -9,8 +9,8 @@ interface ButtonProps {
   isDisabled?: boolean;
   handleClick?: () => void;
   title: string | JSX.Element;
-  color?: "light" | "dark" | "red";
   type?: "button" | "submit" | "reset";
+  color?: "light" | "dark" | "red" | "transparent";
 }
 
 const Button: FC<ButtonProps> = ({
@@ -42,6 +42,9 @@ const Button: FC<ButtonProps> = ({
         !isDisabled &&
           color === "red" &&
           "border-red-500 bg-red-500 text-white hover:bg-red-700",
+        !isDisabled &&
+          color === "transparent" &&
+          "border-transparent text-gray-950",
         "focus:shadow-outline relative flex w-full border-collapse items-center justify-center space-x-2 whitespace-nowrap rounded-lg border-2 tracking-[0.055em] transition duration-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-pink-500",
       )}
     >

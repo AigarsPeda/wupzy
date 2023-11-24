@@ -92,13 +92,22 @@ const Feedback = () => {
           />
         </div>
         <div className="flex justify-end">
-          <div className="w-20">
+          <div className="relative">
             <Button
               size="sm"
               title="Send"
               type="submit"
+              color="transparent"
               isLoading={isPending}
             />
+            <div>
+              <span className="absolute bottom-1 left-1/2 block h-0.5 w-12 -translate-x-1/2 transform rounded-full bg-gray-600"></span>
+              {/* <span className="absolute right-0 top-0 block h-3 w-0.5 bg-gray-950"></span>
+              <span className="absolute right-0 top-0 block h-0.5 w-3 bg-gray-950"></span>
+
+              <span className="absolute bottom-0 left-0 block h-3 w-0.5 bg-gray-950"></span>
+              <span className="absolute bottom-0 left-0 block h-0.5 w-3 bg-gray-950"></span> */}
+            </div>
           </div>
         </div>
       </div>
