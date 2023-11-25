@@ -8,11 +8,13 @@ const itemVariants = {
 
 interface AddingToListAnimationLayoutProps {
   index: number;
+  isFlex?: boolean;
   children: ReactNode;
 }
 
 const AddingToListAnimationLayout: FC<AddingToListAnimationLayoutProps> = ({
   index,
+  isFlex,
   children,
 }) => {
   return (
@@ -21,6 +23,7 @@ const AddingToListAnimationLayout: FC<AddingToListAnimationLayoutProps> = ({
       animate="animate"
       variants={itemVariants}
       transition={{ duration: 0.2, delay: index * 0.1 }}
+      className={isFlex ? "flex w-full items-center justify-between" : ""}
     >
       {children}
     </motion.div>

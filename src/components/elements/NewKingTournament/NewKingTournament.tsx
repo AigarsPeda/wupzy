@@ -12,6 +12,7 @@ import getOrdinal from "~/utils/getOrdinal";
 
 interface NewKingTournamentProps {
   isVisible: boolean;
+  isAddField?: boolean;
   isFullWidth?: boolean;
   players: NewPlayerType[];
   playerNameVisible?: string;
@@ -22,6 +23,7 @@ interface NewKingTournamentProps {
 const NewKingTournament: FC<NewKingTournamentProps> = ({
   players,
   isVisible,
+  isAddField,
   isFullWidth,
   playerNameVisible,
   handleAddPlayer,
@@ -36,20 +38,18 @@ const NewKingTournament: FC<NewKingTournamentProps> = ({
           </h2> */}
           <ul
             className={classNames(
-              isFullWidth
-                ? "w-full"
-                : "grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6",
+              isFullWidth ? "w-full" : "flex w-full flex-col space-y-5",
             )}
           >
             {players.map((player, i) => {
               const label = `${i + 1}${getOrdinal(i + 1)} player`;
               return (
-                <li className="font-normal sm:col-span-4" key={player.id}>
-                  <AddingToListAnimationLayout index={i}>
+                <li key={player.id}>
+                  <AddingToListAnimationLayout index={i} isFlex>
                     <Input
                       inputFor={label}
-                      inputLabel={playerNameVisible || label}
                       inputVal={player.name}
+                      inputLabel={playerNameVisible || label}
                       handleInputChange={(str) => {
                         handleKingsPlayerName({
                           name: str,
@@ -57,6 +57,11 @@ const NewKingTournament: FC<NewKingTournamentProps> = ({
                         });
                       }}
                     />
+                    {isAddField && (
+                      <button type="button" className="bg-gray-300">
+                        Add field
+                      </button>
+                    )}
                   </AddingToListAnimationLayout>
                 </li>
               );

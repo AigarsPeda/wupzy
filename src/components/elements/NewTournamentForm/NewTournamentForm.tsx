@@ -119,6 +119,7 @@ const NewTournamentForm: FC = () => {
 
           <div className="relative mr-3 mt-6 overflow-hidden border-b border-gray-900/10 pb-12">
             <NewKingTournament
+              isAddField
               handleAddPlayer={handleAddPlayer}
               players={newTournament.king.players}
               isVisible={newTournament.kind === "king"}

@@ -29,10 +29,10 @@ const Input = forwardRef<Ref, InputProps>(
     };
 
     return (
-      <>
+      <div className="w-full">
         <label
           htmlFor={getInputFor()}
-          className="mb-2 block text-sm font-medium leading-6 text-gray-900"
+          className="mb-2 block w-full text-sm font-medium leading-6 text-gray-900"
         >
           {inputLabel}
         </label>
@@ -54,7 +54,7 @@ const Input = forwardRef<Ref, InputProps>(
             })()}
           />
         </div>
-      </>
+      </div>
     );
   },
 );
