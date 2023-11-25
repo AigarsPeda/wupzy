@@ -35,20 +35,22 @@ const SetSelect: FC<SetSelectProps> = ({
           <IoIosArrowDown
             className={classNames(
               isDropdownOpen ? "-rotate-180" : "-rotate-0",
-              "ml-3 h-6 w-6 transform-gpu text-gray-900 transition-all duration-300 ease-in-out"
+              "ml-3 h-6 w-6 transform-gpu text-gray-900 transition-all duration-300 ease-in-out",
             )}
           />
         </button>
       }
     >
-      <div className="m-0.5 space-y-1 rounded">
+      <div className="rounded">
         {options.map((option, i) => {
+          const isLast = options.indexOf(option) === options.length - 1;
           return (
             <button
               key={`${option}${i}`}
               className={classNames(
-                "flex w-full justify-between rounded-md border-0 px-2 py-1.5 text-gray-900 outline-none outline-1 outline-offset-2 ring-1 ring-inset ring-transparent hover:bg-gray-200 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:max-w-xs sm:text-sm sm:leading-6",
-                option === selectedSetCount && "bg-gray-100"
+                !isLast && "border-b border-gray-200",
+                "flex w-full justify-between border-0 px-2 py-1.5 text-gray-900 outline-none outline-1 outline-offset-2 ring-1 ring-inset ring-transparent transition-all duration-300 ease-in-out hover:bg-gray-200 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:max-w-xs sm:text-sm sm:leading-6",
+                option === selectedSetCount && "bg-gray-100",
               )}
               onClick={() => {
                 handleSetSelect(option);

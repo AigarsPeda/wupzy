@@ -73,6 +73,17 @@ export const COLORS = [
   "#9f6b53",
 ];
 
+export const FIELD_OPTIONS = [
+  {
+    label: "Email",
+    value: "",
+  },
+  {
+    label: "Phone",
+    value: "",
+  },
+];
+
 export const HOW_T0_STEPS = [
   {
     title: "Create a tournament",
