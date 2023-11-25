@@ -1,7 +1,7 @@
 import { AnimatePresence } from "framer-motion";
 import { type FC } from "react";
 import { BiPlus } from "react-icons/bi";
-import { IoIosOptions } from "react-icons/io";
+import FieldsDropdown from "~/components/elements/FieldsDropdown/FieldsDropdown";
 import Input from "~/components/elements/Input/Input";
 import { type HandleInputChangeType } from "~/components/elements/NewKingTournament/NewKingTournamentUtils/types";
 import SecondaryButton from "~/components/elements/SecondaryButton/SecondaryButton";
@@ -10,7 +10,6 @@ import SlidingAnimationLayout from "~/components/layout/SlidingAnimationLayout/S
 import { type NewPlayerType } from "~/types/tournament.types";
 import classNames from "~/utils/classNames";
 import getOrdinal from "~/utils/getOrdinal";
-import FieldsDropdown from "../FieldsDropdown/FieldsDropdown";
 
 interface NewKingTournamentProps {
   isVisible: boolean;
