@@ -1,6 +1,7 @@
 import { AnimatePresence } from "framer-motion";
 import { type FC } from "react";
 import { BiPlus } from "react-icons/bi";
+import { IoIosOptions } from "react-icons/io";
 import Input from "~/components/elements/Input/Input";
 import { type HandleInputChangeType } from "~/components/elements/NewKingTournament/NewKingTournamentUtils/types";
 import SecondaryButton from "~/components/elements/SecondaryButton/SecondaryButton";
@@ -9,8 +10,6 @@ import SlidingAnimationLayout from "~/components/layout/SlidingAnimationLayout/S
 import { type NewPlayerType } from "~/types/tournament.types";
 import classNames from "~/utils/classNames";
 import getOrdinal from "~/utils/getOrdinal";
-import { SlOptionsVertical } from "react-icons/sl";
-import { IoIosOptions } from "react-icons/io";
 
 interface NewKingTournamentProps {
   isVisible: boolean;
