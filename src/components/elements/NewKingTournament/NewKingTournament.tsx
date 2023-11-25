@@ -9,6 +9,8 @@ import SlidingAnimationLayout from "~/components/layout/SlidingAnimationLayout/S
 import { type NewPlayerType } from "~/types/tournament.types";
 import classNames from "~/utils/classNames";
 import getOrdinal from "~/utils/getOrdinal";
+import { SlOptionsVertical } from "react-icons/sl";
+import { IoIosOptions } from "react-icons/io";
 
 interface NewKingTournamentProps {
   isVisible: boolean;
@@ -44,7 +46,7 @@ const NewKingTournament: FC<NewKingTournamentProps> = ({
             {players.map((player, i) => {
               const label = `${i + 1}${getOrdinal(i + 1)} player`;
               return (
-                <li key={player.id}>
+                <li key={player.id} className="w-full">
                   <AddingToListAnimationLayout index={i} isFlex>
                     <Input
                       inputFor={label}
@@ -58,8 +60,11 @@ const NewKingTournament: FC<NewKingTournamentProps> = ({
                       }}
                     />
                     {isAddField && (
-                      <button type="button" className="bg-gray-300">
-                        Add field
+                      <button
+                        type="button"
+                        className="ml-2 mt-8 flex h-[2.5rem] w-[2.6rem] items-center justify-center rounded-md bg-gray-100 transition-all hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-800"
+                      >
+                        <IoIosOptions className="h-full w-full p-1" />
                       </button>
                     )}
                   </AddingToListAnimationLayout>

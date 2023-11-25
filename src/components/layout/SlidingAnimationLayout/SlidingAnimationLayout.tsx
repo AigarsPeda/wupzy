@@ -20,7 +20,7 @@ const SlidingAnimationLayout: FC<SlidingAnimationLayoutProps> = ({
       initial={{ x: getSides() }}
       transition={{ duration: 0.3 }}
       exit={{ x: 0, opacity: 0, position: "absolute" }}
-      className="bottom-0 left-0 right-0 top-0"
+      className="bottom-0 left-0 right-0 top-0 w-full"
     >
       {children}
     </motion.div>
