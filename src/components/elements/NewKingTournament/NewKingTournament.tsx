@@ -13,21 +13,21 @@ import getOrdinal from "~/utils/getOrdinal";
 
 interface NewKingTournamentProps {
   isVisible: boolean;
-  isAddField?: boolean;
   isFullWidth?: boolean;
   players: NewPlayerType[];
   playerNameVisible?: string;
   handleAddPlayer?: () => void;
   handleKingsPlayerName: ({ id, name }: HandleInputChangeType) => void;
+  addFieldToPlayer?: ({ id, field }: { id: string; field: string }) => void;
 }
 
 const NewKingTournament: FC<NewKingTournamentProps> = ({
   players,
   isVisible,
-  isAddField,
   isFullWidth,
   playerNameVisible,
   handleAddPlayer,
+  addFieldToPlayer,
   handleKingsPlayerName,
 }) => {
   return (
@@ -44,6 +44,8 @@ const NewKingTournament: FC<NewKingTournamentProps> = ({
           >
             {players.map((player, i) => {
               const label = `${i + 1}${getOrdinal(i + 1)} player`;
+              const isEmailKey = Object.keys(player).includes("email");
+              const isPhoneKey = Object.keys(player).includes("phone");
               return (
                 <li
                   key={player.id}
@@ -64,8 +66,28 @@ const NewKingTournament: FC<NewKingTournamentProps> = ({
                         });
                       }}
                     />
-                    {isAddField && <FieldsDropdown />}
+
+                    {addFieldToPlayer && (
+                      <FieldsDropdown
+                        handleOptionClick={(field) => {
+                          addFieldToPlayer({
+                            field,
+                            id: player.id,
+                          });
+                        }}
+                      />
+                    )}
                   </AddingToListAnimationLayout>
+                  {isEmailKey && (
+                    <div className="ml-2 text-sm text-gray-500">
+                      Email {player.email}
+                    </div>
+                  )}
+                  {isPhoneKey && (
+                    <div className="ml-2 text-sm text-gray-500">
+                      Phone {player.phone}
+                    </div>
+                  )}
                 </li>
               );
             })}

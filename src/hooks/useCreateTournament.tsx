@@ -82,6 +82,21 @@ const useCreateTournament = () => {
     ],
   });
 
+  // const addFieldsToKing = (field: string) => {
+  //   const players = newTournament.king.players.map((player) => ({
+  //     ...player,
+  //     field,
+  //   }));
+
+  //   setNewTournament({
+  //     ...newTournament,
+  //     king: {
+  //       ...newTournament.king,
+  //       players,
+  //     },
+  //   });
+  // };
+
   const loadTournament = useCallback(
     ({
       teams,
@@ -126,8 +141,28 @@ const useCreateTournament = () => {
         })),
       }));
     },
-    []
+    [],
   );
+
+  const addFieldToPlayer = ({ id, field }: { id: string; field: string }) => {
+    const players = newTournament.king.players.map((player) => {
+      if (player.id === id) {
+        return {
+          ...player,
+          [field]: "",
+        };
+      }
+      return player;
+    });
+
+    setNewTournament({
+      ...newTournament,
+      king: {
+        ...newTournament.king,
+        players,
+      },
+    });
+  };
 
   const updateKingsPlayerName = ({ id, name }: HandleInputChangeType) => {
     const players = newTournament.king.players.map((player) => {
@@ -294,6 +329,7 @@ const useCreateTournament = () => {
     addPlayerToTeam,
     handleSetSelect,
     handleSetRounds,
+    addFieldToPlayer,
     updateTeamsTeamName,
     changeTournamentKind,
     changeTournamentName,

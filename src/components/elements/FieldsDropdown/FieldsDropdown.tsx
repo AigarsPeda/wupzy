@@ -4,9 +4,11 @@ import { HiOutlineViewGridAdd } from "react-icons/hi";
 import Dropdown from "~/components/elements/Dropdown/Dropdown";
 import classNames from "~/utils/classNames";
 
-interface FieldsDropdownProps {}
+interface FieldsDropdownProps {
+  handleOptionClick: (option: string) => void;
+}
 
-const FieldsDropdown: FC<FieldsDropdownProps> = ({}) => {
+const FieldsDropdown: FC<FieldsDropdownProps> = ({ handleOptionClick }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
@@ -37,6 +39,7 @@ const FieldsDropdown: FC<FieldsDropdownProps> = ({}) => {
               FIELD_OPTIONS.indexOf(option) === FIELD_OPTIONS.length - 1;
             return (
               <div
+                key={option.label}
                 className={classNames(
                   !isLast && "border-b border-gray-200",
                   "w-full",
@@ -44,6 +47,10 @@ const FieldsDropdown: FC<FieldsDropdownProps> = ({}) => {
               >
                 <button
                   type="button"
+                  onClick={() => {
+                    handleOptionClick(option.label);
+                    setIsDropdownOpen(false);
+                  }}
                   className="h-full w-full px-2 py-1.5 text-left text-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-800"
                 >
                   {option.label}

@@ -75,12 +75,12 @@ export const COLORS = [
 
 export const FIELD_OPTIONS = [
   {
-    label: "Email",
-    value: "",
+    label: "email",
+    // value: "",
   },
   {
-    label: "Phone",
-    value: "",
+    label: "phone",
+    // value: "",
   },
 ];
 

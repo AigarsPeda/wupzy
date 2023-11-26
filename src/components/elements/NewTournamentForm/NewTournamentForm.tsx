@@ -23,6 +23,7 @@ const NewTournamentForm: FC = () => {
     addPlayerToTeam,
     handleSetSelect,
     handleSetRounds,
+    addFieldToPlayer,
     updateTeamsTeamName,
     changeTournamentName,
     changeTournamentKind,
@@ -119,8 +120,8 @@ const NewTournamentForm: FC = () => {
 
           <div className="relative mt-6 overflow-hidden border-b border-gray-900/10 pb-12">
             <NewKingTournament
-              isAddField
               handleAddPlayer={handleAddPlayer}
+              addFieldToPlayer={addFieldToPlayer}
               players={newTournament.king.players}
               isVisible={newTournament.kind === "king"}
               handleKingsPlayerName={updateKingsPlayerName}

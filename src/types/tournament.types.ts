@@ -11,6 +11,8 @@ export const NewPlayerSchema = z.object({
   id: z.string(),
   name: z.string(),
   group: z.string(),
+  email: z.string().nullish(),
+  phone: z.string().nullish(),
 });
 
 export const NewTeamsSchema = z.object({
