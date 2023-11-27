@@ -35,6 +35,7 @@ export const NewTournamentSchema = z.object({
 
 export type NewTeamsType = z.infer<typeof NewTeamsSchema>;
 export type NewPlayerType = z.infer<typeof NewPlayerSchema>;
+export type KeyNewPlayerType = keyof NewPlayerType;
 export type NewTournamentType = z.infer<typeof NewTournamentSchema>;
 
 // Tournament DB

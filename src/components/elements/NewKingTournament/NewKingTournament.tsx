@@ -7,7 +7,7 @@ import { type HandleInputChangeType } from "~/components/elements/NewKingTournam
 import SecondaryButton from "~/components/elements/SecondaryButton/SecondaryButton";
 import AddingToListAnimationLayout from "~/components/layout/AddingToListAnimationLayout/AddingToListAnimationLayout";
 import SlidingAnimationLayout from "~/components/layout/SlidingAnimationLayout/SlidingAnimationLayout";
-import { type NewPlayerType } from "~/types/tournament.types";
+import { KeyNewPlayerType, type NewPlayerType } from "~/types/tournament.types";
 import classNames from "~/utils/classNames";
 import getOrdinal from "~/utils/getOrdinal";
 
@@ -17,8 +17,21 @@ interface NewKingTournamentProps {
   players: NewPlayerType[];
   playerNameVisible?: string;
   handleAddPlayer?: () => void;
+  removeFieldFromPlayer: ({
+    id,
+    field,
+  }: {
+    id: string;
+    field: KeyNewPlayerType;
+  }) => void;
   handleKingsPlayerName: ({ id, name }: HandleInputChangeType) => void;
-  addFieldToPlayer?: ({ id, field }: { id: string; field: string }) => void;
+  addFieldToPlayer?: ({
+    id,
+    field,
+  }: {
+    id: string;
+    field: KeyNewPlayerType;
+  }) => void;
 }
 
 const NewKingTournament: FC<NewKingTournamentProps> = ({
@@ -29,6 +42,7 @@ const NewKingTournament: FC<NewKingTournamentProps> = ({
   handleAddPlayer,
   addFieldToPlayer,
   handleKingsPlayerName,
+  removeFieldFromPlayer,
 }) => {
   return (
     <AnimatePresence key="NewKingTournament">
@@ -43,52 +57,84 @@ const NewKingTournament: FC<NewKingTournamentProps> = ({
             )}
           >
             {players.map((player, i) => {
+              const keys = Object.keys(player);
+              const isEmailKey = keys.includes("email");
+              const isPhoneKey = keys.includes("phone");
               const label = `${i + 1}${getOrdinal(i + 1)} player`;
-              const isEmailKey = Object.keys(player).includes("email");
-              const isPhoneKey = Object.keys(player).includes("phone");
-              return (
-                <li
-                  key={player.id}
-                  className="relative w-full"
-                  style={{
-                    zIndex: players.length - i,
-                  }}
-                >
-                  <AddingToListAnimationLayout index={i} isFlex>
-                    <Input
-                      inputFor={label}
-                      inputVal={player.name}
-                      inputLabel={playerNameVisible || label}
-                      handleInputChange={(str) => {
-                        handleKingsPlayerName({
-                          name: str,
-                          id: player.id,
-                        });
-                      }}
-                    />
 
-                    {addFieldToPlayer && (
-                      <FieldsDropdown
-                        handleOptionClick={(field) => {
-                          addFieldToPlayer({
-                            field,
+              return (
+                <AddingToListAnimationLayout
+                  index={i}
+                  key={player.id}
+                  zIndex={players.length - i}
+                >
+                  <li className="flex w-full">
+                    <div className="w-full">
+                      <Input
+                        inputFor={label}
+                        inputVal={player.name}
+                        inputLabel={playerNameVisible || label}
+                        handleInputChange={(str) => {
+                          handleKingsPlayerName({
+                            name: str,
                             id: player.id,
                           });
                         }}
                       />
-                    )}
-                  </AddingToListAnimationLayout>
-                  {isEmailKey && (
-                    <div className="ml-2 text-sm text-gray-500">
-                      Email {player.email}
+                      {isEmailKey && (
+                        <AddingToListAnimationLayout index={i + 1} isFlex>
+                          <div className="ml-2 text-sm text-gray-500">
+                            Email {player.email}
+                            <button
+                              type="button"
+                              className="ml-2"
+                              onClick={() => {
+                                removeFieldFromPlayer({
+                                  id: player.id,
+                                  field: "email",
+                                });
+                              }}
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        </AddingToListAnimationLayout>
+                      )}
+                      {isPhoneKey && (
+                        <AddingToListAnimationLayout index={i + 1} isFlex>
+                          <div className="ml-2 text-sm text-gray-500">
+                            Phone {player.phone}
+                            <button
+                              type="button"
+                              className="ml-2"
+                              onClick={() => {
+                                removeFieldFromPlayer({
+                                  id: player.id,
+                                  field: "phone",
+                                });
+                              }}
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        </AddingToListAnimationLayout>
+                      )}
                     </div>
-                  )}
-                  {isPhoneKey && (
-                    <div className="ml-2 text-sm text-gray-500">
-                      Phone {player.phone}
+                    <div>
+                      {addFieldToPlayer && (
+                        <FieldsDropdown
+                          objectKeys={keys}
+                          handleOptionClick={(field) => {
+                            addFieldToPlayer({
+                              field,
+                              id: player.id,
+                            });
+                          }}
+                        />
+                      )}
                     </div>
-                  )}
-                </li>
+                  </li>
+                </AddingToListAnimationLayout>
               );
             })}
           </ul>

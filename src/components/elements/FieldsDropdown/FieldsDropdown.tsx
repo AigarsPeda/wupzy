@@ -2,14 +2,23 @@ import { FIELD_OPTIONS } from "hardcoded";
 import { FC, useState } from "react";
 import { HiOutlineViewGridAdd } from "react-icons/hi";
 import Dropdown from "~/components/elements/Dropdown/Dropdown";
+import { KeyNewPlayerType } from "~/types/tournament.types";
 import classNames from "~/utils/classNames";
 
 interface FieldsDropdownProps {
-  handleOptionClick: (option: string) => void;
+  objectKeys: string[];
+  handleOptionClick: (option: KeyNewPlayerType) => void;
 }
 
-const FieldsDropdown: FC<FieldsDropdownProps> = ({ handleOptionClick }) => {
+const FieldsDropdown: FC<FieldsDropdownProps> = ({
+  objectKeys,
+  handleOptionClick,
+}) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const filteredOptions = FIELD_OPTIONS.filter(
+    (option) => !objectKeys.includes(option.label),
+  );
 
   return (
     <>
@@ -20,12 +29,17 @@ const FieldsDropdown: FC<FieldsDropdownProps> = ({ handleOptionClick }) => {
         dropdownBtn={
           <button
             type="button"
+            disabled={filteredOptions.length === 0}
             onClick={() => {
               setIsDropdownOpen((state) => !state);
             }}
-            className="ml-2 mt-8 flex h-[2.5rem] items-center justify-between rounded-md bg-gray-100 px-2 text-sm transition-all hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-800"
+            className={classNames(
+              filteredOptions.length === 0
+                ? "cursor-not-allowed"
+                : "hover:bg-gray-200",
+              "ml-2 mt-8 flex h-[2.5rem] items-center justify-between rounded-md bg-gray-100 px-2 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-800",
+            )}
           >
-            {/* Add field */}
             <HiOutlineViewGridAdd className="h-6 w-6" />
           </button>
         }
@@ -33,10 +47,11 @@ const FieldsDropdown: FC<FieldsDropdownProps> = ({ handleOptionClick }) => {
           setIsDropdownOpen(false);
         }}
       >
-        <div className="w-40">
-          {FIELD_OPTIONS.map((option) => {
+        <div className="relative z-[999] w-40">
+          {filteredOptions.map((option) => {
             const isLast =
-              FIELD_OPTIONS.indexOf(option) === FIELD_OPTIONS.length - 1;
+              filteredOptions.indexOf(option) === filteredOptions.length - 1;
+
             return (
               <div
                 key={option.label}

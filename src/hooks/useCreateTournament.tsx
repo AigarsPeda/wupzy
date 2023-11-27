@@ -5,6 +5,8 @@ import {
   type HandleTeamsPlayerNameUpdateType,
 } from "~/components/elements/NewKingTournament/NewKingTournamentUtils/types";
 import {
+  KeyNewPlayerType,
+  NewPlayerSchema,
   type NewPlayerType,
   type NewTeamsType,
   type NewTournamentType,
@@ -82,21 +84,6 @@ const useCreateTournament = () => {
     ],
   });
 
-  // const addFieldsToKing = (field: string) => {
-  //   const players = newTournament.king.players.map((player) => ({
-  //     ...player,
-  //     field,
-  //   }));
-
-  //   setNewTournament({
-  //     ...newTournament,
-  //     king: {
-  //       ...newTournament.king,
-  //       players,
-  //     },
-  //   });
-  // };
-
   const loadTournament = useCallback(
     ({
       teams,
@@ -144,13 +131,46 @@ const useCreateTournament = () => {
     [],
   );
 
-  const addFieldToPlayer = ({ id, field }: { id: string; field: string }) => {
+  const addFieldToPlayer = ({
+    id,
+    field,
+  }: {
+    id: string;
+    field: KeyNewPlayerType;
+  }) => {
     const players = newTournament.king.players.map((player) => {
       if (player.id === id) {
         return {
           ...player,
           [field]: "",
         };
+      }
+      return player;
+    });
+
+    setNewTournament({
+      ...newTournament,
+      king: {
+        ...newTournament.king,
+        players,
+      },
+    });
+  };
+
+  const removeFieldFromPlayer = ({
+    id,
+    field,
+  }: {
+    id: string;
+    field: KeyNewPlayerType;
+  }) => {
+    const players = newTournament.king.players.map((player) => {
+      if (player.id === id) {
+        const { [field]: _, ...rest } = player;
+
+        const validRest = NewPlayerSchema.parse(rest);
+
+        return validRest;
       }
       return player;
     });
@@ -335,6 +355,7 @@ const useCreateTournament = () => {
     changeTournamentName,
     updateKingsPlayerName,
     updateTeamsPlayerName,
+    removeFieldFromPlayer,
   };
 };
 

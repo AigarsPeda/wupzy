@@ -29,6 +29,7 @@ const NewTournamentForm: FC = () => {
     changeTournamentKind,
     updateKingsPlayerName,
     updateTeamsPlayerName,
+    removeFieldFromPlayer,
   } = useCreateTournament();
 
   const { redirectToPath } = useRedirect();
@@ -124,6 +125,7 @@ const NewTournamentForm: FC = () => {
               addFieldToPlayer={addFieldToPlayer}
               players={newTournament.king.players}
               isVisible={newTournament.kind === "king"}
+              removeFieldFromPlayer={removeFieldFromPlayer}
               handleKingsPlayerName={updateKingsPlayerName}
             />
 

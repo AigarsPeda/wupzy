@@ -4,7 +4,11 @@ import MagicIcon from "~/components/icons/MagicIcon";
 import PlayoffIcon from "~/components/icons/PlayoffIcon";
 import RocketIcon from "~/components/icons/RocketIcon";
 import TargetIcon from "~/components/icons/TargetIcon";
-import { OptionType, type LinkType } from "~/types/utils.types";
+import {
+  OptionFieldType,
+  OptionType,
+  type LinkType,
+} from "~/types/utils.types";
 
 export const LINKS: LinkType[] = [
   {
@@ -73,15 +77,9 @@ export const COLORS = [
   "#9f6b53",
 ];
 
-export const FIELD_OPTIONS = [
-  {
-    label: "email",
-    // value: "",
-  },
-  {
-    label: "phone",
-    // value: "",
-  },
+export const FIELD_OPTIONS: OptionFieldType[] = [
+  { label: "email" },
+  { label: "phone" },
 ];
 
 export const HOW_T0_STEPS = [

@@ -1,10 +1,15 @@
 import { type IconType } from "react-icons";
 import z from "zod";
 import {
+  KeyNewPlayerType,
   type GameType,
   type PlayerType,
   type TeamType,
 } from "~/types/tournament.types";
+
+export type OptionFieldType = {
+  label: KeyNewPlayerType;
+};
 
 export const LinkSchema = z.object({
   public: z.boolean(),
