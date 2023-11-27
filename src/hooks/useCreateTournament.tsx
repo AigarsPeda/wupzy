@@ -5,8 +5,7 @@ import {
   type HandleTeamsPlayerNameUpdateType,
 } from "~/components/elements/NewKingTournament/NewKingTournamentUtils/types";
 import {
-  KeyNewPlayerType,
-  NewPlayerSchema,
+  type KeyNewPlayerType,
   type NewPlayerType,
   type NewTeamsType,
   type NewTournamentType,
@@ -166,11 +165,13 @@ const useCreateTournament = () => {
   }) => {
     const players = newTournament.king.players.map((player) => {
       if (player.id === id) {
-        const { [field]: _, ...rest } = player;
+        // const { [field]: _val, ...rest } = player;
 
-        const validRest = NewPlayerSchema.parse(rest);
+        // const validRest = NewPlayerSchema.parse(rest);
 
-        return validRest;
+        // return validRest;
+
+        delete player[field];
       }
       return player;
     });

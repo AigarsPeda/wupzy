@@ -1,8 +1,8 @@
 import { type IconType } from "react-icons";
 import z from "zod";
 import {
-  KeyNewPlayerType,
   type GameType,
+  type KeyNewPlayerType,
   type PlayerType,
   type TeamType,
 } from "~/types/tournament.types";

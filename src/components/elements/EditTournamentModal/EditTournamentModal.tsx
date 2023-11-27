@@ -28,6 +28,7 @@ const EditTournamentModal: FC<EditTournamentModalModalProps> = ({
     updateTeamsTeamName,
     updateKingsPlayerName,
     updateTeamsPlayerName,
+    removeFieldFromPlayer,
   } = useCreateNewTournament();
 
   useEffect(() => {
@@ -82,6 +83,7 @@ const EditTournamentModal: FC<EditTournamentModalModalProps> = ({
             handleAddPlayer={handleAddPlayer}
             players={newTournament.king.players}
             isVisible={tournament?.type === "king"}
+            removeFieldFromPlayer={removeFieldFromPlayer}
             handleKingsPlayerName={updateKingsPlayerName}
           />
           <NewTeamsTournament

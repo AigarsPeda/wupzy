@@ -1,8 +1,8 @@
 import { FIELD_OPTIONS } from "hardcoded";
-import { FC, useState } from "react";
+import { useState, type FC } from "react";
 import { HiOutlineViewGridAdd } from "react-icons/hi";
 import Dropdown from "~/components/elements/Dropdown/Dropdown";
-import { KeyNewPlayerType } from "~/types/tournament.types";
+import { type KeyNewPlayerType } from "~/types/tournament.types";
 import classNames from "~/utils/classNames";
 
 interface FieldsDropdownProps {

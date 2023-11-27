@@ -7,7 +7,10 @@ import { type HandleInputChangeType } from "~/components/elements/NewKingTournam
 import SecondaryButton from "~/components/elements/SecondaryButton/SecondaryButton";
 import AddingToListAnimationLayout from "~/components/layout/AddingToListAnimationLayout/AddingToListAnimationLayout";
 import SlidingAnimationLayout from "~/components/layout/SlidingAnimationLayout/SlidingAnimationLayout";
-import { KeyNewPlayerType, type NewPlayerType } from "~/types/tournament.types";
+import {
+  type KeyNewPlayerType,
+  type NewPlayerType,
+} from "~/types/tournament.types";
 import classNames from "~/utils/classNames";
 import getOrdinal from "~/utils/getOrdinal";
 
@@ -17,7 +20,7 @@ interface NewKingTournamentProps {
   players: NewPlayerType[];
   playerNameVisible?: string;
   handleAddPlayer?: () => void;
-  removeFieldFromPlayer: ({
+  removeFieldFromPlayer?: ({
     id,
     field,
   }: {
@@ -42,7 +45,7 @@ const NewKingTournament: FC<NewKingTournamentProps> = ({
   handleAddPlayer,
   addFieldToPlayer,
   handleKingsPlayerName,
-  removeFieldFromPlayer,
+  // removeFieldFromPlayer,
 }) => {
   return (
     <AnimatePresence key="NewKingTournament">
