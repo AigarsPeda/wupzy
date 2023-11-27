@@ -184,12 +184,12 @@ const useCreateTournament = () => {
     });
   };
 
-  const updateKingsPlayerName = ({ id, name }: HandleInputChangeType) => {
+  const updateKingsPlayerName = ({ id, key, value }: HandleInputChangeType) => {
     const players = newTournament.king.players.map((player) => {
       if (player.id === id) {
         return {
           ...player,
-          name,
+          [key]: value,
         };
       }
       return player;
@@ -243,12 +243,12 @@ const useCreateTournament = () => {
     });
   };
 
-  const updateTeamsTeamName = ({ id, name }: HandleInputChangeType) => {
+  const updateTeamsTeamName = ({ id, key, value }: HandleInputChangeType) => {
     const teams = newTournament.teams.map((team) => {
       if (team.id === id) {
         return {
           ...team,
-          name,
+          [key]: value,
         };
       }
       return team;

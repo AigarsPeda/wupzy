@@ -24,7 +24,7 @@ interface NewKingTournamentProps {
     id: string;
     field: KeyNewPlayerType;
   }) => void;
-  handleKingsPlayerName: ({ id, name }: HandleInputChangeType) => void;
+  handleKingsPlayerName: ({ id, key, value }: HandleInputChangeType) => void;
   addFieldToPlayer?: ({
     id,
     field,
@@ -76,47 +76,42 @@ const NewKingTournament: FC<NewKingTournamentProps> = ({
                         inputLabel={playerNameVisible || label}
                         handleInputChange={(str) => {
                           handleKingsPlayerName({
-                            name: str,
+                            key: "name",
+                            value: str,
                             id: player.id,
                           });
                         }}
                       />
                       {isEmailKey && (
                         <AddingToListAnimationLayout index={i + 1} isFlex>
-                          <div className="ml-2 text-sm text-gray-500">
-                            Email {player.email}
-                            <button
-                              type="button"
-                              className="ml-2"
-                              onClick={() => {
-                                removeFieldFromPlayer({
-                                  id: player.id,
-                                  field: "email",
-                                });
-                              }}
-                            >
-                              Remove
-                            </button>
-                          </div>
+                          <Input
+                            inputFor="Email"
+                            inputLabel="Email"
+                            inputVal={player.email || ""}
+                            handleInputChange={(str) => {
+                              handleKingsPlayerName({
+                                value: str,
+                                key: "email",
+                                id: player.id,
+                              });
+                            }}
+                          />
                         </AddingToListAnimationLayout>
                       )}
                       {isPhoneKey && (
                         <AddingToListAnimationLayout index={i + 1} isFlex>
-                          <div className="ml-2 text-sm text-gray-500">
-                            Phone {player.phone}
-                            <button
-                              type="button"
-                              className="ml-2"
-                              onClick={() => {
-                                removeFieldFromPlayer({
-                                  id: player.id,
-                                  field: "phone",
-                                });
-                              }}
-                            >
-                              Remove
-                            </button>
-                          </div>
+                          <Input
+                            inputFor="Phone"
+                            inputLabel="Phone"
+                            inputVal={player.phone || ""}
+                            handleInputChange={(str) => {
+                              handleKingsPlayerName({
+                                value: str,
+                                key: "phone",
+                                id: player.id,
+                              });
+                            }}
+                          />
                         </AddingToListAnimationLayout>
                       )}
                     </div>

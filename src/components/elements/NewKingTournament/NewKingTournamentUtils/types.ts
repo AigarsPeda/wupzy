@@ -1,6 +1,7 @@
 export type HandleInputChangeType = {
   id: string;
-  name: string;
+  key: string;
+  value: string;
 };
 
 export type HandleTeamsPlayerNameUpdateType = {

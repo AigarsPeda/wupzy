@@ -21,7 +21,7 @@ interface NewTeamsTournamentProps {
   teamsNameVisible?: string;
   handleAddTeam?: () => void;
   addPlayerToTeam: ({ teamId }: AddPlayerToTeamType) => void;
-  updateTeamsTeamName: ({ id, name }: HandleInputChangeType) => void;
+  updateTeamsTeamName: ({ id, key, value }: HandleInputChangeType) => void;
   updateTeamsPlayerName: ({
     id,
     name,
@@ -71,7 +71,9 @@ const NewTeamsTournament: FC<NewTeamsTournamentProps> = ({
                         inputVal={team.name || ""}
                         handleInputChange={(str) => {
                           updateTeamsTeamName({
-                            name: str,
+                            // name: str,
+                            key: "name",
+                            value: str,
                             id: team.id,
                           });
                         }}
