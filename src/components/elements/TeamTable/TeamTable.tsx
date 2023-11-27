@@ -30,10 +30,12 @@ const TeamTable: FC<TeamTableProps> = ({ teams, selectedGroup }) => {
   return (
     <Table
       tableContents={updateTeams().filter(
-        (team) => team.group === selectedGroup
+        (team) => team.group === selectedGroup,
       )}
       exclude={[
         "id",
+        "email",
+        "phone",
         "group",
         "players",
         "createdAt",

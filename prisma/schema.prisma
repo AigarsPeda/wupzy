@@ -136,6 +136,8 @@ model Player {
   group                String
   name                 String
   tournamentId         String?
+  email                String?
+  phone                String?
   tournamentSignupLink TournamentSignupLink[]
   updatedAt            DateTime               @updatedAt
   points               Int                    @default(0)

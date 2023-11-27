@@ -60,15 +60,15 @@ const NewTeamsTournament: FC<NewTeamsTournamentProps> = ({
                 return (
                   <li
                     className={classNames(
-                      isFullWidth ? "w-full" : "font-normal sm:col-span-4",
+                      isFullWidth ? "w-full" : "font-normal sm:col-span-6",
                     )}
                     key={team.id}
                   >
                     <AddingToListAnimationLayout index={i}>
                       <Input
                         inputFor={label}
-                        inputLabel={teamsNameVisible || label}
                         inputVal={team.name || ""}
+                        inputLabel={teamsNameVisible || label}
                         handleInputChange={(str) => {
                           updateTeamsTeamName({
                             // name: str,

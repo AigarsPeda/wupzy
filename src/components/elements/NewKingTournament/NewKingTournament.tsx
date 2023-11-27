@@ -71,8 +71,8 @@ const NewKingTournament: FC<NewKingTournamentProps> = ({
                   key={player.id}
                   zIndex={players.length - i}
                 >
-                  <li className="flex w-full">
-                    <div className="w-full">
+                  <li className="w-full">
+                    <div className="relative w-full">
                       <Input
                         inputFor={label}
                         inputVal={player.name}
@@ -85,40 +85,62 @@ const NewKingTournament: FC<NewKingTournamentProps> = ({
                           });
                         }}
                       />
-                      {isEmailKey && (
-                        <AddingToListAnimationLayout index={i + 1} isFlex>
-                          <Input
-                            inputFor="Email"
-                            inputLabel="Email"
-                            inputVal={player.email || ""}
-                            handleInputChange={(str) => {
-                              handleKingsPlayerName({
-                                value: str,
-                                key: "email",
+                      <div className="absolute right-0 top-0">
+                        {addFieldToPlayer && (
+                          <FieldsDropdown
+                            objectKeys={keys}
+                            handleOptionClick={(field) => {
+                              addFieldToPlayer({
+                                field,
                                 id: player.id,
                               });
                             }}
                           />
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex space-x-2">
+                      {isEmailKey && (
+                        <AddingToListAnimationLayout index={i + 1} isFlex>
+                          <div className="mt-2 w-full">
+                            <Input
+                              isSmall
+                              inputFor="Email"
+                              inputLabel="Email"
+                              inputType="email"
+                              inputVal={player.email || ""}
+                              handleInputChange={(str) => {
+                                handleKingsPlayerName({
+                                  value: str,
+                                  key: "email",
+                                  id: player.id,
+                                });
+                              }}
+                            />
+                          </div>
                         </AddingToListAnimationLayout>
                       )}
                       {isPhoneKey && (
                         <AddingToListAnimationLayout index={i + 1} isFlex>
-                          <Input
-                            inputFor="Phone"
-                            inputLabel="Phone"
-                            inputVal={player.phone || ""}
-                            handleInputChange={(str) => {
-                              handleKingsPlayerName({
-                                value: str,
-                                key: "phone",
-                                id: player.id,
-                              });
-                            }}
-                          />
+                          <div className="mt-2 w-full">
+                            <Input
+                              isSmall
+                              inputFor="Phone"
+                              inputLabel="Phone"
+                              inputVal={player.phone || ""}
+                              handleInputChange={(str) => {
+                                handleKingsPlayerName({
+                                  value: str,
+                                  key: "phone",
+                                  id: player.id,
+                                });
+                              }}
+                            />
+                          </div>
                         </AddingToListAnimationLayout>
                       )}
                     </div>
-                    <div>
+                    {/* <div>
                       {addFieldToPlayer && (
                         <FieldsDropdown
                           objectKeys={keys}
@@ -130,7 +152,7 @@ const NewKingTournament: FC<NewKingTournamentProps> = ({
                           }}
                         />
                       )}
-                    </div>
+                    </div> */}
                   </li>
                 </AddingToListAnimationLayout>
               );

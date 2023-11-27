@@ -48,6 +48,8 @@ export const PlayerSchema = z.object({
   createdAt: z.date(),
   setsWon: z.number(),
   gamesWon: z.number(),
+  email: z.string().nullish(),
+  phone: z.string().nullish(),
   tournamentId: z.string().nullish(),
 });
 

@@ -1,6 +1,6 @@
 import { FIELD_OPTIONS } from "hardcoded";
 import { useState, type FC } from "react";
-import { HiOutlineViewGridAdd } from "react-icons/hi";
+import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import Dropdown from "~/components/elements/Dropdown/Dropdown";
 import { type KeyNewPlayerType } from "~/types/tournament.types";
 import classNames from "~/utils/classNames";
@@ -27,21 +27,25 @@ const FieldsDropdown: FC<FieldsDropdownProps> = ({
         width="auto"
         isDropdownOpen={isDropdownOpen}
         dropdownBtn={
-          <button
-            type="button"
-            disabled={filteredOptions.length === 0}
-            onClick={() => {
-              setIsDropdownOpen((state) => !state);
-            }}
-            className={classNames(
-              filteredOptions.length === 0
-                ? "cursor-not-allowed"
-                : "hover:bg-gray-200",
-              "ml-2 mt-8 flex h-[2.5rem] items-center justify-between rounded-md bg-gray-100 px-2 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-800",
-            )}
-          >
-            <HiOutlineViewGridAdd className="h-6 w-6" />
-          </button>
+          filteredOptions.length === 0 ? (
+            <></>
+          ) : (
+            <button
+              type="button"
+              disabled={filteredOptions.length === 0}
+              onClick={() => {
+                setIsDropdownOpen((state) => !state);
+              }}
+              className={classNames(
+                filteredOptions.length === 0
+                  ? "cursor-not-allowed"
+                  : "bg-gray-100 hover:bg-gray-200",
+                "flex items-center justify-between rounded-md px-1.5 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-800",
+              )}
+            >
+              <HiOutlineDotsHorizontal className="h-6 w-6" />
+            </button>
+          )
         }
         handleDropdownClose={() => {
           setIsDropdownOpen(false);

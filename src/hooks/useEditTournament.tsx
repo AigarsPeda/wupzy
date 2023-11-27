@@ -24,7 +24,7 @@ const useEditTournament = (isEditModal: boolean) => {
       {
         enabled: Boolean(tournamentId) && sessionData?.user !== undefined,
         refetchOnWindowFocus: !isEditModal,
-      }
+      },
     );
 
   const updateTournament = (tournament: NewTournamentType) => {

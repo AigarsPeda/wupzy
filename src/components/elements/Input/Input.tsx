@@ -1,8 +1,10 @@
 import { forwardRef } from "react";
+import classNames from "~/utils/classNames";
 
 interface InputProps {
   inputFor: string;
   inputVal: string;
+  isSmall?: boolean;
   inputLabel: string;
   inputPlaceholder?: string;
   inputAutocomplete?: string;
@@ -15,6 +17,7 @@ type Ref = HTMLInputElement;
 const Input = forwardRef<Ref, InputProps>(
   (
     {
+      isSmall,
       inputFor,
       inputVal,
       inputLabel,
@@ -32,7 +35,10 @@ const Input = forwardRef<Ref, InputProps>(
       <div className="w-full">
         <label
           htmlFor={getInputFor()}
-          className="mb-2 block w-full text-sm font-medium leading-6 text-gray-900"
+          className={classNames(
+            isSmall ? "mb-1 text-xs" : "mb-2 text-sm",
+            "block w-full font-medium leading-6 text-gray-900",
+          )}
         >
           {inputLabel}
         </label>

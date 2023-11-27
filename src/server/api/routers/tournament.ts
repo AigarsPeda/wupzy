@@ -99,6 +99,7 @@ export const tournamentRouter = createTRPCRouter({
             type: input.kind,
             name: input.name,
             sets: input.sets,
+
             rounds: input.rounds,
             user: {
               connect: {
@@ -110,6 +111,8 @@ export const tournamentRouter = createTRPCRouter({
                 return {
                   name: player.name,
                   group: player.group,
+                  email: player.email,
+                  phone: player.phone,
                 };
               }),
             },
@@ -180,6 +183,8 @@ export const tournamentRouter = createTRPCRouter({
                   create: team.players.map((player) => ({
                     name: player.name,
                     group: team.group,
+                    email: player.email,
+                    phone: player.phone,
                     tournamentId: id,
                   })),
                 },
@@ -320,11 +325,14 @@ export const tournamentRouter = createTRPCRouter({
               },
               update: {
                 name: player.name,
-                // group: input.group,
+                email: player.email,
+                phone: player.phone,
               },
               create: {
                 name: player.name,
                 group: input.group,
+                email: player.email,
+                phone: player.phone,
                 tournamentId: input.id,
               },
             });
@@ -430,10 +438,14 @@ export const tournamentRouter = createTRPCRouter({
                     update: {
                       name: player.name,
                       group: input.group,
+                      email: player.email,
+                      phone: player.phone,
                     },
                     create: {
                       name: player.name,
                       group: input.group,
+                      email: player.email,
+                      phone: player.phone,
                       tournamentId: input.id,
                     },
                   })),
@@ -447,6 +459,8 @@ export const tournamentRouter = createTRPCRouter({
                   create: team.players.map((player) => ({
                     name: player.name,
                     group: input.group,
+                    email: player.email,
+                    phone: player.phone,
                   })),
                 },
               },

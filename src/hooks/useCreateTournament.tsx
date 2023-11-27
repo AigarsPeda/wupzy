@@ -5,6 +5,7 @@ import {
   type HandleTeamsPlayerNameUpdateType,
 } from "~/components/elements/NewKingTournament/NewKingTournamentUtils/types";
 import {
+  NewPlayerSchema,
   type KeyNewPlayerType,
   type NewPlayerType,
   type NewTeamsType,
@@ -103,14 +104,16 @@ const useCreateTournament = () => {
         ...state,
         name: tournament.name,
         sets: tournament.sets,
-        rounds: tournament.rounds,
         kind: tournament.type,
+        rounds: tournament.rounds,
         king: {
           ...state.king,
           players: players.map((player) => ({
             id: player.id,
             name: player.name,
             group: player.group,
+            ...(player.email && { email: player.email }),
+            ...(player.phone && { phone: player.phone }),
           })),
         },
 
@@ -170,7 +173,9 @@ const useCreateTournament = () => {
         // return validRest;
 
         // deep copy object
-        const newPlayer = JSON.parse(JSON.stringify(player));
+        const newPlayer = NewPlayerSchema.parse(
+          JSON.parse(JSON.stringify(player)),
+        );
 
         // delete property from object
         delete newPlayer[field];

@@ -11,11 +11,13 @@ const PlayerTable: FC<PlayerTableProps> = ({ players, selectedGroup }) => {
   return (
     <Table
       tableContents={players?.filter(
-        (player) => player.group === selectedGroup
+        (player) => player.group === selectedGroup,
       )}
       exclude={[
         "id",
         "group",
+        "email",
+        "phone",
         "players",
         "createdAt",
         "updatedAt",
