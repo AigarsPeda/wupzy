@@ -9,7 +9,7 @@ import getUniqueId from "~/utils/getUniqueId";
 
 const formatTeamsToPlayoffTree = (
   players: SelectedProperties[],
-  selectedRoundsCount: number
+  selectedRoundsCount: number,
 ) => {
   const playoffMap: PlayoffMapType = new Map();
 
@@ -122,7 +122,6 @@ const formatTeamsToPlayoffTree = (
 
   // get keys of playoffMap
   // const playoffMapKeys = Array.from(playoffMap.keys());
-
   // if (playoffMapKeys.length === 1) {
   //   return [];
   // }
