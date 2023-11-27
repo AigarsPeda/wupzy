@@ -166,12 +166,17 @@ const useCreateTournament = () => {
     const players = newTournament.king.players.map((player) => {
       if (player.id === id) {
         // const { [field]: _val, ...rest } = player;
-
         // const validRest = NewPlayerSchema.parse(rest);
-
         // return validRest;
 
-        delete player[field];
+        // deep copy object
+        const newPlayer = JSON.parse(JSON.stringify(player));
+
+        // delete property from object
+        delete newPlayer[field];
+
+        // return new object
+        return newPlayer;
       }
       return player;
     });
