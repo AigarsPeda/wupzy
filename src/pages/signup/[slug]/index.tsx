@@ -141,7 +141,6 @@ const TournamentPage: NextPage = () => {
         <div className="flex items-center">
           <div className="relative mt-[1.09rem] w-full overflow-hidden pb-4">
             <NewKingTournament
-              isFullWidth
               playerNameVisible="Your name"
               isVisible={data?.signupLink?.type === "king"}
               handleKingsPlayerName={updateKingsPlayerName}
@@ -149,7 +148,6 @@ const TournamentPage: NextPage = () => {
             />
 
             <NewTeamsTournament
-              isFullWidth
               teamsNameVisible="Team name"
               addPlayerToTeam={addPlayerToTeam}
               updateTeamsTeamName={updateTeamsTeamName}

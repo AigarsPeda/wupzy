@@ -16,7 +16,6 @@ import getOrdinal from "~/utils/getOrdinal";
 
 interface NewKingTournamentProps {
   isVisible: boolean;
-  isFullWidth?: boolean;
   players: NewPlayerType[];
   playerNameVisible?: string;
   handleAddPlayer?: () => void;
@@ -40,7 +39,6 @@ interface NewKingTournamentProps {
 const NewKingTournament: FC<NewKingTournamentProps> = ({
   players,
   isVisible,
-  isFullWidth,
   playerNameVisible,
   handleAddPlayer,
   addFieldToPlayer,
@@ -54,11 +52,7 @@ const NewKingTournament: FC<NewKingTournamentProps> = ({
           {/* <h2 className="mb-4 text-base font-semibold leading-7 text-gray-900">
             King players
           </h2> */}
-          <ul
-            className={classNames(
-              isFullWidth ? "w-full" : "flex w-full flex-col space-y-5",
-            )}
-          >
+          <ul className={classNames("flex w-full flex-col space-y-5")}>
             {players.map((player, i) => {
               const keys = Object.keys(player);
               const isEmailKey = keys.includes("email");

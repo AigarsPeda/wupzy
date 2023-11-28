@@ -17,7 +17,6 @@ import getOrdinal from "~/utils/getOrdinal";
 
 interface NewTeamsTournamentProps {
   isVisible: boolean;
-  isFullWidth?: boolean;
   teams: NewTeamsType[];
   teamsNameVisible?: string;
   handleAddTeam?: () => void;
@@ -33,7 +32,6 @@ interface NewTeamsTournamentProps {
 const NewTeamsTournament: FC<NewTeamsTournamentProps> = ({
   teams,
   isVisible,
-  isFullWidth,
   teamsNameVisible,
   handleAddTeam,
   addPlayerToTeam,
