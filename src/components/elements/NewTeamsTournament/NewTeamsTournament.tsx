@@ -1,6 +1,7 @@
 import { AnimatePresence } from "framer-motion";
 import { type FC } from "react";
 import { BiPlus } from "react-icons/bi";
+import Button from "~/components/elements/Button/Button";
 import Input from "~/components/elements/Input/Input";
 import {
   type AddPlayerToTeamType,
@@ -47,38 +48,32 @@ const NewTeamsTournament: FC<NewTeamsTournamentProps> = ({
             {/* <h2 className="mb-4 text-base font-semibold leading-7 text-gray-900">
               Teams
             </h2> */}
-            <ul
-              className={classNames(
-                isFullWidth
-                  ? "w-full"
-                  : "grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6",
-              )}
-            >
+            <ul className={classNames("w-full")}>
               {teams.map((team, i) => {
                 const label = `${i + 1}${getOrdinal(i + 1)} team`;
 
                 return (
-                  <li
-                    className={classNames(
-                      isFullWidth ? "w-full" : "font-normal sm:col-span-6",
-                    )}
+                  <AddingToListAnimationLayout
+                    index={i}
                     key={team.id}
+                    zIndex={teams.length - i}
                   >
-                    <AddingToListAnimationLayout index={i}>
-                      <Input
-                        inputFor={label}
-                        inputVal={team.name || ""}
-                        inputLabel={teamsNameVisible || label}
-                        handleInputChange={(str) => {
-                          updateTeamsTeamName({
-                            // name: str,
-                            key: "name",
-                            value: str,
-                            id: team.id,
-                          });
-                        }}
-                      />
-
+                    <li className={classNames("mb-14 w-full")} key={team.id}>
+                      <div>
+                        <Input
+                          inputFor={label}
+                          inputVal={team.name || ""}
+                          inputLabel={teamsNameVisible || label}
+                          handleInputChange={(str) => {
+                            updateTeamsTeamName({
+                              // name: str,
+                              key: "name",
+                              value: str,
+                              id: team.id,
+                            });
+                          }}
+                        />
+                      </div>
                       <ul className="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-4">
                         {team.players.map((player, i) => {
                           const label = `${i + 1}${getOrdinal(i + 1)} player`;
@@ -105,17 +100,25 @@ const NewTeamsTournament: FC<NewTeamsTournamentProps> = ({
                           );
                         })}
                       </ul>
-                      <div className="mt-6">
-                        <SecondaryButton
-                          type="button"
-                          title="Add player"
-                          handleClick={() =>
-                            addPlayerToTeam({ teamId: team.id })
-                          }
-                        />
+
+                      <div className="flex justify-end">
+                        <div className="relative mt-2 w-24">
+                          <Button
+                            size="sm"
+                            type="button"
+                            title="Add player"
+                            color="transparent"
+                            handleClick={() =>
+                              addPlayerToTeam({ teamId: team.id })
+                            }
+                          />
+                          <div>
+                            <span className="absolute bottom-1 left-1/2 block h-0.5 w-20 -translate-x-1/2 transform rounded-full bg-gray-600"></span>
+                          </div>
+                        </div>
                       </div>
-                    </AddingToListAnimationLayout>
-                  </li>
+                    </li>
+                  </AddingToListAnimationLayout>
                 );
               })}
             </ul>
