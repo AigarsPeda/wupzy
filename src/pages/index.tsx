@@ -231,7 +231,7 @@ const HomePage: NextPage = () => {
         </div>
         <Feedback />
 
-        <iframe
+        {/* <iframe
           width="560"
           height="315"
           src="https://www.youtube.com/embed/fv7Q3-ZwM44?si=3SNivegczeXLIZHW"
@@ -239,7 +239,7 @@ const HomePage: NextPage = () => {
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           referrerPolicy="strict-origin-when-cross-origin"
           allowFullScreen
-        ></iframe>
+        ></iframe> */}
 
         <div className="mx-auto mt-20 text-center">
           <h3 className="mx-auto max-w-4xl font-primary text-3xl font-semibold tracking-tight md:text-4xl">
