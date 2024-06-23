@@ -24,7 +24,6 @@ const Dropdown: FC<DropdownProps> = ({
 }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { shouldRender, isAnimation } = useDelayUnmount(isDropdownOpen, 100);
-
   useOnClickOutside<HTMLDivElement>(dropdownRef, () => {
     handleDropdownClose();
   });
