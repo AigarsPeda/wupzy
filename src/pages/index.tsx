@@ -12,12 +12,6 @@ const HomePage: NextPage = () => {
   const { redirectToPath } = useRedirect();
   const { data: sessionData } = useSession();
 
-  const widArray = [
-    "https://www.youtube.com/embed/qVBuJfVUxxQ?si=bV8yOtCAZnNvQvVQ",
-    "https://www.youtube.com/embed/GRqNudYADvA?si=vMCJiVCTGvxDV3r-",
-    "https://www.youtube.com/embed/MMhJuotvR80?si=tSOjhtXJp9z3MVYB",
-  ];
-
   return (
     <>
       <PageHead
@@ -246,35 +240,6 @@ const HomePage: NextPage = () => {
           referrerPolicy="strict-origin-when-cross-origin"
           allowFullScreen
         ></iframe> */}
-
-        {widArray.map((wid, index) => {
-          return (
-            <div
-              key={index}
-              className="mx-auto mb-10 mt-20 w-full max-w-3xl text-center md:mb-16 md:mt-36"
-            >
-              <h2 className="text-2xl font-semibold md:text-3xl">
-                How to use Wupzy?{" "}
-                <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
-                  Watch the video!
-                </span>{" "}
-              </h2>
-              <div className="relative z-10 mx-auto flex items-center justify-center rounded-xl bg-white">
-                <div className="relative mx-auto w-full rounded-xl border border-white/25 bg-gray-200 bg-white/5 p-4 shadow-[inset_0_0_8px_rgba(255,255,255,0.2)] backdrop-blur-xl will-change-transform">
-                  <iframe
-                    width="560"
-                    height="315"
-                    src={wid}
-                    title="YouTube video player"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                  ></iframe>
-                </div>
-              </div>
-            </div>
-          );
-        })}
 
         <div className="mx-auto mt-20 text-center">
           <h3 className="mx-auto max-w-4xl font-primary text-3xl font-semibold tracking-tight md:text-4xl">
